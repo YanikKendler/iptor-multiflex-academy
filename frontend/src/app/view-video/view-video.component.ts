@@ -19,16 +19,12 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
   styleUrl: './view-video.component.scss'
 })
 export class ViewVideoComponent implements AfterViewInit, OnInit{
-  title: string = 'Video Title';
-  description: string = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt iste iusto laudantium tempora! Debitis iure, quo. Accusamus ad adipisci alias amet assumenda, commodi consequuntur dolore est ex excepturi fugit impedit ipsa ipsum iste itaque labore laudantium minus molestias natus nesciunt nihil nostrum officiis pariatur quam quibusdam reprehenderit saepe sed temporibus ullam ut. Accusamus beatae deleniti dignissimos doloremque dolores dolorum ea, et eveniet exercitationem expedita, explicabo id impedit libero magni maiores modi nam natus nulla obcaecati optio, placeat quaerat quisquam quo vero voluptate voluptates voluptatum? Ab itaque quia unde? A alias autem dolore ducimus tenetur. Amet distinctio exercitationem quaerat rem ullam!';
+  service = inject(VideoService)
+  video : VideoModel | undefined
 
   markerPos = {width: 0, left: 0}
 
   @ViewChild('tabSelector') tabSelector: ElementRef | undefined;
-
-  service = inject(VideoService)
-
-  viewVideo : VideoModel | undefined
 
   constructor(private route: ActivatedRoute) {}
 
@@ -39,7 +35,7 @@ export class ViewVideoComponent implements AfterViewInit, OnInit{
 
         this.service.getVideoById(params['id']).subscribe(video => {
           console.log(video)
-          this.viewVideo = video
+          this.video = video
         })
       }
     )

@@ -21,10 +21,7 @@ import {VideoModel} from "../model/VideoModel";
   styleUrl: './video.component.scss'
 })
 export class VideoComponent {
-  video: VideoOverview = {} as VideoOverview
-  service = inject(VideoService)
-
-  @Input() video : VideoModel = {} as VideoModel
+  @Input() video: VideoOverview = {} as VideoOverview
 
   constructor(private _router: Router) { }
 
