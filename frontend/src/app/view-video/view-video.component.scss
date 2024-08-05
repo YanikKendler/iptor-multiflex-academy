@@ -1,11 +1,22 @@
+@import "../variables";
 
+main{
+  width: 80%;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
 
 .top{
   display: flex;
-  width: 80%;
-  margin-inline: auto;
   gap: 2rem;
   margin-top: 3rem;
+
+  img{
+    width: 50%;
+    border-radius: 1rem;
+  }
 
   .right{
     display: flex;
@@ -17,6 +28,7 @@
   h1{
     font-size: 1.5rem;
   }
+
 
   .description{
     font-size: .9rem;
@@ -30,7 +42,36 @@
   }
 }
 
-img{
-  width: 50%;
-  border-radius: 1rem;
+.bottom{
+  display: flex;
+  flex-direction: column;
+
+  .tab-selector{
+    display: flex;
+    gap: 1rem;
+    padding-left: 3rem;
+    border-bottom: .2rem $gray-600 solid;
+    position: relative;
+
+    p{
+      padding: .3rem;
+      cursor: pointer;
+      transition: background-color .2s;
+      border-top-right-radius: .5rem;
+      border-top-left-radius: .5rem;
+
+      &:hover{
+        background-color: $gray-900;
+      }
+    }
+
+    .marker{
+      position: absolute;
+      bottom: 0;
+      height: .2rem;
+      background-color: $secondary-500;
+      transition: left .2s, width .2s;
+      translate: 0 .2rem;
+    }
+  }
 }

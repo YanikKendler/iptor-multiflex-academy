@@ -1,20 +1,30 @@
 <app-navigation [simple]="true"></app-navigation>
 
-<div class="top">
-  <img src="http://unsplash.it/1080/720" alt="">
-  <div class="right">
-    <h1>{{title}}</h1>
-    <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt iste iusto laudantium tempora! Debitis iure, quo. Accusamus ad adipisci alias amet assumenda, commodi consequuntur dolore est ex excepturi fugit impedit ipsa ipsum iste itaque labore laudantium minus molestias natus nesciunt nihil nostrum officiis pariatur quam quibusdam reprehenderit saepe sed temporibus ullam ut. Accusamus beatae deleniti dignissimos doloremque dolores dolorum ea, et eveniet exercitationem expedita, explicabo id impedit libero magni maiores modi nam natus nulla obcaecati optio, placeat quaerat quisquam quo vero voluptate voluptates voluptatum? Ab itaque quia unde? A alias autem dolore ducimus tenetur. Amet distinctio exercitationem quaerat rem ullam!</p>
-    <div class="actions">
-      <app-star-icon [stared]="true"></app-star-icon>
-      <app-star-icon [stared]="true"></app-star-icon>
-      <app-star-icon [stared]="true"></app-star-icon>
-      <app-star-icon></app-star-icon>
-      <app-star-icon></app-star-icon>
-      <p>3.2</p>
-      <!--replace with rating component-->
+<main>
+  <div class="top">
+    <img src="http://unsplash.it/1080/720" alt="">
+    <div class="right">
+      <h1>{{ title }}</h1>
+      <p class="description">{{ description }}</p>
+      <div class="actions">
+        <app-star-icon [stared]="true"></app-star-icon>
+        <app-star-icon [stared]="true"></app-star-icon>
+        <app-star-icon [stared]="true"></app-star-icon>
+        <app-star-icon></app-star-icon>
+        <app-star-icon></app-star-icon>
+        <p>3.2</p>
+        <!--replace with rating component-->
 
-      <app-bookmark-icon></app-bookmark-icon>
+        <app-bookmark-icon></app-bookmark-icon>
+      </div>
     </div>
   </div>
-</div>
+
+  <div class="bottom">
+    <div class="tab-selector" #tabSelector>
+      <p class="comments" (click)="selectTab('comments')">Comments</p>
+      <p class="quiz" (click)="selectTab('quiz')">Quiz</p>
+      <span class="marker" [style.left.px]="markerPos.left" [style.width.px]="markerPos.width"></span>
+    </div>
+  </div>
+</main>

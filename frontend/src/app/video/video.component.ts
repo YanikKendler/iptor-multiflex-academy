@@ -4,6 +4,7 @@ import {PlayIconComponent} from "../icons/playicon/play.icon.component"
 import {BookmarkIconComponent} from "../icons/bookmark/bookmark.icon.component"
 import {MatChip} from "@angular/material/chips"
 import {Router} from "@angular/router"
+import {VideoOverview} from "../model/VideoModel"
 
 @Component({
   selector: 'app-video',
@@ -18,15 +19,10 @@ import {Router} from "@angular/router"
   styleUrl: './video.component.scss'
 })
 export class VideoComponent {
-  id: number = 1;
-  title: string = 'Video Title';
-  description: string = 'Video Description';
-  color: string = 'red';
-  tags: string[] = ['tag1', 'tag2', 'tag3'];
-
+  video: VideoOverview = {} as VideoOverview
   constructor(private _router: Router) { }
 
   openVideo(){
-    this._router.navigate(['video/' + this.id])
+    this._router.navigate(['video/' + this.video.videoId])
   }
 }

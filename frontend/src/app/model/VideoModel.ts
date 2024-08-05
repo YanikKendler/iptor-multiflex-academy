@@ -7,20 +7,28 @@ export enum VisibilityEnum {
   self,everyone, customers, internal
 }
 
+export interface VideoOverview {
+  videoId: number;
+  title: string;
+  description: string;
+  tags: TagModel[];
+  saved: boolean;
+  color: string;
+}
+
 export class VideoModel {
   private _videoId: number;
+  private _title: string;
+  private _description: string;
+  private _saved: boolean;
   private _tags: TagModel[];
   private _comments: CommentModel[];
   private _questions: QuestionModel[];
   private _starRatings: StarRatingModel[];
-  private _title: string;
-  private _description: string;
-  private _save: boolean;
   private _color: string;
   private _visibility: VisibilityEnum;
-  private _requestVideo: boolean;
 
-  constructor(id: number, tags: TagModel[], comments: CommentModel[], questions: QuestionModel[], starRatings: StarRatingModel[], title: string, description: string, save: boolean, color: string, visibility: VisibilityEnum, requestVideo: boolean) {
+  constructor(id: number, tags: TagModel[], comments: CommentModel[], questions: QuestionModel[], starRatings: StarRatingModel[], title: string, description: string, saved: boolean, color: string, visibility: VisibilityEnum, requestVideo: boolean) {
     this._videoId = id;
     this._tags = tags;
     this._comments = comments;
@@ -28,10 +36,9 @@ export class VideoModel {
     this._starRatings = starRatings;
     this._title = title;
     this._description = description;
-    this._save = save;
+    this._saved = saved;
     this._color = color;
     this._visibility = visibility;
-    this._requestVideo = requestVideo;
   }
 
   get videoId(): number {
@@ -90,12 +97,12 @@ export class VideoModel {
     this._description = value;
   }
 
-  get save(): boolean {
-    return this._save;
+  get saved(): boolean {
+    return this._saved;
   }
 
-  set save(value: boolean) {
-    this._save = value;
+  set saved(value: boolean) {
+    this._saved = value;
   }
 
   get color(): string {
@@ -112,13 +119,5 @@ export class VideoModel {
 
   set visibility(value: VisibilityEnum) {
     this._visibility = value;
-  }
-
-  get requestVideo(): boolean {
-    return this._requestVideo;
-  }
-
-  set requestVideo(value: boolean) {
-    this._requestVideo = value;
   }
 }
