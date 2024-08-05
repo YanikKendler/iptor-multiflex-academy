@@ -1,0 +1,14 @@
+@import "../variables";
+
+:host{
+  background-color: $primary-500;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-block: .8rem;
+  padding-inline: 2rem;
+  color: white;
+}
+
