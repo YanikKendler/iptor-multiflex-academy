@@ -1,0 +1,67 @@
+@startuml
+  skinparam linetype ortho
+
+	entity Video {
+		* videoId: Long
+    * tags: List<Tag>
+    * comments: List<Comment>
+
+		--
+		* title: String
+    * description
+    * 5 Star rating
+    * Save
+    * color: String
+    * visibility: VisibilityEnum
+    * request Video
+	}
+
+	entity Tag {
+		* tagId: Long
+		--
+		* name: String
+	}
+
+	entity StarRating {
+		* ratingId: Long
+		* userId: Long
+		* videoId: Long
+		--
+		* rating: int
+	}
+
+	entity Comment {
+		* commentId: Long
+		* userId: Long
+		* videoId: Long
+		--
+		* title: String
+		* text: String
+	}
+
+
+
+	entity Question {
+		* questionId: Long
+		* videoId: Long
+		--
+		* title: String
+		* text: String
+	}
+
+	entity QuestionOption {
+		* questionOptionId: Long
+		* questionId: Long
+		--
+		* name: String
+		* isCorrect: boolean
+	}
+
+	Question ||--o{ QuestionOption
+
+	Video ||--o{ StarRating
+	Video }o--o{ Tag
+	Video ||--o{ Comment
+	Video ||--o{ Question
+
+@enduml
