@@ -44,3 +44,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font: inherit;
   box-sizing: border-box;
 }
+
+a{
+  text-decoration: none;
+  color: inherit;
+
+  &:hover{
+    text-decoration: underline;
+  }
+}
