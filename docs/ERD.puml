@@ -5,15 +5,11 @@
 		* videoId: Long
     * tags: List<Tag>
     * comments: List<Comment>
-
 		--
 		* title: String
-    * description
-    * 5 Star rating
-    * Save
+    * description: String
     * color: String
     * visibility: VisibilityEnum
-    * request Video
 	}
 
 	entity Tag {
@@ -40,6 +36,13 @@
 	}
 
 
+  entity User {
+      * userId: Long
+      --
+      * username: String
+      * email: String
+      * role: String
+  }
 
 	entity Question {
 		* questionId: Long
@@ -50,18 +53,118 @@
 		* text: String
 	}
 
-	entity QuestionOption {
-		* questionOptionId: Long
-		--
-		* name: String
-		* isCorrect: boolean
-	}
+  entity Employee {
+      * employeeId: Long
+      * supervisor: Employee
+			* deputySupervisor: Employee
+      --
+			isAdministrator: boolean
+  }
 
-	Question ||--o{ QuestionOption
+  entity Customer {
+      * customerId: Long
+			* supervisor: Customer
+      --
+			* companyName: String
+			* isManager: boolean
+  }
 
-	Video ||--o{ StarRating
-	Video }o--o{ Tag
-	Video ||--o{ Comment
-	Video ||--o{ Question
+  entity StarRating {
+        * ratingId: Long
+        * userId: Long
+        * videoId: Long
+        --
+        * rating: int
+    }
+  entity Comment {
+      * commentId: Long
+      * userId: Long
+      * videoId: Long
+      --
+      * text: String
+	  * title: String
+  }
 
-@enduml
+  entity Question {
+      * questionId: Long
+      * videoId: Long
+      * answerOptions: List<AnswerOption>
+      --
+      * questionText: String
+  }
+
+  entity AnswerOption {
+      * optionId: Long
+      --
+      * text: String
+      * isCorrect: boolean
+  }
+
+  entity Tag {
+      * tagId: Long
+      --
+      * name: String
+  }
+
+  entity LearningPath {
+      * pathId: Long
+      --
+      * title: String
+      * description: String
+  }
+
+  entity VideoAssignment {
+      * assignmentId: Long
+      * assignedTo: User
+      * assignedBy: User
+      * video: Video
+      --
+      * date: datetime
+  }
+
+  entity ViewProgress {
+      * progressId: Long
+      * userId: Long
+      * videoId: Long
+      --
+      * timestamp: datetime
+      * progress: int
+  }
+
+  entity Notification {
+      * notificationId: Long
+      * userId: Long
+      --
+      * text: String
+      * timestamp: datetime
+  }
+
+/'   entity Request {
+      * requestId: Long
+      * userId: Long
+      * videoId: Long
+      --
+      * text: String
+      * timestamp: datetime
+  } '/
+
+  User <|-up- Customer
+  User <|-up- Employee
+  User ||--o{ VideoAssignment
+  VideoAssignment ||--o{ Video
+
+  Employee ||--o{ Employee : supervises
+  User ||--o{ Comment
+  Video ||--o{ Comment
+  Video ||--o{ Question
+  Question ||--o{ AnswerOption
+  Video ||--o{ Tag
+  User ||--o{ ViewProgress
+  Video ||--o{ ViewProgress
+  User ||--o{ Notification
+/'   User ||--o{ Request
+  Video ||--o{ Request '/
+  Video ||--o{ StarRating
+
+
+  @enduml
