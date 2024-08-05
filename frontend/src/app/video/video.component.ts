@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import {NgOptimizedImage} from "@angular/common"
 import {PlayIconComponent} from "../icons/playicon/play.icon.component"
 import {BookmarkIconComponent} from "../icons/bookmark/bookmark.icon.component"
 import {MatChip} from "@angular/material/chips"
 import {Router} from "@angular/router"
+import {VideoService} from "../service/video.service";
+import {VideoModel} from "../model/VideoModel";
 
 @Component({
   selector: 'app-video',
@@ -17,16 +19,14 @@ import {Router} from "@angular/router"
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss'
 })
-export class VideoComponent {
-  id: number = 1;
-  title: string = 'Video Title';
-  description: string = 'Video Description';
-  color: string = 'red';
-  tags: string[] = ['tag1', 'tag2', 'tag3'];
+export class VideoComponent{
+  service = inject(VideoService)
+
+  @Input() video : VideoModel | undefined
 
   constructor(private _router: Router) { }
 
   openVideo(){
-    this._router.navigate(['video/' + this.id])
+    this._router.navigate(['video/' + this.video?.videoId])
   }
 }
