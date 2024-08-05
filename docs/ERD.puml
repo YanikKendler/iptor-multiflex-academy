@@ -1,67 +1,154 @@
 @startuml
-  skinparam linetype ortho
-
-	entity Video {
-		* videoId: Long
-    * tags: List<Tag>
-    * comments: List<Comment>
-
-		--
-		* title: String
-    * description
-    * 5 Star rating
-    * Save
-    * color: String
-    * visibility: VisibilityEnum
-    * request Video
-	}
-
-	entity Tag {
-		* tagId: Long
-		--
-		* name: String
-	}
-
-	entity StarRating {
-		* ratingId: Long
-		* userId: Long
-		* videoId: Long
-		--
-		* rating: int
-	}
-
-	entity Comment {
-		* commentId: Long
-		* userId: Long
-		* videoId: Long
-		--
-		* title: String
-		* text: String
-	}
+skinparam linetype ortho
 
 
+  entity User {
+      * userId: Long
+      --
+      * username: String
+      * email: String
+      * role: String
+  }
 
-	entity Question {
-		* questionId: Long
-		* videoId: Long
-		--
-		* title: String
-		* text: String
-	}
+  entity Employee {
+      * employeeId: Long
+      * userId: Long
+      * supervisorId: Long
+      * supSupervisorId: Long
+      --
+  }
 
-	entity QuestionOption {
-		* questionOptionId: Long
-		* questionId: Long
-		--
-		* name: String
-		* isCorrect: boolean
-	}
+  entity Customer {
+      * customerId: Long
+      * userId: Long
+      * supervisorId: Long
+      --
+  }
 
-	Question ||--o{ QuestionOption
+  entity Administrator {
+      * adminId: Long
+      * userId: Long
+      --
+  }
 
-	Video ||--o{ StarRating
-	Video }o--o{ Tag
-	Video ||--o{ Comment
-	Video ||--o{ Question
+  entity Video {
+      * videoId: Long
+      * tags: List<Tag>
+      * comments: List<Comment>
+      * questions: List<Question>
+      * rating : List<StarRating>
+      --
+      * title: String
+      * description: String
+      * save: boolean
+      * color: String
+      * visibility: VisibilityEnum
+      * requestVideo: boolean
+  }
+  entity StarRating {
+        * ratingId: Long
+        * userId: Long
+        * videoId: Long
+        --
+        * rating: int
+    }
+  entity Comment {
+      * commentId: Long
+      * userId: Long
+      * videoId: Long
+      --
+      * text: String
+	  * title: String
+  }
 
-@enduml
+  entity Question {
+      * questionId: Long
+      * videoId: Long
+      * answerOptions: List<AnswerOption>
+      --
+      * questionText: String
+  }
+
+  entity AnswerOption {
+      * optionId: Long
+      * questionId: Long
+      --
+      * optionText: String
+      * isCorrect: boolean
+  }
+
+  entity Tag {
+      * tagId: Long
+      --
+      * name: String
+  }
+
+  entity LearningPath {
+      * pathId: Long
+      --
+      * title: String
+      * description: String
+  }
+
+  entity Assignment {
+      * assignmentId: Long
+      * adminId: Long
+      * userId: Long
+      * videoId: Long
+      * pathId: Long
+      --
+      * date: datetime
+  }
+
+  entity ViewProgress {
+      * progressId: Long
+      * userId: Long
+      * videoId: Long
+      --
+      * timestamp: datetime
+      * progress: int
+  }
+
+  entity Notification {
+      * notificationId: Long
+      * userId: Long
+      --
+      * text: String
+      * timestamp: datetime
+  }
+
+  entity Request {
+      * requestId: Long
+      * userId: Long
+      * videoId: Long
+      --
+      * text: String
+      * timestamp: datetime
+  }
+
+  User ||--o{ Employee
+  User ||--o{ Customer
+  User ||--o{ Administrator
+  User ||--o{ Assignment
+  Assignment ||--o{ Video
+
+  Employee ||--|| User
+  Customer ||--|| User
+  Administrator ||--|| User
+  Employee ||--o{ Employee : supervises
+  Administrator ||--o{ Video
+  Administrator ||--o{ LearningPath
+  User ||--o{ Comment
+  Video ||--o{ Comment
+  Video ||--o{ Question
+  Question ||--o{ AnswerOption
+  Video ||--o{ Tag
+  User ||--o{ ViewProgress
+  Video ||--o{ ViewProgress
+  User ||--o{ Notification
+  User ||--o{ Request
+  Video ||--o{ Request
+  Video ||--o{ StarRating
+
+
+  @enduml
