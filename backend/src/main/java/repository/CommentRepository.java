@@ -20,11 +20,7 @@ public class CommentRepository {
 
     @Transactional
     public void create(Long videoId, Comment comment) {
-        Video video = videoRepository.getById(videoId);
-
-        video.addComment(comment);
-        comment.setVideo(video);
-
+        videoRepository.getById(videoId).addComment(comment);
         em.persist(comment);
     }
 
@@ -37,7 +33,7 @@ public class CommentRepository {
     }
 
     public List<Comment> getAll(Long videoId) {
-        return em.createQuery("select c from Comment c where c.video.id = :videoId", Comment.class)
+        return em.createQuery("select c from Video v join v.comments c where v.videoId = :videoId", Comment.class)
                 .setParameter("videoId", videoId).getResultList();
     }
 

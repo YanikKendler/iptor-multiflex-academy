@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import model.AnswerOption;
 import model.Question;
+import model.Tag;
 
 import java.util.List;
 
@@ -20,7 +21,6 @@ public class QuestionRepository {
     @Transactional
     public void create(Long videoId, Question question) {
         videoRepository.getById(videoId).addQuestion(question);
-        question.setVideo(videoRepository.getById(videoId));
         em.persist(question);
     }
 
@@ -33,7 +33,7 @@ public class QuestionRepository {
     }
 
     public List<Question> getAll(Long videoId) {
-        return em.createQuery("select q from Question q where q.video.id = :videoId", Question.class)
+        return em.createQuery("select q from Video v join v.questions q where v.videoId = :videoId", Question.class)
                 .setParameter("videoId", videoId).getResultList();
     }
 

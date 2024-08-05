@@ -2,6 +2,7 @@ package model;
 
 import jakarta.persistence.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -10,19 +11,14 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
 
-    @ManyToOne
-    @JoinColumn(name = "videoId")
-    private Video video;
-
     @OneToMany(mappedBy = "question", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<AnswerOption> answerOptions;
 
     private String title;
     private String text;
 
-    public Question(Video video, List<AnswerOption> answerOptions, String title, String text) {
-        this.video = video;
-        this.answerOptions = answerOptions;
+    public Question(String title, String text) {
+        this.answerOptions = new LinkedList<>();
         this.title = title;
         this.text = text;
     }
@@ -40,14 +36,6 @@ public class Question {
 
     public Long getQuestionId() {
         return questionId;
-    }
-
-    public Video getVideo() {
-        return video;
-    }
-
-    public void setVideo(Video videoId) {
-        this.video = videoId;
     }
 
     public List<AnswerOption> getAnswerOptions() {

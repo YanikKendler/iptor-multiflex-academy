@@ -10,5 +10,5 @@ public class CustomerRepository {
     @Inject
     EntityManager em;
 
-    
+
 }

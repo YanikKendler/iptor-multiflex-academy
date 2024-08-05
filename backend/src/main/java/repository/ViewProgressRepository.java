@@ -6,11 +6,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import model.Tag;
 import model.Video;
+import model.ViewProgress;
 
 import java.util.List;
 
 @ApplicationScoped
-public class TagRepository {
+public class ViewProgressRepository {
     @Inject
     EntityManager em;
 
@@ -18,14 +19,14 @@ public class TagRepository {
     VideoRepository videoRepository;
 
     @Transactional
-    public void create(Long videoId, Tag tag) {
+    public void create(Long videoId, ViewProgress progress) {
         Video video = videoRepository.getById(videoId);
-        video.addTag(tag);
-        em.persist(tag);
+        progress.setVideo(video);
+        em.persist(progress);
     }
 
     @Transactional
-    public void update(Tag tag) {}
+    public void update(ViewProgress progress) {}
 
     @Transactional
     public void delete(Long id) {
@@ -33,13 +34,11 @@ public class TagRepository {
     }
 
     @Transactional
-    public List<Tag> getAll(Long videoId) {
-        return em.createQuery("select t from Video v join v.tags t where v.videoId = :videoId", Tag.class)
-                .setParameter("videoId", videoId)
-                .getResultList();
+    public List<Tag> getAll() {
+        return em.createQuery("select p from ViewProgress p", Tag.class).getResultList();
     }
 
-    public Tag getById(Long id){
-        return em.find(Tag.class, id);
+    public ViewProgress getById(Long id){
+        return em.find(ViewProgress.class, id);
     }
 }

@@ -16,7 +16,7 @@ public class VideoResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createDevice(Video v){
+    public Response createVideo(Video v){
         try {
             repository.create(v);
         } catch (Exception ex) {
@@ -39,7 +39,7 @@ public class VideoResource {
 
     @DELETE
     @Path("{id: [0-9]+}")
-    public Response deleteDevice(@PathParam("id") Long id){
+    public Response deleteVideo(@PathParam("id") Long id){
         try{
             repository.delete(id);
         } catch (Exception ex) {
@@ -51,7 +51,7 @@ public class VideoResource {
     @PUT
     @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateDevice(@PathParam("id") Long id, Video v){
+    public Response updateVideo(@PathParam("id") Long id, Video v){
         try{
             repository.update(v);
         } catch (Exception ex) {
