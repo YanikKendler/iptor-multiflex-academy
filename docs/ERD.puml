@@ -26,28 +26,17 @@
 		* rating: int
 	}
 
-	entity Comment {
-		* commentId: Long
-		* user: User
-		* video: Video
-		--
-		* title: String
-		* text: String
-	}
-
-
   entity User {
       * userId: Long
       --
       * username: String
       * email: String
-      * role: String
   }
 
 	entity Question {
 		* questionId: Long
 		* video: Video
-		* qeustions: List<QuestionOption>
+		* answers: List<AnswerOption>
 		--
 		* title: String
 		* text: String
@@ -69,28 +58,13 @@
 			* isManager: boolean
   }
 
-  entity StarRating {
-        * ratingId: Long
-        * userId: Long
-        * videoId: Long
-        --
-        * rating: int
-    }
   entity Comment {
       * commentId: Long
-      * userId: Long
-      * videoId: Long
+      * user: User
+      * video: Video
       --
       * text: String
-	  * title: String
-  }
-
-  entity Question {
-      * questionId: Long
-      * videoId: Long
-      * answerOptions: List<AnswerOption>
-      --
-      * questionText: String
+	  	* title: String
   }
 
   entity AnswerOption {
@@ -166,5 +140,6 @@
   Video ||--o{ Request '/
   Video ||--o{ StarRating
 
+  Video }o--o{ LearningPath
 
   @enduml

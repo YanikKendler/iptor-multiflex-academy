@@ -11,7 +11,7 @@ Run the postgres container with appropriate port and password
 
 Enter the postgres dp to execute commands inside it `docker exec -it postgres-container psql -U postgres`
 
-`create database multiflex_academy;`
+`create database multiflex;`
 
 `create user multiflex_academy with password 'R0LvkvdE5gu41s8&@x07JZ@6O29@@^';`
 
