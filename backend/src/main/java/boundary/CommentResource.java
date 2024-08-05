@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import model.Comment;
 import repository.CommentRepository;
-
 import java.util.List;
 
 @Path("/video/{videoId: [0-9]+}/comment")
