@@ -1,19 +1,18 @@
 <app-navigation [simple]="true"></app-navigation>
 
-<main>
-  <div class="top">
-    <img src="http://unsplash.it/1080/720" alt="">
-    <div class="right">
-      <h1>{{ title }}</h1>
-      <p class="description">{{ description }}</p>
-      <div class="actions">
-        <app-star-icon [stared]="true"></app-star-icon>
-        <app-star-icon [stared]="true"></app-star-icon>
-        <app-star-icon [stared]="true"></app-star-icon>
-        <app-star-icon></app-star-icon>
-        <app-star-icon></app-star-icon>
-        <p>3.2</p>
-        <!--replace with rating component-->
+<div class="top">
+  <img src="http://unsplash.it/1080/720" alt="">
+  <div class="right">
+    <h1>{{viewVideo?.title}}</h1>
+    <p class="description">{{viewVideo?.description}}</p>
+    <div class="actions">
+      <app-star-icon [stared]="true"></app-star-icon>
+      <app-star-icon [stared]="true"></app-star-icon>
+      <app-star-icon [stared]="true"></app-star-icon>
+      <app-star-icon></app-star-icon>
+      <app-star-icon></app-star-icon>
+      <p>3.2</p>
+      <!--replace with rating component-->
 
         <app-bookmark-icon></app-bookmark-icon>
       </div>

@@ -13,11 +13,5 @@ import {TagModel} from "./model/TagModel";
   styleUrl: './app.component.scss',
   providers: []
 })
-export class AppComponent implements OnInit{
-  service = inject(VideoService)
-  video : VideoModel | undefined
-
-  ngOnInit(): void {
-    this.video = this.service.getVideoById(1)
-  }
+export class AppComponent{
 }

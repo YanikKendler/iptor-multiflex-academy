@@ -37,6 +37,18 @@ public class VideoResource {
         return Response.ok().entity(videos).build();
     }
 
+    @GET
+    @Path("{id: [0-9]+}")
+    public Response getVideo(@PathParam("id") Long id){
+        Video video;
+        try{
+            video = repository.getById(id);
+        }catch (Exception ex){
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().entity(video).build();
+    }
+
     @DELETE
     @Path("{id: [0-9]+}")
     public Response deleteVideo(@PathParam("id") Long id){
