@@ -44,6 +44,7 @@
 	entity Question {
 		* questionId: Long
 		* video: Video
+		* qeustions: List<QuestionOption>
 		--
 		* title: String
 		* text: String
@@ -51,7 +52,6 @@
 
 	entity QuestionOption {
 		* questionOptionId: Long
-		* question: Question
 		--
 		* name: String
 		* isCorrect: boolean
