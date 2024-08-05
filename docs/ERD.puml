@@ -24,16 +24,16 @@
 
 	entity StarRating {
 		* ratingId: Long
-		* userId: Long
-		* videoId: Long
+		* user: User
+		* video: Video
 		--
 		* rating: int
 	}
 
 	entity Comment {
 		* commentId: Long
-		* userId: Long
-		* videoId: Long
+		* user: User
+		* video: Video
 		--
 		* title: String
 		* text: String
@@ -43,7 +43,7 @@
 
 	entity Question {
 		* questionId: Long
-		* videoId: Long
+		* video: Video
 		--
 		* title: String
 		* text: String
@@ -51,7 +51,7 @@
 
 	entity QuestionOption {
 		* questionOptionId: Long
-		* questionId: Long
+		* question: Question
 		--
 		* name: String
 		* isCorrect: boolean
