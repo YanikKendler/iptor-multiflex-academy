@@ -5,20 +5,22 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import model.Tag;
+import model.ViewProgress;
 import repository.TagRepository;
+import repository.ViewProgressRepository;
 
 import java.util.List;
 
-@Path("/video/{videoId: [0-9]+}/tag")
-public class TagResource {
+@Path("/video/{videoId: [0-9]+}/viewprogess")
+public class ViewProgressResource {
     @Inject
-    TagRepository repository;
+    ViewProgressRepository repository;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTag(@PathParam("videoId")Long vid, Tag t){
+    public Response createTag(@PathParam("videoId")Long vid, ViewProgress vp){
         try {
-            repository.create(vid, t);
+            repository.create(vid, vp);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -30,7 +32,7 @@ public class TagResource {
     public Response getAll(@PathParam("videoId")Long vid){
         List<Tag> tags;
         try{
-            tags = repository.getAll(vid);
+            tags = repository.getAll();
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
@@ -51,9 +53,9 @@ public class TagResource {
     @PUT
     @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateTag(@PathParam("id") Long id, Tag t){
+    public Response updateTag(@PathParam("id") Long id, ViewProgress vp){
         try{
-            repository.update(t);
+            repository.update(vp);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

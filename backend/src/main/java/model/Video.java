@@ -15,11 +15,14 @@ public class Video {
     @OneToMany(fetch = FetchType.EAGER)
     private List<Tag> tags;
 
-    @OneToMany(mappedBy = "video", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "video", fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Question> questions;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<StarRating> starRatings;
 
     private String title;
     private String description;
@@ -32,6 +35,7 @@ public class Video {
         this.tags = new LinkedList<>();
         this.comments = new LinkedList<>();
         this.questions = new LinkedList<>();
+        this.starRatings = new LinkedList<>();
         this.title = title;
         this.description = description;
         this.save = save;
@@ -50,6 +54,10 @@ public class Video {
 
     public void addQuestion(Question question) {
         questions.add(question);
+    }
+
+    public void addStarRating(StarRating starRating) {
+        starRatings.add(starRating);
     }
 
     public Video() {

@@ -16,7 +16,7 @@ public class CommentResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createDevice(@PathParam("videoId") Long vid, Comment c){
+    public Response createComment(@PathParam("videoId") Long vid, Comment c){
         try {
             repository.create(vid, c);
         } catch (Exception ex) {
@@ -39,7 +39,7 @@ public class CommentResource {
 
     @DELETE
     @Path("{id: [0-9]+}")
-    public Response deleteDevice(@PathParam("id") Long id){
+    public Response deleteComment(@PathParam("id") Long id){
         try{
             repository.delete(id);
         } catch (Exception ex) {
@@ -51,7 +51,7 @@ public class CommentResource {
     @PUT
     @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateDevice(@PathParam("id") Long id, Comment c){
+    public Response updateComment(@PathParam("id") Long id, Comment c){
         try{
             repository.update(c);
         } catch (Exception ex) {
