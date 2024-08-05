@@ -19,6 +19,7 @@ public class QuestionRepository {
 
     @Transactional
     public void create(Long videoId, Question question) {
+        videoRepository.getById(videoId).addQuestion(question);
         question.setVideo(videoRepository.getById(videoId));
         em.persist(question);
     }

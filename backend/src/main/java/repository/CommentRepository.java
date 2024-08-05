@@ -4,13 +4,14 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import model.Comment;
 import model.Tag;
 import model.Video;
 
 import java.util.List;
 
 @ApplicationScoped
-public class TagRepository {
+public class CommentRepository {
     @Inject
     EntityManager em;
 
@@ -18,27 +19,29 @@ public class TagRepository {
     VideoRepository videoRepository;
 
     @Transactional
-    public void create(Long videoId, Tag tag) {
+    public void create(Long videoId, Comment comment) {
         Video video = videoRepository.getById(videoId);
-        video.addTag(tag);
-        em.persist(tag);
+
+        video.addComment(comment);
+        comment.setVideo(video);
+
+        em.persist(comment);
     }
 
     @Transactional
-    public void update(Tag tag) {}
+    public void update(Comment comment) {}
 
     @Transactional
     public void delete(Long id) {
         em.remove(getById(id));
     }
 
-    public List<Tag> getAll(Long videoId) {
-        //todo this should be tested, i am not sure if that works
-        return em.createQuery("select t from Tag t where t.tagId in " +
-                "(select t.tagId from Video.tags t where id = :videoId)", Tag.class).getResultList();
+    public List<Comment> getAll(Long videoId) {
+        return em.createQuery("select c from Comment c where c.video.id = :videoId", Comment.class)
+                .setParameter("videoId", videoId).getResultList();
     }
 
-    public Tag getById(Long id){
-        return em.find(Tag.class, id);
+    public Comment getById(Long id){
+        return em.find(Comment.class, id);
     }
 }

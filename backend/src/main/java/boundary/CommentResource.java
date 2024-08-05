@@ -4,21 +4,21 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.Tag;
-import repository.TagRepository;
+import model.Comment;
+import repository.CommentRepository;
 
 import java.util.List;
 
-@Path("/video/{videoId: [0-9]+}/tag")
-public class TagResource {
+@Path("/video/{videoId: [0-9]+}/comment")
+public class CommentResource {
     @Inject
-    TagRepository repository;
+    CommentRepository repository;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createDevice(@PathParam("videoId")Long vid, Tag t){
+    public Response createDevice(@PathParam("videoId") Long vid, Comment c){
         try {
-            repository.create(vid, t);
+            repository.create(vid, c);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -27,14 +27,14 @@ public class TagResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@PathParam("videoId")Long vid){
-        List<Tag> tags;
+    public Response getAll(@PathParam("videoId") Long vid){
+        List<Comment> comments;
         try{
-            tags = repository.getAll(vid);
+            comments = repository.getAll(vid);
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().entity(tags).build();
+        return Response.ok().entity(comments).build();
     }
 
     @DELETE
@@ -51,9 +51,9 @@ public class TagResource {
     @PUT
     @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateDevice(@PathParam("id") Long id, Tag t){
+    public Response updateDevice(@PathParam("id") Long id, Comment c){
         try{
-            repository.update(t);
+            repository.update(c);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

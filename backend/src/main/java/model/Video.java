@@ -3,6 +3,7 @@ package model;
 import enums.VisibilityEnum;
 import jakarta.persistence.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -27,16 +28,28 @@ public class Video {
     private VisibilityEnum visibility;
     private boolean requestVideo;
 
-    public Video(List<Tag> tags, List<Comment> comments, List<Question> questions, String title, String description, boolean save, String color, VisibilityEnum visibility, boolean requestVideo) {
-        this.tags = tags;
-        this.comments = comments;
-        this.questions = questions;
+    public Video(String title, String description, boolean save, String color, VisibilityEnum visibility, boolean requestVideo) {
+        this.tags = new LinkedList<>();
+        this.comments = new LinkedList<>();
+        this.questions = new LinkedList<>();
         this.title = title;
         this.description = description;
         this.save = save;
         this.color = color;
         this.visibility = visibility;
         this.requestVideo = requestVideo;
+    }
+
+    public void addTag(Tag tag) {
+        tags.add(tag);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void addQuestion(Question question) {
+        questions.add(question);
     }
 
     public Video() {

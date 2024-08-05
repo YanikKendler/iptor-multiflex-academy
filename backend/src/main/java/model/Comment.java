@@ -8,7 +8,9 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "videoId")
@@ -17,11 +19,11 @@ public class Comment {
     private String title;
     private String text;
 
-    public Comment(Video video, String title, String text, Long userId) {
+    public Comment(Video video, User user, String title, String text) {
         this.video = video;
+        this.user = user;
         this.title = title;
         this.text = text;
-        this.userId = userId;
     }
 
     public Comment() {
@@ -31,12 +33,12 @@ public class Comment {
         return commentId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Video getVideo() {

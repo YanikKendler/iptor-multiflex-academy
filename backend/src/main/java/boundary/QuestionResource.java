@@ -41,7 +41,7 @@ public class QuestionResource {
 
     @DELETE
     @Path("{id: [0-9]+}")
-    public Response deleteQuestion(@PathParam("videoId") Long vid, @PathParam("id") Long id){
+    public Response deleteQuestion(@PathParam("id") Long id){
         try{
             repository.delete(id);
         } catch (Exception ex) {
@@ -53,7 +53,7 @@ public class QuestionResource {
     @PUT
     @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateQuestion(@PathParam("videoId") Long vid, @PathParam("id") Long id, Question q){
+    public Response updateQuestion(@PathParam("id") Long id, Question q){
         try{
             repository.update(q);
         } catch (Exception ex) {
@@ -65,7 +65,7 @@ public class QuestionResource {
     @POST
     @Path("{id: [0-9]+}/answeroption")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addAnswerOption(@PathParam("videoId") Long vid, @PathParam("id") Long id, AnswerOption a){
+    public Response addAnswerOption(@PathParam("id") Long id, AnswerOption a){
         try{
             repository.addAnswerOption(id, a);
         } catch (Exception ex) {
