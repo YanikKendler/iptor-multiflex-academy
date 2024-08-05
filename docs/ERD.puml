@@ -74,12 +74,6 @@
       * isCorrect: boolean
   }
 
-  entity Tag {
-      * tagId: Long
-      --
-      * name: String
-  }
-
   entity LearningPath {
       * pathId: Long
       --
