@@ -92,8 +92,8 @@
 
   entity ViewProgress {
       * progressId: Long
-      * userId: Long
-      * videoId: Long
+      * user: User
+      * video: Video
       --
       * timestamp: datetime
       * progress: int
@@ -101,7 +101,7 @@
 
   entity Notification {
       * notificationId: Long
-      * userId: Long
+      * user: User
       --
       * text: String
       * timestamp: datetime
