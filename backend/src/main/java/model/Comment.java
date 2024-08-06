@@ -8,6 +8,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
+    @ManyToOne
+    private User userId;
 
     private String text;
 
