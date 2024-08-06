@@ -8,10 +8,6 @@ public class AnswerOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionOptionId;
 
-    @ManyToOne
-    @JoinColumn(name = "questionId")
-    private Question question;
-
     private String name;
 
     private boolean isCorrect;
@@ -38,14 +34,6 @@ public class AnswerOption {
 
     public void setQuestionOptionId(Long questionOptionId) {
         this.questionOptionId = questionOptionId;
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
     }
 
     public boolean isCorrect() {
