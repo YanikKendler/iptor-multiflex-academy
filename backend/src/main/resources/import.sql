@@ -11,14 +11,14 @@ INSERT INTO Question (text, title) VALUES ('What is the key takeaway from the tu
 INSERT INTO Question (text, title) VALUES ('How can I apply this knowledge in practice?', 'Application');
 
 -- Insert demo data for AnswerOption
-INSERT INTO AnswerOption ( name, isCorrect) VALUES ( 'Option 1', true);
-INSERT INTO AnswerOption ( name, isCorrect) VALUES ( 'Option 2', false);
-INSERT INTO AnswerOption ( name, isCorrect) VALUES ( 'Leon hardcarried', false);
-INSERT INTO AnswerOption ( name, isCorrect) VALUES ( 'Leon wird hardcarried', true);
-INSERT INTO AnswerOption ( name, isCorrect) VALUES ( 'Michi und Leon sind zusammen', true);
-INSERT INTO AnswerOption ( name, isCorrect) VALUES ( 'Michi ist single', false);
-INSERT INTO AnswerOption ( name, isCorrect) VALUES ( 'Yanik ist schlecht in Programmieren', false);
-INSERT INTO AnswerOption ( name, isCorrect) VALUES ( 'Leif Erikson war der erste Europäer in Amerika', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Option 1', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Option 2', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Leon hardcarried', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Leon wird hardcarried', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Michi und Leon sind zusammen', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Michi ist single', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Yanik ist schlecht in Programmieren', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Leif Erikson war der erste Europäer in Amerika', true);
 
 -- Insert demo data for question_answer_option
 INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (1, 1);

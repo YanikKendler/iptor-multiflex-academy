@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AnswerOptionModel} from "../model/AnswerOptionModel";
 
 @Component({
@@ -8,6 +8,11 @@ import {AnswerOptionModel} from "../model/AnswerOptionModel";
   templateUrl: './video-quiz-answers.component.html',
   styleUrl: './video-quiz-answers.component.scss'
 })
-export class VideoQuizAnswersComponent {
+export class VideoQuizAnswersComponent{
   @Input() answers: AnswerOptionModel[] | undefined;
+  @Input() questionText: string | undefined;
+
+  selectAnswer(answer: AnswerOptionModel) {
+
+  }
 }
