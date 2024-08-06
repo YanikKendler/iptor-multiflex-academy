@@ -38,7 +38,6 @@ export class ViewVideoComponent implements AfterViewInit, OnInit{
     this.route.params.subscribe(
       (params: Params) => {
         this.service.getVideoById(params['id']).subscribe(video => {
-          console.log(video)
           this.video = video
         })
       }
