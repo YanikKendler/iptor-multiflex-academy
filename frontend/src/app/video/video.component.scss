@@ -6,6 +6,17 @@
   display: block;
   border: .1rem $gray-600 solid;
   width: 20vw;
+  transition: border $transition-time-default;
+  cursor: pointer;
+}
+
+//when the host is hovered
+:host(:hover){
+  border-color: $gray-300;
+
+  .header .actions app-icon-button{
+    opacity: 1;
+  }
 }
 
 .header{
@@ -19,14 +30,25 @@
   h2{
     font-size: 1rem;
   }
+
+  .actions{
+    display: flex;
+    margin-left: auto;
+    transition: opacity $transition-time-short;
+
+    app-icon-button *{
+      color: $gray-300;
+      font-size: 1.2rem;
+    }
+
+    app-icon-button:not(:has(app-bookmark-icon.marked)){
+      opacity: 0;
+    }
+  }
 }
 
 app-play-icon{
   height: 2rem;
-}
-
-app-bookmark-icon{
-  margin-left: auto;
 }
 
 .main{
@@ -45,6 +67,10 @@ app-bookmark-icon{
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+
+  p{
+    white-space: nowrap;
+  }
 }
 
 
