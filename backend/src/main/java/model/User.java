@@ -2,7 +2,9 @@ package model;
 
 import jakarta.persistence.*;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED) // oder InheritanceType.SINGLE_TABLE oder InheritanceType.TABLE_PER_CLASS
+@DiscriminatorColumn(name = "user_type")
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
