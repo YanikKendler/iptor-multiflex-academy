@@ -11,7 +11,7 @@ import repository.ViewProgressRepository;
 
 import java.util.List;
 
-@Path("/video/{videoId: [0-9]+}/viewprogess")
+@Path("/video/{videoId: [0-9]+}/progress/{userId: [0-9]+}")
 public class ViewProgressResource {
     @Inject
     ViewProgressRepository repository;
@@ -38,6 +38,20 @@ public class ViewProgressResource {
         }
         return Response.ok().entity(tags).build();
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/latest")
+    public Response getLatest(@PathParam("videoId")Long vid, @PathParam("userId")Long uid){
+        ViewProgress vp;
+        try{
+            vp = repository.getLatest(vid, uid);
+        }catch (Exception ex){
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().entity(vp).build();
+    }
+
 
     @DELETE
     @Path("{id: [0-9]+}")

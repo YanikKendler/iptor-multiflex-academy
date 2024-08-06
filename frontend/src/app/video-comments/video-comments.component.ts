@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {CommentModel} from "../model/CommentModel";
+import {CommentModel} from "../service/video.service";
 
 @Component({
   selector: 'app-video-comments',

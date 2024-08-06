@@ -4,9 +4,8 @@ import {PlayIconComponent} from "../icons/playicon/play.icon.component"
 import {BookmarkIconComponent} from "../icons/bookmark/bookmark.icon.component"
 import {MatChip} from "@angular/material/chips"
 import {Router} from "@angular/router"
-import {VideoOverview} from "../model/VideoModel"
+import {VideoOverview, ViewProgressModel} from "../service/video.service";
 import {VideoService} from "../service/video.service";
-import {VideoModel} from "../model/VideoModel";
 import {ChipComponent} from "../chip/chip.component"
 import {MatTooltip} from "@angular/material/tooltip"
 import {IconButtonComponent} from "../icon-button/icon-button.component"
@@ -31,6 +30,7 @@ import {RemoveIconComponent} from "../icons/remove-icon/remove-icon.component"
 export class VideoComponent implements OnInit{
   @Input() video: VideoOverview = {} as VideoOverview
   @Input() removable: boolean = true
+  @Input() progress: ViewProgressModel = {} as ViewProgressModel;
 
   toolTipString: string = "Tags"
   @ViewChild("bookmark") bookmark: BookmarkIconComponent | undefined
@@ -56,5 +56,12 @@ export class VideoComponent implements OnInit{
   removeSuggestion(event: MouseEvent) {
     event.stopPropagation();
     console.log("Removed suggestion")
+  }
+
+  getTimeFromSeconds(seconds: number): string {
+    const date = new Date(seconds * 1000);
+    const minutes = date.getUTCMinutes();
+    const secs = date.getUTCSeconds();
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
   }
 }

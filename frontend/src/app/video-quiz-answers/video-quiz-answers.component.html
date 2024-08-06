@@ -2,7 +2,7 @@
 <p>{{this.questionText}}</p>
 
 <main>
-  @for (answer of this.answers; track answer.id) {
+  @for (answer of this.answers; track answer.questionOptionId) {
     <div class="answer" (click)="selectAnswer(answer)">
       <p>{{answer.text}}</p>
     </div>

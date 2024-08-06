@@ -3,6 +3,7 @@ package model;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.time.Duration;
 
 @Entity
 public class ViewProgress {
@@ -13,20 +14,41 @@ public class ViewProgress {
     @ManyToOne
     private Video video;
 
-    private Timestamp timestamp;
-    private int progress;
+    @ManyToOne
+    private User user;
 
-    public ViewProgress(Video video, Timestamp timestamp, int progress) {
+    private int durationSeconds;
+
+    private Timestamp lastViewed;
+
+    public ViewProgress(Video video, User user, int durationSeconds) {
         this.video = video;
-        this.timestamp = timestamp;
-        this.progress = progress;
+        this.user = user;
+        this.durationSeconds = durationSeconds;
+        this.lastViewed = Timestamp.from(java.time.Instant.now());
     }
 
     public ViewProgress() {
     }
 
+    public Timestamp getLastViewed() {
+        return lastViewed;
+    }
+
+    public void setLastViewed(Timestamp lastViewed) {
+        this.lastViewed = lastViewed;
+    }
+
     public Long getProgressId() {
         return progressId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Video getVideo() {
@@ -37,19 +59,11 @@ public class ViewProgress {
         this.video = video;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public int getDurationSeconds() {
+        return durationSeconds;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public int getProgress() {
-        return progress;
-    }
-
-    public void setProgress(int progress) {
-        this.progress = progress;
+    public void setDurationSeconds(int durationSeconds) {
+        this.durationSeconds = durationSeconds;
     }
 }

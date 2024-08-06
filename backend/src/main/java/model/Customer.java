@@ -3,7 +3,7 @@ package model;
 import jakarta.persistence.*;
 
 @Entity
-@DiscriminatorValue("EMPLOYEE")
+@DiscriminatorValue("CUSTOMER")
 public class Customer extends User {
 
     @ManyToOne
