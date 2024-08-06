@@ -1,4 +1,4 @@
--- Insert demo data for Video
+/*-- Insert demo data for Video
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Java Basics', 'Introduction to Java', true, 'self' , 'red');
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Advanced Java', 'Deep dive into Java', true, 'customers' , 'black');
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', false, 'internal' , 'grey');
@@ -78,3 +78,4 @@ INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 1)
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (4, 2);
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (2, 3);
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (3, 4);
+*/
