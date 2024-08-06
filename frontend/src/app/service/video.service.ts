@@ -3,15 +3,10 @@ import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
 import {TagModel} from "./tag.service";
 import {QuestionModel} from "./question.service";
+import {CommentModel} from "./comment.service";
 
 export enum VisibilityEnum {
   self="self",everyone="everyone", customers="customers", internal="internal"
-}
-
-export interface CommentModel {
-  commentId: number;
-  title: string;
-  text: string;
 }
 
 export interface StarRatingModel {
@@ -36,7 +31,6 @@ export interface VideoModel {
   title: string;
   description: string;
   tags: TagModel[];
-  saved: boolean;
   color: string;
   durationSeconds: number;
   comments: CommentModel[];
@@ -68,6 +62,27 @@ export class VideoService {
       })
     )
   }
+
+  createVideo(title: string, description: string, tags: TagModel[], color: string, durationSeconds: number, visibility: VisibilityEnum, coments: CommentModel[], questions: QuestionModel[], starRatings: StarRatingModel[]){
+    this.http.post("http://localhost:8080/api/video/", {
+      title: title,
+      description: description,
+      tags: tags,
+      color: color,
+      durationSeconds: durationSeconds,
+      visibility: visibility,
+      comments: coments,
+      questions: questions,
+      starRatings: starRatings
+    }).subscribe(response =>{
+      console.log('Response from server:', response);
+      // Weitere Verarbeitung der Response hier
+    }, error => {
+      console.error('Error occurred:', error);
+      // Fehlerbehandlung hier
+    });
+  }
+
 
   getVideoById(id: number): Observable<VideoModel>{
     return this.http.get<VideoModel>("http://localhost:8080/api/video/" + id).pipe(
