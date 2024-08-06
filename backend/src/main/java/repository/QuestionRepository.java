@@ -43,9 +43,8 @@ public class QuestionRepository {
 
     @Transactional
     public void addAnswerOption(Long id, AnswerOption option) {
-        option.setQuestion(getById(id));
-        em.persist(option);
         getById(id).addAnswerOption(option);
+        em.persist(option);
     }
 
     @Transactional

@@ -6,12 +6,15 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import model.Video;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import repository.VideoRepository;
 
 import java.util.List;
 
 @Path("video")
 public class VideoResource {
+    private static final Logger log = LoggerFactory.getLogger(VideoResource.class);
     @Inject
     VideoRepository repository;
 
@@ -45,6 +48,7 @@ public class VideoResource {
         Video video;
         try{
             video = repository.getById(id);
+            System.out.println(video.toString());
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
