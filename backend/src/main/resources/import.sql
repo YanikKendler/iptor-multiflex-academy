@@ -1,4 +1,4 @@
-/*-- Insert demo data for Video
+-- Insert demo data for Video
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Java Basics', 'Introduction to Java', true, 'self' , 'red');
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Advanced Java', 'Deep dive into Java', true, 'customers' , 'black');
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', false, 'internal' , 'grey');
@@ -78,4 +78,36 @@ INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 1)
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (4, 2);
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (2, 3);
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (3, 4);
-*/
+
+-- Insert demo data for User
+INSERT INTO app_user (username, email, user_type) VALUES ('john_doe', 'john.doe@example.com', 'CUSTOMER');
+INSERT INTO app_user (username, email, user_type) VALUES ('jane_smith', 'jane.smith@example.com', 'CUSTOMER');
+INSERT INTO app_user (username, email, user_type) VALUES ('alice_jones', 'alice.jones@example.com', 'EMPLOYEE');
+INSERT INTO app_user (username, email, user_type) VALUES ('bob_brown', 'bob.brown@example.com', 'EMPLOYEE');
+INSERT INTO app_user (username, email, user_type) VALUES ('leon steinhuber', 'leon.steinhuber@example.com', 'EMPLOYEE');
+INSERT INTO app_user (username, email, user_type) VALUES ('michael leisch', 'michael.leisch@example.com', 'EMPLOYEE');
+INSERT INTO app_user (username, email, user_type) VALUES ('yanik kendler', 'yanik.kendler@example.com', 'EMPLOYEE');
+
+-- Insert demo data for Customer
+INSERT INTO Customer (userid, companyName, isManager, supervisor_userid) VALUES (1, 'TechCorp', true, null);
+INSERT INTO Customer (userid, companyName, isManager, supervisor_userid) VALUES (2, 'TechCorp', false, 1);
+
+
+-- Insert demo data for Employee
+INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (3 , NULL, NULL, false);
+INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (4 ,3, null, true);
+INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (5 ,3, 4, false);
+INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (6 ,4, 5, false);
+INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (7 ,6, 4, true);
+
+-- Insert demo data for Notification
+INSERT INTO Notification (text, user_userid, datetime) VALUES ('Your video has been approved.', 1, '2023-10-01 10:00:00');
+INSERT INTO Notification (text, user_userid, datetime) VALUES ('New comment on your video.', 2, '2023-10-02 11:30:00');
+INSERT INTO Notification (text, user_userid, datetime) VALUES ('Your subscription is about to expire.', 3, '2023-10-03 14:45:00');
+INSERT INTO Notification (text, user_userid, datetime) VALUES ('You have a new follower.', 4, '2023-10-04 09:20:00');
+
+-- Insert demo data for VideoAssignment
+INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, date) VALUES (1, 1, 1, '2023-10-01');
+INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, date) VALUES (2, 3, 2, '2023-10-02');
+INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, date) VALUES (3, 4, 3, '2023-10-03');
+INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, date) VALUES (4, 4, 4, '2023-10-04');
