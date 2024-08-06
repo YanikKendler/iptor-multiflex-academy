@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 public class Notification {
@@ -19,25 +20,21 @@ public class Notification {
     private String text;
 
     @Column
-    private Timestamp datetime;
+    private final LocalDateTime timestamp;
 
-    public Notification(Long notificationId, User user, String text, Timestamp datetime) {
-        this.notificationId = notificationId;
+    public Notification(User user, String text) {
+        this();
         this.user = user;
         this.text = text;
-        this.datetime = datetime;
     }
 
     public Notification() {
+        this.timestamp = LocalDateTime.now();
     }
 
     //<editor-fold desc="Getter und Setter">
     public Long getNotificationId() {
         return notificationId;
-    }
-
-    public void setNotificationId(Long notificationId) {
-        this.notificationId = notificationId;
     }
 
     public User getUser() {
@@ -56,12 +53,8 @@ public class Notification {
         this.text = text;
     }
 
-    public Timestamp getDatetime() {
-        return datetime;
-    }
-
-    public void setDatetime(Timestamp datetime) {
-        this.datetime = datetime;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
     //</editor-fold>
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Entity
 public class ViewProgress {
@@ -19,24 +20,20 @@ public class ViewProgress {
 
     private int durationSeconds;
 
-    private Timestamp lastViewed;
+    private LocalDateTime timestamp;
 
     public ViewProgress(Video video, User user, int durationSeconds) {
         this.video = video;
         this.user = user;
         this.durationSeconds = durationSeconds;
-        this.lastViewed = Timestamp.from(java.time.Instant.now());
+        this.timestamp = LocalDateTime.now();
     }
 
     public ViewProgress() {
     }
 
-    public Timestamp getLastViewed() {
-        return lastViewed;
-    }
-
-    public void setLastViewed(Timestamp lastViewed) {
-        this.lastViewed = lastViewed;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
     public Long getProgressId() {

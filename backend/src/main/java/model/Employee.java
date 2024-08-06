@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 @DiscriminatorValue("EMPLOYEE")
 public class Employee extends User {
 
-    // keine Ahnung wie man das auf sich selbst verweisen richtig macht!!!!
-
     @ManyToOne
     private Employee supervisor;
 
@@ -16,17 +14,14 @@ public class Employee extends User {
 
     private boolean isAdmin;
 
-    public Employee(Long userId, String username, String email, Employee supervisor, Employee deputySupervisor, boolean isAdmin) {
-        super(userId, username, email);
+    public Employee(String username, String email, Employee supervisor, Employee deputySupervisor, boolean isAdmin) {
+        super(username, email);
         this.supervisor = supervisor;
         this.deputySupervisor = deputySupervisor;
         this.isAdmin = isAdmin;
     }
 
-
-    public Employee() {
-
-    }
+    public Employee() { }
 
     //<editor-fold desc="Getter und Setter">
     public Employee getSupervisor() {

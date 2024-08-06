@@ -1,8 +1,6 @@
 package model;
 
 import jakarta.persistence.*;
-import jakarta.ws.rs.Consumes;
-import org.apache.derby.client.am.DateTime;
 
 import java.time.LocalDateTime;
 
@@ -23,17 +21,17 @@ public class VideoAssignment {
     private Video video;
 
     @Column
-    private LocalDateTime date;
+    private final LocalDateTime timestamp;
 
-    public VideoAssignment(Long assignmentId, User assignedTo, User assignedBy, Video video, LocalDateTime date) {
-        this.assignmentId = assignmentId;
+    public VideoAssignment(User assignedTo, User assignedBy, Video video) {
+        this();
         this.assignedTo = assignedTo;
         this.assignedBy = assignedBy;
         this.video = video;
-        this.date = date;
     }
 
     public VideoAssignment() {
+        this.timestamp = LocalDateTime.now();
     }
 
     //<editor-fold desc="Getter und Setter">
@@ -69,12 +67,8 @@ public class VideoAssignment {
         this.video = video;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
     //</editor-fold>
 }

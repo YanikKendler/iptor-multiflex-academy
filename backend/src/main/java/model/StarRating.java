@@ -1,9 +1,8 @@
 package model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class StarRating {
@@ -11,21 +10,26 @@ public class StarRating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ratingId;
 
+    @ManyToOne
+    private
+    User user;
+
     private int rating;
 
-    public StarRating(int rating) {
+    private final LocalDateTime timestamp;
+
+    public StarRating(User user, int rating) {
+        this();
+        this.user = user;
         this.rating = rating;
     }
 
     public StarRating() {
+        this.timestamp = LocalDateTime.now();
     }
 
     public Long getRatingId() {
         return ratingId;
-    }
-
-    public void setRatingId(Long ratingId) {
-        this.ratingId = ratingId;
     }
 
     public int getRating() {
@@ -34,5 +38,13 @@ public class StarRating {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
