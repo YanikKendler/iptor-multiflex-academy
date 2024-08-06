@@ -1,8 +1,8 @@
 -- Insert demo data for Video
-INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Java Basics', 'Introduction to Java', true, 'self' , 'red');
-INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Advanced Java', 'Deep dive into Java', true, 'customers' , 'pink');
-INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', false, 'internal' , 'orange');
-INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Hibernate ORM', 'Understanding Hibernate ORM', true, 'everyone' , 'blue');
+INSERT INTO Video (title, description, saved, visibility, color, durationSeconds) VALUES ('Java Basics', 'Introduction to Java', true, 'self' , 'red', 100);
+INSERT INTO Video (title, description, saved, visibility, color, durationSeconds) VALUES ('Advanced Java', 'Deep dive into Java', true, 'customers' , 'pink', 200);
+INSERT INTO Video (title, description, saved, visibility, color, durationSeconds) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', false, 'internal' , 'orange', 600);
+INSERT INTO Video (title, description, saved, visibility, color, durationSeconds) VALUES ('Hibernate ORM', 'Understanding Hibernate ORM', true, 'everyone' , 'blue', 300);
 
 -- Insert demo data for Question
 INSERT INTO Question (text, title) VALUES ('What is the main topic of the video?', 'Main Topic');
@@ -29,12 +29,6 @@ INSERT INTO question_answeroption (question_questionid, answeroptions_questionop
 INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (3, 6);
 INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (4, 7);
 INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (4, 8);
-
--- Insert demo data for ViewProgress
-INSERT INTO ViewProgress (video_videoid, timestamp, progress) VALUES (1, '2023-10-01 10:00:00', 50);
-INSERT INTO ViewProgress (video_videoid, timestamp, progress) VALUES (1, '2023-10-02 11:30:00', 100);
-INSERT INTO ViewProgress (video_videoid, timestamp, progress) VALUES (2, '2023-10-03 14:45:00', 75);
-INSERT INTO ViewProgress (video_videoid, timestamp, progress) VALUES (2, '2023-10-04 09:20:00', 25);
 
 -- Insert demo data for Comment
 INSERT INTO Comment (text) VALUES ('Great video!');
@@ -113,3 +107,9 @@ INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid
 INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, date) VALUES (2, 3, 2, '2023-10-02');
 INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, date) VALUES (3, 4, 3, '2023-10-03');
 INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, date) VALUES (4, 4, 4, '2023-10-04');
+
+-- Insert demo data for ViewProgress
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, lastViewed) VALUES (1, 1, 50, '2023-10-01 10:00:00');
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, lastViewed) VALUES (1, 1, 75, '2023-10-01 10:30:00');
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, lastViewed) VALUES (2, 2, 200, '2023-10-02 11:00:00');
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, lastViewed) VALUES (2, 3, 300, '2023-10-02 11:30:00');
