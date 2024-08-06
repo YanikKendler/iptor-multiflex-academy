@@ -32,7 +32,7 @@ public class Video {
     @Enumerated(EnumType.STRING)
     private VisibilityEnum visibility;
 
-    public Video(String title, String description, boolean saved, String color, VisibilityEnum visibility ) {
+    public Video(String title, String description, boolean saved, String color, VisibilityEnum visibility) {
         this.tags = new LinkedList<>();
         this.comments = new LinkedList<>();
         this.questions = new LinkedList<>();
