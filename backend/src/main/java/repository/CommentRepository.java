@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import model.Comment;
 import model.Tag;
+import model.User;
 import model.Video;
 
 import java.util.List;

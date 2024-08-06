@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, inject, Input, OnInit, ViewChild} from '@angular/core';
 import {NgOptimizedImage} from "@angular/common"
 import {PlayIconComponent} from "../icons/playicon/play.icon.component"
 import {BookmarkIconComponent} from "../icons/bookmark/bookmark.icon.component"
@@ -7,6 +7,9 @@ import {Router} from "@angular/router"
 import {VideoOverview, ViewProgressModel} from "../service/video.service";
 import {VideoService} from "../service/video.service";
 import {ChipComponent} from "../chip/chip.component"
+import {MatTooltip} from "@angular/material/tooltip"
+import {IconButtonComponent} from "../icon-button/icon-button.component"
+import {RemoveIconComponent} from "../icons/remove-icon/remove-icon.component"
 
 @Component({
   selector: 'app-video',
@@ -16,22 +19,46 @@ import {ChipComponent} from "../chip/chip.component"
     PlayIconComponent,
     BookmarkIconComponent,
     MatChip,
-    ChipComponent
+    ChipComponent,
+    MatTooltip,
+    IconButtonComponent,
+    RemoveIconComponent
   ],
   templateUrl: './video.component.html',
-  styleUrl: './video.component.scss'
+  styleUrl: './video.component.scss',
 })
-export class VideoComponent {
+export class VideoComponent implements OnInit{
   @Input() video: VideoOverview = {} as VideoOverview
-  @Input() progress: ViewProgressModel = {} as ViewProgressModel;
+  @Input() removable: boolean = true
+  @Input() progress: ViewProgressModel | undefined;
 
-  constructor(private _router: Router) { }
+  toolTipString: string = "Tags"
+  @ViewChild("bookmark") bookmark: BookmarkIconComponent | undefined
 
+  constructor(private _router: Router) {
+  }
+
+  @HostListener('click', ['$event'])
   openVideo(){
     this._router.navigate(['video/' + this.video?.videoId])
   }
 
-  getTimeFromSeconds(seconds: number): string {
+  ngOnInit(): void {
+    this.toolTipString = this.video.tags?.map(tag => tag.name).join(", ")
+  }
+
+  addToBookmarks(event: MouseEvent){
+    event.stopPropagation();
+    this.bookmark?.toggleMarked()
+    console.log("Added to bookmarks")
+  }
+
+  removeSuggestion(event: MouseEvent) {
+    event.stopPropagation();
+    console.log("Removed suggestion")
+  }
+
+  calculateTimeFromSeconds(seconds: number): string {
     const date = new Date(seconds * 1000);
     const minutes = date.getUTCMinutes();
     const secs = date.getUTCSeconds();

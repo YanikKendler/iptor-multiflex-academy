@@ -2,9 +2,11 @@ package model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "app_user")
-@Inheritance(strategy = InheritanceType.JOINED) // oder InheritanceType.SINGLE_TABLE oder InheritanceType.TABLE_PER_CLASS
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "user_type")
 public abstract class User {
     @Id
@@ -17,16 +19,15 @@ public abstract class User {
     @Column(nullable = false)
     private String email;
 
+    @OneToMany
+    private List<Video> savedVideos;
 
-    public User(Long userId, String username, String email) {
-        this.userId = userId;
+    public User(String username, String email) {
         this.username = username;
         this.email = email;
     }
 
-    public User() {
-
-    }
+    public User() { }
 
     //<editor-fold desc="Getter und Setter">
     public Long getUserId() {
@@ -51,6 +52,14 @@ public abstract class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Video> getSavedVideos() {
+        return savedVideos;
+    }
+
+    public void setSavedVideos(List<Video> saved) {
+        this.savedVideos = saved;
     }
     //</editor-fold>
 }

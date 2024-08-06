@@ -12,7 +12,7 @@ public class AnswerOption {
 
     private boolean isCorrect;
 
-    public AnswerOption(String text, boolean isCorrect, Question question) {
+    public AnswerOption(String text, boolean isCorrect) {
         this.text = text;
         this.isCorrect = isCorrect;
     }

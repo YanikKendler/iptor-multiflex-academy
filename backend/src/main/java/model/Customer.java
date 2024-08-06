@@ -16,8 +16,8 @@ public class Customer extends User {
     private boolean isManager;
 
 
-    public Customer(Long userId, String username, String email, Customer supervisor, String companyName, boolean isManager) {
-        super(userId, username, email);
+    public Customer(String username, String email, Customer supervisor, String companyName, boolean isManager) {
+        super(username, email);
         this.supervisor = supervisor;
         this.companyName = companyName;
         this.isManager = isManager;

@@ -31,7 +31,7 @@ public class VideoRepository {
         List<Video> videos = em.createQuery("select v from Video v", Video.class).getResultList();
 
         return videos.stream()
-                .map(v -> new VideoOverviewDTO(v.getVideoId(), v.getTitle(), v.getDescription(), v.getTags(), v.isSaved(), v.getColor(), v.getDurationSeconds()))
+                .map(v -> new VideoOverviewDTO(v.getVideoId(), v.getTitle(), v.getDescription(), v.getTags(), v.getColor(), v.getDurationSeconds()))
                 .toList();
     }
 

@@ -1,18 +1,35 @@
-<div class="header" (click)="openVideo()">
+<div class="header">
   <app-play-icon color="{{video.color}}"></app-play-icon>
   <h2>{{ video.title }}</h2>
-  <app-bookmark-icon></app-bookmark-icon>
+  <div class="actions">
+    @if(removable){
+      <app-icon-button (click)="removeSuggestion($event)">
+        <app-remove-icon></app-remove-icon>
+      </app-icon-button>
+    }
+    <app-icon-button (click)="addToBookmarks($event)">
+      <app-bookmark-icon #bookmark></app-bookmark-icon>
+    </app-icon-button>
+  </div>
 </div>
 
 <div class="main">
   <p>{{video.description}}</p>
 
   <div class="bottom">
-    <div class="tags">
+    <div class="tags"
+         matTooltip="{{ toolTipString }}"
+         matTooltipShowDelay="500"
+    >
       @for (tag of video.tags; track tag) {
         <app-chip>{{ tag.name }}</app-chip>
       }
     </div>
-    <p>{{getTimeFromSeconds(progress.durationSeconds || 0)}} von {{getTimeFromSeconds(video.durationSeconds)}}</p>
+    <p>
+      @if(progress){
+      {{calculateTimeFromSeconds(progress?.durationSeconds || 0)}} von
+      }
+      {{calculateTimeFromSeconds(video.durationSeconds)}}
+    </p>
   </div>
 </div>

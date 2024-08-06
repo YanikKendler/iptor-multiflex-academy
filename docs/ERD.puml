@@ -25,6 +25,7 @@
 		* video: Video
 		--
 		* rating: int
+    * timestamp: LocalDateTime
 	}
 
   entity User {
@@ -65,6 +66,7 @@
       * video: Video
       --
       * text: String
+      * timestamp: LocalDateTime
   }
 
   entity AnswerOption {
@@ -87,7 +89,7 @@
       * assignedBy: User
       * video: Video
       --
-      * date: LocalDate
+      * timestamp: LocalDateTime
   }
 
   entity ViewProgress {
@@ -104,7 +106,7 @@
       * user: User
       --
       * text: String
-      * timestamp: LocalDate
+      * timestamp: LocalDateTime
   }
 
 /'   entity Request {

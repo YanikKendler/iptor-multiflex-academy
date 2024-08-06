@@ -26,16 +26,16 @@ public class Question {
     public Question() {
     }
 
+    public Long getQuestionId() {
+        return questionId;
+    }
+
     public void addAnswerOption(AnswerOption answerOption) {
         answerOptions.add(answerOption);
     }
 
     public void removeAnswerOption(AnswerOption answerOption) {
         answerOptions.remove(answerOption);
-    }
-
-    public Long getQuestionId() {
-        return questionId;
     }
 
     public List<AnswerOption> getAnswerOptions() {

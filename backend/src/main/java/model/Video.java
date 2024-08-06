@@ -26,22 +26,19 @@ public class Video {
 
     private String title;
     private String description;
-    private boolean saved;
     private String color;
-
     private int durationSeconds;
 
     @Enumerated(EnumType.STRING)
     private VisibilityEnum visibility;
 
-    public Video(String title, String description, boolean saved, String color, VisibilityEnum visibility, int durationSeconds) {
+    public Video(String title, String description, String color, VisibilityEnum visibility, int durationSeconds) {
         this.tags = new LinkedList<>();
         this.comments = new LinkedList<>();
         this.questions = new LinkedList<>();
         this.starRatings = new LinkedList<>();
         this.title = title;
         this.description = description;
-        this.saved = saved;
         this.color = color;
         this.visibility = visibility;
         this.durationSeconds = durationSeconds;
@@ -76,7 +73,6 @@ public class Video {
                 ", starRatings=" + starRatings +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", saved=" + saved +
                 ", color='" + color + '\'' +
                 ", visibility=" + visibility +
                 '}';
@@ -132,14 +128,6 @@ public class Video {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isSaved() {
-        return saved;
-    }
-
-    public void setSaved(boolean save) {
-        this.saved = save;
     }
 
     public String getColor() {
