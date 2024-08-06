@@ -1,8 +1,8 @@
 -- Insert demo data for Video
-INSERT INTO Video (title, description, saved, visibility, color, durationSeconds) VALUES ('Java Basics', 'Introduction to Java', true, 'self' , 'red', 100);
-INSERT INTO Video (title, description, saved, visibility, color, durationSeconds) VALUES ('Advanced Java', 'Deep dive into Java', true, 'customers' , 'pink', 200);
-INSERT INTO Video (title, description, saved, visibility, color, durationSeconds) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', false, 'internal' , 'orange', 600);
-INSERT INTO Video (title, description, saved, visibility, color, durationSeconds) VALUES ('Hibernate ORM', 'Understanding Hibernate ORM', true, 'everyone' , 'blue', 300);
+INSERT INTO Video (title, description, visibility, color, durationSeconds) VALUES ('Java Basics', 'Introduction to Java', 'self' , 'red', 100);
+INSERT INTO Video (title, description, visibility, color, durationSeconds) VALUES ('Advanced Java', 'Deep dive into Java', 'customers' , 'pink', 200);
+INSERT INTO Video (title, description, visibility, color, durationSeconds) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', 'internal' , 'orange', 600);
+INSERT INTO Video (title, description, visibility, color, durationSeconds) VALUES ('Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , 'blue', 300);
 
 -- Insert demo data for Question
 INSERT INTO Question (text, title) VALUES ('What is the main topic of the video?', 'Main Topic');
@@ -97,19 +97,19 @@ INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin
 INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (7 ,6, 4, true);
 
 -- Insert demo data for Notification
-INSERT INTO Notification (text, user_userid, datetime) VALUES ('Your video has been approved.', 1, '2023-10-01 10:00:00');
-INSERT INTO Notification (text, user_userid, datetime) VALUES ('New comment on your video.', 2, '2023-10-02 11:30:00');
-INSERT INTO Notification (text, user_userid, datetime) VALUES ('Your subscription is about to expire.', 3, '2023-10-03 14:45:00');
-INSERT INTO Notification (text, user_userid, datetime) VALUES ('You have a new follower.', 4, '2023-10-04 09:20:00');
+INSERT INTO Notification (text, user_userid, timestamp) VALUES ('Your video has been approved.', 1, '2023-10-01 10:00:00');
+INSERT INTO Notification (text, user_userid, timestamp) VALUES ('New comment on your video.', 2, '2023-10-02 11:30:00');
+INSERT INTO Notification (text, user_userid, timestamp) VALUES ('Your subscription is about to expire.', 3, '2023-10-03 14:45:00');
+INSERT INTO Notification (text, user_userid, timestamp) VALUES ('You have a new follower.', 4, '2023-10-04 09:20:00');
 
 -- Insert demo data for VideoAssignment
-INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, date) VALUES (1, 1, 1, '2023-10-01');
-INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, date) VALUES (2, 3, 2, '2023-10-02');
-INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, date) VALUES (3, 4, 3, '2023-10-03');
-INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, date) VALUES (4, 4, 4, '2023-10-04');
+INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, timestamp) VALUES (1, 1, 1, '2023-10-01');
+INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, timestamp) VALUES (2, 3, 2, '2023-10-02');
+INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, timestamp) VALUES (3, 4, 3, '2023-10-03');
+INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, timestamp) VALUES (4, 4, 4, '2023-10-04');
 
 -- Insert demo data for ViewProgress
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, lastViewed) VALUES (1, 1, 50, '2023-10-01 10:00:00');
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, lastViewed) VALUES (1, 1, 75, '2023-10-01 10:30:00');
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, lastViewed) VALUES (2, 2, 200, '2023-10-02 11:00:00');
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, lastViewed) VALUES (2, 3, 300, '2023-10-02 11:30:00');
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (1, 1, 50, '2023-10-01 10:00:00');
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (1, 1, 75, '2023-10-01 10:30:00');
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (2, 2, 200, '2023-10-02 11:00:00');
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (2, 3, 300, '2023-10-02 11:30:00');

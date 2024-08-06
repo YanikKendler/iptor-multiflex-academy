@@ -36,6 +36,10 @@ public class ViewProgress {
         return timestamp;
     }
 
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public Long getProgressId() {
         return progressId;
     }
