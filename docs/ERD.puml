@@ -10,6 +10,7 @@
     * description: String
     * color: String
     * visibility: VisibilityEnum
+    * durationSeconds: int
 	}
 
 	entity Tag {
@@ -87,7 +88,7 @@
       * assignedBy: User
       * video: Video
       --
-      * date: datetime
+      * date: LocalDate
   }
 
   entity ViewProgress {
@@ -95,8 +96,8 @@
       * user: User
       * video: Video
       --
-      * timestamp: datetime
-      * progress: int
+      * timestamp: int
+      * progressSeconds: int
   }
 
   entity Notification {
@@ -104,7 +105,7 @@
       * user: User
       --
       * text: String
-      * timestamp: datetime
+      * timestamp: LocalDate
   }
 
 /'   entity Request {
@@ -119,14 +120,14 @@
   User <|-up- Customer
   User <|-up- Employee
   User ||--o{ VideoAssignment
-  VideoAssignment ||--o{ Video
+  VideoAssignment }o--|| Video
 
   Employee ||--o{ Employee : supervises
   User ||--o{ Comment
   Video ||--o{ Comment
   Video ||--o{ Question
   Question ||--o{ AnswerOption
-  Video ||--o{ Tag
+  Video }o--o{ Tag
   User ||--o{ ViewProgress
   Video ||--o{ ViewProgress
   User ||--o{ Notification

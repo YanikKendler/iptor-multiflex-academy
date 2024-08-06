@@ -1,8 +1,8 @@
 -- Insert demo data for Video
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Java Basics', 'Introduction to Java', true, 'self' , 'red');
-INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Advanced Java', 'Deep dive into Java', true, 'customers' , 'black');
-INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', false, 'internal' , 'grey');
-INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Hibernate ORM', 'Understanding Hibernate ORM', true, 'everyone' , 'white');
+INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Advanced Java', 'Deep dive into Java', true, 'customers' , 'pink');
+INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', false, 'internal' , 'orange');
+INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Hibernate ORM', 'Understanding Hibernate ORM', true, 'everyone' , 'blue');
 
 -- Insert demo data for Question
 INSERT INTO Question (text, title) VALUES ('What is the main topic of the video?', 'Main Topic');
@@ -62,6 +62,8 @@ INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (1, 1);
 INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (4, 2);
 INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (2, 3);
 INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (3, 4);
+INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (3, 2);
+INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (3, 1);
 
 -- Insert demo data for video_star_rating
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 1);

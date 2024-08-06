@@ -12,7 +12,7 @@ public class Video {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long videoId;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Tag> tags;
 
     @OneToMany(fetch = FetchType.EAGER)

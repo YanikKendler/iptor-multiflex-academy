@@ -10,8 +10,9 @@
   <div class="bottom">
     <div class="tags">
       @for (tag of video.tags; track tag) {
-        <mat-chip>tag</mat-chip>
+        <app-chip>{{ tag.name }}</app-chip>
       }
     </div>
+    <p>12:04</p>
   </div>
 </div>

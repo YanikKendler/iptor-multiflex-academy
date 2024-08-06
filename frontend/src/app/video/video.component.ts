@@ -7,6 +7,7 @@ import {Router} from "@angular/router"
 import {VideoOverview} from "../model/VideoModel"
 import {VideoService} from "../service/video.service";
 import {VideoModel} from "../model/VideoModel";
+import {ChipComponent} from "../chip/chip.component"
 
 @Component({
   selector: 'app-video',
@@ -15,7 +16,8 @@ import {VideoModel} from "../model/VideoModel";
     NgOptimizedImage,
     PlayIconComponent,
     BookmarkIconComponent,
-    MatChip
+    MatChip,
+    ChipComponent
   ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss'
