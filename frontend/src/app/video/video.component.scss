@@ -47,6 +47,12 @@
   }
 }
 
+.progress-bar{
+  height: .3rem;
+  background-color: $gray-500;
+  width: 100%;
+}
+
 app-play-icon{
   height: 2rem;
 }
