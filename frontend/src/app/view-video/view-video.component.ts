@@ -1,5 +1,4 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
-import {AfterViewInit, ElementRef, ViewChild} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, ElementRef, inject, Input, OnInit, ViewChild} from '@angular/core';
 import {NavigationComponent} from "../navigation/navigation.component"
 import {StarIconComponent} from "../icons/star/star.icon.component"
 import {BookmarkIconComponent} from "../icons/bookmark/bookmark.icon.component"
@@ -31,7 +30,9 @@ export class ViewVideoComponent implements AfterViewInit, OnInit{
   @ViewChild('tabSelector') tabSelector: ElementRef | undefined;
   currentTab : "comments" | "quiz" = "comments"
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) {
+
+  }
 
   ngOnInit() {
     this.route.params.subscribe(
@@ -42,6 +43,7 @@ export class ViewVideoComponent implements AfterViewInit, OnInit{
         })
       }
     )
+
   }
 
   selectTab(tab: "comments" | "quiz"){
@@ -52,6 +54,9 @@ export class ViewVideoComponent implements AfterViewInit, OnInit{
     } else {
       tabElement = this.tabSelector?.nativeElement.querySelector('.quiz') as HTMLElement
     }
+    let marker = this.tabSelector?.nativeElement.querySelector('.marker') as HTMLElement
+    marker.style.width = tabElement.clientWidth + "px"
+    marker.style.left = tabElement.offsetLeft + "px"
     this.markerPos = {width: tabElement.clientWidth, left: tabElement.offsetLeft}
   }
 

@@ -1,1 +1,10 @@
-<p>video-quiz-answers works!</p>
+<h2>Frage 01</h2>
+<p>{{this.questionText}}</p>
+
+<main>
+  @for (answer of this.answers; track answer.id) {
+    <div class="answer" (click)="selectAnswer(answer)">
+      <p>{{answer.text}}</p>
+    </div>
+  }
+</main>
