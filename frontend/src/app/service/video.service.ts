@@ -48,7 +48,6 @@ export interface VideoOverview {
   color: string;
 }
 
-
 @Injectable({
   providedIn: 'root'
 })

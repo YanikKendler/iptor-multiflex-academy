@@ -5,6 +5,8 @@ import {BookmarkIconComponent} from "../icons/bookmark/bookmark.icon.component"
 import {MatChip} from "@angular/material/chips"
 import {Router} from "@angular/router"
 import {VideoOverview} from "../service/video.service";
+import {VideoService} from "../service/video.service";
+import {ChipComponent} from "../chip/chip.component"
 
 @Component({
   selector: 'app-video',
@@ -13,7 +15,8 @@ import {VideoOverview} from "../service/video.service";
     NgOptimizedImage,
     PlayIconComponent,
     BookmarkIconComponent,
-    MatChip
+    MatChip,
+    ChipComponent
   ],
   templateUrl: './video.component.html',
   styleUrl: './video.component.scss'
