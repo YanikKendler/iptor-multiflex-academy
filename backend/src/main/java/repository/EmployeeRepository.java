@@ -6,6 +6,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import model.Employee;
 
+import java.util.List;
+
 @ApplicationScoped
 public class EmployeeRepository {
 
@@ -27,6 +29,9 @@ public class EmployeeRepository {
         em.remove(getById(id));
     }
 
+    public List<Employee> getAll() {
+        return em.createQuery("select e from Employee e", Employee.class).getResultList();
+    }
 
     public Employee getById(Long id){
         return em.find(Employee.class, id);
