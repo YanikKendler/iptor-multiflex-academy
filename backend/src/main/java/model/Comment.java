@@ -8,12 +8,10 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
-    private String title;
 
     private String text;
 
     public Comment(String title, String text) {
-        this.title = title;
         this.text = text;
     }
 
@@ -22,14 +20,6 @@ public class Comment {
 
     public Long getCommentId() {
         return commentId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getText() {

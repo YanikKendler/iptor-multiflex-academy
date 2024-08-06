@@ -4,20 +4,21 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.Comment;
-import repository.CommentRepository;
+import model.Employee;
+import repository.EmployeeRepository;
+
 import java.util.List;
 
-@Path("/video/{videoId: [0-9]+}/comment")
-public class CommentResource {
+@Path("employee")
+public class EmployeeRessource {
     @Inject
-    CommentRepository repository;
+    EmployeeRepository repository;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createComment(@PathParam("videoId") Long vid, Comment c){
+    public Response createEmployee(Employee e){
         try {
-            repository.create(vid, c);
+            repository.create(e);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -26,19 +27,31 @@ public class CommentResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@PathParam("videoId") Long vid){
-        List<Comment> comments;
+    public Response getAll(){
+        List<Employee> employees;
         try{
-            comments = repository.getAll(vid);
+            employees = repository.getAll();
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().entity(comments).build();
+        return Response.ok().entity(employees).build();
+    }
+
+    @GET
+    @Path("{id: [0-9]+}")
+    public Response getEmployee(@PathParam("id") Long id){
+        Employee employee;
+        try{
+            employee = repository.getById(id);
+        }catch (Exception ex){
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().entity(employee).build();
     }
 
     @DELETE
     @Path("{id: [0-9]+}")
-    public Response deleteComment(@PathParam("id") Long id){
+    public Response deleteEmployee(@PathParam("id") Long id){
         try{
             repository.delete(id);
         } catch (Exception ex) {
@@ -50,12 +63,14 @@ public class CommentResource {
     @PUT
     @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateComment(@PathParam("id") Long id, Comment c){
+    public Response updateEmployee(@PathParam("id") Long id, Employee e){
         try{
-            repository.update(c);
+            repository.update(e);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().build();
     }
+
+
 }

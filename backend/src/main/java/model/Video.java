@@ -28,6 +28,8 @@ public class Video {
     private String description;
     private boolean saved;
     private String color;
+
+    @Enumerated(EnumType.STRING)
     private VisibilityEnum visibility;
 
     public Video(String title, String description, boolean saved, String color, VisibilityEnum visibility) {
