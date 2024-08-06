@@ -65,7 +65,6 @@
       * video: Video
       --
       * text: String
-	  	* title: String
   }
 
   entity AnswerOption {
