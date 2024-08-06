@@ -1,19 +1,15 @@
-<app-navigation></app-navigation>
+<mat-form-field appearance="outline">
+  <mat-label>Vorname</mat-label>
+  <input matInput placeholder="">
+</mat-form-field>
 
-<div class="sidebar">
-  <fa-icon [icon]="faGear"></fa-icon>
-  <fa-icon [icon]="faCirclePlay"></fa-icon>
-  <fa-icon [icon]="faUsersGear"></fa-icon>
-</div>
+<mat-form-field appearance="outline">
+  <mat-label>Nachname</mat-label>
+  <input matInput placeholder="">
+</mat-form-field>
 
-<div>
-  <p>Vorname</p>
-  <input type="text">
-</div>
-
-<div>
-  <p>Nachname</p>
-  <input type="text">
-</div>
-
-
+<section>
+  <div class="example-button-row">
+    <button mat-flat-button>Passwort ändern</button>
+  </div>
+</section>
