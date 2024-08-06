@@ -1,15 +1,15 @@
 <div class="header" (click)="openVideo()">
-  <app-play-icon color="{{video?.color}}"></app-play-icon>
-  <h2>{{ video?.title }}</h2>
+  <app-play-icon color="{{video.color}}"></app-play-icon>
+  <h2>{{ video.title }}</h2>
   <app-bookmark-icon></app-bookmark-icon>
 </div>
 
 <div class="main">
-  <p>{{video?.description}}</p>
+  <p>{{video.description}}</p>
 
   <div class="bottom">
     <div class="tags">
-      @for (tag of video?.tags; track tag) {
+      @for (tag of video.tags; track tag) {
         <mat-chip>tag</mat-chip>
       }
     </div>
