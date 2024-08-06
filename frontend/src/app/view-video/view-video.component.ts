@@ -5,6 +5,8 @@ import {BookmarkIconComponent} from "../icons/bookmark/bookmark.icon.component"
 import {VideoService} from "../service/video.service";
 import {VideoModel} from "../model/VideoModel";
 import {ActivatedRoute, Params, Router} from "@angular/router";
+import {VideoCommentsComponent} from "../video-comments/video-comments.component";
+import {VideoQuizComponent} from "../video-quiz/video-quiz.component";
 
 @Component({
   selector: 'app-view-video',
@@ -12,7 +14,9 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
   imports: [
     NavigationComponent,
     StarIconComponent,
-    BookmarkIconComponent
+    BookmarkIconComponent,
+    VideoCommentsComponent,
+    VideoQuizComponent
   ],
   templateUrl: './view-video.component.html',
   styleUrl: './view-video.component.scss'
@@ -24,6 +28,7 @@ export class ViewVideoComponent implements AfterViewInit, OnInit{
   markerPos = {width: 0, left: 0}
 
   @ViewChild('tabSelector') tabSelector: ElementRef | undefined;
+  currentTab : "comments" | "quiz" = "comments"
 
   constructor(private route: ActivatedRoute) {
 
@@ -32,8 +37,6 @@ export class ViewVideoComponent implements AfterViewInit, OnInit{
   ngOnInit() {
     this.route.params.subscribe(
       (params: Params) => {
-        console.log(params)
-
         this.service.getVideoById(params['id']).subscribe(video => {
           console.log(video)
           this.video = video
@@ -44,6 +47,7 @@ export class ViewVideoComponent implements AfterViewInit, OnInit{
   }
 
   selectTab(tab: "comments" | "quiz"){
+    this.currentTab = tab
     let tabElement: HTMLElement
     if(tab === "comments"){
       tabElement = this.tabSelector?.nativeElement.querySelector('.comments') as HTMLElement

@@ -8,16 +8,12 @@ public class AnswerOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionOptionId;
 
-    @ManyToOne
-    @JoinColumn(name = "questionId")
-    private Question question;
-
-    private String name;
+    private String text;
 
     private boolean isCorrect;
 
-    public AnswerOption(String name, boolean isCorrect, Question question) {
-        this.name = name;
+    public AnswerOption(String text, boolean isCorrect, Question question) {
+        this.text = text;
         this.isCorrect = isCorrect;
     }
 
@@ -28,24 +24,16 @@ public class AnswerOption {
         return questionOptionId;
     }
 
-    public String getName() {
-        return name;
+    public String getText() {
+        return text;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public void setQuestionOptionId(Long questionOptionId) {
         this.questionOptionId = questionOptionId;
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
     }
 
     public boolean isCorrect() {

@@ -1,28 +1,24 @@
 package boundary;
 
-import dtos.VideoOverviewDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.Video;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import repository.VideoRepository;
+import model.VideoAssignment;
+import repository.VideoAssignmentRepository;
 
 import java.util.List;
 
-@Path("video")
-public class VideoResource {
-    private static final Logger log = LoggerFactory.getLogger(VideoResource.class);
+@Path("videoAssignment")
+public class VideoAssignmentResource {
     @Inject
-    VideoRepository repository;
+    VideoAssignmentRepository videoAssignmentRepository;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createVideo(Video v){
+    public Response createVideoAssignment(VideoAssignment videoAssignment){
         try {
-            repository.create(v);
+            videoAssignmentRepository.create(videoAssignment);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -31,35 +27,33 @@ public class VideoResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(){
-        List<VideoOverviewDTO> videos;
-        try{
-            videos = repository.getAll();
-            System.out.println(videos);
-        }catch (Exception ex){
+    public Response getAll() {
+        List<VideoAssignment> videoAssignments;
+        try {
+            videoAssignments = videoAssignmentRepository.getAll();
+        } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().entity(videos).build();
+        return Response.ok().entity(videoAssignments).build();
     }
 
     @GET
     @Path("{id: [0-9]+}")
-    public Response getVideo(@PathParam("id") Long id){
-        Video video;
+    public Response getVideoAssignment(@PathParam("id") Long id){
+        VideoAssignment videoAssignment;
         try{
-            video = repository.getById(id);
-            System.out.println(video.toString());
+            videoAssignment = videoAssignmentRepository.getById(id);
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().entity(video).build();
+        return Response.ok().entity(videoAssignment).build();
     }
 
     @DELETE
     @Path("{id: [0-9]+}")
-    public Response deleteVideo(@PathParam("id") Long id){
+    public Response deleteVideoAssignment(@PathParam("id") Long id){
         try{
-            repository.delete(id);
+            videoAssignmentRepository.delete(id);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -69,12 +63,13 @@ public class VideoResource {
     @PUT
     @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateVideo(@PathParam("id") Long id, Video v){
+    public Response updateVideoAssignment(@PathParam("id") Long id, VideoAssignment videoAssignment){
         try{
-            repository.update(v);
+            videoAssignmentRepository.update(videoAssignment);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().build();
     }
+
 }

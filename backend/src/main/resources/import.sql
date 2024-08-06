@@ -1,4 +1,4 @@
--- Insert demo data for Video
+/*-- Insert demo data for Video
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Java Basics', 'Introduction to Java', true, 'self' , 'red');
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Advanced Java', 'Deep dive into Java', true, 'customers' , 'pink');
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', false, 'internal' , 'orange');
@@ -11,14 +11,24 @@ INSERT INTO Question (text, title) VALUES ('What is the key takeaway from the tu
 INSERT INTO Question (text, title) VALUES ('How can I apply this knowledge in practice?', 'Application');
 
 -- Insert demo data for AnswerOption
-INSERT INTO AnswerOption ( questionId, name, isCorrect) VALUES ( 1, 'Option 1', true);
-INSERT INTO AnswerOption ( questionId, name, isCorrect) VALUES ( 1, 'Option 2', false);
-INSERT INTO AnswerOption ( questionId, name, isCorrect) VALUES ( 2, 'Leon hardcarried', false);
-INSERT INTO AnswerOption ( questionId, name, isCorrect) VALUES ( 2, 'Leon wird hardcarried', true);
-INSERT INTO AnswerOption ( questionId, name, isCorrect) VALUES ( 3, 'Michi und Leon sind zusammen', true);
-INSERT INTO AnswerOption ( questionId, name, isCorrect) VALUES ( 3, 'Michi ist single', false);
-INSERT INTO AnswerOption ( questionId, name, isCorrect) VALUES ( 4, 'Yanik ist schlecht in Programmieren', false);
-INSERT INTO AnswerOption (questionId, name, isCorrect) VALUES ( 4, 'Leif Erikson war der erste Europäer in Amerika', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Option 1', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Option 2', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Leon hardcarried', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Leon wird hardcarried', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Michi und Leon sind zusammen', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Michi ist single', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Yanik ist schlecht in Programmieren', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Leif Erikson war der erste Europäer in Amerika', true);
+
+-- Insert demo data for question_answer_option
+INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (1, 1);
+INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (1, 2);
+INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (1, 3);
+INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (2, 4);
+INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (3, 5);
+INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (3, 6);
+INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (4, 7);
+INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (4, 8);
 
 -- Insert demo data for ViewProgress
 INSERT INTO ViewProgress (video_videoid, timestamp, progress) VALUES (1, '2023-10-01 10:00:00', 50);
@@ -70,3 +80,4 @@ INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 1)
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (4, 2);
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (2, 3);
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (3, 4);
+*/
