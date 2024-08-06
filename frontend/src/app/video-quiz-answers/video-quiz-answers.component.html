@@ -1,10 +1,12 @@
-<h2>Frage 01</h2>
+<h2>Frage {{ getFormattedQuestionNumber() }}</h2>
 <p>{{this.questionText}}</p>
 
 <main>
   @for (answer of this.answers; track answer.questionOptionId) {
-    <div class="answer" (click)="selectAnswer(answer)">
+    <div class="answer" (click)="toggleAnswer(answer)" [ngClass]="{'active' : this.selectedAnswers.includes(answer)}">
       <p>{{answer.text}}</p>
     </div>
   }
 </main>
+
+<button (click)="checkAnswer()">Abgeben</button>

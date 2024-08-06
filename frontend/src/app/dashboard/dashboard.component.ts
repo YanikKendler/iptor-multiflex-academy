@@ -27,10 +27,7 @@ export class DashboardComponent implements OnInit {
       videos.forEach(video => {
         this.service.getVideoProgress(video.videoId, 1).subscribe(progress => {
           this.progressList?.push([video.videoId, progress]);
-          console.log(this.progressList);
-        }, error => {
-          console.log(error);
-        });
+        }, error => {});
       });
     });
   }

@@ -1,10 +1,10 @@
 <div class="sidebar">
-  @for (question of questions; track question.questionId) {
-    <div [ngClass]="{'active': selectedQuestion === question}" (click)="selectQuestion(question)">
-      <p>01</p>
-        <p>{{ question.text }}</p>
-    </div>
-  }
+  <div *ngFor="let question of questions; let i = index"
+       [ngClass]="{'active': selectedQuestion === question, 'isAvailable': this.checkedQuestions.length + 1 >= i+1}"
+       (click)="this.checkedQuestions.length >= i ? selectQuestion(question, i) : ''">
+    <p>{{ getFormattedQuestionNumber(i+1) }}</p>
+    <p>{{ question.text }}</p>
+  </div>
 </div>
 
-<app-video-quiz-answers [questionText]="selectedQuestion?.text" [answers]="selectedQuestion?.answerOptions"></app-video-quiz-answers>
+<app-video-quiz-answers [questionNumber]="this.questionNr" [questionText]="selectedQuestion?.text" [answers]="selectedQuestion?.answerOptions" (nextQuestion)="nextQuestion()"></app-video-quiz-answers>

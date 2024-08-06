@@ -5,7 +5,7 @@ import {map} from "rxjs";
 export interface AnswerOptionModel {
   questionOptionId: number;
   text: string;
-  isCorrect: boolean;
+  correct: boolean;
 }
 
 export interface QuestionModel {

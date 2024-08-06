@@ -3,6 +3,7 @@
 main{
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: .5rem;
 }
 
 .answer{
@@ -11,7 +12,26 @@ main{
   padding: 0.625rem;
   justify-content: center;
   align-items: center;
-  gap: 0.625rem;
-  align-self: stretch;
   background: $gray-800;
+  border-radius: .5rem;
+  transition: all .2s ease;
+  user-select: none;
+
+  &:hover{
+    cursor: pointer;
+  }
+
+  &.active{
+    background: $gray-600;
+  }
+}
+
+button{
+  background: $primary-500;
+  color: white;
+  padding: 0.25rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  cursor: pointer;
 }

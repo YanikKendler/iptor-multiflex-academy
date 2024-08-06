@@ -35,7 +35,6 @@ public class VideoResource {
         List<VideoOverviewDTO> videos;
         try{
             videos = repository.getAll();
-            System.out.println(videos);
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
@@ -48,7 +47,6 @@ public class VideoResource {
         Video video;
         try{
             video = repository.getById(id);
-            System.out.println(video.toString());
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }

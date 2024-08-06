@@ -7,16 +7,34 @@
 
 .sidebar{
   display: flex;
+  flex-direction: column;
   padding: 1rem;
   border-right: 1px solid $gray-600;
+  gap: .25rem;
 
   div{
+    display: flex;
+    flex-direction: row;
+    gap: .25rem;
+    padding: .25rem;
+    border-radius: .5rem;
+
     p:first-child{
       color: $secondary-500;
     }
 
-    display: flex;
-    flex-direction: row;
-    gap: .25rem;
+    &:hover{
+      cursor: pointer;
+      background-color: $gray-900;
+    }
+
+    &:not(.isAvailable) {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    &.active{
+      background-color: $gray-800;
+    }
   }
 }
