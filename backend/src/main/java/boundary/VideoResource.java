@@ -1,5 +1,6 @@
 package boundary;
 
+import dtos.VideoOverviewDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -28,9 +29,10 @@ public class VideoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll(){
-        List<Video> videos;
+        List<VideoOverviewDTO> videos;
         try{
             videos = repository.getAll();
+            System.out.println(videos);
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }

@@ -31,9 +31,8 @@ public class Video {
 
     @Enumerated(EnumType.STRING)
     private VisibilityEnum visibility;
-    private boolean requestVideo;
 
-    public Video(String title, String description, boolean saved, String color, VisibilityEnum visibility, boolean requestVideo) {
+    public Video(String title, String description, boolean saved, String color, VisibilityEnum visibility ) {
         this.tags = new LinkedList<>();
         this.comments = new LinkedList<>();
         this.questions = new LinkedList<>();
@@ -43,7 +42,6 @@ public class Video {
         this.saved = saved;
         this.color = color;
         this.visibility = visibility;
-        this.requestVideo = requestVideo;
     }
 
     public void addTag(Tag tag) {
@@ -63,6 +61,22 @@ public class Video {
     }
 
     public Video() {
+    }
+
+    @Override
+    public String toString() {
+        return "Video{" +
+                "videoId=" + videoId +
+                ", tags=" + tags +
+                ", comments=" + comments +
+                ", questions=" + questions +
+                ", starRatings=" + starRatings +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", saved=" + saved +
+                ", color='" + color + '\'' +
+                ", visibility=" + visibility +
+                '}';
     }
 
     public Long getVideoId() {
@@ -131,13 +145,5 @@ public class Video {
 
     public void setVisibility(VisibilityEnum visibility) {
         this.visibility = visibility;
-    }
-
-    public boolean isRequestVideo() {
-        return requestVideo;
-    }
-
-    public void setRequestVideo(boolean requestVideo) {
-        this.requestVideo = requestVideo;
     }
 }

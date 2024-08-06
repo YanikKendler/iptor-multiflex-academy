@@ -3,7 +3,7 @@ import {NavigationComponent} from "../navigation/navigation.component"
 import {VideoComponent} from "../video/video.component"
 import {Router} from "@angular/router"
 import {VideoService} from "../service/video.service";
-import {VideoModel} from "../model/VideoModel";
+import {VideoModel, VideoOverview} from "../model/VideoModel";
 
 @Component({
   selector: 'app-dashboard',
@@ -17,10 +17,11 @@ import {VideoModel} from "../model/VideoModel";
 })
 export class DashboardComponent implements OnInit{
   service = inject(VideoService)
-  videoList : VideoModel[] | undefined
+  videoList : VideoOverview[] | undefined
 
   ngOnInit(): void {
     this.service.getVideoList().subscribe(videos => {
+      console.log(videos)
       this.videoList = videos
     })
   }

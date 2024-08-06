@@ -1,8 +1,8 @@
 -- Insert demo data for Video
-INSERT INTO Video (requestvideo, title, description, saved, visibility, color) VALUES (true, 'Java Basics', 'Introduction to Java', true, 'self' , 'red');
-INSERT INTO Video (requestvideo, title, description, saved, visibility, color) VALUES (false, 'Advanced Java', 'Deep dive into Java', true, 'customers' , 'black');
-INSERT INTO Video (requestvideo, title, description, saved, visibility, color) VALUES (false, 'Spring Boot Tutorial', 'Getting started with Spring Boot', false, 'internal' , 'grey');
-INSERT INTO Video (requestvideo, title, description, saved, visibility, color) VALUES (false, 'Hibernate ORM', 'Understanding Hibernate ORM', true, 'everyone' , 'white');
+INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Java Basics', 'Introduction to Java', true, 'self' , 'red');
+INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Advanced Java', 'Deep dive into Java', true, 'customers' , 'black');
+INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', false, 'internal' , 'grey');
+INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Hibernate ORM', 'Understanding Hibernate ORM', true, 'everyone' , 'white');
 
 -- Insert demo data for Question
 INSERT INTO Question (text, title) VALUES ('What is the main topic of the video?', 'Main Topic');
