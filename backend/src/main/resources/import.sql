@@ -1,4 +1,4 @@
-/*-- Insert demo data for Video
+-- Insert demo data for Video
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Java Basics', 'Introduction to Java', true, 'self' , 'red');
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Advanced Java', 'Deep dive into Java', true, 'customers' , 'black');
 INSERT INTO Video (title, description, saved, visibility, color) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', false, 'internal' , 'grey');
@@ -31,10 +31,10 @@ INSERT INTO question_answeroption (question_questionid, answeroptions_questionop
 INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (4, 8);
 
 -- Insert demo data for ViewProgress
-INSERT INTO ViewProgress (video_videoid, timestamp, progress) VALUES (1, '2023-10-01 10:00:00', 50);
-INSERT INTO ViewProgress (video_videoid, timestamp, progress) VALUES (1, '2023-10-02 11:30:00', 100);
-INSERT INTO ViewProgress (video_videoid, timestamp, progress) VALUES (2, '2023-10-03 14:45:00', 75);
-INSERT INTO ViewProgress (video_videoid, timestamp, progress) VALUES (2, '2023-10-04 09:20:00', 25);
+INSERT INTO ViewProgress (video_videoid, durationSeconds, progress) VALUES (1, 50, 50);
+INSERT INTO ViewProgress (video_videoid, durationSeconds, progress) VALUES (1, 100, 100);
+INSERT INTO ViewProgress (video_videoid, durationSeconds, progress) VALUES (2, 200, 75);
+INSERT INTO ViewProgress (video_videoid, durationSeconds, progress) VALUES (2, 500, 25);
 
 -- Insert demo data for Comment
 INSERT INTO Comment (text) VALUES ('Great video!');
@@ -78,4 +78,3 @@ INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 1)
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (4, 2);
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (2, 3);
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (3, 4);
-*/

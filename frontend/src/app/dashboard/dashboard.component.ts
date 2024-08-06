@@ -2,8 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {NavigationComponent} from "../navigation/navigation.component"
 import {VideoComponent} from "../video/video.component"
 import {Router} from "@angular/router"
-import {VideoService} from "../service/video.service";
-import {VideoModel, VideoOverview} from "../model/VideoModel";
+import {VideoOverview, VideoService} from "../service/video.service";
 
 @Component({
   selector: 'app-dashboard',

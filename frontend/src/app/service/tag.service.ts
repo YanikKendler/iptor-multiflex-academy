@@ -1,6 +1,10 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {TagModel} from "../model/TagModel";
+
+export interface TagModel{
+  id: number
+  name: string
+}
 
 @Injectable({
   providedIn: 'root'

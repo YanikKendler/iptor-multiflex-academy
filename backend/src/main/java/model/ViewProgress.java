@@ -3,6 +3,7 @@ package model;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.time.Duration;
 
 @Entity
 public class ViewProgress {
@@ -13,12 +14,12 @@ public class ViewProgress {
     @ManyToOne
     private Video video;
 
-    private Timestamp timestamp;
+    private int durationSeconds;
     private int progress;
 
-    public ViewProgress(Video video, Timestamp timestamp, int progress) {
+    public ViewProgress(Video video, int durationSeconds, int progress) {
         this.video = video;
-        this.timestamp = timestamp;
+        this.durationSeconds = durationSeconds;
         this.progress = progress;
     }
 
@@ -37,12 +38,12 @@ public class ViewProgress {
         this.video = video;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public int getDurationSeconds() {
+        return durationSeconds;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setDurationSeconds(int durationSeconds) {
+        this.durationSeconds = durationSeconds;
     }
 
     public int getProgress() {

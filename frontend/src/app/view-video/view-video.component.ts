@@ -3,8 +3,7 @@ import {AfterViewInit, ElementRef, ViewChild} from '@angular/core';
 import {NavigationComponent} from "../navigation/navigation.component"
 import {StarIconComponent} from "../icons/star/star.icon.component"
 import {BookmarkIconComponent} from "../icons/bookmark/bookmark.icon.component"
-import {VideoService} from "../service/video.service";
-import {VideoModel} from "../model/VideoModel";
+import {VideoModel, VideoService} from "../service/video.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {VideoCommentsComponent} from "../video-comments/video-comments.component";
 import {VideoQuizComponent} from "../video-quiz/video-quiz.component";

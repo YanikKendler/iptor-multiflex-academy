@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {QuestionModel} from "../model/QuestionModel";
 import {VideoQuizAnswersComponent} from "../video-quiz-answers/video-quiz-answers.component";
 import {NgClass} from "@angular/common";
+import {QuestionModel} from "../service/question.service";
 
 @Component({
   selector: 'app-video-quiz',

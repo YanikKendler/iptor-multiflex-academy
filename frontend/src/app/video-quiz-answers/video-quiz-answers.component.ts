@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AnswerOptionModel} from "../model/AnswerOptionModel";
+import {AnswerOptionModel} from "../service/question.service";
 
 @Component({
   selector: 'app-video-quiz-answers',
