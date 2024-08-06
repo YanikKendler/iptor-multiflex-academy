@@ -67,6 +67,10 @@ app-play-icon{
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+
+  p{
+    white-space: nowrap;
+  }
 }
 
 

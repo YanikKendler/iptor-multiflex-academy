@@ -25,6 +25,11 @@
         <app-chip>{{ tag.name }}</app-chip>
       }
     </div>
-    <p>{{getTimeFromSeconds(progress?.durationSeconds || 0)}} von {{getTimeFromSeconds(video.durationSeconds)}}</p>
+    <p>
+      @if(progress){
+      {{calculateTimeFromSeconds(progress?.durationSeconds || 0)}} von
+      }
+      {{calculateTimeFromSeconds(video.durationSeconds)}}
+    </p>
   </div>
 </div>

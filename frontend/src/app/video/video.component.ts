@@ -30,7 +30,7 @@ import {RemoveIconComponent} from "../icons/remove-icon/remove-icon.component"
 export class VideoComponent implements OnInit{
   @Input() video: VideoOverview = {} as VideoOverview
   @Input() removable: boolean = true
-  @Input() progress: ViewProgressModel = {} as ViewProgressModel;
+  @Input() progress: ViewProgressModel | undefined;
 
   toolTipString: string = "Tags"
   @ViewChild("bookmark") bookmark: BookmarkIconComponent | undefined
@@ -58,7 +58,7 @@ export class VideoComponent implements OnInit{
     console.log("Removed suggestion")
   }
 
-  getTimeFromSeconds(seconds: number): string {
+  calculateTimeFromSeconds(seconds: number): string {
     const date = new Date(seconds * 1000);
     const minutes = date.getUTCMinutes();
     const secs = date.getUTCSeconds();
