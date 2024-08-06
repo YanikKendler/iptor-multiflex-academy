@@ -4,7 +4,7 @@ import {QuestionModel} from "./QuestionModel";
 import {StarRatingModel} from "./StarRatingModel";
 
 export enum VisibilityEnum {
-  self,everyone, customers, internal
+  self="self",everyone="everyone", customers="customers", internal="internal"
 }
 
 export interface VideoOverview {

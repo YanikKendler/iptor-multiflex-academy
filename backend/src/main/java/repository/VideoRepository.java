@@ -1,5 +1,6 @@
 package repository;
 
+import dtos.VideoOverviewDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -26,8 +27,12 @@ public class VideoRepository {
         em.remove(getById(id));
     }
 
-    public List<Video> getAll() {
-        return em.createQuery("select v from Video v", Video.class).getResultList();
+    public List<VideoOverviewDTO> getAll() {
+        List<Video> videos = em.createQuery("select v from Video v", Video.class).getResultList();
+
+        return videos.stream()
+                .map(v -> new VideoOverviewDTO(v.getVideoId(), v.getTitle(), v.getDescription(), v.getTags(), v.isSaved(), v.getColor()))
+                .toList();
     }
 
     public Video getById(Long id){

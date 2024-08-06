@@ -63,6 +63,22 @@ public class Video {
     public Video() {
     }
 
+    @Override
+    public String toString() {
+        return "Video{" +
+                "videoId=" + videoId +
+                ", tags=" + tags +
+                ", comments=" + comments +
+                ", questions=" + questions +
+                ", starRatings=" + starRatings +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", saved=" + saved +
+                ", color='" + color + '\'' +
+                ", visibility=" + visibility +
+                '}';
+    }
+
     public Long getVideoId() {
         return videoId;
     }
@@ -130,5 +146,4 @@ public class Video {
     public void setVisibility(VisibilityEnum visibility) {
         this.visibility = visibility;
     }
-
 }
