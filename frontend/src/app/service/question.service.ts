@@ -3,13 +3,13 @@ import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs";
 
 export interface AnswerOptionModel {
-  id: number;
+  questionOptionId: number;
   text: string;
   isCorrect: boolean;
 }
 
 export interface QuestionModel {
-  id: number;
+  questionId: number;
   answerOptions: AnswerOptionModel[];
   title: string;
   text: string;

@@ -29,10 +29,12 @@ public class Video {
     private boolean saved;
     private String color;
 
+    private int durationSeconds;
+
     @Enumerated(EnumType.STRING)
     private VisibilityEnum visibility;
 
-    public Video(String title, String description, boolean saved, String color, VisibilityEnum visibility) {
+    public Video(String title, String description, boolean saved, String color, VisibilityEnum visibility, int durationSeconds) {
         this.tags = new LinkedList<>();
         this.comments = new LinkedList<>();
         this.questions = new LinkedList<>();
@@ -42,6 +44,7 @@ public class Video {
         this.saved = saved;
         this.color = color;
         this.visibility = visibility;
+        this.durationSeconds = durationSeconds;
     }
 
     public void addTag(Tag tag) {
@@ -77,6 +80,14 @@ public class Video {
                 ", color='" + color + '\'' +
                 ", visibility=" + visibility +
                 '}';
+    }
+
+    public int getDurationSeconds() {
+        return durationSeconds;
+    }
+
+    public void setDurationSeconds(int durationSeconds) {
+        this.durationSeconds = durationSeconds;
     }
 
     public Long getVideoId() {

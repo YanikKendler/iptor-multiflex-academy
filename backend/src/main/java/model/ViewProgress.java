@@ -14,20 +14,41 @@ public class ViewProgress {
     @ManyToOne
     private Video video;
 
-    private int durationSeconds;
-    private int progress;
+    @ManyToOne
+    private User user;
 
-    public ViewProgress(Video video, int durationSeconds, int progress) {
+    private int durationSeconds;
+
+    private Timestamp lastViewed;
+
+    public ViewProgress(Video video, User user, int durationSeconds) {
         this.video = video;
+        this.user = user;
         this.durationSeconds = durationSeconds;
-        this.progress = progress;
+        this.lastViewed = Timestamp.from(java.time.Instant.now());
     }
 
     public ViewProgress() {
     }
 
+    public Timestamp getLastViewed() {
+        return lastViewed;
+    }
+
+    public void setLastViewed(Timestamp lastViewed) {
+        this.lastViewed = lastViewed;
+    }
+
     public Long getProgressId() {
         return progressId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Video getVideo() {
@@ -44,13 +65,5 @@ public class ViewProgress {
 
     public void setDurationSeconds(int durationSeconds) {
         this.durationSeconds = durationSeconds;
-    }
-
-    public int getProgress() {
-        return progress;
-    }
-
-    public void setProgress(int progress) {
-        this.progress = progress;
     }
 }

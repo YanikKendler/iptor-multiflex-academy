@@ -9,22 +9,27 @@ export enum VisibilityEnum {
 }
 
 export interface CommentModel {
-  id: number;
+  commentId: number;
   title: string;
   text: string;
 }
 
 export interface StarRatingModel {
-  id: number;
+  ratingId: number;
   rating: number;
 }
 
 export interface UserModel {
-  id: number;
+  userId: number;
   username: string;
   email: string;
 }
 
+export interface ViewProgressModel{
+  progressId: number;
+  durationSeconds: number;
+  user: UserModel;
+}
 
 export interface VideoModel {
   videoId: number;
@@ -33,6 +38,7 @@ export interface VideoModel {
   tags: TagModel[];
   saved: boolean;
   color: string;
+  durationSeconds: number;
   comments: CommentModel[];
   questions: QuestionModel[];
   starRatings: StarRatingModel[];
@@ -46,6 +52,7 @@ export interface VideoOverview {
   tags: TagModel[];
   saved: boolean;
   color: string;
+  durationSeconds: number;
 }
 
 @Injectable({
@@ -64,6 +71,14 @@ export class VideoService {
 
   getVideoById(id: number): Observable<VideoModel>{
     return this.http.get<VideoModel>("http://localhost:8080/api/video/" + id).pipe(
+      map(videoList => {
+        return videoList
+      })
+    )
+  }
+
+  getVideoProgress(videoId: number, userId: number): Observable<ViewProgressModel>{
+    return this.http.get<ViewProgressModel>("http://localhost:8080/api/video/" + videoId + "/progress/" + userId + "/latest").pipe(
       map(videoList => {
         return videoList
       })

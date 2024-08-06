@@ -8,6 +8,7 @@ import model.Tag;
 import model.Video;
 import model.ViewProgress;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @ApplicationScoped
@@ -40,5 +41,13 @@ public class ViewProgressRepository {
 
     public ViewProgress getById(Long id){
         return em.find(ViewProgress.class, id);
+    }
+
+    public ViewProgress getLatest(Long vid, Long uid) {
+        return em.createQuery("select p from ViewProgress p where p.video.id = :vid and p.user.id = :uid order by p.lastViewed desc", ViewProgress.class)
+                .setParameter("vid", vid)
+                .setParameter("uid", uid)
+                .setMaxResults(1)
+                .getSingleResult();
     }
 }

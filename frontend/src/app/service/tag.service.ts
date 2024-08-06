@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 
 export interface TagModel{
-  id: number
+  tagId: number
   name: string
 }
 
