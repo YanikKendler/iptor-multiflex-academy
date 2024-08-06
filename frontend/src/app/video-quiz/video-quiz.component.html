@@ -1,0 +1,10 @@
+<div class="sidebar">
+  @for (question of questions; track question.id) {
+    <div [ngClass]="{'active': selectedQuestion === question}" (click)="selectQuestion(question)">
+      <p>01</p>
+        <p>{{ question.text }}</p>
+    </div>
+  }
+</div>
+
+<app-video-quiz-answers [answers]="selectedQuestion?.answerOptions"></app-video-quiz-answers>

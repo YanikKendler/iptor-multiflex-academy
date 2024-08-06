@@ -26,5 +26,14 @@
       <p class="quiz" (click)="selectTab('quiz')">Quiz</p>
       <span class="marker" [style.left.px]="markerPos.left" [style.width.px]="markerPos.width"></span>
     </div>
+
+    @switch(this.currentTab){
+      @case('comments'){
+        <app-video-comments [comments]="video?.comments"></app-video-comments>
+      }
+      @case('quiz'){
+        <app-video-quiz [questions]="video?.questions"></app-video-quiz>
+      }
+    }
   </div>
 </main>
