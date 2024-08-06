@@ -13,6 +13,10 @@
   </div>
 </div>
 
+@if(progress){
+  <div class="progress-bar"><span [style.width.%]="this.progress.durationSeconds / this.video.durationSeconds * 100"></span></div>
+}
+
 <div class="main">
   <p>{{video.description}}</p>
 
