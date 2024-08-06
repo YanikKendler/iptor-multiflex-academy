@@ -26,19 +26,19 @@ public class Video {
 
     private String title;
     private String description;
-    private boolean save;
+    private boolean saved;
     private String color;
     private VisibilityEnum visibility;
     private boolean requestVideo;
 
-    public Video(String title, String description, boolean save, String color, VisibilityEnum visibility, boolean requestVideo) {
+    public Video(String title, String description, boolean saved, String color, VisibilityEnum visibility, boolean requestVideo) {
         this.tags = new LinkedList<>();
         this.comments = new LinkedList<>();
         this.questions = new LinkedList<>();
         this.starRatings = new LinkedList<>();
         this.title = title;
         this.description = description;
-        this.save = save;
+        this.saved = saved;
         this.color = color;
         this.visibility = visibility;
         this.requestVideo = requestVideo;
@@ -107,12 +107,12 @@ public class Video {
         this.description = description;
     }
 
-    public boolean isSave() {
-        return save;
+    public boolean isSaved() {
+        return saved;
     }
 
-    public void setSave(boolean save) {
-        this.save = save;
+    public void setSaved(boolean save) {
+        this.saved = save;
     }
 
     public String getColor() {
