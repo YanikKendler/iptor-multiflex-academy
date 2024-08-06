@@ -1,12 +1,9 @@
 package model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorValue("EMPLOYEE")
 public class Employee extends User {
 
     // keine Ahnung wie man das auf sich selbst verweisen richtig macht!!!!
