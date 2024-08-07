@@ -31,7 +31,6 @@ export class VideoQuizComponent implements OnInit {
   selectQuestion(question: QuestionModel, questionNumber: number) {
     this.selectedQuestion = question;
     this.questionNr = questionNumber
-    console.log(this.questionNr)
   }
 
   // format question number to double digits

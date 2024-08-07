@@ -26,6 +26,14 @@ main{
   }
 }
 
+main.checked .answer{
+  background-color: red;
+
+  &.correct{
+    background-color: lightgreen;
+  }
+}
+
 button{
   background: $primary-500;
   color: white;

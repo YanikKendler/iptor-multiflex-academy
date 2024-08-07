@@ -1,0 +1,42 @@
+main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.answer {
+  display: flex;
+  width: 14rem;
+  padding: 0.625rem;
+  justify-content: center;
+  align-items: center;
+  background: hsl(0, 0%, 92%);
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.answer:hover {
+  cursor: pointer;
+}
+.answer.active {
+  background: hsl(0, 0%, 85%);
+}
+
+main.checked .answer {
+  background-color: red;
+}
+main.checked .answer.correct {
+  background-color: lightgreen;
+}
+
+button {
+  background: hsl(188, 79%, 19%);
+  color: white;
+  padding: 0.25rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=video-quiz-answers.component.css.map */

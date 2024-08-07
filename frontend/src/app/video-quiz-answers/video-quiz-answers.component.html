@@ -1,12 +1,19 @@
-<h2>Frage {{ getFormattedQuestionNumber() }}</h2>
-<p>{{this.questionText}}</p>
+@if(!this.answers){
+  <h2>Finished quiz</h2>
+  <p>Score {{correctAnswers.length}} / {{correctAnswers.length + wrongAnswers.length}}</p>
+  <p></p>
+} @else{
+  <h2>Frage {{ getFormattedQuestionNumber() }}</h2>
+  <p>{{this.questionText}}</p>
 
-<main>
-  @for (answer of this.answers; track answer.questionOptionId) {
-    <div class="answer" (click)="toggleAnswer(answer)" [ngClass]="{'active' : this.selectedAnswers.includes(answer)}">
-      <p>{{answer.text}}</p>
-    </div>
-  }
-</main>
+  <main [ngClass]="{'checked' : isAnswerCheckedIn}">
+    @for (answer of this.answers; track answer.questionOptionId) {
+      <div class="answer" (click)="toggleAnswer(answer)"
+           [ngClass]="{'active' : this.selectedAnswers.includes(answer), 'correct' : this.correctAnswers.includes(answer)}">
+        <p>{{answer.text}}</p>
+      </div>
+    }
+  </main>
 
-<button (click)="checkAnswer()">Abgeben</button>
+  <button (click)="checkAnswer()">{{ isAnswerCheckedIn ? 'Nächste Frage' : 'Abgeben' }}</button>
+}
