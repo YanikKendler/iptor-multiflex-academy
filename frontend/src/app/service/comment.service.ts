@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {User} from "./video.service"
 
-export interface CommentModel {
+export interface Comment {
   commentId: number;
   title: string;
   text: string;
@@ -17,8 +17,8 @@ export interface CommentModel {
 export class CommentService {
   http = inject(HttpClient)
 
-  getCommentList(videoId: number): Observable<CommentModel[]>{
-    return this.http.get<CommentModel[]>("http://localhost:8080/api/video/" + videoId + "/comment").pipe(
+  getCommentList(videoId: number): Observable<Comment[]>{
+    return this.http.get<Comment[]>("http://localhost:8080/api/video/" + videoId + "/comment").pipe(
       map(commentList => {
         return commentList
       })

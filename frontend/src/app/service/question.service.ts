@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 
-export interface AnswerOptionModel {
+export interface AnswerOption {
   questionOptionId: number;
   text: string;
   correct: boolean;
@@ -10,7 +10,7 @@ export interface AnswerOptionModel {
 
 export interface QuestionModel {
   questionId: number;
-  answerOptions: AnswerOptionModel[];
+  answerOptions: AnswerOption[];
   title: string;
   text: string;
 }
@@ -30,7 +30,7 @@ export class QuestionService {
     )
   }
 
-  createQuestion(videoId: number, title: string, text: string, answerOptions: AnswerOptionModel[]){
+  createQuestion(videoId: number, title: string, text: string, answerOptions: AnswerOption[]){
     this.http.post("http://localhost:8080/api/video/" + videoId + "/question", {
       title: title,
       text: text,
@@ -54,7 +54,7 @@ export class QuestionService {
     });
   }
 
-  updateQuestion(videoId: number, questionId: number, title: string, text: string, answerOptions: AnswerOptionModel[]) {
+  updateQuestion(videoId: number, questionId: number, title: string, text: string, answerOptions: AnswerOption[]) {
     this.http.put("http://localhost:8080/api/video/" + videoId + "/question/" + questionId, {
       title: title,
       text: text,

@@ -1,0 +1,11 @@
+<app-navigation></app-navigation>
+
+<main>
+  <p>Continue Watching</p>
+  <div class="video-row">
+    @for(video of videoList; track video.videoId){
+      <app-video-overview [video]="video"></app-video-overview>
+    }
+  </div>
+</main>
+
