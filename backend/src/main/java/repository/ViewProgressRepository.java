@@ -3,6 +3,7 @@ package repository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import model.Tag;
 import model.Video;
@@ -35,8 +36,8 @@ public class ViewProgressRepository {
     }
 
     @Transactional
-    public List<Tag> getAll() {
-        return em.createQuery("select p from ViewProgress p", Tag.class).getResultList();
+    public List<ViewProgress> getAll() {
+        return em.createQuery("select p from ViewProgress p", ViewProgress.class).getResultList();
     }
 
     public ViewProgress getById(Long id){
@@ -44,10 +45,14 @@ public class ViewProgressRepository {
     }
 
     public ViewProgress getLatest(Long vid, Long uid) {
-        return em.createQuery("select p from ViewProgress p where p.video.id = :vid and p.user.id = :uid order by p.lastViewed desc", ViewProgress.class)
-                .setParameter("vid", vid)
-                .setParameter("uid", uid)
-                .setMaxResults(1)
-                .getSingleResult();
+        try {
+            return em.createQuery("select p from ViewProgress p where p.video.id = :vid and p.user.id = :uid", ViewProgress.class)
+                    .setParameter("vid", vid)
+                    .setParameter("uid", uid)
+                    .setMaxResults(1)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

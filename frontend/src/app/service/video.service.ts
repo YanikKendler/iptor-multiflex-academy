@@ -9,24 +9,24 @@ export enum VisibilityEnum {
   self="self",everyone="everyone", customers="customers", internal="internal"
 }
 
-export interface StarRatingModel {
+export interface StarRating {
   ratingId: number;
   rating: number;
 }
 
-export interface UserModel {
+export interface User {
   userId: number;
   username: string;
   email: string;
 }
 
-export interface ViewProgressModel{
+export interface ViewProgress {
   progressId: number;
   durationSeconds: number;
-  user: UserModel;
+  user: User;
 }
 
-export interface VideoModel {
+export interface Video {
   videoId: number;
   title: string;
   description: string;
@@ -35,7 +35,7 @@ export interface VideoModel {
   durationSeconds: number;
   comments: CommentModel[];
   questions: QuestionModel[];
-  starRatings: StarRatingModel[];
+  starRatings: StarRating[];
   visibility: VisibilityEnum;
 }
 
@@ -47,6 +47,7 @@ export interface VideoOverview {
   saved: boolean;
   color: string;
   durationSeconds: number;
+  viewProgress?: ViewProgress;
 }
 
 @Injectable({
@@ -63,7 +64,7 @@ export class VideoService {
     )
   }
 
-  createVideo(title: string, description: string, tags: TagModel[], color: string, durationSeconds: number, visibility: VisibilityEnum, coments: CommentModel[], questions: QuestionModel[], starRatings: StarRatingModel[]){
+  createVideo(title: string, description: string, tags: TagModel[], color: string, durationSeconds: number, visibility: VisibilityEnum, coments: CommentModel[], questions: QuestionModel[], starRatings: StarRating[]){
     this.http.post("http://localhost:8080/api/video/", {
       title: title,
       description: description,
@@ -84,16 +85,16 @@ export class VideoService {
   }
 
 
-  getVideoById(id: number): Observable<VideoModel>{
-    return this.http.get<VideoModel>("http://localhost:8080/api/video/" + id).pipe(
+  getVideoById(id: number): Observable<Video>{
+    return this.http.get<Video>("http://localhost:8080/api/video/" + id).pipe(
       map(videoList => {
         return videoList
       })
     )
   }
 
-  getVideoProgress(videoId: number, userId: number): Observable<ViewProgressModel>{
-    return this.http.get<ViewProgressModel>("http://localhost:8080/api/video/" + videoId + "/progress/" + userId + "/latest").pipe(
+  getVideoProgress(videoId: number, userId: number): Observable<ViewProgress>{
+    return this.http.get<ViewProgress>("http://localhost:8080/api/video/" + videoId + "/progress/" + userId).pipe(
       map(videoList => {
         return videoList
       })

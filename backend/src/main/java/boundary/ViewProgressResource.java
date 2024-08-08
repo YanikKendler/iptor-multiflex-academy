@@ -29,24 +29,12 @@ public class ViewProgressResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@PathParam("videoId")Long vid){
-        List<Tag> tags;
-        try{
-            tags = repository.getAll();
-        }catch (Exception ex){
-            return Response.status(400).entity(ex).build();
-        }
-        return Response.ok().entity(tags).build();
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/latest")
     public Response getLatest(@PathParam("videoId")Long vid, @PathParam("userId")Long uid){
-        ViewProgress vp;
+        ViewProgress vp = null;
         try{
             vp = repository.getLatest(vid, uid);
         }catch (Exception ex){
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().entity(vp).build();

@@ -51,6 +51,11 @@
   height: .3rem;
   background-color: $gray-500;
   width: 100%;
+
+  span{
+    display: block;
+    height: 100%;
+  }
 }
 
 app-play-icon{

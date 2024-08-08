@@ -13,8 +13,13 @@
   </div>
 </div>
 
-@if(progress){
-  <div class="progress-bar"><span [style.width.%]="this.progress.durationSeconds / this.video.durationSeconds * 100"></span></div>
+@if(video.viewProgress){
+  <div class="progress-bar">
+    <span
+      [style.width.%]="video.viewProgress.durationSeconds / this.video.durationSeconds * 100"
+      [style.background-color]="video.color"
+    ></span>
+  </div>
 }
 
 <div class="main">
@@ -30,10 +35,10 @@
       }
     </div>
     <p>
-      @if(progress){
-      {{calculateTimeFromSeconds(progress?.durationSeconds || 0)}} von
+      @if(video.viewProgress){
+        {{Utils.toSmartTimeString(video.viewProgress.durationSeconds * 1000)}} of
       }
-      {{calculateTimeFromSeconds(video.durationSeconds)}}
+      {{Utils.toSmartTimeString(video.durationSeconds * 1000)}}
     </p>
   </div>
 </div>

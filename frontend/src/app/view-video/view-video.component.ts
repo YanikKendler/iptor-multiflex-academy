@@ -2,7 +2,7 @@ import {AfterViewChecked, AfterViewInit, Component, ElementRef, inject, Input, O
 import {NavigationComponent} from "../navigation/navigation.component"
 import {StarIconComponent} from "../icons/star/star.icon.component"
 import {BookmarkIconComponent} from "../icons/bookmark/bookmark.icon.component"
-import {VideoModel, VideoService} from "../service/video.service";
+import {Video, VideoService} from "../service/video.service";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {VideoCommentsComponent} from "../video-comments/video-comments.component";
 import {VideoQuizComponent} from "../video-quiz/video-quiz.component";
@@ -22,7 +22,7 @@ import {VideoQuizComponent} from "../video-quiz/video-quiz.component";
 })
 export class ViewVideoComponent implements AfterViewInit, OnInit{
   service = inject(VideoService)
-  video : VideoModel | undefined
+  video : Video | undefined
 
   markerPos = {width: 0, left: 0}
 
@@ -53,8 +53,8 @@ export class ViewVideoComponent implements AfterViewInit, OnInit{
       tabElement = this.tabSelector?.nativeElement.querySelector('.quiz') as HTMLElement
     }
     let marker = this.tabSelector?.nativeElement.querySelector('.marker') as HTMLElement
-    marker.style.width = tabElement.clientWidth + "px"
-    marker.style.left = tabElement.offsetLeft + "px"
+    marker.style.width = tabElement.clientWidth - 16 + "px"
+    marker.style.left = tabElement.offsetLeft + 8 + "px"
     this.markerPos = {width: tabElement.clientWidth, left: tabElement.offsetLeft}
   }
 

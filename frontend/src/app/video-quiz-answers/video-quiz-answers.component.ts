@@ -1,12 +1,14 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AnswerOptionModel} from "../service/question.service";
 import {NgClass} from "@angular/common";
+import {MatRipple} from "@angular/material/core"
 
 @Component({
   selector: 'app-video-quiz-answers',
   standalone: true,
   imports: [
-    NgClass
+    NgClass,
+    MatRipple
   ],
   templateUrl: './video-quiz-answers.component.html',
   styleUrl: './video-quiz-answers.component.scss'

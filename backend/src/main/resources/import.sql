@@ -1,3 +1,12 @@
+-- Insert demo data for User
+INSERT INTO app_user (username, email, user_type) VALUES ('john_doe', 'john.doe@example.com', 'CUSTOMER');
+INSERT INTO app_user (username, email, user_type) VALUES ('jane_smith', 'jane.smith@example.com', 'CUSTOMER');
+INSERT INTO app_user (username, email, user_type) VALUES ('alice_jones', 'alice.jones@example.com', 'EMPLOYEE');
+INSERT INTO app_user (username, email, user_type) VALUES ('bob_brown', 'bob.brown@example.com', 'EMPLOYEE');
+INSERT INTO app_user (username, email, user_type) VALUES ('leon steinhuber', 'leon.steinhuber@example.com', 'EMPLOYEE');
+INSERT INTO app_user (username, email, user_type) VALUES ('michael leisch', 'michael.leisch@example.com', 'EMPLOYEE');
+INSERT INTO app_user (username, email, user_type) VALUES ('yanik kendler', 'yanik.kendler@example.com', 'EMPLOYEE');
+
 -- Insert demo data for Video
 INSERT INTO Video (title, description, visibility, color, durationSeconds) VALUES ('Java Basics', 'Introduction to Java', 'self' , 'red', 100);
 INSERT INTO Video (title, description, visibility, color, durationSeconds) VALUES ('Advanced Java', 'Deep dive into Java', 'customers' , 'pink', 200);
@@ -31,10 +40,10 @@ INSERT INTO question_answeroption (question_questionid, answeroptions_questionop
 INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (4, 8);
 
 -- Insert demo data for Comment
-INSERT INTO Comment (text) VALUES ('Great video!');
-INSERT INTO Comment (text) VALUES ('Very informative.');
-INSERT INTO Comment (text) VALUES ('Nice tutorial.');
-INSERT INTO Comment (text) VALUES ('Loved the explanation.');
+INSERT INTO Comment (text, user_userid, timestamp) VALUES ('Great video!', 1, '2023-4-01 10:00:00');
+INSERT INTO Comment (text, user_userid, timestamp) VALUES ('Very informative.', 2, '2023-10-02 11:30:00');
+INSERT INTO Comment (text, user_userid, timestamp) VALUES ('Nice tutorial.', 3, '2023-10-03 14:45:00');
+INSERT INTO Comment (text, user_userid, timestamp) VALUES ('Loved the explanation.', 2, '2024-08-07 09:20:00');
 
 -- Insert demo data for StarRating
 INSERT INTO StarRating (rating) VALUES (1);
@@ -50,8 +59,8 @@ INSERT INTO Tag (name) VALUES ('Java');
 INSERT INTO Tag (name) VALUES ('Programming');
 
 -- Insert demo data for video_comment
-INSERT INTO video_comment (video_videoid, comments_commentid) VALUES (1, 2);
 INSERT INTO video_comment (video_videoid, comments_commentid) VALUES (1, 1);
+INSERT INTO video_comment (video_videoid, comments_commentid) VALUES (1, 2);
 INSERT INTO video_comment (video_videoid, comments_commentid) VALUES (1, 3);
 INSERT INTO video_comment (video_videoid, comments_commentid) VALUES (1, 4);
 
@@ -74,15 +83,6 @@ INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 1)
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (4, 2);
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (2, 3);
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (3, 4);
-
--- Insert demo data for User
-INSERT INTO app_user (username, email, user_type) VALUES ('john_doe', 'john.doe@example.com', 'CUSTOMER');
-INSERT INTO app_user (username, email, user_type) VALUES ('jane_smith', 'jane.smith@example.com', 'CUSTOMER');
-INSERT INTO app_user (username, email, user_type) VALUES ('alice_jones', 'alice.jones@example.com', 'EMPLOYEE');
-INSERT INTO app_user (username, email, user_type) VALUES ('bob_brown', 'bob.brown@example.com', 'EMPLOYEE');
-INSERT INTO app_user (username, email, user_type) VALUES ('leon steinhuber', 'leon.steinhuber@example.com', 'EMPLOYEE');
-INSERT INTO app_user (username, email, user_type) VALUES ('michael leisch', 'michael.leisch@example.com', 'EMPLOYEE');
-INSERT INTO app_user (username, email, user_type) VALUES ('yanik kendler', 'yanik.kendler@example.com', 'EMPLOYEE');
 
 -- Insert demo data for Customer
 INSERT INTO Customer (userid, companyName, isManager, supervisor_userid) VALUES (1, 'TechCorp', true, null);

@@ -9,10 +9,8 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
-
     @ManyToOne
     private User user;
-
     private String text;
     private final LocalDateTime timestamp;
 
@@ -40,5 +38,13 @@ public class Comment {
 
     public LocalDateTime getTimestamp() {
         return timestamp;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

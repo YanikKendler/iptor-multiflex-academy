@@ -2,14 +2,18 @@
   <h2>Finished quiz</h2>
   <p>Score {{correctAnswers.length}} / {{correctAnswers.length + wrongAnswers.length}}</p>
   <p></p>
-} @else{
+}
+@else{
   <h2>Frage {{ getFormattedQuestionNumber() }}</h2>
-  <p>{{this.questionText}}</p>
+  <p class="text">{{this.questionText}}</p>
 
   <main [ngClass]="{'checked' : isAnswerCheckedIn}">
     @for (answer of this.answers; track answer.questionOptionId) {
-      <div class="answer" (click)="toggleAnswer(answer)"
-           [ngClass]="{'active' : this.selectedAnswers.includes(answer), 'correct' : this.correctAnswers.includes(answer)}">
+      <div class="answer"
+           (click)="toggleAnswer(answer)"
+           [ngClass]="{'checked' : this.selectedAnswers.includes(answer), 'correct' : this.correctAnswers.includes(answer)}"
+           matRipple
+      >
         <p>{{answer.text}}</p>
       </div>
     }

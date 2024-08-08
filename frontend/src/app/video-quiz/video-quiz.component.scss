@@ -2,7 +2,6 @@
 
 :host{
   display: flex;
-  gap: 1rem;
 }
 
 .sidebar{
@@ -12,15 +11,22 @@
   border-right: 1px solid $gray-600;
   gap: .25rem;
 
-  div{
+  .question{
     display: flex;
     flex-direction: row;
     gap: .25rem;
     padding: .25rem;
     border-radius: .5rem;
 
-    p:first-child{
+    p.number{
       color: $secondary-500;
+    }
+
+    p.text{
+      max-width: 20ch;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     &:hover{
@@ -33,7 +39,7 @@
       cursor: default;
     }
 
-    &.active{
+    &.selected{
       background-color: $gray-800;
     }
   }
