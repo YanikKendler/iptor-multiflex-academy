@@ -28,9 +28,10 @@ public class Video {
     private String description;
     private String color;
     private int durationSeconds;
-
     @Enumerated(EnumType.STRING)
     private VisibilityEnum visibility;
+    @OneToOne
+    private VideoFile videoFile;
 
     public Video(String title, String description, String color, VisibilityEnum visibility, int durationSeconds) {
         this.tags = new LinkedList<>();
@@ -144,5 +145,13 @@ public class Video {
 
     public void setVisibility(VisibilityEnum visibility) {
         this.visibility = visibility;
+    }
+
+    public VideoFile getVideoFile() {
+        return videoFile;
+    }
+
+    public void setVideoFile(VideoFile videoFileId) {
+        this.videoFile = videoFileId;
     }
 }
