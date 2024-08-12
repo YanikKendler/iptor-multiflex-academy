@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public abstract class User {
     private String email;
 
     @OneToMany
+    @JsonIgnore
     private List<Video> savedVideos;
 
     public User(String username, String email) {

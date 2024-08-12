@@ -13,10 +13,9 @@ main{
   gap: 2rem;
   margin-top: 3rem;
 
-  img{
+  app-media-player{
     /*width: min(50vw, 600px);*/
     height: 40vh;
-    border-radius: 1rem;
   }
 
   .right{

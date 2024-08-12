@@ -6,17 +6,19 @@ import {ActivatedRoute, Params, Router} from "@angular/router";
 import {VideoCommentsComponent} from "../video-comments/video-comments.component";
 import {VideoQuizComponent} from "../video-quiz/video-quiz.component";
 import {VideoDetail, VideoService} from "../../../service/video.service"
+import {MediaPlayerComponent} from "../../media-player/media-player.component"
 
 @Component({
   selector: 'app-video-detail',
   standalone: true,
-  imports: [
-    NavigationComponent,
-    StarIconComponent,
-    BookmarkIconComponent,
-    VideoCommentsComponent,
-    VideoQuizComponent
-  ],
+    imports: [
+        NavigationComponent,
+        StarIconComponent,
+        BookmarkIconComponent,
+        VideoCommentsComponent,
+        VideoQuizComponent,
+        MediaPlayerComponent
+    ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss'
 })

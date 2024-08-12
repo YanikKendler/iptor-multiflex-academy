@@ -61,10 +61,12 @@ public class VideoResource {
     @GET
     @Path("{id: [0-9]+}")
     public Response getVideo(@PathParam("id") Long id){
+        System.out.println("getVideo");
         Video video;
         try{
             video = repository.getById(id);
         }catch (Exception ex){
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().entity(video).build();
@@ -72,7 +74,7 @@ public class VideoResource {
 
     @GET
     @Produces(MediaType.MULTIPART_FORM_DATA)
-    @Path("{videoId:[0-9]+}/{fileName}")
+    @Path("{videoId:[0-9]+}/getVideoChunk/{fileName}")
     public RestResponse<File> getVideoChunk(@PathParam("fileName") String fileName, @PathParam("videoId") Long videoId) {
         try {
             File file = repository.getVideoChunk(videoId, fileName);
