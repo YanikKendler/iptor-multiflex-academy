@@ -37,17 +37,25 @@ public class VideoRepository {
         em.remove(getById(id));
     }
 
-    public List<Video> getAll() {
-        return em.createQuery("select v from Video v", Video.class).getResultList();
+    public List<VideoOverviewDTO> getAll() {
+        List<Video> videos = em.createQuery("select v from Video v order by v.videoId", Video.class).getResultList();
+
+        return videos.stream()
+                .map(v -> new VideoOverviewDTO(
+                        v.getVideoId(),
+                        v.getTitle(),
+                        v.getDescription(),
+                        v.getTags(),
+                        v.getColor(),
+                        v.getVideoFile() != null ? v.getVideoFile().getDurationSeconds() : null
+                ))
+                .toList();
     }
 
-    @Transactional
-    public VideoForUserDTO getAllFromUser(Long userId) {
+    /**public VideoForUserDTO getAllFromUser(Long userId) {
         List<VideoOverviewDTO> continueVideos = null;
         List<VideoOverviewDTO> assignedVideos = null;
         List<VideoOverviewDTO> suggestedVideos = null;
-    public List<VideoOverviewDTO> getAll() {
-        List<Video> videos = em.createQuery("select v from Video v order by v.videoId", Video.class).getResultList();
 
         try {
             continueVideos = em.createQuery("select new dtos.VideoOverviewDTO(v.videoId as videoId, v.title as title, v.description as description, v.tags as tags, v.color as color, v.durationSeconds as durationSeconds, vp as progress)" +
@@ -67,17 +75,8 @@ public class VideoRepository {
         }
 
         return new VideoForUserDTO(continueVideos, assignedVideos, suggestedVideos);
-        return videos.stream()
-                .map(v -> new VideoOverviewDTO(
-                        v.getVideoId(),
-                        v.getTitle(),
-                        v.getDescription(),
-                        v.getTags(),
-                        v.getColor(),
-                        v.getVideoFile() != null ? v.getVideoFile().getDurationSeconds() : null
-                ))
-                .toList();
     }
+     **/
 
     public Video getById(Long id){
         return em.find(Video.class, id);
