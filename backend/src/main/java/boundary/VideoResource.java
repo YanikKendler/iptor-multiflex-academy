@@ -1,5 +1,6 @@
 package boundary;
 
+import dtos.VideoForUserDTO;
 import dtos.VideoOverviewDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -20,7 +21,7 @@ public class VideoResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createVideo(Video v){
+    public Response createVideo(Video v) {
         try {
             repository.create(v);
         } catch (Exception ex) {
@@ -31,11 +32,24 @@ public class VideoResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(){
-        List<VideoOverviewDTO> videos;
-        try{
+    public Response getAll() {
+        List<Video> videos;
+        try {
             videos = repository.getAll();
-        }catch (Exception ex){
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().entity(videos).build();
+    }
+
+    @GET
+    @Path("user/{userId: [0-9]+}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllFromUser(@PathParam("userId") Long uid) {
+        VideoForUserDTO videos;
+        try {
+            videos = repository.getAllFromUser(uid);
+        } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().entity(videos).build();
@@ -43,11 +57,11 @@ public class VideoResource {
 
     @GET
     @Path("{id: [0-9]+}")
-    public Response getVideo(@PathParam("id") Long id){
+    public Response getVideo(@PathParam("id") Long id) {
         Video video;
-        try{
+        try {
             video = repository.getById(id);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().entity(video).build();
@@ -55,8 +69,8 @@ public class VideoResource {
 
     @DELETE
     @Path("{id: [0-9]+}")
-    public Response deleteVideo(@PathParam("id") Long id){
-        try{
+    public Response deleteVideo(@PathParam("id") Long id) {
+        try {
             repository.delete(id);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
@@ -67,8 +81,8 @@ public class VideoResource {
     @PUT
     @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateVideo(@PathParam("id") Long id, Video v){
-        try{
+    public Response updateVideo(@PathParam("id") Long id, Video v) {
+        try {
             repository.update(v);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();

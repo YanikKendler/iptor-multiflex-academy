@@ -1,0 +1,30 @@
+main {
+  display: flex;
+  margin-left: 10rem;
+  margin-block: 2.5rem;
+}
+
+.sidebar div {
+  display: flex;
+  justify-content: left;
+  padding: 0.25rem;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  border-radius: 0.3125rem;
+}
+.sidebar div fa-icon {
+  font-size: 1.5rem;
+}
+.sidebar div.active {
+  background: hsl(0, 0%, 92%);
+}
+.sidebar div.active fa-icon {
+  color: hsl(31, 100%, 47%);
+}
+
+section {
+  width: 100%;
+}
+
+/*# sourceMappingURL=account.component.css.map */
