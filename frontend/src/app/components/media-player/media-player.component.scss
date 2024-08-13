@@ -1,5 +1,30 @@
+@import "../../variables";
+
 video{
   border: 1px solid black;
   border-radius: .5rem;
   height: 100%;
+}
+
+.error{
+  height: 100%;
+  aspect-ratio: 16/9;
+  background-color: $gray-600;
+  border-radius: .5rem;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 1rem;
+
+  p{
+    max-width: 80%;
+    text-align: center;
+    line-height: 130%;
+    font-size: 1.05rem;
+  }
+
+  fa-icon{
+    font-size: 4rem;
+    color: gray;
+  }
 }

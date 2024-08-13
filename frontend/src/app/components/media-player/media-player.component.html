@@ -1,1 +1,8 @@
-<video #video controls></video>
+@if(!errorState){
+  <video #video controls></video>
+} @else {
+  <div class="error">
+    <fa-icon [icon]="faFrownOpen"></fa-icon>
+    <p>Sorry, this video was not found. Please reload the page to try again. If this issue is not resolved please contact a website administrator.</p>
+  </div>
+}

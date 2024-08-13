@@ -22,3 +22,18 @@ Enter the postgres dp to execute commands inside it `docker exec -it postgres-co
 For file storrage its required to have the folders "uploads" adnd "processed" in the backend root.
 
 For file uploading please download a [windows build](https://github.com/BtbN/FFmpeg-Builds/releases) of ffmeg and place "ffmpeg.exe" and "ffmprobe.exe" in a folder called "tools" in the backend root.
+
+# Guidlines
+
+## Comments
+
+COMMENT YOUR code (especially if its complex) you dont have to do it immeditaly but like the next day at least.
+
+```
+//this comment describes what happens in the next area
+
+something something code;
+more code lala; //this comment describes what happens in this line
+code code code;
+evenen more really cool code;
+```
