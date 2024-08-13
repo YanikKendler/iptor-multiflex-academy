@@ -1,6 +1,7 @@
 package model;
 
 import enums.VisibilityEnum;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.util.LinkedList;
@@ -27,12 +28,13 @@ public class Video {
     private String title;
     private String description;
     private String color;
-    private int durationSeconds;
-
     @Enumerated(EnumType.STRING)
     private VisibilityEnum visibility;
+    @OneToOne
+    @Nullable
+    private VideoFile videoFile;
 
-    public Video(String title, String description, String color, VisibilityEnum visibility, int durationSeconds) {
+    public Video(String title, String description, String color, VisibilityEnum visibility) {
         this.tags = new LinkedList<>();
         this.comments = new LinkedList<>();
         this.questions = new LinkedList<>();
@@ -41,7 +43,6 @@ public class Video {
         this.description = description;
         this.color = color;
         this.visibility = visibility;
-        this.durationSeconds = durationSeconds;
     }
 
     public void addTag(Tag tag) {
@@ -76,14 +77,6 @@ public class Video {
                 ", color='" + color + '\'' +
                 ", visibility=" + visibility +
                 '}';
-    }
-
-    public int getDurationSeconds() {
-        return durationSeconds;
-    }
-
-    public void setDurationSeconds(int durationSeconds) {
-        this.durationSeconds = durationSeconds;
     }
 
     public Long getVideoId() {
@@ -144,5 +137,13 @@ public class Video {
 
     public void setVisibility(VisibilityEnum visibility) {
         this.visibility = visibility;
+    }
+
+    public VideoFile getVideoFile() {
+        return videoFile;
+    }
+
+    public void setVideoFile(VideoFile videoFileId) {
+        this.videoFile = videoFileId;
     }
 }

@@ -7,11 +7,13 @@ INSERT INTO app_user (username, email, user_type) VALUES ('leon steinhuber', 'le
 INSERT INTO app_user (username, email, user_type) VALUES ('michael leisch', 'michael.leisch@example.com', 'EMPLOYEE');
 INSERT INTO app_user (username, email, user_type) VALUES ('yanik kendler', 'yanik.kendler@example.com', 'EMPLOYEE');
 
+INSERT INTO VideoFile(durationseconds, sizebytes, originalfileextension) values (32, 1000000, 'mp4');
+
 -- Insert demo data for Video
-INSERT INTO Video (title, description, visibility, color, durationSeconds) VALUES ('Java Basics', 'Introduction to Java', 'self' , 'red', 100);
-INSERT INTO Video (title, description, visibility, color, durationSeconds) VALUES ('Advanced Java', 'Deep dive into Java', 'customers' , 'pink', 200);
-INSERT INTO Video (title, description, visibility, color, durationSeconds) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', 'internal' , 'orange', 600);
-INSERT INTO Video (title, description, visibility, color, durationSeconds) VALUES ('Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , 'blue', 300);
+INSERT INTO Video (title, description, visibility, color, videofile_videofileid) VALUES ('Java Basics', 'Introduction to Java', 'self' , 'red', 1);
+INSERT INTO Video (title, description, visibility, color) VALUES ('Advanced Java', 'Deep dive into Java', 'customers' , 'pink');
+INSERT INTO Video (title, description, visibility, color) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', 'internal' , 'orange');
+INSERT INTO Video (title, description, visibility, color) VALUES ('Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , 'blue');
 
 -- Insert demo data for Question
 INSERT INTO Question (text, title) VALUES ('What is the main topic of the video?', 'Main Topic');
@@ -109,7 +111,7 @@ INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid
 INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, timestamp) VALUES (4, 4, 4, '2023-10-04');
 
 -- Insert demo data for ViewProgress
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (1, 1, 50, '2023-10-01 10:00:00');
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (1, 1, 15, '2023-10-01 10:00:00');
 INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (1, 1, 75, '2023-10-01 10:30:00');
 INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (2, 2, 200, '2023-10-02 11:00:00');
 INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (2, 3, 300, '2023-10-02 11:30:00');

@@ -1,0 +1,18 @@
+<app-navigation></app-navigation>
+
+<input type="file" (change)="onFileChange($event)" />
+
+<p>link video</p>
+<input type="number" #videoId placeholder="videoId">
+<input type="number" #fileId placeholder="fileId">
+<button (click)="linkVideo()">link</button>
+
+<main>
+  <p>Continue Watching</p>
+  <div class="video-row">
+    @for(video of videoList; track video.videoId){
+      <app-video-overview [video]="video"></app-video-overview>
+    }
+  </div>
+</main>
+

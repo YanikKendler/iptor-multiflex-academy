@@ -5,12 +5,22 @@
 		* videoId: Long
     * tags: List<Tag>
     * comments: List<Comment>
+    * videoFile: VideoFile
 		--
 		* title: String
     * description: String
     * color: String
     * visibility: VisibilityEnum
-    * durationSeconds: int
+	}
+
+	entity VideoFile {
+		* videoFileId: Long
+		--
+		* durationSeconds: int
+    * originalFileName: String
+    * originalFileExtension: String
+    * sizeBytes: int
+    * timestamp: LocalDateTime
 	}
 
 	entity Tag {
@@ -135,6 +145,7 @@
 /'   User ||--o{ Request
   Video ||--o{ Request '/
   Video ||--o{ StarRating
+  Video ||--|| VideoFile
 
   Video }o--o{ LearningPath
 

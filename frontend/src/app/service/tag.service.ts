@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 
-export interface TagModel{
+export interface Tag {
   tagId: number
   name: string
 }
@@ -14,8 +14,8 @@ export interface TagModel{
 export class TagService {
   http = inject(HttpClient)
 
-  getTagList(videoId: number):Observable<TagModel[]>{
-    return this.http.get<TagModel[]>("http://localhost:8080/video/" + videoId + "/tag").pipe(
+  getTagList(videoId: number):Observable<Tag[]>{
+    return this.http.get<Tag[]>("http://localhost:8080/video/" + videoId + "/tag").pipe(
       map(tagList => {
         return tagList
       })

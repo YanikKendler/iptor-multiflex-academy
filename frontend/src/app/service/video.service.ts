@@ -1,9 +1,9 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
-import {TagModel} from "./tag.service";
+import {Tag} from "./tag.service";
 import {QuestionModel} from "./question.service";
-import {CommentModel} from "./comment.service";
+import {Comment} from "./comment.service";
 
 export enum VisibilityEnum {
   self="self",everyone="everyone", customers="customers", internal="internal"
@@ -26,24 +26,33 @@ export interface ViewProgress {
   user: User;
 }
 
-export interface Video {
+export interface VideoFile {
+  videoFileId: number;
+  durationSeconds: number;
+  sizeBytes: number;
+  originalFileExtension: string;
+  originalFileName: string;
+  timestamp: string;
+}
+
+export interface VideoDetail {
   videoId: number;
   title: string;
   description: string;
-  tags: TagModel[];
+  tags: Tag[];
   color: string;
-  durationSeconds: number;
-  comments: CommentModel[];
+  comments: Comment[];
   questions: QuestionModel[];
   starRatings: StarRating[];
   visibility: VisibilityEnum;
+  videoFile: VideoFile;
 }
 
 export interface VideoOverview {
   videoId: number;
   title: string;
   description: string;
-  tags: TagModel[];
+  tags: Tag[];
   saved: boolean;
   color: string;
   durationSeconds: number;
@@ -64,15 +73,14 @@ export class VideoService {
     )
   }
 
-  createVideo(title: string, description: string, tags: TagModel[], color: string, durationSeconds: number, visibility: VisibilityEnum, coments: CommentModel[], questions: QuestionModel[], starRatings: StarRating[]){
-    this.http.post("http://localhost:8080/api/video/", {
+  createVideo(title: string, description: string, tags: Tag[], color: string, visibility: VisibilityEnum, comments: Comment[], questions: QuestionModel[], starRatings: StarRating[]){
+    this.http.post<VideoDetail>("http://localhost:8080/api/video/", {
       title: title,
       description: description,
       tags: tags,
       color: color,
-      durationSeconds: durationSeconds,
       visibility: visibility,
-      comments: coments,
+      comments: comments,
       questions: questions,
       starRatings: starRatings
     }).subscribe(response =>{
@@ -85,8 +93,8 @@ export class VideoService {
   }
 
 
-  getVideoById(id: number): Observable<Video>{
-    return this.http.get<Video>("http://localhost:8080/api/video/" + id).pipe(
+  getVideoById(id: number): Observable<VideoDetail>{
+    return this.http.get<VideoDetail>("http://localhost:8080/api/video/" + id).pipe(
       map(videoList => {
         return videoList
       })
