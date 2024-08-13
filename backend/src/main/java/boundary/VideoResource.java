@@ -24,9 +24,9 @@ public class VideoResource {
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/upload")
-    public Response upload(@FormParam("file") InputStream uploadedInputStream) {
+    public Response upload(@FormParam("file") InputStream uploadedInputStream, @QueryParam("filename") String filename) {
         try {
-            repository.uploadVideo(uploadedInputStream);
+            repository.uploadVideo(uploadedInputStream, filename);
 
             return Response.ok().entity("{\"message\":\"File uploaded successfully\"}").build();
         } catch (Exception e) {
@@ -34,6 +34,24 @@ public class VideoResource {
             return Response.status(500).entity(e).build();
         }
     }
+
+    //alternative with easier to grab metadata and nicer code but extremely buggy - most likely incompatible dependencies
+    /*@POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/upload")
+    public Response upload(@FormDataParam("file") FormDataBodyPart file) {
+        System.out.println("upload " + file.getName());
+
+        try {
+            repository.uploadVideo(file.getValueAs(InputStream.class));
+
+            return Response.ok().entity("{\"message\":\"File uploaded successfully\"}").build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500).entity(e).build();
+        }
+    }*/
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -53,6 +71,7 @@ public class VideoResource {
         try{
             videos = repository.getAll();
         }catch (Exception ex){
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().entity(videos).build();

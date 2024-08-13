@@ -31,15 +31,14 @@ export class VideoOverviewComponent implements OnInit{
   @Input() video: VideoOverview = {} as VideoOverview
   @Input() removable: boolean = true
 
-  toolTipString: string = "Tags"
+  tagToolTipString: string = "Tags"
   @ViewChild("bookmark") bookmark: BookmarkIconComponent | undefined
 
   constructor(private _router: Router) {
   }
 
   ngOnInit(): void {
-    this.toolTipString = this.video.tags?.map(tag => tag.name).join(", ")
-    /*console.log(this.video-overview)*/
+    this.tagToolTipString = this.video.tags?.map(tag => tag.name).join(", ")
   }
 
   @HostListener('click', ['$event'])

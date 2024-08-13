@@ -26,17 +26,26 @@ export interface ViewProgress {
   user: User;
 }
 
+export interface VideoFile {
+  videoFileId: number;
+  durationSeconds: number;
+  sizeBytes: number;
+  originalFileExtension: string;
+  originalFileName: string;
+  timestamp: string;
+}
+
 export interface VideoDetail {
   videoId: number;
   title: string;
   description: string;
   tags: Tag[];
   color: string;
-  durationSeconds: number;
   comments: Comment[];
   questions: QuestionModel[];
   starRatings: StarRating[];
   visibility: VisibilityEnum;
+  videoFile: VideoFile;
 }
 
 export interface VideoOverview {
@@ -64,15 +73,14 @@ export class VideoService {
     )
   }
 
-  createVideo(title: string, description: string, tags: Tag[], color: string, durationSeconds: number, visibility: VisibilityEnum, coments: Comment[], questions: QuestionModel[], starRatings: StarRating[]){
-    this.http.post("http://localhost:8080/api/video/", {
+  createVideo(title: string, description: string, tags: Tag[], color: string, visibility: VisibilityEnum, comments: Comment[], questions: QuestionModel[], starRatings: StarRating[]){
+    this.http.post<VideoDetail>("http://localhost:8080/api/video/", {
       title: title,
       description: description,
       tags: tags,
       color: color,
-      durationSeconds: durationSeconds,
       visibility: visibility,
-      comments: coments,
+      comments: comments,
       questions: questions,
       starRatings: starRatings
     }).subscribe(response =>{

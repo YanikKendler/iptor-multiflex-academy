@@ -5,7 +5,7 @@ import {Router} from "@angular/router"
 import {VideoOverview, VideoService, ViewProgress} from "../../service/video.service"
 import {Utils} from "../../utils"
 import {MediaPlayerComponent} from "../media-player/media-player.component"
-import {HttpClient} from "@angular/common/http"
+import {HttpClient, HttpErrorResponse, HttpEventType} from "@angular/common/http"
 
 @Component({
   selector: 'app-dashboard',
@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild('videoId', { static: true }) videoIdInput!: ElementRef<HTMLInputElement>;
   @ViewChild('fileId', { static: true }) fileIdInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.service.getVideoList().subscribe((videos: VideoOverview[]) => {
@@ -48,13 +48,14 @@ export class DashboardComponent implements OnInit {
   }
 
   uploadFile(file: File) {
+    const fileName = file.name;
     const formData = new FormData();
     formData.append('file', file);
-    return this.httpClient.post('http://localhost:8080/api/video/upload', formData);
+    return this.http.post('http://localhost:8080/api/video/upload?filename=' + fileName, formData);
   }
 
   linkVideo() {
-    this.httpClient.put(`http://localhost:8080/api/video/${this.videoIdInput.nativeElement.value}/linkVideoFile/${this.fileIdInput.nativeElement.value}`, {}, {observe: "response"}).subscribe(response => {
+    this.http.put(`http://localhost:8080/api/video/${this.videoIdInput.nativeElement.value}/linkVideoFile/${this.fileIdInput.nativeElement.value}`, {}, {observe: "response"}).subscribe(response => {
       console.log('video linked:', response);
     }, error => {
       console.error('There was an error:', error);
