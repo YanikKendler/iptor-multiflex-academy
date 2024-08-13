@@ -1,5 +1,6 @@
 package boundary;
 
+import dtos.VideoForUserDTO;
 import dtos.VideoOverviewDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
