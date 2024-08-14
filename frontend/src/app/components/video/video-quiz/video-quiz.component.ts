@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {VideoQuizAnswersComponent} from "../video-quiz-answers/video-quiz-answers.component";
 import {NgClass, NgForOf} from "@angular/common";
-import {QuestionModel} from "../../../service/question.service"
+import {Question} from "../../../service/question.service"
 
 @Component({
   selector: 'app-video-quiz',
@@ -15,11 +15,11 @@ import {QuestionModel} from "../../../service/question.service"
   styleUrl: './video-quiz.component.scss'
 })
 export class VideoQuizComponent implements OnInit {
-  @Input() questions: QuestionModel[] | undefined = [];
+  @Input() questions: Question[] | undefined = [];
 
   questionNr: number = 0;
-  checkedQuestions: QuestionModel[] = [];
-  selectedQuestion: QuestionModel | null = null;
+  checkedQuestions: Question[] = [];
+  selectedQuestion: Question | null = null;
 
   ngOnInit() {
     // auto-select first question
@@ -28,7 +28,7 @@ export class VideoQuizComponent implements OnInit {
     }
   }
 
-  selectQuestion(question: QuestionModel, questionNumber: number) {
+  selectQuestion(question: Question, questionNumber: number) {
     this.selectedQuestion = question;
     this.questionNr = questionNumber
   }

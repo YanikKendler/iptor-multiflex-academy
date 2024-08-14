@@ -37,3 +37,9 @@ more code lala; //this comment describes what happens in this line
 code code code;
 evenen more really cool code;
 ```
+
+## Naming
+
+We live in a time where autocomplete is insanely good can we please write userId instead of uid
+
+The only place where its fine to save characters is in URLS that are visible to the user like for sharing or smth

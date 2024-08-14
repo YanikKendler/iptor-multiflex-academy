@@ -1,6 +1,7 @@
 package boundary;
 
 import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -16,23 +17,12 @@ public class ViewProgressResource {
     @Inject
     ViewProgressRepository repository;
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTag(@PathParam("videoId")Long vid, ViewProgress vp){
-        try {
-            repository.create(vid, vp);
-        } catch (Exception ex) {
-            return Response.status(400).entity(ex).build();
-        }
-        return Response.ok().build();
-    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLatest(@PathParam("videoId")Long vid, @PathParam("userId")Long uid){
-        ViewProgress vp = null;
+    public Response getProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId){
+        ViewProgress vp;
         try{
-            vp = repository.getLatest(vid, uid);
+            vp = repository.getLatest(videoId, userId);
         }catch (Exception ex){
             ex.printStackTrace();
             return Response.status(400).entity(ex).build();
@@ -40,12 +30,10 @@ public class ViewProgressResource {
         return Response.ok().entity(vp).build();
     }
 
-
     @DELETE
-    @Path("{id: [0-9]+}")
-    public Response deleteTag(@PathParam("id") Long id){
+    public Response deleteProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId){
         try{
-            repository.delete(id);
+            repository.delete(videoId, userId);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -53,11 +41,11 @@ public class ViewProgressResource {
     }
 
     @PUT
-    @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateTag(@PathParam("id") Long id, ViewProgress vp){
+    public Response updateViewProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId, JsonObject data){
         try{
-            repository.update(vp);
+            System.out.println("update progress " + data.getInt("durationSeconds"));
+            repository.update(videoId, userId, data.getInt("durationSeconds"));
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

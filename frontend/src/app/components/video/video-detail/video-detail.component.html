@@ -7,12 +7,13 @@
       <h1>{{video?.title}}</h1>
       <p class="description">{{video?.description}}</p>
       <div class="actions">
+        <!--replace with rating component-->
         <app-star-icon [stared]="true"></app-star-icon>
         <app-star-icon [stared]="true"></app-star-icon>
         <app-star-icon [stared]="true"></app-star-icon>
         <app-star-icon></app-star-icon>
         <app-star-icon></app-star-icon>
-        <p>3.2</p>
+        <p>{{ video?.rating }}</p>
         <!--replace with rating component-->
 
         <app-bookmark-icon></app-bookmark-icon>

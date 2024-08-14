@@ -8,7 +8,7 @@ import {MatTooltip} from "@angular/material/tooltip"
 import {RemoveIconComponent} from "../../icons/remove-icon/remove-icon.component"
 import {ChipComponent} from "../../basic/chip/chip.component"
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component"
-import {VideoOverview} from "../../../service/video.service"
+import {VideoOverviewDTO} from "../../../service/video.service"
 import { Utils } from '../../../utils';
 
 @Component({
@@ -28,7 +28,7 @@ import { Utils } from '../../../utils';
   styleUrl: './video-overview.component.scss',
 })
 export class VideoOverviewComponent implements OnInit{
-  @Input() video: VideoOverview = {} as VideoOverview
+  @Input() video: VideoOverviewDTO = {} as VideoOverviewDTO
   @Input() removable: boolean = true
 
   tagToolTipString: string = "Tags"

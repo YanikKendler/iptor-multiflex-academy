@@ -1,6 +1,6 @@
 package boundary;
 
-import dtos.VideoForUserDTO;
+import dtos.VideoDetailDTO;
 import dtos.VideoOverviewDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -79,9 +79,21 @@ public class VideoResource {
     }
 
     @GET
+    @Path("{videoId: [0-9]+}")
+    public Response getVideoDetails(@PathParam("videoId") Long videoId, @QueryParam("userId") Long userId){
+        VideoDetailDTO videoDetailDTO;
+        try{
+            videoDetailDTO = repository.getVideoDetails(videoId, userId);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().entity(videoDetailDTO).build();
+    }
+
+    @GET
     @Path("{id: [0-9]+}")
     public Response getVideo(@PathParam("id") Long id){
-        System.out.println("getVideo");
         Video video;
         try{
             video = repository.getById(id);
@@ -94,10 +106,10 @@ public class VideoResource {
 
     @GET
     @Produces(MediaType.MULTIPART_FORM_DATA)
-    @Path("{videoId:[0-9]+}/getVideoChunk/{fileName}")
-    public RestResponse<File> getVideoChunk(@PathParam("fileName") String fileName, @PathParam("videoId") Long videoId) {
+    @Path("{videoId:[0-9]+}/getVideoFragment/{fileName}")
+    public RestResponse<File> getVideoFragment(@PathParam("fileName") String fileName, @PathParam("videoId") Long videoId) {
         try {
-            File file = repository.getVideoChunk(videoId, fileName);
+            File file = repository.getVideoFragment(videoId, fileName);
             return RestResponse.ResponseBuilder.ok(file)
                     .header("Content-Disposition", "attachment; filename=\""+ fileName +"\"")
                     .build();

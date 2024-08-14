@@ -64,19 +64,12 @@ public class Video {
     public Video() {
     }
 
-    @Override
-    public String toString() {
-        return "Video{" +
-                "videoId=" + videoId +
-                ", tags=" + tags +
-                ", comments=" + comments +
-                ", questions=" + questions +
-                ", starRatings=" + starRatings +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", color='" + color + '\'' +
-                ", visibility=" + visibility +
-                '}';
+    public double calculateStarRating() {
+        double sum = 0;
+        for (StarRating starRating : starRatings) {
+            sum += starRating.getRating();
+        }
+        return sum / starRatings.size();
     }
 
     public Long getVideoId() {

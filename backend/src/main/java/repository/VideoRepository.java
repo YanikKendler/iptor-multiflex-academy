@@ -1,6 +1,6 @@
 package repository;
 
-import dtos.VideoForUserDTO;
+import dtos.VideoDetailDTO;
 import dtos.VideoOverviewDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -52,7 +52,7 @@ public class VideoRepository {
                 .toList();
     }
 
-    /**public VideoForUserDTO getAllFromUser(Long userId) {
+    /*public VideoForUserDTO getAllFromUser(Long userId) {
         List<VideoOverviewDTO> continueVideos = null;
         List<VideoOverviewDTO> assignedVideos = null;
         List<VideoOverviewDTO> suggestedVideos = null;
@@ -76,10 +76,39 @@ public class VideoRepository {
 
         return new VideoForUserDTO(continueVideos, assignedVideos, suggestedVideos);
     }
-     **/
+     */
 
     public Video getById(Long id){
+        System.out.println("getById");
         return em.find(Video.class, id);
+    }
+
+    public VideoDetailDTO getVideoDetails(Long userId, Long videoId) {
+        System.out.println("getVideoDetails");
+
+        Video video = em.find(Video.class, videoId);
+
+        int viewProgressDuration = em.createQuery(
+                    "select vp.durationSeconds from ViewProgress vp " +
+                    "where vp.user.userId = :userId " +
+                    "and vp.video.videoId = :videoId"
+            , Integer.class)
+            .setParameter("userId", userId)
+            .setParameter("videoId", videoId)
+            .setMaxResults(1)
+            .getSingleResult();
+
+        return new VideoDetailDTO(
+            video.getVideoId(),
+            video.getTitle(),
+            video.getDescription(),
+            video.getTags(),
+            video.getComments(),
+            video.getQuestions(),
+            video.calculateStarRating(),
+            video.getVideoFile(),
+            viewProgressDuration
+        );
     }
 
     /**
@@ -149,6 +178,7 @@ public class VideoRepository {
             FFmpeg ffmpeg = new FFmpeg("tools" + File.separator + "ffmpeg.exe");
             FFprobe ffprobe = new FFprobe("tools" + File.separator + "ffprobe.exe");
 
+            //TODO really fancy bug.. when uploading a mkv and possibly other formats the duration is not read correctly
             //read metadata from videofile and store them in the db
             FFmpegProbeResult probeResult = ffprobe.probe(filePath);
             FFmpegStream stream = probeResult.getStreams().get(0);
@@ -164,7 +194,7 @@ public class VideoRepository {
                 .setInput(filePath)
                 .overrideOutputFiles(false)
 
-                .addOutput("processed" + File.separator + "video-" + videoFile.getVideoFileId() + File.separator + "source.mpd")
+                .addOutput("processed" + File.separator + "video-" + videoFile.getVideoFileId() + File.separator + "manifest.mpd")
                 .setFormat("dash")
 
                 .setAudioCodec("copy")
@@ -195,7 +225,7 @@ public class VideoRepository {
      *
      * @return the requested video chunk
      */
-    public File getVideoChunk(Long videoId, String fileName) throws Exception {
+    public File getVideoFragment(Long videoId, String fileName) throws Exception {
         Video video = em.find(Video.class, videoId);
         return new File("processed" + File.separator + "video-" + video.getVideoFile().getVideoFileId() + File.separator + fileName);
     }

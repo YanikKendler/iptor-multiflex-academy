@@ -83,4 +83,27 @@ export class Utils{
   static padNumber(number: number, length: number = 2){
     return number.toString().padStart(length, '0')
   }
+
+  static spinAnimation(element: HTMLElement){
+    if(element.classList.contains('spinning')) return //prevents adding multiple animations
+
+    element.classList.add('spinning')
+
+    let rotation = 0;
+
+    let interval = setInterval(() => {
+      element.animate([
+        {transform: `rotate(${rotation}deg)`},
+        {transform: `rotate(${rotation += 45}deg)`}
+      ], {
+        duration: 50,
+        fill: 'forwards',
+        easing: 'ease-in-out'
+      })
+      if(!document.body.contains(element)){ //auto remove spinning if element is removed from DOM
+        clearInterval(interval)
+        element.classList.remove('spinning')
+      }
+    }, 500)
+  }
 }

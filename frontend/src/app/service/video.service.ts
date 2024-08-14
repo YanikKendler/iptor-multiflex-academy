@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
 import {Tag} from "./tag.service";
-import {QuestionModel} from "./question.service";
+import {Question} from "./question.service";
 import {Comment} from "./comment.service";
 
 export enum VisibilityEnum {
@@ -42,13 +42,25 @@ export interface VideoDetail {
   tags: Tag[];
   color: string;
   comments: Comment[];
-  questions: QuestionModel[];
+  questions: Question[];
   starRatings: StarRating[];
   visibility: VisibilityEnum;
   videoFile: VideoFile;
 }
 
-export interface VideoOverview {
+export interface VideoDetailDTO {
+  videoId: number;
+  title: string;
+  description: string;
+  tags: Tag[];
+  comments: Comment[];
+  questions: Question[];
+  rating: number;
+  videoFile: VideoFile;
+  viewProgress: number;
+}
+
+export interface VideoOverviewDTO {
   videoId: number;
   title: string;
   description: string;
@@ -65,15 +77,25 @@ export interface VideoOverview {
 export class VideoService {
   http = inject(HttpClient)
 
-  getVideoList(): Observable<VideoOverview[]>{
-    return this.http.get<VideoOverview[]>("http://localhost:8080/api/video/").pipe(
-      map(videoList => {
-        return videoList
-      })
-    )
+  getVideoList(): Observable<VideoOverviewDTO[]>{
+    return this.http.get<VideoOverviewDTO[]>("http://localhost:8080/api/video/")
   }
 
-  createVideo(title: string, description: string, tags: Tag[], color: string, visibility: VisibilityEnum, comments: Comment[], questions: QuestionModel[], starRatings: StarRating[]){
+  getVideoDetails(videoId: number, userId: number): Observable<VideoDetailDTO>{
+    return this.http.get<VideoDetailDTO>(`http://localhost:8080/api/video/${videoId}?userId=${userId}`)
+  }
+
+  getVideoProgress(videoId: number, userId: number): Observable<ViewProgress>{
+    return this.http.get<ViewProgress>(`http://localhost:8080/api/video/${videoId}/progress/${userId}`)
+  }
+
+  setVideoProgress(videoId: number, userId: number, progress: number) {
+    return this.http.put(`http://localhost:8080/api/video/${videoId}/progress/${userId}`, {
+      durationSeconds: progress
+    })
+  }
+
+  createVideo(title: string, description: string, tags: Tag[], color: string, visibility: VisibilityEnum, comments: Comment[], questions: Question[], starRatings: StarRating[]){
     this.http.post<VideoDetail>("http://localhost:8080/api/video/", {
       title: title,
       description: description,
@@ -90,22 +112,5 @@ export class VideoService {
       console.error('Error occurred:', error);
       // Fehlerbehandlung hier
     });
-  }
-
-
-  getVideoById(id: number): Observable<VideoDetail>{
-    return this.http.get<VideoDetail>("http://localhost:8080/api/video/" + id).pipe(
-      map(videoList => {
-        return videoList
-      })
-    )
-  }
-
-  getVideoProgress(videoId: number, userId: number): Observable<ViewProgress>{
-    return this.http.get<ViewProgress>("http://localhost:8080/api/video/" + videoId + "/progress/" + userId).pipe(
-      map(videoList => {
-        return videoList
-      })
-    )
   }
 }

@@ -8,7 +8,7 @@ export interface AnswerOption {
   correct: boolean;
 }
 
-export interface QuestionModel {
+export interface Question {
   questionId: number;
   answerOptions: AnswerOption[];
   title: string;
@@ -22,8 +22,8 @@ export interface QuestionModel {
 export class QuestionService {
   http = inject(HttpClient)
 
-  getQuestionList(videoId: number): Observable<QuestionModel[]>{
-    return this.http.get<QuestionModel[]>("http://localhost:8080/api/video/" + videoId + "/question").pipe(
+  getQuestionList(videoId: number): Observable<Question[]>{
+    return this.http.get<Question[]>("http://localhost:8080/api/video/" + videoId + "/question").pipe(
       map(commentList => {
         return commentList
       })

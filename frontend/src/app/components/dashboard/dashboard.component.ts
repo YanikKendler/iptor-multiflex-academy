@@ -2,9 +2,9 @@ import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {NavigationComponent} from "../navigation/navigation.component"
 import {VideoOverviewComponent} from "../video/video-overview/video-overview.component"
 import {Router} from "@angular/router"
-import {VideoOverview, VideoService, ViewProgress} from "../../service/video.service"
+import {VideoOverviewDTO, VideoService, ViewProgress} from "../../service/video.service"
 import {Utils} from "../../utils"
-import {MediaPlayerComponent} from "../media-player/media-player.component"
+import {MediaPlayerComponent} from "../video/media-player/media-player.component"
 import {HttpClient, HttpErrorResponse, HttpEventType} from "@angular/common/http"
 
 @Component({
@@ -20,7 +20,7 @@ import {HttpClient, HttpErrorResponse, HttpEventType} from "@angular/common/http
 })
 export class DashboardComponent implements OnInit {
   service = inject(VideoService);
-  videoList: VideoOverview[] | undefined;
+  videoList: VideoOverviewDTO[] | undefined;
   progressList: [number, ViewProgress][] | undefined;
 
   @ViewChild('videoId', { static: true }) videoIdInput!: ElementRef<HTMLInputElement>;
@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.service.getVideoList().subscribe((videos: VideoOverview[]) => {
+    this.service.getVideoList().subscribe((videos: VideoOverviewDTO[]) => {
       this.videoList = videos;
 
       this.progressList = [];

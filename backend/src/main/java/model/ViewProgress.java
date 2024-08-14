@@ -1,6 +1,8 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.sql.Timestamp;
 import java.time.Duration;
@@ -15,7 +17,9 @@ public class ViewProgress {
     @ManyToOne
     private Video video;
 
+    @JsonIgnore
     @ManyToOne
+    @Unique
     private User user;
 
     private int durationSeconds;

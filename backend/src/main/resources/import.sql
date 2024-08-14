@@ -48,7 +48,7 @@ INSERT INTO Comment (text, user_userid, timestamp) VALUES ('Nice tutorial.', 3, 
 INSERT INTO Comment (text, user_userid, timestamp) VALUES ('Loved the explanation.', 2, '2024-08-07 09:20:00');
 
 -- Insert demo data for StarRating
-INSERT INTO StarRating (rating) VALUES (1);
+INSERT INTO StarRating (rating) VALUES (2);
 INSERT INTO StarRating (rating) VALUES (2);
 INSERT INTO StarRating (rating) VALUES (3);
 INSERT INTO StarRating (rating) VALUES (4);
@@ -82,9 +82,9 @@ INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (3, 1);
 
 -- Insert demo data for video_star_rating
 INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 1);
-INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (4, 2);
-INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (2, 3);
-INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (3, 4);
+INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 2);
+INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 3);
+INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 4);
 
 -- Insert demo data for Customer
 INSERT INTO Customer (userid, companyName, isManager, supervisor_userid) VALUES (1, 'TechCorp', true, null);
@@ -112,7 +112,7 @@ INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid
 
 -- Insert demo data for ViewProgress
 INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (1, 1, 15, '2023-10-01 10:00:00');
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (1, 1, 75, '2023-10-01 10:30:00');
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (2, 2, 200, '2023-10-02 11:00:00');
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (2, 3, 300, '2023-10-02 11:30:00');
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (1, 2, 75, '2023-10-01 10:30:00');
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (2, 1, 200, '2023-10-02 11:00:00');
+INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp) VALUES (2, 2, 300, '2023-10-02 11:30:00');
 
