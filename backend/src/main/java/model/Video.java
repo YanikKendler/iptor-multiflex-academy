@@ -4,6 +4,7 @@ import enums.VisibilityEnum;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,7 +35,10 @@ public class Video {
     @Nullable
     private VideoFile videoFile;
 
+    private final LocalDateTime creationTime;
+
     public Video(String title, String description, String color, VisibilityEnum visibility) {
+        this();
         this.tags = new LinkedList<>();
         this.comments = new LinkedList<>();
         this.questions = new LinkedList<>();
@@ -43,6 +47,10 @@ public class Video {
         this.description = description;
         this.color = color;
         this.visibility = visibility;
+    }
+
+    public Video() {
+        this.creationTime = LocalDateTime.now();
     }
 
     public void addTag(Tag tag) {
@@ -61,8 +69,6 @@ public class Video {
         starRatings.add(starRating);
     }
 
-    public Video() {
-    }
 
     public double calculateStarRating() {
         double sum = 0;
@@ -151,5 +157,9 @@ public class Video {
 
     public void setVideoFile(VideoFile videoFileId) {
         this.videoFile = videoFileId;
+    }
+
+    public LocalDateTime getCreationTime() {
+        return creationTime;
     }
 }

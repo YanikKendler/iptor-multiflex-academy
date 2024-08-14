@@ -6,6 +6,7 @@ import {VideoOverviewDTO, VideoService, ViewProgress} from "../../service/video.
 import {Utils} from "../../utils"
 import {MediaPlayerComponent} from "../video/media-player/media-player.component"
 import {HttpClient, HttpErrorResponse, HttpEventType} from "@angular/common/http"
+import {StarIconComponent} from "../icons/star/star.icon.component"
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +15,7 @@ import {HttpClient, HttpErrorResponse, HttpEventType} from "@angular/common/http
     NavigationComponent,
     VideoOverviewComponent,
     MediaPlayerComponent,
+    StarIconComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
