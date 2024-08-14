@@ -17,24 +17,14 @@ export interface Comment {
 export class CommentService {
   http = inject(HttpClient)
 
-  getCommentList(videoId: number): Observable<Comment[]>{
-    return this.http.get<Comment[]>("http://localhost:8080/api/video/" + videoId + "/comment").pipe(
-      map(commentList => {
-        return commentList
-      })
-    )
+  getCommentList(videoId: number, userId: number): Observable<Comment[]>{
+    return this.http.get<Comment[]>(`http://localhost:8080/api/video/${videoId}/comment?userId=${userId}`)
   }
 
   createComment(videoId: number, text: string, user: number){
-    this.http.post("http://localhost:8080/api/video/" + videoId + "/comment", {
+    return this.http.post(`http://localhost:8080/api/video/${videoId}/comment`, {
       text: text,
       userId: user
-    }).subscribe(response =>{
-      console.log('Response from server:', response);
-      // Weitere Verarbeitung der Response hier
-    }, error => {
-      console.error('Error occurred:', error);
-      // Fehlerbehandlung hier
     });
   }
 

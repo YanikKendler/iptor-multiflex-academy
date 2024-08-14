@@ -26,11 +26,13 @@ public class CommentResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@PathParam("videoId") Long vid){
+    public Response getAll(@PathParam("videoId") Long vid, @QueryParam("userId") Long uid){
         List<Comment> comments;
         try{
-            comments = repository.getAll(vid);
+            System.out.println(uid);
+            comments = repository.getAll(vid, uid);
         }catch (Exception ex){
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().entity(comments).build();

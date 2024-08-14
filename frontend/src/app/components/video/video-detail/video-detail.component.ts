@@ -7,18 +7,20 @@ import {VideoCommentsComponent} from "../video-comments/video-comments.component
 import {VideoQuizComponent} from "../video-quiz/video-quiz.component";
 import {VideoDetailDTO, VideoService} from "../../../service/video.service"
 import {MediaPlayerComponent} from "../media-player/media-player.component"
+import {VideoRatingComponent} from "../video-rating/video-rating.component";
 
 @Component({
   selector: 'app-video-detail',
   standalone: true,
-    imports: [
-        NavigationComponent,
-        StarIconComponent,
-        BookmarkIconComponent,
-        VideoCommentsComponent,
-        VideoQuizComponent,
-        MediaPlayerComponent
-    ],
+  imports: [
+    NavigationComponent,
+    StarIconComponent,
+    BookmarkIconComponent,
+    VideoCommentsComponent,
+    VideoQuizComponent,
+    MediaPlayerComponent,
+    VideoRatingComponent
+  ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss'
 })
@@ -36,7 +38,6 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   ngOnInit() {
     this.route.params.subscribe(
       (params: Params) => {
-        console.log(params['id'])
         this.service.getVideoDetails(params['id'], 1).subscribe(video => {
           console.log(video)
           this.video = video

@@ -7,15 +7,7 @@
       <h1>{{video?.title}}</h1>
       <p class="description">{{video?.description}}</p>
       <div class="actions">
-        <!--replace with rating component-->
-        <app-star-icon></app-star-icon>
-        <app-star-icon></app-star-icon>
-        <app-star-icon></app-star-icon>
-        <app-star-icon></app-star-icon>
-        <app-star-icon></app-star-icon>
-        <p>{{ video?.rating }}</p>
-        <!--replace with rating component-->
-
+        <app-video-rating></app-video-rating>
         <app-bookmark-icon></app-bookmark-icon>
       </div>
     </div>
@@ -30,7 +22,7 @@
 
     @switch(this.currentTab){
       @case('comments'){
-        <app-video-comments [comments]="video?.comments"></app-video-comments>
+        <app-video-comments [comments]="video?.comments" [userId]="1" [videoId]="this.video?.videoId"></app-video-comments>
       }
       @case('quiz'){
         <app-video-quiz [questions]="video?.questions"></app-video-quiz>

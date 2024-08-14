@@ -108,7 +108,7 @@ public class VideoRepository {
             video.getTitle(),
             video.getDescription(),
             video.getTags(),
-            video.getComments(),
+            video.getComments(userId),
             video.getQuestions(),
             video.calculateStarRating(),
             video.getVideoFile(),

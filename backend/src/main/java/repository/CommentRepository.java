@@ -21,6 +21,8 @@ public class CommentRepository {
 
     @Transactional
     public void create(Long videoId, Comment comment) {
+        //todo when users are implemented, get the user from the session
+        comment.setUser(em.find(User.class, 1L));
         videoRepository.getById(videoId).addComment(comment);
         em.persist(comment);
     }
@@ -33,9 +35,12 @@ public class CommentRepository {
         em.remove(getById(id));
     }
 
-    public List<Comment> getAll(Long videoId) {
-        return em.createQuery("select c from Video v join v.comments c where v.videoId = :videoId", Comment.class)
-                .setParameter("videoId", videoId).getResultList();
+    public List<Comment> getAll(Long videoId, Long userId) {
+        // the comments are ordered by the user id, so that the user's comments are shown first
+        return em.createQuery("select c from Video v join v.comments c where v.videoId = :videoId order by case when c.user.id = :userId then 0 else 1 end, c.timestamp desc", Comment.class)
+                .setParameter("videoId", videoId)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 
     public Comment getById(Long id){
