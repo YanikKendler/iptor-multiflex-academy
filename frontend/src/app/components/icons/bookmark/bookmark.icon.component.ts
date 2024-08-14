@@ -16,8 +16,6 @@ import {IconButtonComponent} from "../../basic/icon-button/icon-button.component
 export class BookmarkIconComponent {
   @HostBinding('class.marked')
   @Input() marked: boolean = false;
-  @Input() size: string = '1.2rem';
-  @Input() color: string = 'black';
 
   bookmark = { filled, outlined };
 

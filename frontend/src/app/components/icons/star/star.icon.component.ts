@@ -14,6 +14,5 @@ import {NgStyle} from "@angular/common"
 export class StarIconComponent {
   @Input() state: "filled" | "outlined" | "half" = "outlined";
   @Input() size: string = '1.2rem';
-  @Input() color: string = 'black';
   star = { filled, outlined, half };
 }

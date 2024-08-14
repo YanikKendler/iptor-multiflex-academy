@@ -7,6 +7,8 @@ import {Utils} from "../../utils"
 import {MediaPlayerComponent} from "../video/media-player/media-player.component"
 import {HttpClient, HttpErrorResponse, HttpEventType} from "@angular/common/http"
 import {StarIconComponent} from "../icons/star/star.icon.component"
+import {PlayIconComponent} from "../icons/playicon/play.icon.component"
+import {RemoveIconComponent} from "../icons/remove-icon/remove-icon.component"
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +18,8 @@ import {StarIconComponent} from "../icons/star/star.icon.component"
     VideoOverviewComponent,
     MediaPlayerComponent,
     StarIconComponent,
+    PlayIconComponent,
+    RemoveIconComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'

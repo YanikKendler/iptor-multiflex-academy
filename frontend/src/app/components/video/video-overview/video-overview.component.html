@@ -1,5 +1,5 @@
 <div class="header">
-  <app-play-icon color="{{video.color}}"></app-play-icon>
+  <app-play-icon [style.color]="video.color"></app-play-icon>
   <h2>{{ video.title }}</h2>
   <div class="actions">
     @if(removable){
