@@ -84,7 +84,20 @@ public class Video {
         this.tags = tags;
     }
 
-    public List<Comment> getComments() {
+    public List<Comment> getComments(Long userId) {
+        if(userId == null) {
+            return comments;
+        }
+
+        comments.sort((c1, c2) -> {
+            if (c1.getUser().getUserId().equals(userId) && !c2.getUser().getUserId().equals(userId)) {
+                return -1;
+            } else if (!c1.getUser().getUserId().equals(userId) && c2.getUser().getUserId().equals(userId)) {
+                return 1;
+            } else {
+                return c2.getTimestamp().compareTo(c1.getTimestamp());
+            }
+        });
         return comments;
     }
 
