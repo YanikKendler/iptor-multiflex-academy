@@ -1,11 +1,18 @@
 @import "../../../variables";
 
+:host{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 main{
   width: 80%;
   margin-inline: auto;
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  height: 100%;
 }
 
 .top{
@@ -45,6 +52,7 @@ main{
 .bottom{
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   .tab-selector{
     display: flex;

@@ -1,6 +1,7 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.json.JsonObject;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -30,6 +31,20 @@ public abstract class User {
     }
 
     public User() { }
+
+    public JsonObject calculateStatistics(){
+        /* TODO just for fun and out of interest - stuff like:
+         * how many total comments to user left
+         * how many videos rated
+         * average star rating given
+         * how many quizes completed
+         * how many videos watched
+         * how many videos saved
+         * how many videos uploaded
+         * how many learningpaths completed
+         */
+        return null;
+    }
 
     //<editor-fold desc="Getter und Setter">
     public Long getUserId() {
