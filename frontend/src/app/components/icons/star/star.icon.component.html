@@ -1,5 +1,1 @@
-@if (stared) {
-  <fa-icon [icon]="star.filled" [ngStyle]="{'font-size': size, 'color': color}"></fa-icon>
-} @else {
-  <fa-icon [icon]="star.outlined" [ngStyle]="{'font-size': size, 'color': color}"></fa-icon>
-}
+<fa-icon [icon]="star[state]" [ngStyle]="{'font-size': size, 'color': color}"></fa-icon>
