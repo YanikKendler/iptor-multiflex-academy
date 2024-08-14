@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.service.getVideoList().subscribe((videos: VideoOverviewDTO[]) => {
       this.videoList = videos;
+      console.log(videos)
 
       this.progressList = [];
       videos.forEach(video => {
