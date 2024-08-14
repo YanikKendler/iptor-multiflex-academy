@@ -14,6 +14,7 @@ import {NgForOf} from "@angular/common";
 })
 export class VideoRatingComponent {
   @Input() rating: number = 0
+  numbers: number[] = [1, 2, 3, 4, 5]; // Array to loop through
 
   addRating(rating: number) {
 
