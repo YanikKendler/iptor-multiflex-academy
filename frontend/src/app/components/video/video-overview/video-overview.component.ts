@@ -46,7 +46,6 @@ export class VideoOverviewComponent implements OnInit{
     this._router.navigate(['video/' + this.video?.videoId])
   }
 
-
   addToBookmarks(event: MouseEvent){
     event.stopPropagation();
     this.bookmark?.toggleMarked()

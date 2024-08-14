@@ -36,9 +36,10 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   ngOnInit() {
     this.route.params.subscribe(
       (params: Params) => {
+        console.log(params['id'])
         this.service.getVideoDetails(params['id'], 1).subscribe(video => {
-          this.video = video
           console.log(video)
+          this.video = video
         })
       }
     )

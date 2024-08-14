@@ -5,6 +5,7 @@ import dtos.VideoOverviewDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import model.Video;
 import model.VideoFile;
@@ -79,24 +80,28 @@ public class VideoRepository {
      */
 
     public Video getById(Long id){
-        System.out.println("getById");
+        System.out.println("getById " + id);
         return em.find(Video.class, id);
     }
 
-    public VideoDetailDTO getVideoDetails(Long userId, Long videoId) {
-        System.out.println("getVideoDetails");
+    public VideoDetailDTO getVideoDetails(Long videoId, Long userId) {
+        System.out.println("getVideoDetails user: " + userId + " video: " + videoId);
 
         Video video = em.find(Video.class, videoId);
 
-        int viewProgressDuration = em.createQuery(
-                    "select vp.durationSeconds from ViewProgress vp " +
-                    "where vp.user.userId = :userId " +
-                    "and vp.video.videoId = :videoId"
-            , Integer.class)
-            .setParameter("userId", userId)
-            .setParameter("videoId", videoId)
-            .setMaxResults(1)
-            .getSingleResult();
+        int viewProgressDuration;
+        try {
+            viewProgressDuration = em.createQuery(
+                            "select vp.durationSeconds from ViewProgress vp " +
+                                    "where vp.user.userId = :userId " +
+                                    "and vp.video.videoId = :videoId", Integer.class)
+                    .setParameter("userId", userId)
+                    .setParameter("videoId", videoId)
+                    .setMaxResults(1)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            viewProgressDuration = 0;
+        }
 
         return new VideoDetailDTO(
             video.getVideoId(),
@@ -194,7 +199,7 @@ public class VideoRepository {
                 .setInput(filePath)
                 .overrideOutputFiles(false)
 
-                .addOutput("processed" + File.separator + "video-" + videoFile.getVideoFileId() + File.separator + "manifest.mpd")
+                .addOutput("processed/" + "video-" + videoFile.getVideoFileId() +"/manifest.mpd")
                 .setFormat("dash")
 
                 .setAudioCodec("copy")

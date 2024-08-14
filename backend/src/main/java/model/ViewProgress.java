@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.checkerframework.common.aliasing.qual.Unique;
 
-import java.sql.Timestamp;
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,8 +21,9 @@ public class ViewProgress {
     private User user;
 
     private int durationSeconds;
-
+    private boolean ignored;
     private LocalDateTime timestamp;
+
 
     public ViewProgress(Video video, User user, int durationSeconds) {
         this.video = video;
@@ -70,5 +69,13 @@ public class ViewProgress {
 
     public void setDurationSeconds(int durationSeconds) {
         this.durationSeconds = durationSeconds;
+    }
+
+    public boolean isIgnored() {
+        return ignored;
+    }
+
+    public void setIgnored(boolean ignored) {
+        this.ignored = ignored;
     }
 }

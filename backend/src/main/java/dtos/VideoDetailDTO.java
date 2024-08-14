@@ -1,8 +1,4 @@
 package dtos;
-
-import enums.VisibilityEnum;
-import jakarta.annotation.Nullable;
-import jakarta.persistence.*;
 import model.*;
 
 import java.util.List;

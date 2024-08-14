@@ -3,7 +3,11 @@
   <h2>{{ video.title }}</h2>
   <div class="actions">
     @if(removable){
-      <app-icon-button (click)="removeSuggestion($event)">
+      <app-icon-button
+        (click)="removeSuggestion($event)"
+        matTooltip="Remove from this list"
+        matTooltipShowDelay="500"
+      >
         <app-remove-icon></app-remove-icon>
       </app-icon-button>
     }
