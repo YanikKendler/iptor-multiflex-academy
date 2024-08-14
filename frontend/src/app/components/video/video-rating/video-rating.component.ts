@@ -1,6 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component, inject, Input, OnInit} from '@angular/core';
 import {StarIconComponent} from "../../icons/star/star.icon.component";
 import {NgForOf} from "@angular/common";
+import {StarRating, VideoService} from "../../../service/video.service";
 
 @Component({
   selector: 'app-video-rating',
@@ -12,11 +13,61 @@ import {NgForOf} from "@angular/common";
   templateUrl: './video-rating.component.html',
   styleUrl: './video-rating.component.scss'
 })
-export class VideoRatingComponent {
-  @Input() rating: number = 0
-  numbers: number[] = [1, 2, 3, 4, 5]; // Array to loop through
+export class VideoRatingComponent{
+  @Input() rating: number | undefined = 3.5
+  @Input() videoId: number | undefined = 1
+  @Input() userId: number | undefined = 1
+  numbers: number[] = [1, 2, 3, 4, 5];
 
-  addRating(rating: number) {
+  videoService = inject(VideoService)
 
+  isRatingMode : boolean = false
+  yourRating: number = 0
+
+  color: string = 'black';
+
+
+
+  setRating(rating: number) {
+    this.yourRating = rating;
+    this.isRatingMode = true;
+  }
+
+  sendRating(){
+    if(this.videoId && this.userId && this.yourRating){
+      this.videoService.setStarRating(this.videoId, this.userId, this.yourRating).subscribe(response => {
+        console.log('Response from server:', response);
+        this.updateRating()
+      })
+    }
+  }
+
+  getTypeByNumber(number: number){
+    let value = this.rating
+    if(this.isRatingMode){
+      value = this.yourRating
+    }
+
+    if(value){
+      if (value >= number) {
+        return 'filled';
+      } else if (number - value <= 0.5) {
+        return 'half';
+      }
+    }
+
+    return "outlined"
+  }
+
+  getDoubleDigitRating() {
+    return this.rating?.toFixed(1);
+  }
+
+  updateRating(){
+    if(this.videoId){
+      this.videoService.getRatingAvgByVideo(this.videoId).subscribe(response => {
+        this.rating = response;
+      })
+    }
   }
 }

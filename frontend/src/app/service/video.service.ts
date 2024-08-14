@@ -95,6 +95,16 @@ export class VideoService {
     })
   }
 
+  setStarRating(videoId: number, userId: number, rating: number) {
+    return this.http.post(`http://localhost:8080/api/video/${videoId}/starrating?userId=${userId}`, {
+      rating: rating
+    })
+  }
+
+  getRatingAvgByVideo(videoId: number){
+    return this.http.get<number>(`http://localhost:8080/api/video/${videoId}/starrating/average`)
+  }
+
   createVideo(title: string, description: string, tags: Tag[], color: string, visibility: VisibilityEnum, comments: Comment[], questions: Question[], starRatings: StarRating[]){
     this.http.post<VideoDetail>("http://localhost:8080/api/video/", {
       title: title,

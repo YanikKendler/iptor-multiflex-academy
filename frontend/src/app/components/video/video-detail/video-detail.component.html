@@ -7,7 +7,7 @@
       <h1>{{video?.title}}</h1>
       <p class="description">{{video?.description}}</p>
       <div class="actions">
-        <app-video-rating></app-video-rating>
+        <app-video-rating [videoId]="video?.videoId" [rating]="video?.rating"></app-video-rating>
         <app-bookmark-icon></app-bookmark-icon>
       </div>
     </div>

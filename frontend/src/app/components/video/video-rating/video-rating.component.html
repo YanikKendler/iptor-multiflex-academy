@@ -1,6 +1,11 @@
-<div class="rating">
-  <app-star-icon *ngFor="let number of numbers"></app-star-icon>
-  <p>{{ rating }}</p>
+<div class="host" (mouseleave)="isRatingMode=false" (mouseover)="isRatingMode=true">
+  <div class="rating">
+    @for(number of numbers; track number){
+      <app-star-icon (click)="setRating(number)" [state]="getTypeByNumber(number)"></app-star-icon>
+    }
+    <p>{{ getDoubleDigitRating() }}</p>
+  </div>
+
+  <button (click)="sendRating()">add rating</button>
 </div>
 
-<button>add rating</button>

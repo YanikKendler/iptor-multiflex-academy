@@ -18,10 +18,11 @@ public class StarRatingResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createRating(@PathParam("videoId") Long vid, StarRating s){
+    public Response setRating(double rating, @PathParam("videoId") Long vid, @QueryParam("userId") Long uid){
         try {
-            repository.create(vid, s);
+            repository.set(vid, uid, rating);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().build();
@@ -29,14 +30,12 @@ public class StarRatingResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@PathParam("videoId") Long vid){
-        List<StarRating> starRatings;
+    public Response getRating(@PathParam("videoId") Long vid, @QueryParam("userId") Long uid){
         try{
-            starRatings = repository.getAll(vid);
+            return Response.ok().entity(repository.getRating(vid, uid)).build();
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().entity(starRatings).build();
     }
 
     @DELETE
@@ -50,15 +49,14 @@ public class StarRatingResource {
         return Response.ok().build();
     }
 
-    @PUT
-    @Path("{id: [0-9]+}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateRating(@PathParam("id") Long id, StarRating s){
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/average")
+    public Response getAverage(@PathParam("videoId") Long vid){
         try{
-            repository.update(s);
+            return Response.ok().entity(repository.getAverage(vid)).build();
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().build();
     }
 }
