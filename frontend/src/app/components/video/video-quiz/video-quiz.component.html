@@ -8,11 +8,16 @@
     <p class="number">{{ getFormattedQuestionNumber(i+1) }}</p>
     <p class="text">{{ question.text }}</p>
   </div>
+
+  @if(isQuizFinished){
+    <a (click)="viewResults()">Ergebnisse ansehen</a>
+  }
 </div>
 
 <app-video-quiz-answers
   [questionNumber]="this.questionNr"
   [questionText]="selectedQuestion?.text"
   [answers]="selectedQuestion?.answerOptions"
-  (nextQuestion)="nextQuestion()">
+  [isQuizFinished]="isQuizFinished"
+  (nextQuestion)="nextQuestion($event)">
 </app-video-quiz-answers>

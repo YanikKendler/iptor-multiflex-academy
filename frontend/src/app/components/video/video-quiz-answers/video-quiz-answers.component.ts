@@ -17,14 +17,13 @@ export class VideoQuizAnswersComponent implements OnChanges{
   @Input() answers: AnswerOption[] | undefined;
   @Input() questionText: string | undefined;
   @Input() questionNumber!: number;
-  @Output() nextQuestion: EventEmitter<number> = new EventEmitter<number>()
+  @Input() isQuizFinished: boolean = false;
+  @Output() nextQuestion: EventEmitter<boolean> = new EventEmitter<boolean>()
 
   isAnswerCheckedIn : boolean = false
 
   checkedQuestions: number[] = []
   selectedAnswers: AnswerOption[] = [];
-  correctAnswers : AnswerOption[] = []
-  wrongAnswers : AnswerOption[] = []
 
   ngOnChanges(changes: SimpleChanges) {
     // i check if the question is already checked in, that way i can highlight the correct answers
@@ -36,6 +35,8 @@ export class VideoQuizAnswersComponent implements OnChanges{
   }
 
   toggleAnswer(answer: AnswerOption) {
+    if(this.isAnswerCheckedIn) return // if the answer is already checked in, the user shouldn't be able to change it
+
     if (this.selectedAnswers.includes(answer)) {
       this.selectedAnswers = this.selectedAnswers.filter(selectedAnswer => selectedAnswer !== answer);
     } else {
@@ -47,12 +48,17 @@ export class VideoQuizAnswersComponent implements OnChanges{
     return this.questionNumber < 10 ? `0${this.questionNumber + 1}` : `${this.questionNumber + 1}`;
   }
 
+  correctAnswers : AnswerOption[] = []
+  wrongAnswers : AnswerOption[] = []
+  missedAnswers : AnswerOption[] = []
+
   checkAnswer() {
-    console.log("in check answer")
+    if(this.isQuizFinished) this.restartQuiz()
+
     // if answer got already logged in the function should request for the next question
     if(this.isAnswerCheckedIn){
       this.isAnswerCheckedIn = false
-      this.nextQuestion.emit(this.questionNumber)
+      this.nextQuestion.emit()
       return
     }
 
@@ -63,9 +69,24 @@ export class VideoQuizAnswersComponent implements OnChanges{
     this.answers?.forEach(answer => {
       if(this.selectedAnswers.includes(answer) && answer.correct || !this.selectedAnswers.includes(answer) && !answer.correct){
         this.correctAnswers.push(answer)
-      } else {
+      } else if (this.selectedAnswers.includes(answer) && !answer.correct){
         this.wrongAnswers.push(answer)
+      } else {
+        this.missedAnswers.push(answer)
       }
     })
+  }
+
+  restartQuiz() {
+    this.checkedQuestions = []
+    this.selectedAnswers = []
+
+    this.isAnswerCheckedIn = false
+    this.selectedAnswers = []
+    this.correctAnswers = []
+    this.wrongAnswers = []
+    this.missedAnswers = []
+
+    this.nextQuestion.emit(true)
   }
 }

@@ -43,4 +43,16 @@
       background-color: $gray-800;
     }
   }
+
+  a{
+    margin-top: auto;
+    color: $gray-300;
+    text-decoration: underline;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover{
+      color: $gray-250;
+    }
+  }
 }

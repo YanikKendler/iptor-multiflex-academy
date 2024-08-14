@@ -194,7 +194,7 @@ public class VideoRepository {
                 .setInput(filePath)
                 .overrideOutputFiles(false)
 
-                .addOutput("processed" + File.separator + "video-" + videoFile.getVideoFileId() + File.separator + "manifest.mpd")
+                .addOutput("processed/" + "video-" + videoFile.getVideoFileId() +"/manifest.mpd")
                 .setFormat("dash")
 
                 .setAudioCodec("copy")

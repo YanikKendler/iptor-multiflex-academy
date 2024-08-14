@@ -44,10 +44,15 @@ h2{
 }
 
 main.checked .answer{
-  background-color: red;
+  background-color: lightcoral;
+  border: none;
 
   &.correct{
     background-color: lightgreen;
+  }
+
+  &.missing{
+    background-color: lightblue;
   }
 }
 
@@ -59,4 +64,5 @@ button{
   border-radius: 0.5rem;
   margin-top: 1rem;
   cursor: pointer;
+  user-select: none;
 }

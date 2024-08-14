@@ -21,6 +21,8 @@ export class VideoQuizComponent implements OnInit {
   checkedQuestions: Question[] = [];
   selectedQuestion: Question | null = null;
 
+  isQuizFinished: boolean = false
+
   ngOnInit() {
     // auto-select first question
     if (this.questions) {
@@ -38,8 +40,26 @@ export class VideoQuizComponent implements OnInit {
     return questionNumber < 10 ? `0${questionNumber}` : `${questionNumber}`;
   }
 
-  nextQuestion() {
+  viewResults() {
+    this.selectedQuestion = null
+  }
+
+  nextQuestion(isRestart: boolean = false) {
     if(this.questions){
+      if(isRestart){
+        this.questionNr = 0
+        this.checkedQuestions = []
+        this.selectedQuestion = this.questions[this.questionNr]
+        this.isQuizFinished = false
+        return
+      }
+
+      if(this.questionNr >= this.questions.length - 1){
+        this.isQuizFinished = true
+        this.viewResults()
+        return
+      }
+
       if(!this.checkedQuestions.includes(this.questions[this.questionNr])){
         this.checkedQuestions.push(this.questions[this.questionNr])
       }
