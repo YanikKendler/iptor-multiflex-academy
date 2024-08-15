@@ -56,7 +56,7 @@ export interface VideoDetailDTO {
 }
 
 export interface VideoOverviewDTO {
-  videoId: number;
+  contentId: number;
   title: string;
   description: string;
   tags: Tag[];
@@ -64,6 +64,20 @@ export interface VideoOverviewDTO {
   color: string;
   durationSeconds: number;
   viewProgress?: ViewProgress;
+}
+
+export interface LearningPathOverviewDTO {
+  contentId: number;
+  title: string;
+  description: string;
+  tags: Tag[];
+  videoCount: number;
+  viewProgress: number;
+}
+
+export interface VideoAndLearningPathOverviewCollection {
+  videos: VideoOverviewDTO[];
+  learningPaths: LearningPathOverviewDTO[];
 }
 
 @Injectable({

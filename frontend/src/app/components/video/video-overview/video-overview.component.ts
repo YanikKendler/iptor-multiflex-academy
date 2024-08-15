@@ -43,7 +43,7 @@ export class VideoOverviewComponent implements OnInit{
   ngOnInit(): void {
     this.tagToolTipString = this.video.tags?.map(tag => tag.name).join(", ")
 
-    this.userService.isVideoSaved(this.video.videoId, 1).subscribe(isSaved => {
+    this.userService.isVideoSaved(this.video.contentId, 1).subscribe(isSaved => {
       if(isSaved){
         this.bookmark?.toggleMarked()
       }
@@ -52,7 +52,7 @@ export class VideoOverviewComponent implements OnInit{
 
   @HostListener('click', ['$event'])
   openVideo(){
-    this._router.navigate(['video/' + this.video?.videoId])
+    this._router.navigate(['video/' + this.video?.contentId])
   }
 
   addToBookmarks(event: MouseEvent){
@@ -61,7 +61,7 @@ export class VideoOverviewComponent implements OnInit{
     console.log("Added to bookmarks")
 
     // todo user not hard coded
-    this.userService.toggleSavedVideo(this.video.videoId, 1)
+    this.userService.toggleSavedVideo(this.video.contentId, 1)
   }
 
   removeSuggestion(event: MouseEvent) {
