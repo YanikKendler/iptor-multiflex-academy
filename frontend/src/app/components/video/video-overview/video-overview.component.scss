@@ -39,7 +39,7 @@
     app-icon-button *{
       color: $gray-300;
       font-size: 1.2rem;
-      height: 1.2rem;
+      height: 1.3rem;
     }
 
     app-icon-button:not(:has(app-bookmark-icon.marked)){

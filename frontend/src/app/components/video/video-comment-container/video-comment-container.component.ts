@@ -5,30 +5,36 @@ import {Utils} from "../../../utils"
 import {FormsModule} from "@angular/forms";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faEllipsis} from "@fortawesome/free-solid-svg-icons";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {NgIf} from "@angular/common";
+import {IconButtonComponent} from "../../basic/icon-button/icon-button.component"
+import {MatButton} from "@angular/material/button"
+import {VideoCommentComponent} from "../video-comment/video-comment.component"
+
 
 @Component({
-  selector: 'app-video-comments',
+  selector: 'app-video-comment-container',
   standalone: true,
   imports: [
     MatTooltip,
     FormsModule,
     FaIconComponent,
     NgIf,
+    IconButtonComponent,
+    MatButton,
+    VideoCommentComponent,
   ],
-  templateUrl: './video-comments.component.html',
-  styleUrl: './video-comments.component.scss'
+  templateUrl: './video-comment-container.component.html',
+  styleUrl: './video-comment-container.component.scss'
 })
-export class VideoCommentsComponent implements OnInit {
+export class VideoCommentContainerComponent implements OnInit {
   @Input() videoId: number = 0;
-  @Input() userId: number = 0;
   @Input() comments: Comment[] = [];
   protected readonly Utils = Utils
   protected readonly faEllipsis = faEllipsis;
 
   commentService = inject(CommentService)
-  commentText : string = ''
-  editComments: number[] = [];
+  commentInputText : string = ''
 
   ngOnInit(): void {
     this.updateComments()
@@ -41,39 +47,20 @@ export class VideoCommentsComponent implements OnInit {
   }
 
   postComment(){
-    if(this.commentText.length > 0 && this.videoId && this.userId){
-      this.commentService.createComment(this.videoId, this.commentText, this.userId).subscribe(response => {
-        this.commentText = ''
+    if(this.commentInputText.length > 0 && this.videoId){
+      this.commentService.createComment(this.videoId, this.commentInputText).subscribe(response => {
+        this.commentInputText = ''
         this.updateComments()
       })
     }
   }
 
   updateComments(){
-    if(this.videoId && this.userId){
-      this.commentService.getCommentList(this.videoId, this.userId).subscribe(commentList => {
+    if(this.videoId){
+      this.commentService.getCommentList(this.videoId).subscribe(commentList => {
         console.log(commentList)
         this.comments = commentList
       })
     }
-  }
-
-  toggleEditMenu(id: number){
-    if(this.editComments.includes(id)){
-      this.editComments = this.editComments.filter(e => e !== id)
-    }else{
-      this.editComments.push(id)
-      }
-  }
-
-
-  editComment(comment: Comment) {
-
-  }
-
-  deleteComment(comment: Comment) {
-    this.commentService.deleteComment(this.videoId, this.userId, comment.commentId).subscribe(response => {
-      this.updateComments()
-    })
   }
 }

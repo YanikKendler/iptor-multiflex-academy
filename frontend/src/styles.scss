@@ -9,6 +9,8 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
+@import "app/variables";
+
 // Define the theme object.
 $frontend-theme: mat.define-theme((
   color: (
@@ -51,5 +53,72 @@ a{
 
   &:hover{
     text-decoration: underline;
+  }
+}
+
+:root{
+  --mdc-outlined-button-outline-width: 2px;
+  --mdc-outlined-button-container-shape: .5rem;
+
+  --mdc-text-button-container-shape: .5rem;
+}
+
+body {
+  .mdc-button {
+    height: 2rem;
+
+    .mdc-button__label {
+      display: flex;
+      flex-direction: row;
+      gap: .5rem;
+      color: black;
+    }
+
+    &[color="primary"] {
+      color: white;
+      background-color: $primary-500;
+
+      &[mat-stroked-button] {
+        color: black;
+        background-color: hsla(188, 61%, 30%, 0.2);
+        border-color: $primary-500;
+      }
+
+    }
+
+    &[color="secondary"] {
+      background-color: $secondary-500;
+
+      &[mat-stroked-button] {
+        color: $secondary-100;
+        background-color: hsla(31, 100%, 47%, 0.2);
+        border-color: $secondary-500;
+      }
+    }
+
+    span.mat-mdc-button-persistent-ripple{
+      inset: -4px;
+    }
+  }
+
+  .mdc-button.mat-success,
+  .mat-mdc-stroked-button.mat-success {
+    color: #155724;
+  }
+  .mat-mdc-unelevated-button.mat-success:hover,
+  .mat-mdc-raised-button.mat-success:hover {
+    color: #f0fff3;
+    background-color: #1b742f;
+  }
+
+  .mat-mdc-unelevated-button:not(:disabled, :hover).mat-success,
+  .mat-mdc-raised-button.mat-success,
+  .mat-mdc-fab.mat-success,
+  .mat-mdc-mini-fab.mat-success {
+    color: #f0fff3;
+    background-color: #155724;
+  }
+  .mat-mdc-icon-button.mat-success {
+    color: #155724;
   }
 }

@@ -44,8 +44,18 @@ public class ViewProgressResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateViewProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId, JsonObject data){
         try{
-            System.out.println("update progress " + data.getInt("durationSeconds"));
             repository.update(videoId, userId, data.getInt("durationSeconds"));
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("/ignore")
+    public Response ignoreProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId){
+        try{
+            repository.ignore(videoId, userId);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

@@ -42,6 +42,14 @@ public class ViewProgressRepository {
         }
         else{
             viewProgress.setDurationSeconds(durationSeconds);
+            viewProgress.setIgnored(false);
+        }
+    }
+
+    public void ignore(Long videoId, Long userId) {
+        ViewProgress vp = getLatest(videoId, userId);
+        if(vp != null) {
+            vp.setIgnored(true);
         }
     }
 
@@ -51,14 +59,6 @@ public class ViewProgressRepository {
             em.remove(vp);
         }
     }
-
-    /*public List<ViewProgress> getAll() {
-        return em.createQuery("select p from ViewProgress p", ViewProgress.class).getResultList();
-    }*/
-
-    /*public ViewProgress getById(Long id){
-        return em.find(ViewProgress.class, id);
-    }*/
 
     public ViewProgress getLatest(Long videoId, Long userId) {
         try {
@@ -71,4 +71,12 @@ public class ViewProgressRepository {
             return null;
         }
     }
+
+    /*public List<ViewProgress> getAll() {
+        return em.createQuery("select p from ViewProgress p", ViewProgress.class).getResultList();
+    }*/
+
+    /*public ViewProgress getById(Long id){
+        return em.find(ViewProgress.class, id);
+    }*/
 }

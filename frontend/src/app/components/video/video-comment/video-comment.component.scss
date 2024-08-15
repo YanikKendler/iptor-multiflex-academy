@@ -1,0 +1,57 @@
+@import "../../../variables";
+
+:host{
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 1rem;
+  width: 100%;
+}
+
+.content{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  gap: .1rem;
+
+  .header{
+    display: flex;
+    align-items: flex-end;
+    gap: 0.3rem;
+
+    h2{
+      font-weight: bold;
+      font-size: .95rem;
+    }
+
+    .time{
+      font-size: 0.8rem;
+      color: $gray-250;
+    }
+  }
+
+  .text{
+    font-size: 0.9rem;
+  }
+}
+
+.right{
+  display: flex;
+  flex-direction: row-reverse;
+  overflow: visible;
+  position: relative;
+}
+
+.actionMenu{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: .5rem;
+  background-color: white;
+  /*position: absolute;
+  right: 3rem;*/
+
+  box-shadow: 1px 3px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 1px solid $gray-500;
+  border-radius: 0.4rem;
+}
