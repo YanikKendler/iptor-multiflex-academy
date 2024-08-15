@@ -49,6 +49,10 @@ public class Video extends Content {
         return sum / starRatings.size();
     }
 
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
     public List<Comment> getComments(Long userId) {
         if(userId == null) {
             return comments;

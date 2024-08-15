@@ -1,5 +1,6 @@
 package boundary;
 
+import dtos.CreateVideoDTO;
 import dtos.VideoDetailDTO;
 import dtos.VideoOverviewDTO;
 import jakarta.inject.Inject;
@@ -56,7 +57,7 @@ public class VideoResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createVideo(Video v){
+    public Response createVideo(CreateVideoDTO v){
         try {
             repository.create(v);
         } catch (Exception ex) {

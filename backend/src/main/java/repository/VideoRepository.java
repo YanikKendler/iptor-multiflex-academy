@@ -1,5 +1,6 @@
 package repository;
 
+import dtos.CreateVideoDTO;
 import dtos.VideoDetailDTO;
 import dtos.VideoOverviewDTO;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -31,8 +32,17 @@ public class VideoRepository {
     @Inject
     EntityManager em;
 
-    public void create(Video video) {
-        em.persist(video);
+    public void create(CreateVideoDTO video) {
+        System.out.println(video.toString());
+
+        Video newVideo = new Video(video.title(), video.description(), video.visibility());
+        for (Integer tagId : video.tags()) {
+            Tag tag = em.find(Tag.class, tagId.longValue());
+            newVideo.addTag(tag);
+        }
+        newVideo.setQuestions(video.questions());
+        newVideo.setColor(video.color());
+        em.persist(newVideo);
     }
 
     public void update(Video video) {}

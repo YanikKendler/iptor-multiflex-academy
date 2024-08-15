@@ -1,11 +1,9 @@
 import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {NavigationComponent} from "../navigation/navigation.component"
 import {UpdateDashboardEvent, VideoOverviewComponent} from "../video/video-overview/video-overview.component"
-import {Router} from "@angular/router"
-import {VideoOverviewDTO, VideoService, ViewProgress} from "../../service/video.service"
-import {Utils} from "../../utils"
+import {VideoOverviewDTO, VideoService, ViewProgress, VisibilityEnum} from "../../service/video.service"
 import {MediaPlayerComponent} from "../video/media-player/media-player.component"
-import {HttpClient, HttpErrorResponse, HttpEventType} from "@angular/common/http"
+import {HttpClient} from "@angular/common/http"
 import {StarIconComponent} from "../icons/star/star.icon.component"
 import {PlayIconComponent} from "../icons/playicon/play.icon.component"
 import {RemoveIconComponent} from "../icons/remove-icon/remove-icon.component"
@@ -41,6 +39,10 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
+    this.videoService.createVideo("Test Video", "This is a test video", [1], "red", VisibilityEnum.customers, []).subscribe(video => {
+      console.log('Video created:', video);
+    })
+
     this.content = undefined
     this.userService.getContentForUser(1).subscribe(content => {
       this.content = content;

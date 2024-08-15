@@ -107,22 +107,14 @@ export class VideoService {
     return this.http.get<number>(`${Config.API_URL}/api/video/${videoId}/starrating/average`)
   }
 
-  createVideo(title: string, description: string, tags: Tag[], color: string, visibility: VisibilityEnum, comments: Comment[], questions: Question[], starRatings: StarRating[]){
-    this.http.post<VideoDetail>(`${Config.API_URL}/api/video/`, {
+  createVideo(title: string, description: string, tags: number[], color: string, visibility: VisibilityEnum, questions: Question[]){
+    return this.http.post<VideoDetail>(`${Config.API_URL}/api/video/`, {
       title: title,
       description: description,
       tags: tags,
       color: color,
       visibility: visibility,
-      comments: comments,
-      questions: questions,
-      starRatings: starRatings
-    }).subscribe(response =>{
-      console.log('Response from server:', response);
-      // Weitere Verarbeitung der Response hier
-    }, error => {
-      console.error('Error occurred:', error);
-      // Fehlerbehandlung hier
-    });
+      questions: questions
+    })
   }
 }
