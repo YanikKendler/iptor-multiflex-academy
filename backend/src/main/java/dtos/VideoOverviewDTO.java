@@ -1,14 +1,16 @@
 package dtos;
 
 import model.Tag;
+import model.ViewProgress;
 
 import java.util.List;
 
 public record VideoOverviewDTO(
-        Long videoId,
+        Long contentId,
         String title,
         String description,
         List<Tag> tags,
         String color,
-        Long durationSeconds
+        Long durationSeconds,
+        int viewProgress
 ) { }

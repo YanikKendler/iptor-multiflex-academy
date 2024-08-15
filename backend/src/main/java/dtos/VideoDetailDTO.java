@@ -4,7 +4,7 @@ import model.*;
 import java.util.List;
 
 public record VideoDetailDTO(
-        Long videoId,
+        Long contentId,
         String title,
         String description,
         List<Tag> tags,

@@ -51,7 +51,8 @@ public class VideoRepository {
                         v.getDescription(),
                         v.getTags(),
                         v.getColor(),
-                        v.getVideoFile() != null ? v.getVideoFile().getDurationSeconds() : null
+                        v.getVideoFile() != null ? v.getVideoFile().getDurationSeconds() : null,
+                        0
                 ))
                 .toList();
     }

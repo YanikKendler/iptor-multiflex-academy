@@ -56,7 +56,7 @@ export class MediaPlayerComponent implements OnChanges {
 
       setTimeout(() => {
         if(this.videoTag) {
-          let url = `http://localhost:8080/api/video/${this.video?.videoId}/getVideoFragment/manifest.mpd#t=${this.video?.viewProgress}`
+          let url = `http://localhost:8080/api/video/${this.video?.contentId}/getVideoFragment/manifest.mpd#t=${this.video?.viewProgress}`
           this.player = MediaPlayer().create()
           this.player.initialize(this.videoTag.nativeElement, url, false)
           this.player.on(MediaPlayer.events.PLAYBACK_PAUSED, this.updateProgress.bind(this))
@@ -73,7 +73,7 @@ export class MediaPlayerComponent implements OnChanges {
     if(time == this.lastProgress) return
     this.lastProgress = time
 
-    this.service.setVideoProgress(this.video!.videoId, 1, time).subscribe(response => {})
+    this.service.setVideoProgress(this.video!.contentId, 1, time).subscribe(response => {})
     console.log("updating")
   }
 

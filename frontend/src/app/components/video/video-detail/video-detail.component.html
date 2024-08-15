@@ -7,7 +7,7 @@
       <h1>{{video?.title}}</h1>
       <p class="description">{{video?.description}}</p>
       <div class="actions">
-        <app-video-rating [videoId]="video?.videoId" [rating]="video?.rating"></app-video-rating>
+        <app-video-rating [videoId]="video?.contentId" [rating]="video?.rating"></app-video-rating>
         <app-icon-button (click)="addToBookmarks($event)">
           <app-bookmark-icon #bookmark></app-bookmark-icon>
         </app-icon-button>
@@ -24,7 +24,7 @@
 
     @switch(this.currentTab){
       @case('comments'){
-        <app-video-comment-container [comments]="video.comments" [videoId]="this.video.videoId"></app-video-comment-container>
+        <app-video-comment-container [comments]="video.comments" [videoId]="this.video.contentId"></app-video-comment-container>
       }
       @case('quiz'){
         <app-video-quiz [questions]="video?.questions"></app-video-quiz>

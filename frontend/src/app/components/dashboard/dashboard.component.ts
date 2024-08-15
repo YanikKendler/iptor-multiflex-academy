@@ -39,33 +39,20 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.userService.getContentForUser(1).subscribe(content => {
-      this.content = content;
-
-      this.content.current.videos.forEach(video => {
-        this.service.getVideoProgress(video.contentId, 1).subscribe(progress => {
-          video.viewProgress = progress;
-        }, error => {});
-      })
-
-      this.content.assigned.videos.forEach(video => {
-        this.service.getVideoProgress(video.contentId, 1).subscribe(progress => {
-          video.viewProgress = progress;
-        }, error => {});
-      })
-
-      this.content.suggested.videos.forEach(video => {
-        this.service.getVideoProgress(video.contentId, 1).subscribe(progress => {
-          video.viewProgress = progress;
-        }, error => {});
-      })
-    });
+   this.updateDashboard()
 
 /*    console.log(Utils.toSmartTimeString(new Date()))
     console.log(Utils.toSmartTimeString(new Date("07.08.2024 20:54")))
     console.log(Utils.toSmartTimeString(new Date(1000*60*80)))
     console.log(Utils.toSmartTimeString(new Date("05.08.2024")))
     console.log(Utils.toSmartTimeString(new Date("07.06.2020")))*/
+  }
+
+  updateDashboard(){
+    this.content = undefined
+    this.userService.getContentForUser(1).subscribe(content => {
+      this.content = content;
+    });
   }
 
   uploadFile(file: File) {

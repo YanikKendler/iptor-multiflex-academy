@@ -31,7 +31,7 @@ export interface VideoFile {
 }
 
 export interface VideoDetail {
-  videoId: number;
+  contentId: number;
   title: string;
   description: string;
   tags: Tag[];
@@ -44,7 +44,7 @@ export interface VideoDetail {
 }
 
 export interface VideoDetailDTO {
-  videoId: number;
+  contentId: number;
   title: string;
   description: string;
   tags: Tag[];
@@ -63,7 +63,7 @@ export interface VideoOverviewDTO {
   saved: boolean;
   color: string;
   durationSeconds: number;
-  viewProgress?: ViewProgress;
+  viewProgress: number;
 }
 
 export interface LearningPathOverviewDTO {

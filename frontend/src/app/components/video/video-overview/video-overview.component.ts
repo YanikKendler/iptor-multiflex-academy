@@ -1,4 +1,14 @@
-import {Component, ElementRef, HostListener, inject, Input, OnInit, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  inject,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {NgOptimizedImage} from "@angular/common"
 import {PlayIconComponent} from "../../icons/playicon/play.icon.component"
 import {BookmarkIconComponent} from "../../icons/bookmark/bookmark.icon.component"
@@ -31,6 +41,7 @@ import {UserService} from "../../../service/user.service";
 export class VideoOverviewComponent implements OnInit{
   @Input() video: VideoOverviewDTO = {} as VideoOverviewDTO
   @Input() removable: boolean = true
+  @Output() updateDashboard: EventEmitter<any> = new EventEmitter<any>()
 
   userService = inject(UserService)
 
@@ -43,6 +54,7 @@ export class VideoOverviewComponent implements OnInit{
   ngOnInit(): void {
     this.tagToolTipString = this.video.tags?.map(tag => tag.name).join(", ")
 
+    console.log(this.video)
     this.userService.isVideoSaved(this.video.contentId, 1).subscribe(isSaved => {
       if(isSaved){
         this.bookmark?.toggleMarked()
@@ -62,11 +74,13 @@ export class VideoOverviewComponent implements OnInit{
 
     // todo user not hard coded
     this.userService.toggleSavedVideo(this.video.contentId, 1)
+    this.updateDashboard.emit()
   }
 
   removeSuggestion(event: MouseEvent) {
     event.stopPropagation();
     console.log("Removed suggestion")
+    this.updateDashboard.emit()
   }
 
   protected readonly Utils = Utils
