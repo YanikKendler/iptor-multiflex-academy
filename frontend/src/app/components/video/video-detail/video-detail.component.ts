@@ -8,6 +8,8 @@ import {VideoQuizComponent} from "../video-quiz/video-quiz.component";
 import {VideoDetailDTO, VideoService} from "../../../service/video.service"
 import {MediaPlayerComponent} from "../media-player/media-player.component"
 import {VideoRatingComponent} from "../video-rating/video-rating.component";
+import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
+import {UserService} from "../../../service/user.service";
 
 @Component({
   selector: 'app-video-detail',
@@ -19,17 +21,20 @@ import {VideoRatingComponent} from "../video-rating/video-rating.component";
     VideoCommentsComponent,
     VideoQuizComponent,
     MediaPlayerComponent,
-    VideoRatingComponent
+    VideoRatingComponent,
+    IconButtonComponent
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss'
 })
 export class VideoDetailComponent implements AfterViewInit, OnInit{
   service = inject(VideoService)
-  video : VideoDetailDTO | undefined
+  video : VideoDetailDTO = {} as VideoDetailDTO
+
+  userService = inject(UserService)
 
   markerPos = {width: 0, left: 0}
-
+  @ViewChild("bookmark") bookmark: BookmarkIconComponent | undefined
   @ViewChild('tabSelector') tabSelector: ElementRef | undefined;
   currentTab : "comments" | "quiz" = "comments"
 
@@ -41,6 +46,12 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
         this.service.getVideoDetails(params['id'], 1).subscribe(video => {
           console.log(video)
           this.video = video
+
+          this.userService.isVideoSaved(this.video.videoId, 1).subscribe(isSaved => {
+            if(isSaved){
+              this.bookmark?.toggleMarked()
+            }
+          })
         })
       }
     )
@@ -65,5 +76,14 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
 
   ngAfterViewInit(): void {
     this.selectTab("comments")
+  }
+
+  addToBookmarks(event: MouseEvent){
+    event.stopPropagation();
+    this.bookmark?.toggleMarked()
+    console.log("Added to bookmarks")
+
+    // todo user not hard coded
+    this.userService.toggleSavedVideo(this.video.videoId, 1)
   }
 }

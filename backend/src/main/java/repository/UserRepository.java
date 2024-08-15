@@ -18,6 +18,9 @@ public class UserRepository {
     @Inject
     EntityManager em;
 
+    @Inject
+    VideoRepository videoRepository;
+
     public User getById(Long id) {
         return em.find(User.class, id);
     }
@@ -51,5 +54,16 @@ public class UserRepository {
         List<VideoOverviewDTO> currentVideos = Stream.concat(unfinishedVideos.stream(), savedVideos.stream()).toList();
 
         return null;
+    }
+
+    public void toggleSavedVideo(Long userId, Long videoId) {
+        User user = getById(userId);
+        user.toggleSavedVideo(videoRepository.getById(videoId));
+        em.merge(user);
+    }
+
+    public boolean isVideoSaved(Long userId, Long videoId) {
+        User user = getById(userId);
+        return user.getSavedVideos().stream().anyMatch(video -> video.getContentId().equals(videoId));
     }
 }

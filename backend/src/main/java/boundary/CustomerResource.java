@@ -4,21 +4,21 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.Employee;
-import repository.EmployeeRepository;
+import model.Customer;
+import repository.CustomerRepository;
 
 import java.util.List;
 
-@Path("employee")
-public class EmployeeRessource {
+@Path("customer")
+public class CustomerResource {
     @Inject
-    EmployeeRepository repository;
+    CustomerRepository repository;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createEmployee(Employee e){
+    public Response createCustomer(Customer c){
         try {
-            repository.create(e);
+            repository.create(c);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -26,32 +26,20 @@ public class EmployeeRessource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(){
-        List<Employee> employees;
-        try{
-            employees = repository.getAll();
-        }catch (Exception ex){
-            return Response.status(400).entity(ex).build();
-        }
-        return Response.ok().entity(employees).build();
-    }
-
-    @GET
     @Path("{id: [0-9]+}")
-    public Response getEmployee(@PathParam("id") Long id){
-        Employee employee;
+    public Response getCustomer(@PathParam("id") Long id){
+        Customer customer;
         try{
-            employee = repository.getById(id);
+            customer = repository.getById(id);
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().entity(employee).build();
+        return Response.ok().entity(customer).build();
     }
 
     @DELETE
     @Path("{id: [0-9]+}")
-    public Response deleteEmployee(@PathParam("id") Long id){
+    public Response deleteCustomer(@PathParam("id") Long id){
         try{
             repository.delete(id);
         } catch (Exception ex) {
@@ -63,14 +51,12 @@ public class EmployeeRessource {
     @PUT
     @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateEmployee(@PathParam("id") Long id, Employee e){
+    public Response updateCustomer(@PathParam("id") Long id, Customer c){
         try{
-            repository.update(e);
+            repository.update(c);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().build();
     }
-
-
 }

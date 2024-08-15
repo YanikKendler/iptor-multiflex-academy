@@ -40,9 +40,9 @@ public class CommentResource {
 
     @DELETE
     @Path("{id: [0-9]+}")
-    public Response deleteComment(@PathParam("id") Long id){
+    public Response deleteComment(@PathParam("id") Long id, @PathParam("videoId") Long vid, @QueryParam("userId") Long uid){
         try{
-            repository.delete(id);
+            repository.delete(id, vid, uid);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

@@ -4,6 +4,7 @@ import {catchError, map, Observable, of} from "rxjs";
 import {Tag} from "./tag.service";
 import {Question} from "./question.service";
 import {Comment} from "./comment.service";
+import {User} from "./user.service";
 
 export enum VisibilityEnum {
   self="self",everyone="everyone", customers="customers", internal="internal"
@@ -12,12 +13,6 @@ export enum VisibilityEnum {
 export interface StarRating {
   ratingId: number;
   rating: number;
-}
-
-export interface User {
-  userId: number;
-  username: string;
-  email: string;
 }
 
 export interface ViewProgress {
@@ -93,6 +88,18 @@ export class VideoService {
     return this.http.put(`http://localhost:8080/api/video/${videoId}/progress/${userId}`, {
       durationSeconds: progress
     })
+  }
+
+  setStarRating(videoId: number, userId: number, rating: number) {
+    return this.http.put(`http://localhost:8080/api/video/${videoId}/starrating?userId=${userId}`, rating)
+  }
+
+  getStarRating(videoId: number, userId: number): Observable<number>{
+    return this.http.get<number>(`http://localhost:8080/api/video/${videoId}/starrating/user/${userId}`)
+  }
+
+  getRatingAvgByVideo(videoId: number){
+    return this.http.get<number>(`http://localhost:8080/api/video/${videoId}/starrating/average`)
   }
 
   createVideo(title: string, description: string, tags: Tag[], color: string, visibility: VisibilityEnum, comments: Comment[], questions: Question[], starRatings: StarRating[]){

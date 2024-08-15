@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
-import {User} from "./video.service"
+import {User} from "./user.service"
 
 export interface Comment {
   commentId: number;
@@ -28,14 +28,8 @@ export class CommentService {
     });
   }
 
-  deleteComment(videoId: number, commentId: number){
-    this.http.delete("http://localhost:8080/api/video/" + videoId + "/comment/" + commentId).subscribe(response => {
-      console.log('Response from server:', response);
-      // Weitere Verarbeitung der Response hier
-    }, error => {
-      console.error('Error occurred:', error);
-      // Fehlerbehandlung hier
-    });
+  deleteComment(videoId: number, userId: number, commentId: number){
+    return this.http.delete(`http://localhost:8080/api/video/${videoId}/comment/${commentId}?userId=${userId}`);
   }
 
   updateComment(videoId: number, commentId: number, text: string){

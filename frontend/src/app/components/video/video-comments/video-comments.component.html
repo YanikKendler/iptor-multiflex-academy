@@ -15,8 +15,16 @@
       </div>
 
       @if(comment.user.userId === userId){
-        <fa-icon [icon]="faEllipsis"></fa-icon>
+        <div class="editMenu">
+          <div *ngIf="editComments.includes(comment.commentId)">
+            <!--<button (click)="editComment(comment)">Edit</button>-->
+            <button (click)="deleteComment(comment)">Delete</button>
+          </div>
+          <fa-icon [icon]="faEllipsis" (click)="toggleEditMenu(comment.commentId)"></fa-icon>
+        </div>
       }
+
+
     </div>
   }
 </div>

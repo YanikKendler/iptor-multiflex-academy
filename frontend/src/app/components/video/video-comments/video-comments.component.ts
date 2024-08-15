@@ -5,6 +5,7 @@ import {Utils} from "../../../utils"
 import {FormsModule} from "@angular/forms";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faEllipsis} from "@fortawesome/free-solid-svg-icons";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-video-comments',
@@ -13,19 +14,21 @@ import {faEllipsis} from "@fortawesome/free-solid-svg-icons";
     MatTooltip,
     FormsModule,
     FaIconComponent,
+    NgIf,
   ],
   templateUrl: './video-comments.component.html',
   styleUrl: './video-comments.component.scss'
 })
 export class VideoCommentsComponent implements OnInit {
-  @Input() videoId: number | undefined;
-  @Input() userId: number | undefined;
-  @Input() comments: Comment[] | undefined;
+  @Input() videoId: number = 0;
+  @Input() userId: number = 0;
+  @Input() comments: Comment[] = [];
   protected readonly Utils = Utils
+  protected readonly faEllipsis = faEllipsis;
 
   commentService = inject(CommentService)
-
   commentText : string = ''
+  editComments: number[] = [];
 
   ngOnInit(): void {
     this.updateComments()
@@ -55,5 +58,22 @@ export class VideoCommentsComponent implements OnInit {
     }
   }
 
-  protected readonly faEllipsis = faEllipsis;
+  toggleEditMenu(id: number){
+    if(this.editComments.includes(id)){
+      this.editComments = this.editComments.filter(e => e !== id)
+    }else{
+      this.editComments.push(id)
+      }
+  }
+
+
+  editComment(comment: Comment) {
+
+  }
+
+  deleteComment(comment: Comment) {
+    this.commentService.deleteComment(this.videoId, this.userId, comment.commentId).subscribe(response => {
+      this.updateComments()
+    })
+  }
 }

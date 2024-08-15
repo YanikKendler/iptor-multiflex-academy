@@ -46,6 +46,14 @@ public abstract class User {
         return null;
     }
 
+    public void toggleSavedVideo(Video video) {
+        if (savedVideos.contains(video)) {
+            savedVideos.remove(video);
+        } else {
+            savedVideos.add(video);
+        }
+    }
+
     //<editor-fold desc="Getter und Setter">
     public Long getUserId() {
         return userId;

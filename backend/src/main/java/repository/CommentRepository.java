@@ -31,8 +31,15 @@ public class CommentRepository {
     public void update(Comment comment) {}
 
     @Transactional
-    public void delete(Long id) {
-        em.remove(getById(id));
+    public void delete(Long id, Long videoId, Long userId) {
+        Comment comment = getById(id);
+        if (comment != null) {
+            Video video = videoRepository.getById(videoId);
+            if (video != null) {
+                video.getComments(userId).remove(comment);
+            }
+            em.remove(comment);
+        }
     }
 
     public List<Comment> getAll(Long videoId, Long userId) {

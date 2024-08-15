@@ -16,12 +16,13 @@ public class StarRatingResource {
     @Inject
     StarRatingRepository repository;
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createRating(@PathParam("videoId") Long vid, StarRating s){
+    public Response setRating(@PathParam("videoId") Long vid, @QueryParam("userId") Long uid, int rating){
         try {
-            repository.create(vid, s);
+            repository.set(vid, uid, rating);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().build();
@@ -29,14 +30,24 @@ public class StarRatingResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@PathParam("videoId") Long vid){
-        List<StarRating> starRatings;
+    public Response getAllRatings(@PathParam("videoId") Long vid){
         try{
-            starRatings = repository.getAll(vid);
-        }catch (Exception ex){
+            return Response.ok().entity(repository.getAll(vid)).build();
+        } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().entity(starRatings).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/user/{id: [0-9]+}")
+    public Response getRating(@PathParam("videoId") Long vid, @PathParam("id") Long id){
+        try{
+            int rating = repository.getStarRating(vid, id);
+            return Response.ok().entity(rating).build();
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
     }
 
     @DELETE
@@ -50,15 +61,14 @@ public class StarRatingResource {
         return Response.ok().build();
     }
 
-    @PUT
-    @Path("{id: [0-9]+}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateRating(@PathParam("id") Long id, StarRating s){
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/average")
+    public Response getAverage(@PathParam("videoId") Long vid){
         try{
-            repository.update(s);
+            return Response.ok().entity(repository.getAverage(vid)).build();
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().build();
     }
 }

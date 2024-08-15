@@ -3,9 +3,12 @@ package repository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import model.Comment;
 import model.StarRating;
+import model.User;
+import model.Video;
 import org.hibernate.sql.ast.tree.expression.Star;
 
 import java.util.List;
@@ -19,13 +22,27 @@ public class StarRatingRepository {
     VideoRepository videoRepository;
 
     @Transactional
-    public void create(Long videoId, StarRating starRating) {
-        videoRepository.getById(videoId).addStarRating(starRating);
-        em.persist(starRating);
-    }
+    public void set(Long videoId, Long userId, int rating) {
+        StarRating starRating;
+        try{
+            starRating = em.createQuery("select s from Video v join v.starRatings s where v.videoId = :videoId and s.user.id = :userId", StarRating.class)
+                    .setParameter("videoId", videoId)
+                    .setParameter("userId", userId)
+                    .getSingleResult();
+            starRating.setRating(rating);
+        } catch (NoResultException e) {
+            starRating = new StarRating();
+            starRating.setRating(rating);
+            starRating.setUser(em.find(User.class, userId));
 
-    @Transactional
-    public void update(StarRating starRating) {}
+            Video video = videoRepository.getById(videoId);
+            video.addStarRating(starRating);
+            em.persist(starRating);
+            return;
+        }
+
+        em.merge(starRating);
+    }
 
     @Transactional
     public void delete(Long id) {
@@ -39,5 +56,22 @@ public class StarRatingRepository {
 
     public StarRating getById(Long id){
         return em.find(StarRating.class, id);
+    }
+
+    public double getAverage(Long vid) {
+        return em.createQuery("select avg(s.rating) from Video v join v.starRatings s where v.videoId = :vid", Double.class)
+                .setParameter("vid", vid).getSingleResult();
+    }
+
+    public int getStarRating(Long videoId, Long userId) {
+        try{
+            return em.createQuery("select s.rating from Video v join v.starRatings s where v.videoId = :videoId and s.user.id = :userId", Integer.class)
+                    .setParameter("videoId", videoId)
+                    .setParameter("userId", userId)
+                    .getSingleResult();
+        } catch(NoResultException e) {
+            return 0;
+        }
+
     }
 }
