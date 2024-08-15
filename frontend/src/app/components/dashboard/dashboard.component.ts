@@ -9,6 +9,7 @@ import {HttpClient, HttpErrorResponse, HttpEventType} from "@angular/common/http
 import {StarIconComponent} from "../icons/star/star.icon.component"
 import {PlayIconComponent} from "../icons/playicon/play.icon.component"
 import {RemoveIconComponent} from "../icons/remove-icon/remove-icon.component"
+import {ViewProgressService} from "../../service/view-progress.service"
 import {ContentForUser, UserService} from "../../service/user.service";
 
 @Component({
@@ -26,7 +27,8 @@ import {ContentForUser, UserService} from "../../service/user.service";
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  service = inject(VideoService);
+  videoService = inject(VideoService);
+  viewProgressService = inject(ViewProgressService);
   userService = inject(UserService);
   videoList: VideoOverviewDTO[] | undefined;
   progressList: [number, ViewProgress][] | undefined;

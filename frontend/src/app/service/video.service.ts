@@ -5,6 +5,8 @@ import {Tag} from "./tag.service";
 import {Question} from "./question.service";
 import {Comment} from "./comment.service";
 import {User} from "./user.service";
+import {Config} from "../config"
+import {num} from "video.js";
 
 export enum VisibilityEnum {
   self="self",everyone="everyone", customers="customers", internal="internal"
@@ -63,7 +65,7 @@ export interface VideoOverviewDTO {
   saved: boolean;
   color: string;
   durationSeconds: number;
-  viewProgress: number;
+  viewProgress: ViewProgress;
 }
 
 export interface LearningPathOverviewDTO {
@@ -87,37 +89,27 @@ export class VideoService {
   http = inject(HttpClient)
 
   getVideoList(): Observable<VideoOverviewDTO[]>{
-    return this.http.get<VideoOverviewDTO[]>("http://localhost:8080/api/video/")
+    return this.http.get<VideoOverviewDTO[]>(`${Config.API_URL}/api/video/`)
   }
 
-  getVideoDetails(videoId: number, userId: number): Observable<VideoDetailDTO>{
-    return this.http.get<VideoDetailDTO>(`http://localhost:8080/api/video/${videoId}?userId=${userId}`)
-  }
-
-  getVideoProgress(videoId: number, userId: number): Observable<ViewProgress>{
-    return this.http.get<ViewProgress>(`http://localhost:8080/api/video/${videoId}/progress/${userId}`)
-  }
-
-  setVideoProgress(videoId: number, userId: number, progress: number) {
-    return this.http.put(`http://localhost:8080/api/video/${videoId}/progress/${userId}`, {
-      durationSeconds: progress
-    })
+  getVideoDetails(videoId: number): Observable<VideoDetailDTO>{
+    return this.http.get<VideoDetailDTO>(`${Config.API_URL}/api/video/${videoId}?userId=${Config.USER_ID}`)
   }
 
   setStarRating(videoId: number, userId: number, rating: number) {
-    return this.http.put(`http://localhost:8080/api/video/${videoId}/starrating?userId=${userId}`, rating)
+    return this.http.put(`${Config.API_URL}/api/video/${videoId}/starrating?userId=${userId}`, rating)
   }
 
   getStarRating(videoId: number, userId: number): Observable<number>{
-    return this.http.get<number>(`http://localhost:8080/api/video/${videoId}/starrating/user/${userId}`)
+    return this.http.get<number>(`${Config.API_URL}/api/video/${videoId}/starrating/user/${userId}`)
   }
 
   getRatingAvgByVideo(videoId: number){
-    return this.http.get<number>(`http://localhost:8080/api/video/${videoId}/starrating/average`)
+    return this.http.get<number>(`${Config.API_URL}/api/video/${videoId}/starrating/average`)
   }
 
   createVideo(title: string, description: string, tags: Tag[], color: string, visibility: VisibilityEnum, comments: Comment[], questions: Question[], starRatings: StarRating[]){
-    this.http.post<VideoDetail>("http://localhost:8080/api/video/", {
+    this.http.post<VideoDetail>(`${Config.API_URL}/api/video/`, {
       title: title,
       description: description,
       tags: tags,
