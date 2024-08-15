@@ -52,7 +52,7 @@ public class VideoRepository {
                         v.getTags(),
                         v.getColor(),
                         v.getVideoFile() != null ? v.getVideoFile().getDurationSeconds() : null,
-                        0
+                        null
                 ))
                 .toList();
     }

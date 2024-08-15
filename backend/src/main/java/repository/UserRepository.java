@@ -1,6 +1,8 @@
 package repository;
 
 import dtos.ContentForUserDTO;
+import dtos.VideoOverviewDTO;
+import dtos.ContentForUserDTO;
 import dtos.VideoAndLearningPathOverviewCollection;
 import dtos.VideoOverviewDTO;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -11,7 +13,9 @@ import jakarta.transaction.Transactional;
 import model.Tag;
 import model.User;
 import model.Video;
+import model.ViewProgress;
 
+import javax.swing.text.View;
 import java.util.*;
 
 import java.util.List;
@@ -138,24 +142,24 @@ public class UserRepository {
     }
 
     public VideoOverviewDTO convertVideoToOverviewDTO(Video video, Long userId) {
-        int viewProgressDuration;
+        ViewProgress viewProgress;
         try {
-            viewProgressDuration = em.createQuery(
-                            "select vp.durationSeconds from ViewProgress vp " +
+            viewProgress = em.createQuery(
+                            "select vp from ViewProgress vp " +
                                     "where vp.user.userId = :userId " +
-                                    "and vp.content.contentId = :videoId", Integer.class)
+                                    "and vp.content.contentId = :videoId", ViewProgress.class)
                     .setParameter("userId", userId)
                     .setParameter("videoId", video.getContentId())
                     .setMaxResults(1)
                     .getSingleResult();
         } catch (NoResultException e) {
-            viewProgressDuration = 0;
+            viewProgress = null;
         }
 
         if (video.getVideoFile() != null) {
-            return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), video.getColor(), video.getVideoFile().getDurationSeconds(), viewProgressDuration);
+            return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), video.getColor(), video.getVideoFile().getDurationSeconds(), viewProgress);
         }
-        return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), video.getColor(), null, viewProgressDuration);
+        return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), video.getColor(), null, viewProgress);
     }
 
     public void toggleSavedVideo(Long userId, Long videoId) {

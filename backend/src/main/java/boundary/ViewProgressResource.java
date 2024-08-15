@@ -57,6 +57,7 @@ public class ViewProgressResource {
         try{
             repository.ignore(videoId, userId);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().build();

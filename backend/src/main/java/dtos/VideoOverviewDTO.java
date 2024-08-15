@@ -12,5 +12,5 @@ public record VideoOverviewDTO(
         List<Tag> tags,
         String color,
         Long durationSeconds,
-        int viewProgress
+        ViewProgress viewProgress
 ) { }
