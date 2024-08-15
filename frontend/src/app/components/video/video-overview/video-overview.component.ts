@@ -10,6 +10,7 @@ import {ChipComponent} from "../../basic/chip/chip.component"
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component"
 import {VideoOverviewDTO} from "../../../service/video.service"
 import { Utils } from '../../../utils';
+import {UserService} from "../../../service/user.service";
 
 @Component({
   selector: 'app-video-overview',
@@ -31,6 +32,8 @@ export class VideoOverviewComponent implements OnInit{
   @Input() video: VideoOverviewDTO = {} as VideoOverviewDTO
   @Input() removable: boolean = true
 
+  userService = inject(UserService)
+
   tagToolTipString: string = "Tags"
   @ViewChild("bookmark") bookmark: BookmarkIconComponent | undefined
 
@@ -39,6 +42,12 @@ export class VideoOverviewComponent implements OnInit{
 
   ngOnInit(): void {
     this.tagToolTipString = this.video.tags?.map(tag => tag.name).join(", ")
+
+    this.userService.isVideoSaved(this.video.videoId, 1).subscribe(isSaved => {
+      if(isSaved){
+        this.bookmark?.toggleMarked()
+      }
+    })
   }
 
   @HostListener('click', ['$event'])
@@ -50,6 +59,9 @@ export class VideoOverviewComponent implements OnInit{
     event.stopPropagation();
     this.bookmark?.toggleMarked()
     console.log("Added to bookmarks")
+
+    // todo user not hard coded
+    this.userService.toggleSavedVideo(this.video.videoId, 1)
   }
 
   removeSuggestion(event: MouseEvent) {

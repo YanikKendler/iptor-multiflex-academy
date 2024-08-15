@@ -4,6 +4,7 @@ import {catchError, map, Observable, of} from "rxjs";
 import {Tag} from "./tag.service";
 import {Question} from "./question.service";
 import {Comment} from "./comment.service";
+import {User} from "./user.service";
 
 export enum VisibilityEnum {
   self="self",everyone="everyone", customers="customers", internal="internal"
@@ -12,12 +13,6 @@ export enum VisibilityEnum {
 export interface StarRating {
   ratingId: number;
   rating: number;
-}
-
-export interface User {
-  userId: number;
-  username: string;
-  email: string;
 }
 
 export interface ViewProgress {
