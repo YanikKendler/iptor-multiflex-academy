@@ -28,3 +28,7 @@ video{
     color: gray;
   }
 }
+
+mat-spinner{
+  --mdc-circular-progress-active-indicator-color: #{$gray-400};
+}

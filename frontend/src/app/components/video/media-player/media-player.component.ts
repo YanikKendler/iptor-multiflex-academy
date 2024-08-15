@@ -16,12 +16,14 @@ import {FaIconComponent, FontAwesomeModule} from '@fortawesome/angular-fontaweso
 import { faFrownOpen } from '@fortawesome/free-regular-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import {Utils} from "../../../utils"
+import {MatProgressSpinner} from "@angular/material/progress-spinner"
 
 @Component({
   selector: 'app-media-player',
   standalone: true,
   imports: [
-    FaIconComponent
+    FaIconComponent,
+    MatProgressSpinner
   ],
   templateUrl: './media-player.component.html',
   styleUrls: ['./media-player.component.scss']
@@ -42,9 +44,9 @@ export class MediaPlayerComponent implements OnChanges {
     if(!this.video){
       this.loadingState = "loading"
 
-      setTimeout(() => {
+     /* setTimeout(() => {
         Utils.spinAnimation(this.spinner!.nativeElement)
-      },0)
+      },0)*/
     }
     else if(!this.video.videoFile){
       this.loadingState = "error"

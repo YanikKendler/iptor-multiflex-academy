@@ -3,9 +3,10 @@
 }
 @else if (loadingState == 'loading') {
   <div class="error">
-    <div #spinner>
+    <!--<div #spinner>
       <fa-icon [icon]="faSpinner"></fa-icon>
-    </div>
+    </div>-->
+    <mat-spinner color="gray" diameter="80" strokeWidth="4"></mat-spinner>
     <p>Loading Data</p>
   </div>
 }

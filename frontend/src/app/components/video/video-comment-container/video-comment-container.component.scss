@@ -19,52 +19,7 @@
   overflow-y: auto;
 }
 
-.comment{
-  display: flex;
-  justify-content: space-between;
-  padding-inline: 1rem;
-  width: 100%;
-}
-
-.base{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  align-self: stretch;
-  gap: .1rem;
-}
-
-.header{
-  display: flex;
-  align-items: flex-end;
-  gap: 0.3rem;
-
-  h2{
-    font-weight: bold;
-    font-size: .95rem;
-  }
-
-  .time{
-    font-size: 0.8rem;
-    color: $gray-250;
-  }
-}
-
-.text{
-  font-size: 0.9rem;
-}
-
-.editMenu{
-  display: flex;
-  gap: 0.5rem;
-}
-
-fa-icon{
-  cursor: pointer;
-  font-size: 1.25rem;
-}
-
-.post{
+.post-bar{
   display: flex;
   gap: 0.5rem;
   align-items: center;
@@ -88,4 +43,11 @@ fa-icon{
     font-size: 0.9rem;
     cursor: pointer;
   }
+}
+
+.no-comments{
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+  color: $gray-300;
 }

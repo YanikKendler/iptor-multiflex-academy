@@ -3,13 +3,13 @@ import {NavigationComponent} from "../../navigation/navigation.component"
 import {StarIconComponent} from "../../icons/star/star.icon.component"
 import {BookmarkIconComponent} from "../../icons/bookmark/bookmark.icon.component"
 import {ActivatedRoute, Params, Router} from "@angular/router";
-import {VideoCommentsComponent} from "../video-comments/video-comments.component";
 import {VideoQuizComponent} from "../video-quiz/video-quiz.component";
 import {VideoDetailDTO, VideoService} from "../../../service/video.service"
 import {MediaPlayerComponent} from "../media-player/media-player.component"
 import {VideoRatingComponent} from "../video-rating/video-rating.component";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
 import {UserService} from "../../../service/user.service";
+import {VideoCommentContainerComponent} from "../video-comment-container/video-comment-container.component"
 
 @Component({
   selector: 'app-video-detail',
@@ -18,11 +18,11 @@ import {UserService} from "../../../service/user.service";
     NavigationComponent,
     StarIconComponent,
     BookmarkIconComponent,
-    VideoCommentsComponent,
     VideoQuizComponent,
     MediaPlayerComponent,
     VideoRatingComponent,
-    IconButtonComponent
+    IconButtonComponent,
+    VideoCommentContainerComponent
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss'
