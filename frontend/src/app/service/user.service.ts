@@ -23,8 +23,8 @@ export class UserService {
 
   constructor() { }
 
-  toggleSavedVideo(videoId: number, userId: number){
-    return this.http.put(`http://localhost:8080/api/user/${userId}/togglesavedvideo/${videoId}`, {}).subscribe()
+  toggleSavedVideo(videoId: number){
+    return this.http.put(`http://localhost:8080/api/user/${Config.USER_ID}/togglesavedvideo/${videoId}`, {}).subscribe()
   }
 
   isVideoSaved(videoId: number){

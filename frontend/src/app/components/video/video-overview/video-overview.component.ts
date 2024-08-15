@@ -69,7 +69,7 @@ export class VideoOverviewComponent implements OnInit{
   removeSuggestion(event: MouseEvent) {
     event.stopPropagation();
 
-    this.viewProgressService.ignoreViewProgress(this.video.videoId)
+    this.viewProgressService.ignoreViewProgress(this.video.contentId)
     console.log("Removed suggestion")
   }
 

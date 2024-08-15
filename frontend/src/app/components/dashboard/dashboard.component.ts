@@ -45,19 +45,19 @@ export class DashboardComponent implements OnInit {
       this.content = content;
 
       this.content.current.videos.forEach(video => {
-        this.viewProgressService.getVideoProgress(video.contentId, 1).subscribe(progress => {
+        this.viewProgressService.getViewProgress(video.contentId).subscribe(progress => {
           video.viewProgress = progress;
         }, error => {});
       })
 
       this.content.assigned.videos.forEach(video => {
-        this.viewProgressService.getVideoProgress(video.contentId, 1).subscribe(progress => {
+        this.viewProgressService.getViewProgress(video.contentId).subscribe(progress => {
           video.viewProgress = progress;
         }, error => {});
       })
 
       this.content.suggested.videos.forEach(video => {
-        this.viewProgressService.getVideoProgress(video.contentId, 1).subscribe(progress => {
+        this.viewProgressService.getViewProgress(video.contentId).subscribe(progress => {
           video.viewProgress = progress;
         }, error => {});
       })
