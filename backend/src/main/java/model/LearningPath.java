@@ -1,36 +1,22 @@
 package model;
 
+import enums.VisibilityEnum;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-public class LearningPath {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    Long pathId;
-
+public class LearningPath extends Content {
     @OneToMany
-    private
-    List<LearningPathEntry> entries;
+    private List<LearningPathEntry> entries = new LinkedList<>();
 
-    private String title;
-
-    private String description;
-
-    private final LocalDateTime creationTime;
-
-    public LearningPath(String title, String description) {
-        this();
-        this.entries = new LinkedList<>();
-        this.title = title;
-        this.description = description;
+    public LearningPath(String title, String description, VisibilityEnum visibility) {
+        super(title, description, visibility);
     }
 
     public LearningPath() {
-        creationTime = LocalDateTime.now();
+        super();
     }
 
     public List<LearningPathEntry> addEntry(LearningPathEntry entry) {
@@ -43,23 +29,7 @@ public class LearningPath {
         return entries;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getCreationTime() {
-        return creationTime;
+    public List<LearningPathEntry> getEntries() {
+        return entries;
     }
 }

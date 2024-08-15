@@ -42,11 +42,11 @@ public class VideoRepository {
     }
 
     public List<VideoOverviewDTO> getAll() {
-        List<Video> videos = em.createQuery("select v from Video v order by v.videoId", Video.class).getResultList();
+        List<Video> videos = em.createQuery("select v from Video v order by v.contentId", Video.class).getResultList();
 
         return videos.stream()
                 .map(v -> new VideoOverviewDTO(
-                        v.getVideoId(),
+                        v.getContentId(),
                         v.getTitle(),
                         v.getDescription(),
                         v.getTags(),
@@ -97,7 +97,7 @@ public class VideoRepository {
             viewProgressDuration = em.createQuery(
                             "select vp.durationSeconds from ViewProgress vp " +
                                     "where vp.user.userId = :userId " +
-                                    "and vp.video.videoId = :videoId", Integer.class)
+                                    "and vp.content.contentId = :videoId", Integer.class)
                     .setParameter("userId", userId)
                     .setParameter("videoId", videoId)
                     .setMaxResults(1)
@@ -107,7 +107,7 @@ public class VideoRepository {
         }
 
         return new VideoDetailDTO(
-            video.getVideoId(),
+            video.getContentId(),
             video.getTitle(),
             video.getDescription(),
             video.getTags(),

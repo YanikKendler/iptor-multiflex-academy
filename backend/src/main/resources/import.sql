@@ -10,10 +10,10 @@ INSERT INTO app_user (username, email, user_type) VALUES ('yanik kendler', 'yani
 INSERT INTO VideoFile(durationseconds, sizebytes, originalfileextension) values (32, 1000000, 'mp4');
 
 -- Insert demo data for Video
-INSERT INTO Video (title, description, visibility, color, videofile_videofileid) VALUES ('Java Basics', 'Introduction to Java', 'self' , 'red', 1);
-INSERT INTO Video (title, description, visibility, color) VALUES ('Advanced Java', 'Deep dive into Java', 'customers' , 'pink');
-INSERT INTO Video (title, description, visibility, color) VALUES ('Spring Boot Tutorial', 'Getting started with Spring Boot', 'internal' , 'orange');
-INSERT INTO Video (title, description, visibility, color) VALUES ('Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , 'blue');
+INSERT INTO content (dtype, title, description, visibility, color, videofile_videofileid) VALUES ('Video', 'Java Basics', 'Introduction to Java', 'self' , 'red', 1);
+INSERT INTO content (dtype, title, description, visibility, color) VALUES ('Video', 'Advanced Java', 'Deep dive into Java', 'customers' , 'pink');
+INSERT INTO content (dtype, title, description, visibility, color) VALUES ('Video', 'Spring Boot Tutorial', 'Getting started with Spring Boot', 'internal' , 'orange');
+INSERT INTO content (dtype, title, description, visibility, color) VALUES ('Video', 'Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , 'blue');
 
 -- Insert demo data for Question
 INSERT INTO Question (text, title) VALUES ('What is the main topic of the video?', 'Main Topic');
@@ -61,30 +61,30 @@ INSERT INTO Tag (name) VALUES ('Java');
 INSERT INTO Tag (name) VALUES ('Programming');
 
 -- Insert demo data for video_comment
-INSERT INTO video_comment (video_videoid, comments_commentid) VALUES (1, 1);
-INSERT INTO video_comment (video_videoid, comments_commentid) VALUES (1, 2);
-INSERT INTO video_comment (video_videoid, comments_commentid) VALUES (1, 3);
-INSERT INTO video_comment (video_videoid, comments_commentid) VALUES (1, 4);
+INSERT INTO content_comment (video_contentid, comments_commentid) VALUES (1, 1);
+INSERT INTO content_comment (video_contentid, comments_commentid) VALUES (1, 2);
+INSERT INTO content_comment (video_contentid, comments_commentid) VALUES (1, 3);
+INSERT INTO content_comment (video_contentid, comments_commentid) VALUES (1, 4);
 
 -- Insert demo data for video_question
-INSERT INTO video_question (video_videoid, questions_questionid) VALUES (1, 1);
-INSERT INTO video_question (video_videoid, questions_questionid) VALUES (1, 2);
-INSERT INTO video_question (video_videoid, questions_questionid) VALUES (1, 3);
-INSERT INTO video_question (video_videoid, questions_questionid) VALUES (1, 4);
+INSERT INTO content_question (video_contentid, questions_questionid) VALUES (1, 1);
+INSERT INTO content_question (video_contentid, questions_questionid) VALUES (1, 2);
+INSERT INTO content_question (video_contentid, questions_questionid) VALUES (1, 3);
+INSERT INTO content_question (video_contentid, questions_questionid) VALUES (1, 4);
 
 -- Insert demo data for video_tag
-INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (1, 1);
-INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (4, 2);
-INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (2, 3);
-INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (3, 4);
-INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (3, 2);
-INSERT INTO video_tag (video_videoid, tags_tagid) VALUES (3, 1);
+INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (1, 1);
+INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (4, 2);
+INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (2, 3);
+INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (3, 4);
+INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (3, 2);
+INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (3, 1);
 
 -- Insert demo data for video_star_rating
-INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 1);
-INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 2);
-INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 3);
-INSERT INTO video_starrating (video_videoid, starratings_ratingid) VALUES (1, 4);
+INSERT INTO content_starrating (video_contentid, starratings_ratingid) VALUES (1, 1);
+INSERT INTO content_starrating (video_contentid, starratings_ratingid) VALUES (1, 2);
+INSERT INTO content_starrating (video_contentid, starratings_ratingid) VALUES (1, 3);
+INSERT INTO content_starrating (video_contentid, starratings_ratingid) VALUES (1, 4);
 
 -- Insert demo data for Customer
 INSERT INTO Customer (userid, companyName, isManager, supervisor_userid) VALUES (1, 'TechCorp', true, null);
@@ -105,14 +105,13 @@ INSERT INTO Notification (text, user_userid, timestamp) VALUES ('Your subscripti
 INSERT INTO Notification (text, user_userid, timestamp) VALUES ('You have a new follower.', 4, '2023-10-04 09:20:00');
 
 -- Insert demo data for VideoAssignment
-INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, timestamp) VALUES (1, 1, 1, '2023-10-01');
-INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, timestamp) VALUES (2, 3, 2, '2023-10-02');
-INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, timestamp) VALUES (3, 4, 3, '2023-10-03');
-INSERT INTO VideoAssignment (video_videoid, assignedby_userid, assignedto_userid, timestamp) VALUES (4, 4, 4, '2023-10-04');
+INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (1, 1, 1, '2023-10-01');
+INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (2, 3, 2, '2023-10-02');
+INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (3, 4, 3, '2023-10-03');
+INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (4, 4, 4, '2023-10-04');
 
 -- Insert demo data for ViewProgress
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp, ignored) VALUES (1, 1, 15, '2023-10-01 10:00:00', false);
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp, ignored) VALUES (1, 2, 75, '2023-10-01 10:30:00', false);
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp, ignored) VALUES (2, 1, 200, '2023-10-02 11:00:00', false);
-INSERT INTO ViewProgress (video_videoid, user_userid, durationSeconds, timestamp, ignored) VALUES (2, 2, 300, '2023-10-02 11:30:00', false);
-
+INSERT INTO ViewProgress (content_contentid, user_userid, durationSeconds, timestamp, ignored) VALUES (1, 1, 15, '2023-10-01 10:00:00', false);
+INSERT INTO ViewProgress (content_contentid, user_userid, durationSeconds, timestamp, ignored) VALUES (1, 2, 75, '2023-10-01 10:30:00', false);
+INSERT INTO ViewProgress (content_contentid, user_userid, durationSeconds, timestamp, ignored) VALUES (2, 1, 200, '2023-10-02 11:00:00', false);
+INSERT INTO ViewProgress (content_contentid, user_userid, durationSeconds, timestamp, ignored) VALUES (2, 2, 300, '2023-10-02 11:30:00', false);

@@ -33,7 +33,7 @@ public class QuestionRepository {
     }
 
     public List<Question> getAll(Long videoId) {
-        return em.createQuery("select q from Video v join v.questions q where v.videoId = :videoId", Question.class)
+        return em.createQuery("select q from Video v join v.questions q where v.contentId = :videoId", Question.class)
                 .setParameter("videoId", videoId).getResultList();
     }
 

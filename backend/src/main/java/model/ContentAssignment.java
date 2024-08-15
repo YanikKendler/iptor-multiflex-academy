@@ -5,8 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class VideoAssignment {
-
+public class ContentAssignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long assignmentId;
@@ -18,19 +17,19 @@ public class VideoAssignment {
     private User assignedBy;
 
     @ManyToOne
-    private Video video;
+    private Content content;
 
     @Column
     private final LocalDateTime timestamp;
 
-    public VideoAssignment(User assignedTo, User assignedBy, Video video) {
+    public ContentAssignment(User assignedTo, User assignedBy, Video content) {
         this();
         this.assignedTo = assignedTo;
         this.assignedBy = assignedBy;
-        this.video = video;
+        this.content = content;
     }
 
-    public VideoAssignment() {
+    public ContentAssignment() {
         this.timestamp = LocalDateTime.now();
     }
 
@@ -59,12 +58,12 @@ public class VideoAssignment {
         this.assignedBy = assignedBy;
     }
 
-    public Video getVideo() {
-        return video;
+    public Content getContent() {
+        return content;
     }
 
-    public void setVideo(Video video) {
-        this.video = video;
+    public void setContent(Video video) {
+        this.content = video;
     }
 
     public LocalDateTime getTimestamp() {
