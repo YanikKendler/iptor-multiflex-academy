@@ -11,6 +11,7 @@ import {IconButtonComponent} from "../../basic/icon-button/icon-button.component
 import {VideoOverviewDTO} from "../../../service/video.service"
 import { Utils } from '../../../utils';
 import {UserService} from "../../../service/user.service";
+import {ViewProgressService} from "../../../service/view-progress.service"
 
 @Component({
   selector: 'app-video-overview',
@@ -33,6 +34,7 @@ export class VideoOverviewComponent implements OnInit{
   @Input() removable: boolean = true
 
   userService = inject(UserService)
+  viewProgressService = inject(ViewProgressService)
 
   tagToolTipString: string = "Tags"
   @ViewChild("bookmark") bookmark: BookmarkIconComponent | undefined
@@ -43,7 +45,7 @@ export class VideoOverviewComponent implements OnInit{
   ngOnInit(): void {
     this.tagToolTipString = this.video.tags?.map(tag => tag.name).join(", ")
 
-    this.userService.isVideoSaved(this.video.videoId, 1).subscribe(isSaved => {
+    this.userService.isVideoSaved(this.video.videoId).subscribe(isSaved => {
       if(isSaved){
         this.bookmark?.toggleMarked()
       }
@@ -61,11 +63,13 @@ export class VideoOverviewComponent implements OnInit{
     console.log("Added to bookmarks")
 
     // todo user not hard coded
-    this.userService.toggleSavedVideo(this.video.videoId, 1)
+    this.userService.toggleSavedVideo(this.video.videoId)
   }
 
   removeSuggestion(event: MouseEvent) {
     event.stopPropagation();
+
+    this.viewProgressService.ignoreViewProgress(this.video.videoId)
     console.log("Removed suggestion")
   }
 

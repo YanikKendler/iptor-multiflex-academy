@@ -43,11 +43,11 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   ngOnInit() {
     this.route.params.subscribe(
       (params: Params) => {
-        this.service.getVideoDetails(params['id'], 1).subscribe(video => {
+        this.service.getVideoDetails(params['id']).subscribe(video => {
           console.log(video)
           this.video = video
 
-          this.userService.isVideoSaved(this.video.videoId, 1).subscribe(isSaved => {
+          this.userService.isVideoSaved(this.video.videoId).subscribe(isSaved => {
             if(isSaved){
               this.bookmark?.toggleMarked()
             }
@@ -84,6 +84,6 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
     console.log("Added to bookmarks")
 
     // todo user not hard coded
-    this.userService.toggleSavedVideo(this.video.videoId, 1)
+    this.userService.toggleSavedVideo(this.video.videoId)
   }
 }

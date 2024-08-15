@@ -4,10 +4,10 @@
   <div class="top">
     <app-media-player [video]="video"></app-media-player>
     <div class="right">
-      <h1>{{video?.title}}</h1>
-      <p class="description">{{video?.description}}</p>
+      <h1>{{video.title}}</h1>
+      <p class="description">{{video.description}}</p>
       <div class="actions">
-        <app-video-rating [videoId]="video?.videoId" [rating]="video?.rating"></app-video-rating>
+        <app-video-rating [videoId]="video.videoId" [rating]="video.rating"></app-video-rating>
         <app-icon-button (click)="addToBookmarks($event)">
           <app-bookmark-icon #bookmark></app-bookmark-icon>
         </app-icon-button>
@@ -27,7 +27,7 @@
         <app-video-comment-container [comments]="video.comments" [videoId]="this.video.videoId"></app-video-comment-container>
       }
       @case('quiz'){
-        <app-video-quiz [questions]="video?.questions"></app-video-quiz>
+        <app-video-quiz [questions]="video.questions"></app-video-quiz>
       }
     }
   </div>

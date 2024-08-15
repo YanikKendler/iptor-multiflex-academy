@@ -9,6 +9,7 @@ import {HttpClient, HttpErrorResponse, HttpEventType} from "@angular/common/http
 import {StarIconComponent} from "../icons/star/star.icon.component"
 import {PlayIconComponent} from "../icons/playicon/play.icon.component"
 import {RemoveIconComponent} from "../icons/remove-icon/remove-icon.component"
+import {ViewProgressService} from "../../service/view-progress.service"
 
 @Component({
   selector: 'app-dashboard',
@@ -25,7 +26,8 @@ import {RemoveIconComponent} from "../icons/remove-icon/remove-icon.component"
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
-  service = inject(VideoService);
+  videoService = inject(VideoService);
+  viewProgressService = inject(ViewProgressService);
   videoList: VideoOverviewDTO[] | undefined;
   progressList: [number, ViewProgress][] | undefined;
 
@@ -35,13 +37,13 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.service.getVideoList().subscribe((videos: VideoOverviewDTO[]) => {
+    this.videoService.getVideoList().subscribe((videos: VideoOverviewDTO[]) => {
       this.videoList = videos;
       console.log(videos)
 
       this.progressList = [];
       videos.forEach(video => {
-        this.service.getVideoProgress(video.videoId, 1).subscribe(progress => {
+        this.viewProgressService.getViewProgress(video.videoId).subscribe(progress => {
           video.viewProgress = progress;
         }, error => {});
       });
