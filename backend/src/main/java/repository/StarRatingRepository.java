@@ -25,7 +25,7 @@ public class StarRatingRepository {
     public void set(Long videoId, Long userId, int rating) {
         StarRating starRating;
         try{
-            starRating = em.createQuery("select s from Video v join v.starRatings s where v.videoId = :videoId and s.user.id = :userId", StarRating.class)
+            starRating = em.createQuery("select s from Video v join v.starRatings s where v.contentId = :videoId and s.user.id = :userId", StarRating.class)
                     .setParameter("videoId", videoId)
                     .setParameter("userId", userId)
                     .getSingleResult();
@@ -50,8 +50,8 @@ public class StarRatingRepository {
     }
 
     public List<StarRating> getAll(Long videoId) {
-        return em.createQuery("select s from Video v join v.starRatings s where v.videoId = :videoId", StarRating.class)
-                .setParameter("videoId", videoId).getResultList();
+        return em.createQuery("select s from Video v join v.starRatings s where v.contentId = :contentId", StarRating.class)
+                .setParameter("contentId", videoId).getResultList();
     }
 
     public StarRating getById(Long id){
@@ -59,14 +59,14 @@ public class StarRatingRepository {
     }
 
     public double getAverage(Long vid) {
-        return em.createQuery("select avg(s.rating) from Video v join v.starRatings s where v.videoId = :vid", Double.class)
+        return em.createQuery("select avg(s.rating) from Video v join v.starRatings s where v.contentId = :vid", Double.class)
                 .setParameter("vid", vid).getSingleResult();
     }
 
     public int getStarRating(Long videoId, Long userId) {
         try{
-            return em.createQuery("select s.rating from Video v join v.starRatings s where v.videoId = :videoId and s.user.id = :userId", Integer.class)
-                    .setParameter("videoId", videoId)
+            return em.createQuery("select s.rating from Video v join v.starRatings s where v.contentId = :contentId and s.user.id = :userId", Integer.class)
+                    .setParameter("contentId", videoId)
                     .setParameter("userId", userId)
                     .getSingleResult();
         } catch(NoResultException e) {
