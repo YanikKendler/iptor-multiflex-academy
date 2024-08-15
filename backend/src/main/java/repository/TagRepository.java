@@ -34,7 +34,7 @@ public class TagRepository {
 
     @Transactional
     public List<Tag> getAll(Long videoId) {
-        return em.createQuery("select t from Video v join v.tags t where v.videoId = :videoId", Tag.class)
+        return em.createQuery("select t from Video v join v.tags t where v.contentId = :videoId", Tag.class)
                 .setParameter("videoId", videoId)
                 .getResultList();
     }

@@ -44,7 +44,7 @@ public class CommentRepository {
 
     public List<Comment> getAll(Long videoId, Long userId) {
         // the comments are ordered by the user id, so that the user's comments are shown first
-        return em.createQuery("select c from Video v join v.comments c where v.videoId = :videoId order by case when c.user.id = :userId then 0 else 1 end, c.timestamp desc", Comment.class)
+        return em.createQuery("select c from Video v join v.comments c where v.contentId = :videoId order by case when c.user.id = :userId then 0 else 1 end, c.timestamp desc", Comment.class)
                 .setParameter("videoId", videoId)
                 .setParameter("userId", userId)
                 .getResultList();
