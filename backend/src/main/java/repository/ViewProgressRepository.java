@@ -27,7 +27,7 @@ public class ViewProgressRepository {
             viewProgress = em.createQuery(
                             "select vp from ViewProgress vp " +
                                     "where vp.user.userId = :userId " +
-                                    "and vp.video.videoId = :videoId"
+                                    "and vp.content.videoId = :videoId"
                             , ViewProgress.class)
                     .setParameter("userId", userId)
                     .setParameter("videoId", videoId)
@@ -65,7 +65,7 @@ public class ViewProgressRepository {
 
     public ViewProgress getLatest(Long videoId, Long userId) {
         try {
-            return em.createQuery("select p from ViewProgress p where p.video.id = :vid and p.user.id = :uid", ViewProgress.class)
+            return em.createQuery("select p from ViewProgress p where p.content.id = :vid and p.user.id = :uid", ViewProgress.class)
                     .setParameter("vid", videoId)
                     .setParameter("uid", userId)
                     .setMaxResults(1)

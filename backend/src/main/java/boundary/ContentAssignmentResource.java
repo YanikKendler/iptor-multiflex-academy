@@ -4,21 +4,21 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.VideoAssignment;
-import repository.VideoAssignmentRepository;
+import model.ContentAssignment;
+import repository.ContentAssignmentRepository;
 
 import java.util.List;
 
 @Path("videoAssignment")
-public class VideoAssignmentResource {
+public class ContentAssignmentResource {
     @Inject
-    VideoAssignmentRepository videoAssignmentRepository;
+    ContentAssignmentRepository contentAssignmentRepository;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createVideoAssignment(VideoAssignment videoAssignment){
+    public Response createVideoAssignment(ContentAssignment contentAssignment){
         try {
-            videoAssignmentRepository.create(videoAssignment);
+            contentAssignmentRepository.create(contentAssignment);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -28,32 +28,32 @@ public class VideoAssignmentResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAll() {
-        List<VideoAssignment> videoAssignments;
+        List<ContentAssignment> contentAssignments;
         try {
-            videoAssignments = videoAssignmentRepository.getAll();
+            contentAssignments = contentAssignmentRepository.getAll();
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().entity(videoAssignments).build();
+        return Response.ok().entity(contentAssignments).build();
     }
 
     @GET
     @Path("{id: [0-9]+}")
     public Response getVideoAssignment(@PathParam("id") Long id){
-        VideoAssignment videoAssignment;
+        ContentAssignment contentAssignment;
         try{
-            videoAssignment = videoAssignmentRepository.getById(id);
+            contentAssignment = contentAssignmentRepository.getById(id);
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().entity(videoAssignment).build();
+        return Response.ok().entity(contentAssignment).build();
     }
 
     @DELETE
     @Path("{id: [0-9]+}")
     public Response deleteVideoAssignment(@PathParam("id") Long id){
         try{
-            videoAssignmentRepository.delete(id);
+            contentAssignmentRepository.delete(id);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -63,9 +63,9 @@ public class VideoAssignmentResource {
     @PUT
     @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateVideoAssignment(@PathParam("id") Long id, VideoAssignment videoAssignment){
+    public Response updateVideoAssignment(@PathParam("id") Long id, ContentAssignment contentAssignment){
         try{
-            videoAssignmentRepository.update(videoAssignment);
+            contentAssignmentRepository.update(contentAssignment);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

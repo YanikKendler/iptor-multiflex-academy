@@ -13,7 +13,7 @@ public class ViewProgress {
     private Long progressId;
 
     @ManyToOne
-    private Video video;
+    private Content content;
 
     @JsonIgnore
     @ManyToOne
@@ -25,8 +25,8 @@ public class ViewProgress {
     private LocalDateTime timestamp;
 
 
-    public ViewProgress(Video video, User user, int durationSeconds) {
-        this.video = video;
+    public ViewProgress(Video content, User user, int durationSeconds) {
+        this.content = content;
         this.user = user;
         this.durationSeconds = durationSeconds;
         this.timestamp = LocalDateTime.now();
@@ -55,12 +55,12 @@ public class ViewProgress {
         this.user = user;
     }
 
-    public Video getVideo() {
-        return video;
+    public Content getContent() {
+        return content;
     }
 
-    public void setVideo(Video video) {
-        this.video = video;
+    public void setContent(Video video) {
+        this.content = video;
     }
 
     public int getDurationSeconds() {

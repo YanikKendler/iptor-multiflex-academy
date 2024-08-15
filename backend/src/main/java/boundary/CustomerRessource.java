@@ -27,18 +27,6 @@ public class CustomerRessource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(){
-        List<Customer> customers;
-        try{
-            customers = repository.getAll();
-        }catch (Exception ex){
-            return Response.status(400).entity(ex).build();
-        }
-        return Response.ok().entity(customers).build();
-    }
-
-    @GET
     @Path("{id: [0-9]+}")
     public Response getCustomer(@PathParam("id") Long id){
         Customer customer;
@@ -72,5 +60,4 @@ public class CustomerRessource {
         }
         return Response.ok().build();
     }
-
 }
