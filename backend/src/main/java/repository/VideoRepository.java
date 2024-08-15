@@ -56,32 +56,6 @@ public class VideoRepository {
                 .toList();
     }
 
-    /*public VideoForUserDTO getAllFromUser(Long userId) {
-        List<VideoOverviewDTO> continueVideos = null;
-        List<VideoOverviewDTO> assignedVideos = null;
-        List<VideoOverviewDTO> suggestedVideos = null;
-
-        try {
-            continueVideos = em.createQuery("select new dtos.VideoOverviewDTO(v.videoId as videoId, v.title as title, v.description as description, v.tags as tags, v.color as color, v.durationSeconds as durationSeconds, vp as progress)" +
-                            " from Video v join ViewProgress vp on v.id = vp.video.id where vp.user.userId = :userId", VideoOverviewDTO.class)
-                    .setParameter("userId", userId).getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            assignedVideos = em.createQuery("select new dtos.VideoOverviewDTO(v.videoId as videoId, v.title as title, v.description as description, v.tags as tags, v.color as color, v.durationSeconds as durationSeconds, vp as progress)" +
-                            " from Video v join VideoAssignment va on v.id = va.video.id" +
-                            " join ViewProgress  vp on v.id = vp.video.id where va.assignedTo.userId = :userId", VideoOverviewDTO.class)
-                    .setParameter("userId", userId).getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return new VideoForUserDTO(continueVideos, assignedVideos, suggestedVideos);
-    }
-     */
-
     public Video getById(Long id){
         System.out.println("getById " + id);
         return em.find(Video.class, id);

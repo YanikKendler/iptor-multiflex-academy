@@ -68,12 +68,13 @@ public class UserResource {
     }
 
     @GET
-    @Path("{userId}/suggestedvideos")
+    @Path("{userId}/contentforuser")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getSuggestedVideos(@PathParam("userId") Long userId) {
+    public Response getContentForUser(@PathParam("userId") Long userId) {
         try {
-            return Response.ok(repository.getSuggestedVideos(userId)).build();
+            return Response.ok(repository.getContentForUser(userId)).build();
         } catch (Exception ex) {
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
     }
