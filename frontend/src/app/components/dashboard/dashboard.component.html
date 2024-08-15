@@ -18,8 +18,28 @@
 <main>
   <p>Continue Watching</p>
   <div class="video-row">
-    @for(video of videoList; track video.videoId){
-      <app-video-overview [video]="video"></app-video-overview>
+    @if(content && content.current){
+      @for(video of content.current.videos; track video.contentId){
+        <app-video-overview [video]="video"></app-video-overview>
+      }
+    }
+  </div>
+
+  <p>Assigned Content</p>
+  <div class="video-row">
+    @if(content && content.assigned){
+      @for(video of content.assigned.videos; track video.contentId){
+        <app-video-overview [video]="video"></app-video-overview>
+      }
+    }
+  </div>
+
+  <p>Suggested Videos</p>
+  <div class="video-row">
+    @if(content && content.suggested){
+      @for(video of content.suggested.videos; track video.contentId){
+        <app-video-overview [video]="video"></app-video-overview>
+      }
     }
   </div>
 </main>

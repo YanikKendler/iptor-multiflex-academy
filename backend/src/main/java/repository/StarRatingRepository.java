@@ -59,8 +59,12 @@ public class StarRatingRepository {
     }
 
     public double getAverage(Long vid) {
-        return em.createQuery("select avg(s.rating) from Video v join v.starRatings s where v.contentId = :vid", Double.class)
-                .setParameter("vid", vid).getSingleResult();
+        try{
+            return em.createQuery("select avg(s.rating) from Video v join v.starRatings s where v.contentId = :vid", Double.class)
+                    .setParameter("vid", vid).getSingleResult();
+        } catch(Exception e) {
+            return 0;
+        }
     }
 
     public int getStarRating(Long videoId, Long userId) {

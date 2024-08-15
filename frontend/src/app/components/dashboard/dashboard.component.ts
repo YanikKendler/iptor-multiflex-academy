@@ -10,6 +10,7 @@ import {StarIconComponent} from "../icons/star/star.icon.component"
 import {PlayIconComponent} from "../icons/playicon/play.icon.component"
 import {RemoveIconComponent} from "../icons/remove-icon/remove-icon.component"
 import {ViewProgressService} from "../../service/view-progress.service"
+import {ContentForUser, UserService} from "../../service/user.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -28,8 +29,11 @@ import {ViewProgressService} from "../../service/view-progress.service"
 export class DashboardComponent implements OnInit {
   videoService = inject(VideoService);
   viewProgressService = inject(ViewProgressService);
+  userService = inject(UserService);
   videoList: VideoOverviewDTO[] | undefined;
   progressList: [number, ViewProgress][] | undefined;
+
+  content: ContentForUser | undefined;
 
   @ViewChild('videoId', { static: true }) videoIdInput!: ElementRef<HTMLInputElement>;
   @ViewChild('fileId', { static: true }) fileIdInput!: ElementRef<HTMLInputElement>;
@@ -37,16 +41,26 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.videoService.getVideoList().subscribe((videos: VideoOverviewDTO[]) => {
-      this.videoList = videos;
-      console.log(videos)
+    this.userService.getContentForUser(1).subscribe(content => {
+      this.content = content;
 
-      this.progressList = [];
-      videos.forEach(video => {
-        this.viewProgressService.getViewProgress(video.videoId).subscribe(progress => {
+      this.content.current.videos.forEach(video => {
+        this.viewProgressService.getVideoProgress(video.contentId, 1).subscribe(progress => {
           video.viewProgress = progress;
         }, error => {});
-      });
+      })
+
+      this.content.assigned.videos.forEach(video => {
+        this.viewProgressService.getVideoProgress(video.contentId, 1).subscribe(progress => {
+          video.viewProgress = progress;
+        }, error => {});
+      })
+
+      this.content.suggested.videos.forEach(video => {
+        this.viewProgressService.getVideoProgress(video.contentId, 1).subscribe(progress => {
+          video.viewProgress = progress;
+        }, error => {});
+      })
     });
 
 /*    console.log(Utils.toSmartTimeString(new Date()))
