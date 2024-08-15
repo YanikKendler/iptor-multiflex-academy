@@ -10,6 +10,7 @@ public record VideoOverviewDTO(
         String title,
         String description,
         List<Tag> tags,
+        boolean saved,
         String color,
         Long durationSeconds,
         ViewProgress viewProgress

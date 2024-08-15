@@ -20,7 +20,7 @@
   <div class="video-row">
     @if(content && content.current){
       @for(video of content.current.videos; track video.contentId){
-        <app-video-overview [video]="video" (updateDashboard)="updateDashboard()"></app-video-overview>
+        <app-video-overview [video]="video" (updateDashboard)="updateDashboard($event)"></app-video-overview>
       }
     }
   </div>
@@ -29,7 +29,7 @@
   <div class="video-row">
     @if(content && content.assigned){
       @for(video of content.assigned.videos; track video.contentId){
-        <app-video-overview [video]="video" (updateDashboard)="updateDashboard()"></app-video-overview>
+        <app-video-overview [video]="video" (updateDashboard)="updateDashboard($event)"></app-video-overview>
       }
     }
   </div>
@@ -38,7 +38,7 @@
   <div class="video-row">
     @if(content && content.suggested){
       @for(video of content.suggested.videos; track video.contentId){
-        <app-video-overview [video]="video" (updateDashboard)="updateDashboard()"></app-video-overview>
+        <app-video-overview [video]="video" (updateDashboard)="updateDashboard($event)"></app-video-overview>
       }
     }
   </div>

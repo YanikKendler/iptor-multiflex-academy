@@ -156,10 +156,12 @@ public class UserRepository {
             viewProgress = null;
         }
 
+        boolean saved = isVideoSaved(userId, video.getContentId());
+
         if (video.getVideoFile() != null) {
-            return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), video.getColor(), video.getVideoFile().getDurationSeconds(), viewProgress);
+            return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), saved, video.getColor(), video.getVideoFile().getDurationSeconds(), viewProgress);
         }
-        return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), video.getColor(), null, viewProgress);
+        return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), saved, video.getColor(), null, viewProgress);
     }
 
     public void toggleSavedVideo(Long userId, Long videoId) {

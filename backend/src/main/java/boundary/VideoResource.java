@@ -66,19 +66,6 @@ public class VideoResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(){
-        List<VideoOverviewDTO> videos;
-        try{
-            videos = repository.getAll();
-        }catch (Exception ex){
-            ex.printStackTrace();
-            return Response.status(400).entity(ex).build();
-        }
-        return Response.ok().entity(videos).build();
-    }
-
-    @GET
     @Path("{videoId: [0-9]+}")
     public Response getVideoDetails(@PathParam("videoId") Long videoId, @QueryParam("userId") Long userId){
         VideoDetailDTO videoDetailDTO;

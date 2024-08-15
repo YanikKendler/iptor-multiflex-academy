@@ -23,6 +23,11 @@ import { Utils } from '../../../utils';
 import {UserService} from "../../../service/user.service";
 import {ViewProgressService} from "../../../service/view-progress.service"
 
+export interface UpdateDashboardEvent {
+  video: VideoOverviewDTO;
+  action: "add" | "remove";
+}
+
 @Component({
   selector: 'app-video-overview',
   standalone: true,
@@ -42,7 +47,7 @@ import {ViewProgressService} from "../../../service/view-progress.service"
 export class VideoOverviewComponent implements OnInit{
   @Input() video: VideoOverviewDTO = {} as VideoOverviewDTO
   @Input() removable: boolean = true
-  @Output() updateDashboard: EventEmitter<any> = new EventEmitter<any>()
+  @Output() updateDashboard: EventEmitter<UpdateDashboardEvent> = new EventEmitter<UpdateDashboardEvent>();
 
   userService = inject(UserService)
   viewProgressService = inject(ViewProgressService)
@@ -55,12 +60,7 @@ export class VideoOverviewComponent implements OnInit{
 
   ngOnInit(): void {
     this.tagToolTipString = this.video.tags?.map(tag => tag.name).join(", ")
-
-    this.userService.isVideoSaved(this.video.contentId).subscribe(isSaved => {
-      if(isSaved){
-        this.bookmark?.toggleMarked()
-      }
-    })
+    console.log(this.video)
   }
 
   @HostListener('click', ['$event'])
@@ -70,11 +70,17 @@ export class VideoOverviewComponent implements OnInit{
 
   addToBookmarks(event: MouseEvent){
     event.stopPropagation();
+
+    if(this.bookmark?.marked){
+      this.updateDashboard.emit({video: this.video, action: "remove"})
+    } else{
+      this.updateDashboard.emit({video: this.video, action: "add"})
+    }
+
     this.bookmark?.toggleMarked()
     console.log("Added to bookmarks")
 
     this.userService.toggleSavedVideo(this.video.contentId)
-    this.updateDashboard.emit()
   }
 
   removeSuggestion(event: MouseEvent) {
@@ -82,7 +88,7 @@ export class VideoOverviewComponent implements OnInit{
 
     this.viewProgressService.ignoreViewProgress(this.video.contentId)
     console.log("Removed suggestion")
-    this.updateDashboard.emit()
+    this.updateDashboard.emit({video: this.video, action: "remove"})
   }
 
   protected readonly Utils = Utils

@@ -41,22 +41,6 @@ public class VideoRepository {
         em.remove(getById(id));
     }
 
-    public List<VideoOverviewDTO> getAll() {
-        List<Video> videos = em.createQuery("select v from Video v order by v.contentId", Video.class).getResultList();
-
-        return videos.stream()
-                .map(v -> new VideoOverviewDTO(
-                        v.getContentId(),
-                        v.getTitle(),
-                        v.getDescription(),
-                        v.getTags(),
-                        v.getColor(),
-                        v.getVideoFile() != null ? v.getVideoFile().getDurationSeconds() : null,
-                        null
-                ))
-                .toList();
-    }
-
     public Video getById(Long id){
         System.out.println("getById " + id);
         return em.find(Video.class, id);

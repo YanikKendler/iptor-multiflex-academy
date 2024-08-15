@@ -1,6 +1,6 @@
 import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {NavigationComponent} from "../navigation/navigation.component"
-import {VideoOverviewComponent} from "../video/video-overview/video-overview.component"
+import {UpdateDashboardEvent, VideoOverviewComponent} from "../video/video-overview/video-overview.component"
 import {Router} from "@angular/router"
 import {VideoOverviewDTO, VideoService, ViewProgress} from "../../service/video.service"
 import {Utils} from "../../utils"
@@ -41,20 +41,43 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-   this.updateDashboard()
-
-/*    console.log(Utils.toSmartTimeString(new Date()))
-    console.log(Utils.toSmartTimeString(new Date("07.08.2024 20:54")))
-    console.log(Utils.toSmartTimeString(new Date(1000*60*80)))
-    console.log(Utils.toSmartTimeString(new Date("05.08.2024")))
-    console.log(Utils.toSmartTimeString(new Date("07.06.2020")))*/
-  }
-
-  updateDashboard(){
     this.content = undefined
     this.userService.getContentForUser(1).subscribe(content => {
       this.content = content;
     });
+
+    /*    console.log(Utils.toSmartTimeString(new Date()))
+        console.log(Utils.toSmartTimeString(new Date("07.08.2024 20:54")))
+        console.log(Utils.toSmartTimeString(new Date(1000*60*80)))
+        console.log(Utils.toSmartTimeString(new Date("05.08.2024")))
+        console.log(Utils.toSmartTimeString(new Date("07.06.2020")))*/
+  }
+
+  updateDashboard(event?: UpdateDashboardEvent) {
+    if(event){
+      console.log(event)
+
+      if(event.action === "add"){
+        event.video.saved = true;
+        if(!this.content?.current.videos.includes(event.video)){
+          this.content?.current.videos.push(event.video)
+        }
+      } else {
+        if (this.content && this.content.current) {
+          this.content.current.videos = this.content.current.videos.filter(video => video.contentId !== event.video.contentId);
+
+          this.content.assigned.videos = this.content.assigned.videos.map(video => {
+            video.saved = false;
+            return video;
+          });
+
+          this.content.suggested.videos = this.content.suggested.videos.map(video => {
+            video.saved = false;
+            return video;
+          });
+        }
+      }
+    }
   }
 
   uploadFile(file: File) {

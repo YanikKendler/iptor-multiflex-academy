@@ -6,7 +6,6 @@ import {Question} from "./question.service";
 import {Comment} from "./comment.service";
 import {User} from "./user.service";
 import {Config} from "../config"
-import {num} from "video.js";
 
 export enum VisibilityEnum {
   self="self",everyone="everyone", customers="customers", internal="internal"
