@@ -26,7 +26,14 @@ export class VideoRatingComponent{
 
   color: string = 'black';
 
-
+  constructor() {
+    if(this.videoId && this.userId){
+      this.videoService.getStarRating(this.videoId, this.userId).subscribe(response => {
+        console.log(response)
+        this.yourRating = response
+      })
+    }
+  }
 
   setRating(rating: number) {
     this.yourRating = rating;
@@ -35,6 +42,7 @@ export class VideoRatingComponent{
 
   sendRating(){
     if(this.videoId && this.userId && this.yourRating){
+      console.log("sending rating", this.yourRating)
       this.videoService.setStarRating(this.videoId, this.userId, this.yourRating).subscribe(response => {
         console.log('Response from server:', response);
         this.updateRating()

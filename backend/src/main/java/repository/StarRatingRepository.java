@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import model.Comment;
 import model.StarRating;
 import model.User;
+import model.Video;
 import org.hibernate.sql.ast.tree.expression.Star;
 
 import java.util.List;
@@ -21,8 +22,26 @@ public class StarRatingRepository {
     VideoRepository videoRepository;
 
     @Transactional
-    public void set(Long videoId, Long userId, double rating) {
+    public void set(Long videoId, Long userId, int rating) {
+        StarRating starRating;
+        try{
+            starRating = em.createQuery("select s from Video v join v.starRatings s where v.videoId = :videoId and s.user.id = :userId", StarRating.class)
+                    .setParameter("videoId", videoId)
+                    .setParameter("userId", userId)
+                    .getSingleResult();
+            starRating.setRating(rating);
+        } catch (NoResultException e) {
+            starRating = new StarRating();
+            starRating.setRating(rating);
+            starRating.setUser(em.find(User.class, userId));
 
+            Video video = videoRepository.getById(videoId);
+            video.addStarRating(starRating);
+            em.persist(starRating);
+            return;
+        }
+
+        em.merge(starRating);
     }
 
     @Transactional
@@ -44,16 +63,15 @@ public class StarRatingRepository {
                 .setParameter("vid", vid).getSingleResult();
     }
 
-    public StarRating getRating(Long vid, Long uid) {
-        try {
-            return em.createQuery("select s from Video v join v.starRatings s where v.videoId = :vid and s.user.id = :uid", StarRating.class)
-                    .setParameter("vid", vid)
-                    .setParameter("uid", uid)
+    public int getStarRating(Long videoId, Long userId) {
+        try{
+            return em.createQuery("select s.rating from Video v join v.starRatings s where v.videoId = :videoId and s.user.id = :userId", Integer.class)
+                    .setParameter("videoId", videoId)
+                    .setParameter("userId", userId)
                     .getSingleResult();
-        } catch (NoResultException e) {
-            StarRating starRating = new StarRating();
-            starRating.setUser(em.find(User.class, uid));
-            return starRating;
+        } catch(NoResultException e) {
+            return 0;
         }
+
     }
 }

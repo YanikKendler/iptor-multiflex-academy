@@ -16,9 +16,9 @@ public class StarRatingResource {
     @Inject
     StarRatingRepository repository;
 
-    @POST
+    @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response setRating(double rating, @PathParam("videoId") Long vid, @QueryParam("userId") Long uid){
+    public Response setRating(@PathParam("videoId") Long vid, @QueryParam("userId") Long uid, int rating){
         try {
             repository.set(vid, uid, rating);
         } catch (Exception ex) {
@@ -30,10 +30,22 @@ public class StarRatingResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRating(@PathParam("videoId") Long vid, @QueryParam("userId") Long uid){
+    public Response getAllRatings(@PathParam("videoId") Long vid){
         try{
-            return Response.ok().entity(repository.getRating(vid, uid)).build();
-        }catch (Exception ex){
+            return Response.ok().entity(repository.getAll(vid)).build();
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/user/{id: [0-9]+}")
+    public Response getRating(@PathParam("videoId") Long vid, @PathParam("id") Long id){
+        try{
+            int rating = repository.getStarRating(vid, id);
+            return Response.ok().entity(rating).build();
+        } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
     }

@@ -96,9 +96,11 @@ export class VideoService {
   }
 
   setStarRating(videoId: number, userId: number, rating: number) {
-    return this.http.post(`http://localhost:8080/api/video/${videoId}/starrating?userId=${userId}`, {
-      rating: rating
-    })
+    return this.http.put(`http://localhost:8080/api/video/${videoId}/starrating?userId=${userId}`, rating)
+  }
+
+  getStarRating(videoId: number, userId: number): Observable<number>{
+    return this.http.get<number>(`http://localhost:8080/api/video/${videoId}/starrating/user/${userId}`)
   }
 
   getRatingAvgByVideo(videoId: number){
