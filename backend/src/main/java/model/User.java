@@ -23,7 +23,7 @@ public abstract class User {
 
     @OneToMany
     @JsonIgnore
-    private List<Video> savedVideos;
+    private List<Content> savedContent;
 
     public User(String username, String email) {
         this.username = username;
@@ -46,11 +46,11 @@ public abstract class User {
         return null;
     }
 
-    public void toggleSavedVideo(Video video) {
-        if (savedVideos.contains(video)) {
-            savedVideos.remove(video);
+    public void toggleSavedContent(Content content) {
+        if (savedContent.contains(content)) {
+            savedContent.remove(content);
         } else {
-            savedVideos.add(video);
+            savedContent.add(content);
         }
     }
 
@@ -79,12 +79,12 @@ public abstract class User {
         this.email = email;
     }
 
-    public List<Video> getSavedVideos() {
-        return savedVideos;
+    public List<Content> getSavedContent() {
+        return savedContent;
     }
 
-    public void setSavedVideos(List<Video> saved) {
-        this.savedVideos = saved;
+    public void setSavedVideos(List<Content> saved) {
+        this.savedContent = saved;
     }
     //</editor-fold>
 }

@@ -19,9 +19,9 @@ import {VideoAndLearningPathOverviewCollection, VideoService, VisibilityEnum} fr
 import {MyVideoContentDTO, UserService} from "../../../service/user.service";
 import {Tag} from "../../../service/tag.service";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
-import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
 import {MatButton} from "@angular/material/button";
+import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
 
 
 @Component({
@@ -33,10 +33,10 @@ import {MatButton} from "@angular/material/button";
     FormsModule,
     NgForOf,
     IconButtonComponent,
-    PlayIconComponent,
     CdkMenu,
     MatButton,
-    CdkMenuTrigger
+    CdkMenuTrigger,
+    PlayIconComponent
   ],
   templateUrl: './my-content.component.html',
   styleUrl: './my-content.component.scss'

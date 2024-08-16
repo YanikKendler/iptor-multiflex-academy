@@ -10,7 +10,6 @@ import {
   ViewChild
 } from '@angular/core';
 import {NgOptimizedImage} from "@angular/common"
-import {PlayIconComponent} from "../../icons/playicon/play.icon.component"
 import {BookmarkIconComponent} from "../../icons/bookmark/bookmark.icon.component"
 import {MatChip} from "@angular/material/chips"
 import {Router} from "@angular/router"
@@ -22,8 +21,10 @@ import {VideoOverviewDTO} from "../../../service/video.service"
 import { Utils } from '../../../utils';
 import {UserService} from "../../../service/user.service";
 import {ViewProgressService} from "../../../service/view-progress.service"
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
 
-export interface UpdateDashboardEvent {
+export interface UpdateVideoDashboardEvent {
   video: VideoOverviewDTO;
   action: "add" | "remove";
 }
@@ -33,21 +34,22 @@ export interface UpdateDashboardEvent {
   standalone: true,
   imports: [
     NgOptimizedImage,
-    PlayIconComponent,
     BookmarkIconComponent,
     MatChip,
     ChipComponent,
     MatTooltip,
     IconButtonComponent,
-    RemoveIconComponent
+    RemoveIconComponent,
+    FaIconComponent,
+    PlayIconComponent
   ],
   templateUrl: './video-overview.component.html',
   styleUrl: './video-overview.component.scss',
 })
 export class VideoOverviewComponent implements OnInit{
   @Input() video: VideoOverviewDTO = {} as VideoOverviewDTO
-  @Input() removable: boolean = true
-  @Output() updateDashboard: EventEmitter<UpdateDashboardEvent> = new EventEmitter<UpdateDashboardEvent>();
+  @Input() removable: boolean = false
+  @Output() updateDashboard: EventEmitter<UpdateVideoDashboardEvent> = new EventEmitter<UpdateVideoDashboardEvent>();
 
   userService = inject(UserService)
   viewProgressService = inject(ViewProgressService)
@@ -80,7 +82,7 @@ export class VideoOverviewComponent implements OnInit{
     this.bookmark?.toggleMarked()
     console.log("Added to bookmarks")
 
-    this.userService.toggleSavedVideo(this.video.contentId)
+    this.userService.toggleSavedContent(this.video.contentId)
   }
 
   removeSuggestion(event: MouseEvent) {

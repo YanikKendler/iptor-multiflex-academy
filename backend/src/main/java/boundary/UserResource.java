@@ -46,10 +46,10 @@ public class UserResource {
     }
 
     @PUT
-    @Path("{userId}/togglesavedvideo/{videoId}")
-    public Response toggleSavedVideo(@PathParam("userId") Long userId, @PathParam("videoId") Long videoId) {
+    @Path("{userId}/togglesavedcontent/{contentId}")
+    public Response toggleSavedVideo(@PathParam("userId") Long userId, @PathParam("contentId") Long contentId) {
         try {
-            repository.toggleSavedVideo(userId, videoId);
+            repository.toggleSavedVideo(userId, contentId);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

@@ -1,14 +1,18 @@
 import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {NavigationComponent} from "../navigation/navigation.component"
-import {UpdateDashboardEvent, VideoOverviewComponent} from "../video/video-overview/video-overview.component"
+import {UpdateVideoDashboardEvent, VideoOverviewComponent} from "../video/video-overview/video-overview.component"
 import {VideoOverviewDTO, VideoService, ViewProgress, VisibilityEnum} from "../../service/video.service"
 import {MediaPlayerComponent} from "../video/media-player/media-player.component"
 import {HttpClient} from "@angular/common/http"
 import {StarIconComponent} from "../icons/star/star.icon.component"
-import {PlayIconComponent} from "../icons/playicon/play.icon.component"
 import {RemoveIconComponent} from "../icons/remove-icon/remove-icon.component"
 import {ViewProgressService} from "../../service/view-progress.service"
 import {ContentForUser, UserService} from "../../service/user.service";
+import {
+  LearningPathOverviewComponent, UpdateLearningPathDashboardEvent
+} from "../../learning-path/learning-path-overview/learning-path-overview.component";
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {PlayIconComponent} from "../icons/playicon/play.icon.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -18,8 +22,10 @@ import {ContentForUser, UserService} from "../../service/user.service";
     VideoOverviewComponent,
     MediaPlayerComponent,
     StarIconComponent,
-    PlayIconComponent,
     RemoveIconComponent,
+    LearningPathOverviewComponent,
+    FaIconComponent,
+    PlayIconComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -51,13 +57,13 @@ export class DashboardComponent implements OnInit {
         console.log(Utils.toSmartTimeString(new Date("07.06.2020")))*/
   }
 
-  updateDashboard(event?: UpdateDashboardEvent) {
+  updateVideoDashboard(event?: UpdateVideoDashboardEvent) {
     if(event){
       console.log(event)
 
       if(event.action === "add"){
-        event.video.saved = true;
         if(!this.content?.current.videos.includes(event.video)){
+          event.video.saved = true;
           this.content?.current.videos.push(event.video)
         }
       } else {
@@ -72,6 +78,33 @@ export class DashboardComponent implements OnInit {
           this.content.suggested.videos = this.content.suggested.videos.map(video => {
             video.saved = false;
             return video;
+          });
+        }
+      }
+    }
+  }
+
+  updateLearningPathDashboard(event?: UpdateLearningPathDashboardEvent){
+    if(event){
+      console.log(event)
+
+      if(event.action === "add"){
+        event.learningPath.saved = true;
+        if(!this.content?.current.learningPaths.includes(event.learningPath)){
+          this.content?.current.learningPaths.push(event.learningPath)
+        }
+      } else {
+        if (this.content && this.content.current) {
+          this.content.current.learningPaths = this.content.current.learningPaths.filter(video => video.contentId !== event.learningPath.contentId);
+
+          this.content.assigned.learningPaths = this.content.assigned.learningPaths.map(learningPath => {
+            learningPath.saved = false;
+            return learningPath;
+          });
+
+          this.content.suggested.learningPaths = this.content.suggested.learningPaths.map(learningPath => {
+            learningPath.saved = false;
+            return learningPath;
           });
         }
       }

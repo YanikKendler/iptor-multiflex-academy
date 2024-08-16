@@ -92,7 +92,7 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
     console.log("Added to bookmarks")
 
     // todo user not hard coded
-    this.userService.toggleSavedVideo(this.video.contentId)
+    this.userService.toggleSavedContent(this.video.contentId)
   }
 
   shareVideo() {

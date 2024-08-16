@@ -6,6 +6,7 @@ import {Question} from "./question.service";
 import {Comment} from "./comment.service";
 import {User} from "./user.service";
 import {Config} from "../config"
+import {LearningPathOverviewDTO} from "./learning-path.service";
 
 export enum VisibilityEnum {
   self="self",everyone="everyone", customers="customers", internal="internal"
@@ -65,15 +66,6 @@ export interface VideoOverviewDTO {
   color: string;
   durationSeconds: number;
   viewProgress: ViewProgress;
-}
-
-export interface LearningPathOverviewDTO {
-  contentId: number;
-  title: string;
-  description: string;
-  tags: Tag[];
-  videoCount: number;
-  viewProgress: number;
 }
 
 export interface VideoAndLearningPathOverviewCollection {
