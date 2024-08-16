@@ -5,7 +5,7 @@ import {BookmarkIconComponent} from "../../icons/bookmark/bookmark.icon.componen
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {VideoQuizComponent} from "../video-quiz/video-quiz.component";
 import {VideoDetailDTO, VideoService} from "../../../service/video.service"
-import {MediaPlayerComponent} from "../media-player/media-player.component"
+import {MediaPlayerComponent} from "../../basic/media-player/media-player.component"
 import {VideoRatingComponent} from "../video-rating/video-rating.component";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
 import {UserService} from "../../../service/user.service";
@@ -85,5 +85,9 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
 
     // todo user not hard coded
     this.userService.toggleSavedVideo(this.video.contentId)
+  }
+
+  generateDescriptionWithLinebreaks(){
+    return this.video.description.replace(/\n/g, "<br>")
   }
 }

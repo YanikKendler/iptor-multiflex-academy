@@ -1,0 +1,8 @@
+<h1>{{data.title}}</h1>
+
+<p>{{data.message}}</p>
+
+<div class="buttons">
+  <button mat-button (click)="dialogRef.close(true)">confirm</button>
+  <button mat-flat-button (click)="dialogRef.close(false)">cancel</button>
+</div>

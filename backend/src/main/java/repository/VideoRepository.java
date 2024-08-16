@@ -1,13 +1,12 @@
 package repository;
 
 import dtos.CreateVideoDTO;
+import dtos.EditVideoDTO;
 import dtos.VideoDetailDTO;
-import dtos.VideoOverviewDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import model.Tag;
 import model.Video;
@@ -23,8 +22,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 
 @Transactional
 @ApplicationScoped
@@ -32,7 +31,7 @@ public class VideoRepository {
     @Inject
     EntityManager em;
 
-    public void create(CreateVideoDTO video) {
+    public Video create(CreateVideoDTO video) {
         System.out.println(video.toString());
 
         Video newVideo = new Video(video.title(), video.description(), video.visibility());
@@ -43,9 +42,28 @@ public class VideoRepository {
         newVideo.setQuestions(video.questions());
         newVideo.setColor(video.color());
         em.persist(newVideo);
+
+        return newVideo;
     }
 
-    public void update(Video video) {}
+    public VideoDetailDTO update(EditVideoDTO video) {
+        Video videoToUpdate = em.find(Video.class, video.contentId());
+
+        videoToUpdate.setTitle(video.title());
+        videoToUpdate.setDescription(video.description());
+        videoToUpdate.setTags(video.tags());
+        videoToUpdate.setQuestions(video.questions());
+        videoToUpdate.setVisibility(video.visibility());
+        try{
+            videoToUpdate.setVideoFile(em.find(VideoFile.class, video.videoFile().getVideoFileId()));
+        }
+        catch (NullPointerException ignored){ };
+
+
+        em.merge(videoToUpdate);
+
+        return videoToUpdate.toVideoDetailDTO();
+    }
 
     public void delete(Long id) {
         em.remove(getById(id));
@@ -56,7 +74,7 @@ public class VideoRepository {
         return em.find(Video.class, id);
     }
 
-    public VideoDetailDTO getVideoDetails(Long videoId, Long userId) {
+    public VideoDetailDTO getVideoDetailsForUser(Long videoId, Long userId) {
         System.out.println("getVideoDetails user: " + userId + " video: " + videoId);
 
         Video video = em.find(Video.class, videoId);
@@ -84,8 +102,22 @@ public class VideoRepository {
             video.getQuestions(),
             video.calculateStarRating(),
             video.getVideoFile(),
-            viewProgressDuration
+            viewProgressDuration,
+            video.getVisibility()
         );
+    }
+
+    public void deleteVideoFile(Long fileId) throws IOException {
+        FileUtils.deleteDirectory(new File( "processed" + File.separator + "video-" + fileId));
+
+        VideoFile videoFile = em.find(VideoFile.class, fileId);
+        if (videoFile != null) {
+            em.createQuery("UPDATE Video v SET v.videoFile = null WHERE v.videoFile.videoFileId = :fileId")
+                    .setParameter("fileId", fileId)
+                    .executeUpdate();
+
+            em.remove(videoFile);
+        }
     }
 
     /**
@@ -94,7 +126,7 @@ public class VideoRepository {
      * @param file the byte data of the uploaded video from the form on the client
      * @param filename the name of the uploaded video file from the client
      */
-    public void uploadVideo(InputStream file, String filename) throws Exception {
+    public VideoFile uploadVideo(InputStream file, String filename) throws Exception {
         //creates a VideoFile object that identifies and stores all the metadata for the video
         VideoFile videoFile = new VideoFile(filename);
         em.persist(videoFile);
@@ -107,6 +139,8 @@ public class VideoRepository {
 
         //remove the now unneeded temporary video file
         removeUploadedVideo(videoFile);
+
+        return videoFile;
     }
 
     /**

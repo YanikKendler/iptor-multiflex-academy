@@ -61,29 +61,32 @@ a{
   --mdc-outlined-button-container-shape: .5rem;
 
   --mdc-text-button-container-shape: .5rem;
+
+  --mdc-filled-button-container-shape: .5rem;
 }
 
 body {
   .mdc-button {
     height: 2rem;
 
-    .mdc-button__label {
-      display: flex;
-      flex-direction: row;
-      gap: .5rem;
-      color: black;
-    }
+    &:not([color="secondary"]):not([color="error"]) {
+      &[mat-button] {
+        color: $primary-500;
+      }
 
-    &[color="primary"] {
-      color: white;
-      background-color: $primary-500;
+      &[mat-flat-button] {
+        background-color: $primary-500;
+
+        &.cdk-focused {
+          background-color: $primary-600;
+        }
+      }
 
       &[mat-stroked-button] {
         color: black;
         background-color: hsla(188, 61%, 30%, 0.2);
         border-color: $primary-500;
       }
-
     }
 
     &[color="secondary"] {
@@ -94,6 +97,36 @@ body {
         background-color: hsla(31, 100%, 47%, 0.2);
         border-color: $secondary-500;
       }
+    }
+
+    &[color="error"] {
+      color: white;
+
+      &.cdk-focused{
+        .mat-mdc-button-persistent-ripple{
+          background-color: rgba(255, 0, 0, 0.1);
+        }
+      }
+
+      &[mat-button]{
+        color: darkred;
+      }
+
+      &[mat-flat-button]{
+        background-color: darkred;
+      }
+
+      &[mat-stroked-button] {
+        background-color: hsla(0, 100%, 40%, 0.2);
+        border-color: darkred;
+      }
+    }
+
+    .mdc-button__label {
+      display: flex;
+      flex-direction: row;
+      gap: .5rem;
+      color: inherit;
     }
 
     span.mat-mdc-button-persistent-ripple{
@@ -120,5 +153,9 @@ body {
   }
   .mat-mdc-icon-button.mat-success {
     color: #155724;
+  }
+
+  mat-spinner{
+    --mdc-circular-progress-active-indicator-color: #{$gray-400};
   }
 }

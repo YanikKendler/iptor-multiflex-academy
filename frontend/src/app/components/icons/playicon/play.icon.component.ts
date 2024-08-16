@@ -8,5 +8,4 @@ import {Component, Input} from '@angular/core';
   styleUrl: './play.icon.component.scss'
 })
 export class PlayIconComponent {
-  @Input() color: string = 'black';
 }

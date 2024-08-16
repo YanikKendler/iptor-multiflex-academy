@@ -1,0 +1,44 @@
+@if(videoFile.videoFileId < 0){
+  <div
+    class="upload-video"
+    (dragover)="dragOverHandler($event);"
+    (drop)="dropHandler($event);"
+    (click)="fileInput.click()"
+  >
+    <div class="icon">
+      <fa-icon [icon]="faArrowUpFromBracket"></fa-icon>
+    </div>
+    <p>drop file or click here to upload</p>
+  </div>
+} @else if (videoFile.videoFileId == 0){
+  <div class="upload-video">
+    <mat-spinner color="gray" diameter="72" strokeWidth="4"></mat-spinner>
+    <p>uploading video..</p>
+    <!--<button mat-button>cancel upload</button>-->
+  </div>
+} @else if (videoFile.videoFileId > 0){
+  <div
+    class="upload-video replace"
+    (dragover)="dragOverHandler($event);"
+    (drop)="confirmDropReplacement($event);"
+    (click)="confirmClickReplacement()"
+  >
+    <div class="icon">
+      <fa-icon [icon]="faArrowUpFromBracket"></fa-icon>
+    </div>
+    <p>drop file or click here, to replace existing video</p>
+  </div>
+  <p class="info">
+    @if(videoFile.durationSeconds) {
+      {{ Utils.toTimeDurationString(videoFile.durationSeconds) }}
+    }
+    @if(videoFile.sizeBytes) {
+      • {{ Utils.roundNumber(videoFile.sizeBytes/1000/1000, 2) }}mb
+    }
+    @if(videoFile.timestamp){
+      • {{ Utils.toFullTimeString(videoFile.timestamp) }}
+    }
+  </p>
+}
+
+<input class="fileinput" type="file" (change)="onFileChange($event)" #fileInput/>

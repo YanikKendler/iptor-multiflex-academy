@@ -38,7 +38,7 @@ export class Utils{
     }
   }
 
-  static toSmartTimeString(timestamp: Date | string | number){
+  static toTimeDurationString(timestamp: Date | string | number){
     let timeDate = this.anyToDate(timestamp);
     let timeMilliseconds = timeDate.valueOf();
 
@@ -65,16 +65,20 @@ export class Utils{
   static toFullTimeString(timestamp: Date | string | number){
     timestamp = this.anyToDate(timestamp);
 
-    return timestamp.getFullYear() + '-' +
-      Utils.padNumber(timestamp.getMonth() + 1) + '-' +
-      Utils.padNumber(timestamp.getDate()) + ' ' +
-      Utils.padNumber(timestamp.getHours()) + ':' +
-      Utils.padNumber(timestamp.getMinutes())
+    return Utils.padNumber(timestamp.getDate()) + '/' +
+           Utils.padNumber(timestamp.getMonth() + 1) + '/' +
+           timestamp.getFullYear().toString().substring(2,4) + ' ' +
+
+           Utils.padNumber(timestamp.getHours()) + ':' +
+           Utils.padNumber(timestamp.getMinutes())
   }
 
   static anyToDate(timestamp: Date | string | number){
-    if(typeof timestamp != "object") {
+    if(typeof timestamp == "string") {
       return new Date(timestamp);
+    }
+    else if(typeof timestamp == "number") {
+      return new Date(timestamp*1000);
     }
     else
       return timestamp;
@@ -82,6 +86,10 @@ export class Utils{
 
   static padNumber(number: number, length: number = 2){
     return number.toString().padStart(length, '0')
+  }
+
+  static roundNumber(num: number, digits:number): number {
+    return parseFloat(num.toFixed(digits));
   }
 
   static spinAnimation(element: HTMLElement){

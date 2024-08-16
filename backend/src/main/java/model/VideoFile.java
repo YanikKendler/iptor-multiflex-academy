@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -18,6 +20,7 @@ public class VideoFile {
     private long sizeBytes = -1;
     private String originalFileExtension;
     private String originalFileName;
+
     LocalDateTime timestamp;
 
     public VideoFile(String fileName) {
@@ -72,5 +75,9 @@ public class VideoFile {
 
     public void setOriginalFileName(String originalFileName) {
         this.originalFileName = originalFileName;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 }

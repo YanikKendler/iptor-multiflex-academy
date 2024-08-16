@@ -39,6 +39,10 @@ public abstract class Content {
         return contentId;
     }
 
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
     public List<Tag> getTags() {
         return tags;
     }

@@ -1,5 +1,6 @@
 package model;
 
+import dtos.VideoDetailDTO;
 import enums.VisibilityEnum;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -28,6 +29,21 @@ public class Video extends Content {
     }
 
     public Video() { super(); }
+
+    public VideoDetailDTO toVideoDetailDTO(){
+        return new VideoDetailDTO(
+                this.getContentId(),
+                this.getTitle(),
+                this.getDescription(),
+                this.getTags(),
+                this.getComments(null),
+                this.getQuestions(),
+                this.calculateStarRating(),
+                this.getVideoFile(),
+                0,
+                this.getVisibility()
+        );
+    }
 
     public void addComment(Comment comment) {
         comments.add(comment);

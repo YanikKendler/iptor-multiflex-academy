@@ -1,0 +1,51 @@
+<h2>Description</h2>
+<section class="basics">
+  <div class="left">
+    <app-textfield
+      [(value)]="video.title"
+      label="Title"
+      placeholder="My amazing tutorial"
+    ></app-textfield>
+
+    <app-textfield
+      [(value)]="video.description"
+      label="Description"
+      placeholder="In this tutorial you will learn..."
+      [rows]="5"
+    ></app-textfield>
+  </div>
+  <app-upload-video
+    [videoFile]="video.videoFile ? video.videoFile : {videoFileId: -1}"
+    (uploadFinished)="videoFileUpdated($event)"
+  ></app-upload-video>
+</section>
+
+<h2>Details</h2>
+<section class="details">
+  <div>
+    <p>video-color:</p>
+    <input type="color">
+  </div>
+
+  <div>
+    <p>visibility:</p>
+    <select name="" id="visibilitySelect">
+      <option *ngFor="let visibility of visibilityOptions" [value]="visibility">{{ visibility }}</option>
+    </select>
+  </div>
+
+  <div>
+    <p>tags:</p>
+    <input type="text">
+  </div>
+</section>
+
+<h2>Questions</h2>
+<section class="questions">
+
+</section>
+
+<div class="bottom">
+  <button (click)="close()" mat-stroked-button color="secondary">close</button>
+  <button (click)="saveChanges()" mat-flat-button color="secondary">save changes</button>
+</div>

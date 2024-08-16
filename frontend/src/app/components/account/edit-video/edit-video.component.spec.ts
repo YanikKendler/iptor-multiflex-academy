@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditPopUpComponent } from './edit-pop-up.component';
+import { EditVideoComponent } from './edit-video.component';
 
 describe('EditPopUpComponent', () => {
-  let component: EditPopUpComponent;
-  let fixture: ComponentFixture<EditPopUpComponent>;
+  let component: EditVideoComponent;
+  let fixture: ComponentFixture<EditVideoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditPopUpComponent]
+      imports: [EditVideoComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EditPopUpComponent);
+    fixture = TestBed.createComponent(EditVideoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

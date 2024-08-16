@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import dashjs, {MediaPlayer} from "dashjs"
-import {VideoDetail, VideoDetailDTO, VideoService} from "../../../service/video.service"
+import {VideoDetailDTO, VideoService} from "../../../service/video.service"
 import {FaIconComponent, FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import { faFrownOpen } from '@fortawesome/free-regular-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';

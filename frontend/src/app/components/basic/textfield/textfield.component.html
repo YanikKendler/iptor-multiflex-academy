@@ -1,0 +1,18 @@
+<label for="input">{{ label }}</label>
+@if(rows == 1){
+  <input
+    id="input"
+    placeholder="{{placeholder}}"
+    (input)="valueChange.emit(input.value)"
+    #input
+    value="{{value}}"
+  >
+} @else {
+  <textarea
+    rows="{{rows}}"
+    id="input"
+    placeholder="{{placeholder}}"
+    (input)="valueChange.emit(input.value)"
+    #input
+  >{{value}}</textarea>
+}

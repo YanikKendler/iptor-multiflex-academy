@@ -24,36 +24,24 @@ export interface ViewProgress {
 
 export interface VideoFile {
   videoFileId: number;
-  durationSeconds: number;
-  sizeBytes: number;
-  originalFileExtension: string;
-  originalFileName: string;
-  timestamp: string;
-}
-
-export interface VideoDetail {
-  contentId: number;
-  title: string;
-  description: string;
-  tags: Tag[];
-  color: string;
-  comments: Comment[];
-  questions: Question[];
-  starRatings: StarRating[];
-  visibility: VisibilityEnum;
-  videoFile: VideoFile;
+  durationSeconds?: number;
+  sizeBytes?: number;
+  originalFileExtension?: string;
+  originalFileName?: string;
+  timestamp?: string;
 }
 
 export interface VideoDetailDTO {
-  contentId: number;
-  title: string;
-  description: string;
-  tags: Tag[];
-  comments: Comment[];
-  questions: Question[];
-  rating: number;
-  videoFile: VideoFile;
-  viewProgress: number;
+  contentId: number
+  title: string
+  description: string
+  tags: Tag[]
+  comments: Comment[]
+  questions: Question[]
+  rating: number
+  videoFile?: VideoFile
+  viewProgress: number
+  visibility: VisibilityEnum
 }
 
 export interface VideoOverviewDTO {
@@ -88,33 +76,46 @@ export class VideoService {
   http = inject(HttpClient)
 
   getVideoList(): Observable<VideoOverviewDTO[]>{
-    return this.http.get<VideoOverviewDTO[]>(`${Config.API_URL}/api/video/`)
+    return this.http.get<VideoOverviewDTO[]>(`${Config.API_URL}/video/`)
   }
 
   getVideoDetails(videoId: number): Observable<VideoDetailDTO>{
-    return this.http.get<VideoDetailDTO>(`${Config.API_URL}/api/video/${videoId}?userId=${Config.USER_ID}`)
+    return this.http.get<VideoDetailDTO>(`${Config.API_URL}/video/${videoId}?userId=${Config.USER_ID}`)
   }
 
   setStarRating(videoId: number, userId: number, rating: number) {
-    return this.http.put(`${Config.API_URL}/api/video/${videoId}/starrating?userId=${userId}`, rating)
+    return this.http.put(`${Config.API_URL}/video/${videoId}/starrating?userId=${userId}`, rating)
   }
 
   getStarRating(videoId: number, userId: number): Observable<number>{
-    return this.http.get<number>(`${Config.API_URL}/api/video/${videoId}/starrating/user/${userId}`)
+    return this.http.get<number>(`${Config.API_URL}/video/${videoId}/starrating/user/${userId}`)
   }
 
   getRatingAvgByVideo(videoId: number){
-    return this.http.get<number>(`${Config.API_URL}/api/video/${videoId}/starrating/average`)
+    return this.http.get<number>(`${Config.API_URL}/video/${videoId}/starrating/average`)
   }
 
-  createVideo(title: string, description: string, tags: number[], color: string, visibility: VisibilityEnum, questions: Question[]){
-    return this.http.post<VideoDetail>(`${Config.API_URL}/api/video/`, {
-      title: title,
-      description: description,
-      tags: tags,
-      color: color,
-      visibility: visibility,
-      questions: questions
-    })
+  createVideo(video: VideoDetailDTO){
+    return this.http.post<VideoDetailDTO>(`${Config.API_URL}/video/`, video)
+  }
+
+  updateVideo(video: VideoDetailDTO){
+    console.log("updating video", video)
+    return this.http.put<VideoDetailDTO>(`${Config.API_URL}/video/`, video)
+  }
+
+  uploadVideoFile(file: File) {
+    const fileName = file.name;
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<VideoFile>(`${Config.API_URL}/video/videofile?filename=${fileName}`, formData);
+  }
+
+  deleteVideoFile(fileId: number) {
+    return this.http.delete(`${Config.API_URL}/video/videofile/${fileId}`);
+  }
+
+  linkVideoFile(videoId: number, fileId: number) {
+    return this.http.put(`${Config.API_URL}/video/${videoId}/linkVideoFile/${fileId}`, {}, {observe: "response"})
   }
 }

@@ -6,7 +6,7 @@ import {IconButtonComponent} from "../../basic/icon-button/icon-button.component
 import {MatButton} from "@angular/material/button"
 import {MatTooltip} from "@angular/material/tooltip"
 import {Comment, CommentService} from "../../../service/comment.service"
-import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu"
+import {CdkMenu, CdkMenuItem, CdkMenuTrigger} from "@angular/cdk/menu"
 import {Config} from "../../../config"
 
 @Component({
@@ -18,7 +18,8 @@ import {Config} from "../../../config"
     MatButton,
     MatTooltip,
     CdkMenuTrigger,
-    CdkMenu
+    CdkMenu,
+    CdkMenuItem
   ],
   templateUrl: './video-comment.component.html',
   styleUrl: './video-comment.component.scss'

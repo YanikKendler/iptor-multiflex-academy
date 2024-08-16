@@ -2,7 +2,7 @@ import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {NavigationComponent} from "../navigation/navigation.component"
 import {UpdateDashboardEvent, VideoOverviewComponent} from "../video/video-overview/video-overview.component"
 import {VideoOverviewDTO, VideoService, ViewProgress, VisibilityEnum} from "../../service/video.service"
-import {MediaPlayerComponent} from "../video/media-player/media-player.component"
+import {MediaPlayerComponent} from "../basic/media-player/media-player.component"
 import {HttpClient} from "@angular/common/http"
 import {StarIconComponent} from "../icons/star/star.icon.component"
 import {PlayIconComponent} from "../icons/playicon/play.icon.component"
@@ -75,32 +75,6 @@ export class DashboardComponent implements OnInit {
           });
         }
       }
-    }
-  }
-
-  uploadFile(file: File) {
-    const fileName = file.name;
-    const formData = new FormData();
-    formData.append('file', file);
-    return this.http.post('http://localhost:8080/api/video/upload?filename=' + fileName, formData);
-  }
-
-  linkVideo() {
-    this.http.put(`http://localhost:8080/api/video/${this.videoIdInput.nativeElement.value}/linkVideoFile/${this.fileIdInput.nativeElement.value}`, {}, {observe: "response"}).subscribe(response => {
-      console.log('video linked:', response);
-    }, error => {
-      console.error('There was an error:', error);
-    });
-  }
-
-  onFileChange(event: any) {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      this.uploadFile(file).subscribe(response => {
-        console.log('File uploaded successfully:', response);
-      }, error => {
-        console.error('There was an error uploading the file:', error);
-      });
     }
   }
 }
