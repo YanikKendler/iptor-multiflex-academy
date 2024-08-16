@@ -1,9 +1,7 @@
 package repository;
 
+import dtos.*;
 import dtos.ContentForUserDTO;
-import dtos.VideoOverviewDTO;
-import dtos.ContentForUserDTO;
-import dtos.VideoAndLearningPathOverviewCollection;
 import dtos.VideoOverviewDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -173,5 +171,18 @@ public class UserRepository {
     public boolean isVideoSaved(Long userId, Long videoId) {
         User user = getById(userId);
         return user.getSavedVideos().stream().anyMatch(video -> video.getContentId().equals(videoId));
+    }
+
+    public List<MyVideoContentDTO> getUserContent(Long userId) {
+        List<Video> videos = em.createQuery("select v from Video v where v.user.userId = :userId order by v.contentId", Video.class)
+                .setParameter("userId", userId)
+                .getResultList();
+
+        return videos.stream().map(video -> {
+            long views = em.createQuery("select count(vp) from ViewProgress vp where vp.content.contentId = :contentId", Long.class)
+                    .setParameter("contentId", video.getContentId())
+                    .getSingleResult();
+            return new MyVideoContentDTO(video.getContentId(), video.getTitle(), (int) views, starRatingRepository.getAverage(video.getContentId()), video.getVisibility(), video.getQuestions().size(), video.getTags(), video.getColor());
+        }).toList();
     }
 }

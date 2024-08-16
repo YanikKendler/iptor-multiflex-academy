@@ -3,7 +3,10 @@ package boundary;
 import dtos.CreateVideoDTO;
 import dtos.VideoDetailDTO;
 import dtos.VideoOverviewDTO;
+import enums.VisibilityEnum;
 import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import model.Video;
@@ -130,6 +133,19 @@ public class VideoResource {
     public Response updateVideo(@PathParam("id") Long id, Video v){
         try{
             repository.update(v);
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("{videoId: [0-9]+}/visibility")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateVisibility(@PathParam("videoId") Long videoId, JsonObject v){
+        try{
+            System.out.println(v);
+            repository.updateVideoVisibility(videoId, VisibilityEnum.valueOf(v.getString("visibility")));
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

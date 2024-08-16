@@ -1,64 +1,56 @@
-<section class="top">
-  <p>views</p>
-  <p>rating</p>
-  <p>visibility</p>
-  <p>questions</p>
-  <p>tags</p>
+<table>
+  <tr>
+    <th class="mid"></th>
+    <th class="smallColumn">Views</th>
+    <th class="smallColumn">Rating</th>
+    <th>Visibility</th>
+    <th>Questions</th>
+    <th class="mid">Tags</th>
+    <th>
+      <button class="filled">Video Erstellen</button>
+      <button class="outlined">Lernpfad Erstellen</button>
+    </th>
+  </tr>
 
-  <button class="filled">Video Erstellen</button>
-  <button class="outlined">Lernpfad Erstellen</button>
-</section>
+  <tr *ngFor="let video of userContent">
+    <td class="mid">
+      <app-play-icon [style.color]="video.color" [style.font-size]="'2rem'"></app-play-icon>
+      <div>
+        <p>Video</p>
+        {{ video.title }}
+      </div>
+    </td>
+    <td class="smallColumn">
+      <fa-icon [icon]="faEye" class="grey"></fa-icon>
+      {{ video.views }}
+    </td>
+    <td class="smallColumn">
+      <fa-icon [icon]="faStar" class="grey starIcon"></fa-icon>
+      {{ video.rating.toFixed(1) }}
+    </td>
+    <td>
+      <div class="dropDown" [cdkMenuTriggerFor]="menu" #menuTrigger="cdkMenuTriggerFor">
+          <p>{{ video.visibility }}</p>
+          <fa-icon [icon]="faSortDown"></fa-icon>
+      </div>
 
+      <ng-template #menu>
+        <div class="actionMenu" cdkMenu>
+          <p *ngFor="let visibility of visibilityOptions" (click)="updateVisibility(video.contentId, visibility)">{{ visibility }}</p>
+        </div>
+      </ng-template>
+    </td>
 
-<section class="content">
-  <fa-icon [icon]="faPlayCircle"></fa-icon>
+    <td class="small">{{ getQuestionCountToString(video.questionCount) }}</td>
+    <td class="mid">{{ getTags(video.tags) }}</td>
 
-  <div class="above">
-    <p>Video</p>
-    <h2>Learn Finances</h2>
-  </div>
-
-  <div>
-    <fa-icon [icon]="faEye"></fa-icon>
-    <p>165</p>
-  </div>
-
-  <div>
-    <fa-icon [icon]="faStar"></fa-icon>
-    <p>4.5</p>
-  </div>
-
-  <p>Everyone</p>
-  <p>no questions</p>
-  <p>fnance, business, employee</p>
-
-  <div class="right">
-    <fa-icon [icon]="faPen" (click)="openEditPopUp()"></fa-icon>
-  </div>
-</section>
-<section class="content">
-  <fa-icon [icon]="faPlayCircle"></fa-icon>
-
-  <div class="above">
-    <p>Video</p>
-    <h2>Learn Finances</h2>
-  </div>
-
-  <div>
-    <fa-icon [icon]="faEye"></fa-icon>
-    <p>165</p>
-  </div>
-
-  <div>
-    <fa-icon [icon]="faStar"></fa-icon>
-    <p>4.5</p>
-  </div>
-
-  <p>Everyone</p>
-  <p>no questions</p>
-  <p>fnance, business, employee</p>
-
-  <div class="right">
-    <fa-icon [icon]="faPen"></fa-icon>
-  </div>
-</section>
+    <td>
+      <app-icon-button>
+        <fa-icon [icon]="faArrowRightToBracket" class="small"></fa-icon>
+      </app-icon-button>
+      <app-icon-button>
+        <fa-icon [icon]="faPen" (click)="openEditPopUp()"></fa-icon>
+      </app-icon-button>
+    </td>
+  </tr>
+</table>

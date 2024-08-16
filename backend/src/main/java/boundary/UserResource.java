@@ -68,6 +68,17 @@ public class UserResource {
     }
 
     @GET
+    @Path("{userId}/usercontent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserContent(@PathParam("userId") Long userId) {
+        try {
+            return Response.ok(repository.getUserContent(userId)).build();
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+    }
+
+    @GET
     @Path("{userId}/contentforuser")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getContentForUser(@PathParam("userId") Long userId) {

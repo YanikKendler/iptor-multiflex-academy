@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.content = undefined
-    this.userService.getContentForUser(1).subscribe(content => {
+    this.userService.getContentForUser().subscribe(content => {
       this.content = content;
     });
 

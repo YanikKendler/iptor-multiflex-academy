@@ -117,4 +117,9 @@ export class VideoService {
       questions: questions
     })
   }
+
+  updateVideoVisibility(contentId: number, visibility: VisibilityEnum){
+    console.log(visibility)
+    this.http.put(`${Config.API_URL}/api/video/${contentId}/visibility`, {visibility: visibility}).subscribe()
+  }
 }
