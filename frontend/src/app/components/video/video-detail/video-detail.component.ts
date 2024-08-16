@@ -1,3 +1,4 @@
+// In `src/app/components/video/video-detail/video-detail.component.ts`
 import {AfterViewChecked, AfterViewInit, Component, ElementRef, inject, Input, OnInit, ViewChild} from '@angular/core';
 import {NavigationComponent} from "../../navigation/navigation.component"
 import {StarIconComponent} from "../../icons/star/star.icon.component"
@@ -10,6 +11,10 @@ import {VideoRatingComponent} from "../video-rating/video-rating.component";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
 import {UserService} from "../../../service/user.service";
 import {VideoCommentContainerComponent} from "../video-comment-container/video-comment-container.component"
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {faShare} from "@fortawesome/free-solid-svg-icons";
+import {Config} from "../../../config";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-video-detail',
@@ -22,7 +27,9 @@ import {VideoCommentContainerComponent} from "../video-comment-container/video-c
     MediaPlayerComponent,
     VideoRatingComponent,
     IconButtonComponent,
-    VideoCommentContainerComponent
+    VideoCommentContainerComponent,
+    FaIconComponent,
+    NgIf
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss'
@@ -37,6 +44,7 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   @ViewChild("bookmark") bookmark: BookmarkIconComponent | undefined
   @ViewChild('tabSelector') tabSelector: ElementRef | undefined;
   currentTab : "comments" | "quiz" = "comments"
+  showPopup: boolean = false; // Add this property
 
   constructor(private route: ActivatedRoute) { }
 
@@ -86,4 +94,19 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
     // todo user not hard coded
     this.userService.toggleSavedVideo(this.video.contentId)
   }
+
+  shareVideo() {
+    const url = Config.API_URL + "/video/" + this.video.contentId;
+    navigator.clipboard.writeText(url).then(() => {
+      console.log("URL copied to clipboard");
+      this.showPopup = true; // Show the popup
+      setTimeout(() => {
+        this.showPopup = false; // Hide the popup after 3 seconds
+      }, 2000);
+    }).catch(err => {
+      console.error("Failed to copy URL: ", err);
+    });
+  }
+
+  protected readonly faShare = faShare;
 }
