@@ -39,10 +39,6 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.videoService.createVideo("Test Video", "This is a test video", [1], "red", VisibilityEnum.customers, []).subscribe(video => {
-      console.log('Video created:', video);
-    })
-
     this.content = undefined
     this.userService.getContentForUser(1).subscribe(content => {
       this.content = content;

@@ -1,5 +1,31 @@
+<h2>Description</h2>
 <p>Title</p>
-<input type="text">
+<input type="text" [ngModel]="data.title">
 
 <p>Description</p>
-<textarea name="" id="" cols="30" rows="5"></textarea>
+<textarea name="" id="" cols="30" rows="5" [ngModel]="data.description"></textarea>
+
+<h2>Details</h2>
+<section>
+  <div>
+    <p>video-color:</p>
+    <input type="color">
+  </div>
+
+  <div>
+    <p>visibility:</p>
+    <select name="" id="visibilitySelect">
+      <option *ngFor="let visibility of visibilityOptions" [value]="visibility">{{ visibility }}</option>
+    </select>
+  </div>
+
+  <div>
+    <p>tags:</p>
+    <input type="text">
+  </div>
+</section>
+
+<h2>Questions</h2>
+
+
+<button (click)="saveChanges()">save changes</button>

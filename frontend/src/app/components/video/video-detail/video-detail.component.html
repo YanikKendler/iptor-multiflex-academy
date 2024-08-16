@@ -7,7 +7,7 @@
       <h1>{{video.title}}</h1>
       <p class="description">{{video.description}}</p>
       <div class="actions">
-        <app-video-rating [videoId]="video?.contentId" [rating]="video?.rating"></app-video-rating>
+        <app-video-rating [videoId]="video.contentId" [rating]="video.rating"></app-video-rating>
         <app-icon-button (click)="addToBookmarks($event)">
           <app-bookmark-icon #bookmark></app-bookmark-icon>
         </app-icon-button>
