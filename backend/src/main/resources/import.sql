@@ -10,10 +10,10 @@ INSERT INTO app_user (username, email, user_type) VALUES ('yanik kendler', 'yani
 INSERT INTO VideoFile(durationseconds, sizebytes, originalfileextension) values (32, 1000000, 'mp4');
 
 -- Insert demo data for Video
-INSERT INTO content (dtype, title, description, visibility, color, videofile_videofileid) VALUES ('Video', 'Java Basics', 'Introduction to Java', 'self' , 'red', 1);
-INSERT INTO content (dtype, title, description, visibility, color) VALUES ('Video', 'Advanced Java', 'Deep dive into Java', 'customers' , 'pink');
-INSERT INTO content (dtype, title, description, visibility, color) VALUES ('Video', 'Spring Boot Tutorial', 'Getting started with Spring Boot', 'internal' , 'orange');
-INSERT INTO content (dtype, title, description, visibility, color) VALUES ('Video', 'Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , 'blue');
+INSERT INTO content (dtype, title, description, visibility, color, user_userid, videofile_videofileid) VALUES ('Video', 'Java Basics', 'Introduction to Java', 'self' , 'red', 1, 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Advanced Java', 'Deep dive into Java', 'customers' , 'pink', 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Spring Boot Tutorial', 'Getting started with Spring Boot', 'internal' , 'orange', 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , 'blue', 2);
 
 -- Insert demo data for Question
 INSERT INTO Question (text, title) VALUES ('What is the main topic of the video?', 'Main Topic');
@@ -53,7 +53,6 @@ INSERT INTO StarRating (rating) VALUES (2);
 INSERT INTO StarRating (rating) VALUES (3);
 INSERT INTO StarRating (rating) VALUES (4);
 
-
 -- Insert demo data for Tag
 INSERT INTO Tag (name) VALUES ('Education');
 INSERT INTO Tag (name) VALUES ('Tutorial');
@@ -86,10 +85,35 @@ INSERT INTO content_starrating (video_contentid, starratings_ratingid) VALUES (1
 INSERT INTO content_starrating (video_contentid, starratings_ratingid) VALUES (1, 3);
 INSERT INTO content_starrating (video_contentid, starratings_ratingid) VALUES (1, 4);
 
+-- Insert demo data for Learning Paths
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('LearningPath', 'Java Developer', 'Become a Java Developer', 'everyone', 'blue', 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('LearningPath', 'Spring Boot Developer', 'Become a Spring Boot Developer', 'everyone', 'green', 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('LearningPath', 'Hibernate ORM Developer', 'Become a Hibernate ORM Developer', 'everyone', 'red', 1);
+
+-- Insert demo data for Learning Path Entry
+INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (1, 1);
+INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (2, 2);
+INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (3, 1);
+INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (4, 2);
+INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (4, 1);
+
+-- Insert demo data for Learning Path Content
+INSERT INTO content_learningpathentry (learningpath_contentid, entries_pathentryid) VALUES (5, 1);
+INSERT INTO content_learningpathentry (learningpath_contentid, entries_pathentryid) VALUES (5, 2);
+INSERT INTO content_learningpathentry (learningpath_contentid, entries_pathentryid) VALUES (6, 3);
+INSERT INTO content_learningpathentry (learningpath_contentid, entries_pathentryid) VALUES (6, 4);
+INSERT INTO content_learningpathentry (learningpath_contentid, entries_pathentryid) VALUES (7, 5);
+
+-- Insert demo data for Learning Path Tags
+INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (5, 1);
+INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (5, 3);
+INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (6, 3);
+INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (6, 4);
+INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (7, 4);
+
 -- Insert demo data for Customer
 INSERT INTO Customer (userid, companyName, isManager, supervisor_userid) VALUES (1, 'TechCorp', true, null);
 INSERT INTO Customer (userid, companyName, isManager, supervisor_userid) VALUES (2, 'TechCorp', false, 1);
-
 
 -- Insert demo data for Employee
 INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (3 , NULL, NULL, false);
@@ -109,6 +133,7 @@ INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_
 INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (2, 3, 2, '2023-10-02');
 INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (3, 4, 3, '2023-10-03');
 INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (4, 4, 4, '2023-10-04');
+INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (5, 3, 1, '2023-10-05');
 
 -- Insert demo data for ViewProgress
 INSERT INTO ViewProgress (content_contentid, user_userid, durationSeconds, timestamp, ignored) VALUES (1, 1, 8, '2023-10-01 10:00:00', false);

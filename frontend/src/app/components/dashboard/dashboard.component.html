@@ -13,7 +13,10 @@
   <div class="video-row">
     @if(content && content.current){
       @for(video of content.current.videos; track video.contentId){
-        <app-video-overview [video]="video" (updateDashboard)="updateDashboard($event)"></app-video-overview>
+        <app-video-overview [video]="video" (updateDashboard)="updateVideoDashboard($event)" [removable]="true"></app-video-overview>
+      }
+      @for(learningPath of content.current.learningPaths; track learningPath.contentId){
+        <app-learning-path-overview [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)" [removable]="true"></app-learning-path-overview>
       }
     }
   </div>
@@ -22,7 +25,10 @@
   <div class="video-row">
     @if(content && content.assigned){
       @for(video of content.assigned.videos; track video.contentId){
-        <app-video-overview [video]="video" (updateDashboard)="updateDashboard($event)"></app-video-overview>
+        <app-video-overview [video]="video" (updateDashboard)="updateVideoDashboard($event)"></app-video-overview>
+      }
+      @for(learningPath of content.assigned.learningPaths; track learningPath.contentId){
+        <app-learning-path-overview [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)"></app-learning-path-overview>
       }
     }
   </div>
@@ -31,7 +37,16 @@
   <div class="video-row">
     @if(content && content.suggested){
       @for(video of content.suggested.videos; track video.contentId){
-        <app-video-overview [video]="video" (updateDashboard)="updateDashboard($event)"></app-video-overview>
+        <app-video-overview [video]="video" (updateDashboard)="updateVideoDashboard($event)"></app-video-overview>
+      }
+    }
+  </div>
+
+  <p>Suggested learning paths</p>
+  <div class="video-row">
+    @if(content && content.suggested){
+      @for(learningPath of content.suggested.learningPaths; track learningPath.contentId){
+        <app-learning-path-overview [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)"></app-learning-path-overview>
       }
     }
   </div>

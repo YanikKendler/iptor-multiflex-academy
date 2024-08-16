@@ -46,10 +46,10 @@ public class UserResource {
     }
 
     @PUT
-    @Path("{userId}/togglesavedvideo/{videoId}")
-    public Response toggleSavedVideo(@PathParam("userId") Long userId, @PathParam("videoId") Long videoId) {
+    @Path("{userId}/togglesavedcontent/{contentId}")
+    public Response toggleSavedVideo(@PathParam("userId") Long userId, @PathParam("contentId") Long contentId) {
         try {
-            repository.toggleSavedVideo(userId, videoId);
+            repository.toggleSavedVideo(userId, contentId);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -62,6 +62,17 @@ public class UserResource {
     public Response isVideoSaved(@PathParam("userId") Long userId, @PathParam("videoId") Long videoId) {
         try {
             return Response.ok(repository.isVideoSaved(userId, videoId)).build();
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+    }
+
+    @GET
+    @Path("{userId}/usercontent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserContent(@PathParam("userId") Long userId) {
+        try {
+            return Response.ok(repository.getUserContent(userId)).build();
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

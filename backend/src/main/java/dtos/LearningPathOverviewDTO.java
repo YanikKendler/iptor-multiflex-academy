@@ -1,6 +1,7 @@
 package dtos;
 
 import model.Tag;
+import model.ViewProgress;
 
 import java.util.List;
 
@@ -10,5 +11,7 @@ public record LearningPathOverviewDTO(
         String description,
         List<Tag> tags,
         int videoCount,
-        int viewProgress
+        ViewProgress viewProgress,
+        String color,
+        boolean saved
 ) { }

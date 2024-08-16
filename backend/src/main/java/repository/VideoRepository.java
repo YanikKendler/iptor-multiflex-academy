@@ -3,6 +3,8 @@ package repository;
 import dtos.CreateVideoDTO;
 import dtos.EditVideoDTO;
 import dtos.VideoDetailDTO;
+import dtos.VideoOverviewDTO;
+import enums.VisibilityEnum;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -253,5 +255,10 @@ public class VideoRepository {
         Video video = em.find(Video.class, videoId);
         VideoFile videoFile = em.find(VideoFile.class, fileId);
         video.setVideoFile(videoFile);
+    }
+
+    public void updateVideoVisibility(Long videoId, VisibilityEnum v) {
+        Video video = em.find(Video.class, videoId);
+        video.setVisibility(v);
     }
 }

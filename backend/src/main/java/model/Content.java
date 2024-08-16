@@ -16,6 +16,9 @@ public abstract class Content {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Tag> tags;
 
+    @ManyToOne
+    private User user;
+
     private String title;
     private String description;
     private String color;
@@ -33,6 +36,14 @@ public abstract class Content {
     public Content() {
         this.creationTime = LocalDateTime.now();
         this.tags = new LinkedList<>();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getContentId() {

@@ -11,10 +11,9 @@ public class LearningPathEntry {
     Long pathEntryId;
 
     @ManyToOne
-    private
-    Video video;
+    private Video video;
 
-    private boolean quizCompleted;
+    private int entryPosition;
 
     private final LocalDateTime creationTime;
 
@@ -43,11 +42,11 @@ public class LearningPathEntry {
         this.video = video;
     }
 
-    public boolean isQuizCompleted() {
-        return quizCompleted;
+    public int getEntryPosition() {
+        return entryPosition;
     }
 
-    public void setQuizCompleted(boolean quizCompleted) {
-        this.quizCompleted = quizCompleted;
+    public void setEntryPosition(int entryPosition) {
+        this.entryPosition = entryPosition;
     }
 }

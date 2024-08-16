@@ -8,8 +8,13 @@
       <p class="description" [innerHTML]="generateDescriptionWithLinebreaks()"></p>
       <div class="actions">
         <app-video-rating [videoId]="video.contentId" [rating]="video.rating"></app-video-rating>
-        <app-icon-button (click)="addToBookmarks($event)">
+
+        <app-icon-button (click)="addToBookmarks($event)" class="bookmark">
           <app-bookmark-icon #bookmark></app-bookmark-icon>
+        </app-icon-button>
+
+        <app-icon-button (click)="shareVideo()">
+          <fa-icon [icon]="faShare"></fa-icon>
         </app-icon-button>
       </div>
     </div>
@@ -31,4 +36,6 @@
       }
     }
   </div>
+
+  <div class="popup" *ngIf="showPopup">URL copied to clipboard!</div>
 </main>
