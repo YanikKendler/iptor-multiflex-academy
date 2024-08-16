@@ -45,11 +45,13 @@
     <td class="mid">{{ getTags(video.tags) }}</td>
 
     <td>
-      <app-icon-button>
-        <fa-icon [icon]="faArrowRightToBracket" class="small"></fa-icon>
-      </app-icon-button>
-      <app-icon-button>
-        <fa-icon [icon]="faPen" (click)="openEditPopUp()"></fa-icon>
+      <a [routerLink]="['/video/' + video.contentId]" target="_blank">
+        <app-icon-button>
+          <fa-icon [icon]="faArrowRightToBracket" class="small"></fa-icon>
+        </app-icon-button>
+      </a>
+      <app-icon-button (click)="openEditPopUp(video.contentId)">
+        <fa-icon [icon]="faPen" ></fa-icon>
       </app-icon-button>
     </td>
   </tr>

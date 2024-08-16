@@ -43,25 +43,6 @@ import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
   styleUrl: './my-content.component.scss'
 })
 export class MyContentComponent {
-
-  /*readonly dialog = inject(MatDialog);
-
-
-  constructor() {
-    let dialogRef = this.dialog.open(EditVideoComponent, {
-      maxWidth: "80vw",
-      width: "800px",
-      height: "800px",
-      disableClose: true,
-      data: 1
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-
-    });
-  }*/
-
-
   protected readonly faPlayCircle = faPlayCircle;
   protected readonly faEye = faEye;
   protected readonly faStar = faStar;
@@ -83,21 +64,17 @@ export class MyContentComponent {
   }
 
   readonly dialog = inject(MatDialog);
-  readonly title = signal('');
-  readonly description = signal('');
 
-  openEditPopUp() {
+  openEditPopUp(videoId: number) {
     let dialogRef = this.dialog.open(EditVideoComponent, {
-      data: {title: this.title(), description: this.description()}
+      maxWidth: "80vw",
+      width: "800px",
+      height: "800px",
+      disableClose: true,
+      data: videoId
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result)
-      if (result !== undefined) {
-        this.title.set(result);
-      }
-      console.log(this.title)
     });
   }
 
