@@ -87,7 +87,7 @@ export class MyContentComponent {
   readonly description = signal('');
 
   openEditPopUp() {
-    let dialogRef = this.dialog.open(EditPopUpComponent, {
+    let dialogRef = this.dialog.open(EditVideoComponent, {
       data: {title: this.title(), description: this.description()}
     });
 
