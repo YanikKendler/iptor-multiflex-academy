@@ -17,6 +17,7 @@ import { faFrownOpen } from '@fortawesome/free-regular-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import {MatProgressSpinner} from "@angular/material/progress-spinner"
 import {ViewProgressService} from "../../../service/view-progress.service"
+import {Config} from "../../../config"
 
 @Component({
   selector: 'app-media-player',
@@ -56,7 +57,7 @@ export class MediaPlayerComponent implements OnChanges {
 
       setTimeout(() => {
         if(this.videoTag) {
-          let url = `http://localhost:8080/api/video/${this.video?.contentId}/getVideoFragment/manifest.mpd#t=${this.video?.viewProgress}`
+          let url = `${Config.API_URL}/video/${this.video?.contentId}/videofile/manifest.mpd#t=${this.video?.viewProgress}`
           this.player = MediaPlayer().create()
           this.player.initialize(this.videoTag.nativeElement, url, false)
           this.player.on(MediaPlayer.events.PLAYBACK_PAUSED, this.updateViewProgress.bind(this))

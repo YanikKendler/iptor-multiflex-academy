@@ -3,79 +3,34 @@ package boundary;
 import dtos.CreateVideoDTO;
 import dtos.EditVideoDTO;
 import dtos.VideoDetailDTO;
-import dtos.VideoOverviewDTO;
 import enums.VisibilityEnum;
 import jakarta.inject.Inject;
-import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import model.Video;
-import model.VideoFile;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import repository.VideoFileRepository;
 import repository.VideoRepository;
 
 import java.io.File;
-import java.io.InputStream;
 
 @Path("video")
 public class VideoResource {
     private static final Logger log = LoggerFactory.getLogger(VideoResource.class);
     @Inject
-    VideoRepository repository;
+    VideoRepository videoRepository;
 
-    @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/videofile")
-    public Response uploadVideoFile(@FormParam("file") InputStream uploadedInputStream, @QueryParam("filename") String filename) {
-        try {
-            VideoFile videoFile = repository.uploadVideo(uploadedInputStream, filename);
-
-            return Response.ok().entity(videoFile).build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500).entity(e).build();
-        }
-    }
-
-    @DELETE
-    @Path("/videofile/{fileId: [0-9]+}")
-    public Response deleteVideoFile(@PathParam("fileId") Long fileId) {
-        try {
-            repository.deleteVideoFile(fileId);
-            return Response.ok().entity("{\"message\":\"File deleted successfully\"}").build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500).entity(e).build();
-        }
-    }
-
-    //alternative with easier to grab metadata and nicer code but extremely buggy - most likely incompatible dependencies
-    /*@POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/upload")
-    public Response upload(@FormDataParam("file") FormDataBodyPart file) {
-        System.out.println("upload " + file.getName());
-
-        try {
-            repository.uploadVideo(file.getValueAs(InputStream.class));
-
-            return Response.ok().entity("{\"message\":\"File uploaded successfully\"}").build();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500).entity(e).build();
-        }
-    }*/
+    @Inject
+    VideoFileRepository videoFileRepository;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createVideo(CreateVideoDTO v){
         try {
-            Video video = repository.create(v);
+            Video video = videoRepository.create(v);
 
             return Response.ok().build();
         } catch (Exception ex) {
@@ -88,7 +43,7 @@ public class VideoResource {
     public Response getVideoDetails(@PathParam("videoId") Long videoId, @QueryParam("userId") Long userId){
         VideoDetailDTO videoDetailDTO;
         try{
-            videoDetailDTO = repository.getVideoDetailsForUser(videoId, userId);
+            videoDetailDTO = videoRepository.getVideoDetailsForUser(videoId, userId);
         }catch (Exception ex){
             ex.printStackTrace();
             return Response.status(400).entity(ex).build();
@@ -101,7 +56,7 @@ public class VideoResource {
     public Response getVideo(@PathParam("id") Long id){
         Video video;
         try{
-            video = repository.getById(id);
+            video = videoRepository.getById(id);
         }catch (Exception ex){
             ex.printStackTrace();
             return Response.status(400).entity(ex).build();
@@ -111,10 +66,10 @@ public class VideoResource {
 
     @GET
     @Produces(MediaType.MULTIPART_FORM_DATA)
-    @Path("{videoId:[0-9]+}/getVideoFragment/{fileName}")
+    @Path("{videoId:[0-9]+}/videofile/{fileName}")
     public RestResponse<File> getVideoFragment(@PathParam("fileName") String fileName, @PathParam("videoId") Long videoId) {
         try {
-            File file = repository.getVideoFragment(videoId, fileName);
+            File file = videoFileRepository.getVideoFragment(videoId, fileName);
             return RestResponse.ResponseBuilder.ok(file)
                     .header("Content-Disposition", "attachment; filename=\""+ fileName +"\"")
                     .build();
@@ -134,7 +89,7 @@ public class VideoResource {
     @Path("{id: [0-9]+}")
     public Response deleteVideo(@PathParam("id") Long id){
         try{
-            repository.delete(id);
+            videoRepository.delete(id);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -148,7 +103,7 @@ public class VideoResource {
         try{
             System.out.println(video.toString());
 
-            VideoDetailDTO videoDetailDTO = repository.update(video);
+            VideoDetailDTO videoDetailDTO = videoRepository.update(video);
 
             return Response.ok(videoDetailDTO).build();
         } catch (Exception ex) {
@@ -163,7 +118,7 @@ public class VideoResource {
     public Response updateVisibility(@PathParam("videoId") Long videoId, JsonObject v){
         try{
             System.out.println(v);
-            repository.updateVideoVisibility(videoId, VisibilityEnum.valueOf(v.getString("visibility")));
+            videoRepository.updateVideoVisibility(videoId, VisibilityEnum.valueOf(v.getString("visibility")));
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -175,7 +130,7 @@ public class VideoResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response linkVideoFile(@PathParam("videoId") Long videoId, @PathParam("fileId") Long fileId){
         try{
-            repository.linkVideoFile(videoId, fileId);
+            videoRepository.linkVideoFile(videoId, fileId);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

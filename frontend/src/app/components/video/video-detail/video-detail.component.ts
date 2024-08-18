@@ -14,6 +14,7 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faShare} from "@fortawesome/free-solid-svg-icons";
 import {Config} from "../../../config";
 import {NgIf} from "@angular/common";
+import {MatSnackBar} from "@angular/material/snack-bar"
 
 @Component({
   selector: 'app-video-detail',
@@ -36,6 +37,7 @@ import {NgIf} from "@angular/common";
 export class VideoDetailComponent implements AfterViewInit, OnInit{
   service = inject(VideoService)
   video : VideoDetailDTO = {} as VideoDetailDTO
+  snackBar = inject(MatSnackBar);
 
   userService = inject(UserService)
 
@@ -43,7 +45,6 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   @ViewChild("bookmark") bookmark: BookmarkIconComponent | undefined
   @ViewChild('tabSelector') tabSelector: ElementRef | undefined;
   currentTab : "comments" | "quiz" = "comments"
-  showPopup: boolean = false; // Add this property
 
   constructor(private route: ActivatedRoute) { }
 
@@ -97,17 +98,12 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   shareVideo() {
     const url = Config.API_URL + "/video/" + this.video.contentId;
     navigator.clipboard.writeText(url).then(() => {
-      console.log("URL copied to clipboard");
-      this.showPopup = true; // Show the popup
-      setTimeout(() => {
-        this.showPopup = false; // Hide the popup after 3 seconds
-      }, 2000);
-    }).catch(err => {
-      console.error("Failed to copy URL: ", err);
-    });
+      this.snackBar.open("URL copied to clipboard", "", {duration: 2000})
+    })
   }
 
   generateDescriptionWithLinebreaks(){
+    if(!this.video.description) return ""
     return this.video.description.replace(/\n/g, "<br>")
   }
 
