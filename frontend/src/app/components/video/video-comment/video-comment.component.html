@@ -1,0 +1,27 @@
+<div class="content">
+  <div class="header">
+    <h2>{{ comment.user.username }}</h2>
+    <p class="time"
+       matTooltip="{{Utils.toFullTimeString(comment.timestamp)}}"
+       matTooltipShowDelay="300"
+    >
+      {{Utils.toRelativeTimeString(comment.timestamp)}}
+    </p>
+  </div>
+  <p class="text">{{comment.text}}</p>
+</div>
+
+@if(comment.user.userId === userId){
+  <div class="right">
+    <app-icon-button [cdkMenuTriggerFor]="menu">
+      <fa-icon [icon]="faEllipsis"></fa-icon>
+    </app-icon-button>
+
+    <ng-template #menu>
+      <div class="actionMenu" cdkMenu>
+          <!--<button (click)="editComment(comment)">Edit</button>-->
+          <button (click)="deleteComment(comment)" mat-button><fa-icon [icon]="faTrash"></fa-icon> Delete</button>
+      </div>
+    </ng-template>
+  </div>
+}

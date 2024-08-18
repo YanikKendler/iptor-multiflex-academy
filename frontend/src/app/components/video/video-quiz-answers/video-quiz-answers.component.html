@@ -1,0 +1,27 @@
+@if(!this.answers){
+  <h2>Finished quiz</h2>
+  <p>Score {{correctAnswers.length}} / {{correctAnswers.length + wrongAnswers.length + missedAnswers.length}}</p>
+  <button (click)="restartQuiz()">Quiz neustarten</button>
+  <p></p>
+}
+@else{
+  <h2>Frage {{ getFormattedQuestionNumber() }}</h2>
+  <p class="text">{{this.questionText}}</p>
+
+  <main [ngClass]="{'checked' : isAnswerCheckedIn}">
+    @for (answer of this.answers; track answer.questionOptionId) {
+      <div class="answer"
+           (click)="toggleAnswer(answer)"
+           [ngClass]="{'checked' : this.selectedAnswers.includes(answer),
+           'correct' : this.correctAnswers.includes(answer),
+           'wrong' : this.wrongAnswers.includes(answer),
+           'missing' : this.missedAnswers.includes(answer)}"
+           matRipple
+      >
+        <p>{{answer.text}}</p>
+      </div>
+    }
+  </main>
+
+  <button (click)="checkAnswer()">{{ isQuizFinished ? 'Quiz neustarten' : isAnswerCheckedIn ? 'Nächste Frage' : 'Abgeben' }}</button>
+}

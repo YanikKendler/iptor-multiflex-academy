@@ -1,0 +1,52 @@
+<div class="header">
+  <app-play-icon [style.color]="video.color"></app-play-icon>
+  <h2>{{ video.title }}</h2>
+  <div class="actions">
+    @if(removable && !video.saved){
+      <app-icon-button
+        (click)="removeSuggestion($event)"
+        matTooltip="Remove from this list"
+        matTooltipShowDelay="500"
+      >
+        <app-remove-icon></app-remove-icon>
+      </app-icon-button>
+    }
+    <app-icon-button
+      (click)="addToBookmarks($event)"
+      matTooltip="Keep in 'continue watching'"
+      matTooltipShowDelay="500"
+    >
+      <app-bookmark-icon #bookmark [marked]="this.video.saved"></app-bookmark-icon>
+    </app-icon-button>
+  </div>
+</div>
+
+@if(video.viewProgress){
+  <div class="progress-bar">
+    <span
+      [style.width.%]="video.viewProgress.durationSeconds / this.video.durationSeconds * 100"
+      [style.background-color]="video.color"
+    ></span>
+  </div>
+}
+
+<div class="main">
+  <p>{{video.description}}</p>
+
+  <div class="bottom">
+    <div class="tags"
+         matTooltip="{{ tagToolTipString }}"
+         matTooltipShowDelay="500"
+    >
+      @for (tag of video.tags; track tag) {
+        <app-chip>{{ tag.name }}</app-chip>
+      }
+    </div>
+    <p>
+      @if(video.viewProgress){
+        {{Utils.toTimeDurationString(video.viewProgress.durationSeconds * 1000)}} of
+      }
+      {{Utils.toTimeDurationString(video.durationSeconds * 1000)}}
+    </p>
+  </div>
+</div>

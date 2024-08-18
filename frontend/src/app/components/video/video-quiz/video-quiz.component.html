@@ -1,0 +1,23 @@
+<div class="sidebar">
+  <div
+    class="question"
+    *ngFor="let question of questions; let i = index"
+    [ngClass]="{'selected': selectedQuestion === question, 'isAvailable': this.checkedQuestions.length + 1 >= i+1}"
+    (click)="this.checkedQuestions.length >= i ? selectQuestion(question, i) : ''"
+  >
+    <p class="number">{{ getFormattedQuestionNumber(i+1) }}</p>
+    <p class="text">{{ question.text }}</p>
+  </div>
+
+  @if(isQuizFinished){
+    <a (click)="viewResults()">Ergebnisse ansehen</a>
+  }
+</div>
+
+<app-video-quiz-answers
+  [questionNumber]="this.questionNr"
+  [questionText]="selectedQuestion?.text"
+  [answers]="selectedQuestion?.answerOptions"
+  [isQuizFinished]="isQuizFinished"
+  (nextQuestion)="nextQuestion($event)">
+</app-video-quiz-answers>

@@ -28,9 +28,23 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+   <!-- <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-resteasy-multipart</artifactId>
+    </dependency>-->
+
+    <dependency>
+      <groupId>net.bramp.ffmpeg</groupId>
+      <artifactId>ffmpeg</artifactId>
+      <version>0.8.0</version>
+    </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hibernate-orm</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -39,10 +53,6 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-reactive</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-hibernate-orm-panache</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -64,7 +74,23 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-mailer</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-agroal</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hibernate-orm-panache</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jdbc-postgresql</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-websockets</artifactId>
     </dependency>
   </dependencies>
   <build>
@@ -99,6 +125,7 @@
         <configuration>
           <systemPropertyVariables>
             <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+            <!--suppress UnresolvedMavenProperty -->
             <maven.home>${maven.home}</maven.home>
           </systemPropertyVariables>
         </configuration>
@@ -116,6 +143,7 @@
               <systemPropertyVariables>
                 <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
                 <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                <!--suppress UnresolvedMavenProperty -->
                 <maven.home>${maven.home}</maven.home>
               </systemPropertyVariables>
             </configuration>

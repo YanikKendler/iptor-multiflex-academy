@@ -1,0 +1,39 @@
+<app-navigation [simple]="true"></app-navigation>
+
+<main>
+  <div class="top">
+    <app-media-player [video]="video"></app-media-player>
+    <div class="right">
+      <h1>{{video.title}}</h1>
+      <p class="description" [innerHTML]="generateDescriptionWithLinebreaks()"></p>
+      <div class="actions">
+        <app-video-rating [videoId]="video.contentId" [rating]="video.rating"></app-video-rating>
+
+        <app-icon-button (click)="addToBookmarks($event)" class="bookmark">
+          <app-bookmark-icon #bookmark></app-bookmark-icon>
+        </app-icon-button>
+
+        <app-icon-button (click)="shareVideo()">
+          <fa-icon [icon]="faShare"></fa-icon>
+        </app-icon-button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="tab-selector" #tabSelector>
+      <p class="comments" (click)="selectTab('comments')">Comments</p>
+      <p class="quiz" (click)="selectTab('quiz')">Quiz</p>
+      <span class="marker"></span>
+    </div>
+
+    @switch(this.currentTab){
+      @case('comments'){
+        <app-video-comment-container [comments]="video.comments" [videoId]="this.video.contentId"></app-video-comment-container>
+      }
+      @case('quiz'){
+        <app-video-quiz [questions]="video.questions"></app-video-quiz>
+      }
+    }
+  </div>
+</main>

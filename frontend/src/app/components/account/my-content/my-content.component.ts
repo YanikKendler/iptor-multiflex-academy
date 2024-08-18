@@ -1,0 +1,117 @@
+import {Component, inject, model, signal, ViewChild} from '@angular/core';
+import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {
+  faArrowRightToBracket,
+  faCirclePlay,
+  faEdit,
+  faEye,
+  faPen,
+  faPencil, faSortDown,
+  faStar, faTrash
+} from "@fortawesome/free-solid-svg-icons";
+import {faPlayCircle} from "@fortawesome/free-regular-svg-icons";
+import {RouterLink} from "@angular/router";
+import {MatDialog, matDialogAnimations, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {EditVideoComponent} from "../edit-video/edit-video.component"
+import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
+import {FormsModule} from "@angular/forms";
+import {NgForOf} from "@angular/common";
+import {VideoAndLearningPathOverviewCollection, VideoService, VisibilityEnum} from "../../../service/video.service";
+import {MyVideoContentDTO, UserService} from "../../../service/user.service";
+import {Tag} from "../../../service/tag.service";
+import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
+import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
+import {MatButton} from "@angular/material/button";
+import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
+
+
+@Component({
+  selector: 'app-my-content',
+  standalone: true,
+  imports: [
+    FaIconComponent,
+    RouterLink,
+    FormsModule,
+    NgForOf,
+    IconButtonComponent,
+    CdkMenu,
+    MatButton,
+    CdkMenuTrigger,
+    PlayIconComponent
+  ],
+  templateUrl: './my-content.component.html',
+  styleUrl: './my-content.component.scss'
+})
+export class MyContentComponent {
+  protected readonly faPlayCircle = faPlayCircle;
+  protected readonly faEye = faEye;
+  protected readonly faStar = faStar;
+  protected readonly faPen = faPen;
+
+  @ViewChild(CdkMenuTrigger) menuTrigger!: CdkMenuTrigger;
+  visibilityOptions = Object.values(VisibilityEnum);
+
+  userService = inject(UserService);
+  videoService = inject(VideoService);
+
+  userContent : MyVideoContentDTO[] = [];
+
+  constructor() {
+    this.userService.getUserContent().subscribe((data) => {
+      this.userContent = data;
+      console.log(this.userContent)
+    });
+  }
+
+  readonly dialog = inject(MatDialog);
+
+  openEditPopUp(videoId: number) {
+    let dialogRef = this.dialog.open(EditVideoComponent, {
+      maxWidth: "80vw",
+      width: "800px",
+      height: "800px",
+      disableClose: true,
+      data: videoId
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  getQuestionCountToString(questionCount:number){
+    if(questionCount == 0){
+      return "no questions"
+    } else {
+      return questionCount + " questions"
+    }
+  }
+
+  getTags(tags: Tag[]) {
+    let text = ""
+    tags.forEach(tag => {
+      text += tag.name + ", ";
+    })
+
+    return text.substring(0, 24) + (text.length > 24 ? "..." : "");
+  }
+
+  protected readonly faArrowRightToBracket = faArrowRightToBracket;
+
+  updateVisibility(videoId: number, visibility: string) {
+    console.log(videoId, visibility);
+    const visibilityEnumValue = VisibilityEnum[visibility as keyof typeof VisibilityEnum];
+
+    this.userContent.forEach((content) => {
+      if (content.contentId === videoId) {
+        content.visibility = visibilityEnumValue;
+      }
+    });
+
+    this.videoService.updateVideoVisibility(videoId, visibilityEnumValue);
+
+    this.menuTrigger.close();
+  }
+
+  protected readonly faTrash = faTrash;
+  protected readonly faSortDown = faSortDown;
+}

@@ -1,0 +1,58 @@
+<table>
+  <tr>
+    <th class="mid"></th>
+    <th class="smallColumn">Views</th>
+    <th class="smallColumn">Rating</th>
+    <th>Visibility</th>
+    <th>Questions</th>
+    <th class="mid">Tags</th>
+    <th>
+      <button class="filled">Video Erstellen</button>
+      <button class="outlined">Lernpfad Erstellen</button>
+    </th>
+  </tr>
+
+  <tr *ngFor="let video of userContent">
+    <td class="mid">
+      <app-play-icon [style.color]="video.color" [style.font-size]="'2rem'"></app-play-icon>
+      <div>
+        <p>Video</p>
+        {{ video.title }}
+      </div>
+    </td>
+    <td class="smallColumn">
+      <fa-icon [icon]="faEye" class="grey"></fa-icon>
+      {{ video.views }}
+    </td>
+    <td class="smallColumn">
+      <fa-icon [icon]="faStar" class="grey starIcon"></fa-icon>
+      {{ video.rating.toFixed(1) }}
+    </td>
+    <td>
+      <div class="dropDown" [cdkMenuTriggerFor]="menu" #menuTrigger="cdkMenuTriggerFor">
+          <p>{{ video.visibility }}</p>
+          <fa-icon [icon]="faSortDown"></fa-icon>
+      </div>
+
+      <ng-template #menu>
+        <div class="actionMenu" cdkMenu>
+          <p *ngFor="let visibility of visibilityOptions" (click)="updateVisibility(video.contentId, visibility)">{{ visibility }}</p>
+        </div>
+      </ng-template>
+    </td>
+
+    <td class="small">{{ getQuestionCountToString(video.questionCount) }}</td>
+    <td class="mid">{{ getTags(video.tags) }}</td>
+
+    <td>
+      <a [routerLink]="['/video/' + video.contentId]" target="_blank">
+        <app-icon-button>
+          <fa-icon [icon]="faArrowRightToBracket" class="small"></fa-icon>
+        </app-icon-button>
+      </a>
+      <app-icon-button (click)="openEditPopUp(video.contentId)">
+        <fa-icon [icon]="faPen" ></fa-icon>
+      </app-icon-button>
+    </td>
+  </tr>
+</table>

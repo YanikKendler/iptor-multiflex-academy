@@ -1,0 +1,63 @@
+@import "../../../variables";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.upload-video{
+  width: 250px;
+  aspect-ratio: 16/9;
+  background-color: $gray-600;
+  border-radius: .5rem;
+  display: grid;
+  place-items: center;
+  padding: .5rem;
+  cursor: pointer;
+  transition: background-color $transition-time-default;
+
+  .icon{
+    background-color: rgba(56, 56, 56, 0.30);
+    border-radius: 100%;
+    aspect-ratio: 1;
+    height: 4rem;
+    display: grid;
+    place-items: center;
+
+    fa-icon{
+      font-size: 2rem;
+      color: $gray-300;
+      transition: color $transition-time-default;
+    }
+  }
+
+  p{
+    text-align: center;
+    transition: color $transition-time-default;
+  }
+
+
+  &.replace{
+    background-color: $secondary-500;
+
+    .icon fa-icon{
+      color: white;
+    }
+
+    p{
+      color: white;
+    }
+  }
+}
+
+.info{
+  color: $gray-250;
+  font-size: .85rem;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.fileinput{
+  display: none;
+}

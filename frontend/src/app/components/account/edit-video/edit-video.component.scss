@@ -1,0 +1,38 @@
+@import "../../../variables";
+
+:host{
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  border-radius: 0.5rem;
+  background-color: white;
+}
+
+h2{
+  font-weight: 500;
+  margin-block: .5rem;
+}
+
+section.basics{
+  display: flex;
+  gap: 1.5rem;
+
+  .left{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    width: 100%;
+  }
+
+  app-upload-video{
+    margin-top: 1.2rem;
+  }
+}
+
+section.details{
+  display: flex;
+
+  div{
+    display: flex;
+  }
+}

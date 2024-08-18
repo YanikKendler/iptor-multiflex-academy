@@ -1,0 +1,36 @@
+<app-navigation [simple]="true"></app-navigation>
+
+<main>
+  <div class="sidebar">
+    <div [ngClass]="{'active': currentPage === 'settings'}" (click)="switchPage('settings')">
+      <fa-icon [icon]="faGear"></fa-icon>
+      <p>Settings</p>
+    </div>
+
+    <div [ngClass]="{'active': currentPage === 'my-content'}" (click)="switchPage('my-content')">
+      <fa-icon [icon]="faCirclePlay"></fa-icon>
+      <p>My Content</p>
+    </div>
+
+    <div [ngClass]="{'active': currentPage === 'manage-users'}" (click)="switchPage('manage-users')">
+      <fa-icon [icon]="faUsersGear"></fa-icon>
+      <p>Manage Users</p>
+    </div>
+  </div>
+
+  <section>
+    @switch (currentPage){
+      @case('settings'){
+        <app-settings></app-settings>
+      }
+      @case('my-content'){
+        <app-my-content></app-my-content>
+      }
+      @case('manage-users'){
+        <app-manage-users></app-manage-users>
+      }
+    }
+  </section>
+</main>
+
+

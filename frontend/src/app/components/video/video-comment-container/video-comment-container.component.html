@@ -1,0 +1,14 @@
+<div class="commentList">
+  @if (comments && comments.length === 0){
+    <p class="no-comments">Be the first to leave a comment!</p>
+  }
+
+  @for (comment of comments; track comment.commentId){
+    <app-video-comment [comment]="comment" [videoId]="videoId" (update)="updateComments()" ></app-video-comment>
+  }
+</div>
+
+<div class="post-bar">
+  <input (keydown)="keyDownFunction($event)" type="text" placeholder="Your comment ..." [(ngModel)]="commentInputText">
+  <button (click)="postComment()">Post</button>
+</div>

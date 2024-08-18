@@ -1,0 +1,19 @@
+@if(loadingState === 'done'){
+  <video #video controls></video>
+}
+@else if (loadingState == 'loading') {
+  <div class="error">
+    <!--<div #spinner>
+      <fa-icon [icon]="faSpinner"></fa-icon>
+    </div>-->
+    <mat-spinner diameter="80" strokeWidth="4"></mat-spinner>
+    <p>Loading Data</p>
+  </div>
+}
+@else {
+  <div class="error">
+    <fa-icon [icon]="faFrownOpen"></fa-icon>
+    <p>Sorry, we could not find this video. Please reload the page to try again. If this issue is not resolved please contact a website administrator.</p>
+  </div>
+}
+
