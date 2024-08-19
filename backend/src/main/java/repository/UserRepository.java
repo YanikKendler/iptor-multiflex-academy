@@ -52,36 +52,50 @@ public class UserRepository {
                         "select distinct v from ViewProgress vp " +
                                 "join Video v on v.contentId = vp.content.contentId " +
                                 "where vp.user.userId = :userId and vp.ignored = false " +
-                                "and vp.durationSeconds < v.videoFile.durationSeconds * 0.90", Video.class)
+                                "and vp.progress < v.videoFile.durationSeconds * 0.90", Video.class)
                 .setParameter("userId", userId)
                 .getResultList();
 
-        // Fetch saved videos
-        List<Content> savedVideos = em.createQuery(
+        // Fetch saved content
+        List<Content> savedContent = em.createQuery(
                         "select sv from User u " +
                                 "join u.savedContent sv " +
                                 "where u.userId = :userId", Content.class)
                 .setParameter("userId", userId)
                 .getResultList();
 
-        // Combine both lists
-        Set<Video> combinedVideos = new HashSet<>(unfinishedVideos);
+        // Separate saved videos and learning paths
+        List<Video> savedVideos = savedContent.stream()
+                .filter(content -> content instanceof Video)
+                .map(content -> (Video) content).toList();
 
-        // Add only saved videos to the combined list
-        combinedVideos.addAll(savedVideos.stream().filter(content -> content instanceof Video).map(content -> (Video) content).toList());
+        List<LearningPath> savedLearningPaths = savedContent.stream()
+                .filter(content -> content instanceof LearningPath)
+                .map(content -> (LearningPath) content).toList();
+
+        // Combine unfinished and saved videos
+        Set<Video> combinedVideos = new HashSet<>(unfinishedVideos);
+        combinedVideos.addAll(savedVideos);
 
         // Convert to VideoOverviewDTO
         List<VideoOverviewDTO> currentVideos = combinedVideos.stream()
-                .map(video -> {return convertVideoToOverviewDTO(video, userId);})
-                .collect(Collectors.toList());
+                .map(video -> convertVideoToOverviewDTO(video, userId)).toList();
 
-        // todo add unfinished learning paths
+        // Fetch unfinished learning paths
+        List<LearningPath> unfinishedLearningPaths = em.createQuery(
+                        "select distinct lp from ViewProgress vp " +
+                                "join LearningPath lp on lp.contentId = vp.content.contentId " +
+                                "where vp.user.userId = :userId and vp.ignored = false", LearningPath.class)
+                .setParameter("userId", userId)
+                .getResultList();
 
-        List<LearningPathOverviewDTO> currentLearningPaths = savedVideos.stream()
-                .filter(content -> content instanceof LearningPath)
-                .map(content -> (LearningPath) content)
-                .map(learningPath -> {return convertLearningPathToOverviewDTO(learningPath, userId);})
-                .collect(Collectors.toList());
+        // Combine unfinished and saved learning paths
+        Set<LearningPath> combinedLearningPaths = new HashSet<>(unfinishedLearningPaths);
+        combinedLearningPaths.addAll(savedLearningPaths);
+
+        // Convert to LearningPathOverviewDTO
+        List<LearningPathOverviewDTO> currentLearningPaths = combinedLearningPaths.stream()
+                .map(learningPath -> convertLearningPathToOverviewDTO(learningPath, userId)).toList();
 
         return new VideoAndLearningPathOverviewCollection(currentVideos, currentLearningPaths);
     }
@@ -110,13 +124,13 @@ public class UserRepository {
                         "where vp.user.userId = :userId", Tag.class)
                 .setParameter("userId", userId).getResultList();
 
-        List<Long> savedVideos = em.createQuery("select v.contentId from User u " +
-                        "join u.savedContent v " +
+        List<Long> savedContent = em.createQuery("select c.contentId from User u " +
+                        "join u.savedContent c " +
                         "where u.userId = :userId", Long.class)
                 .setParameter("userId", userId).getResultList();
 
         List<Video> videos;
-        if (savedVideos.isEmpty()) {
+        if (savedContent.isEmpty()) {
             videos = em.createQuery(
                             "select v from Video v " +
                                     "where v.contentId not in " +
@@ -128,9 +142,9 @@ public class UserRepository {
                             "select v from Video v " +
                                     "where v.contentId not in " +
                                     "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId) and " +
-                                    "v.contentId not in :savedVideos", Video.class)
+                                    "v.contentId not in :savedContent", Video.class)
                     .setParameter("userId", userId)
-                    .setParameter("savedVideos", savedVideos)
+                    .setParameter("savedContent", savedContent)
                     .getResultList();
         }
 
@@ -218,11 +232,11 @@ public class UserRepository {
                     .setParameter("videoId", video.getContentId())
                     .setMaxResults(1)
                     .getSingleResult();
-        } catch (NoResultException e) {
+        } catch (Exception e) {
             viewProgress = null;
         }
 
-        boolean saved = isVideoSaved(userId, video.getContentId());
+        boolean saved = isVideoSaved(video.getContentId(), userId);
 
         if (video.getVideoFile() != null) {
             return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), saved, video.getColor(), video.getVideoFile().getDurationSeconds(), viewProgress);
@@ -230,7 +244,12 @@ public class UserRepository {
         return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), saved, video.getColor(), null, viewProgress);
     }
 
-    public LearningPathOverviewDTO convertLearningPathToOverviewDTO(LearningPath learningPath, Long userId) {
+    public boolean isVideoSaved(Long contentId, Long userId) {
+        User user = getById(userId);
+        return user.getSavedContent().stream().anyMatch(video -> video.getContentId().equals(contentId));
+    }
+
+    public LearningPathOverviewDTO convertLearningPathToOverviewDTO(Content learningPath, Long userId) {
         ViewProgress viewProgress;
         try {
             viewProgress = em.createQuery(
@@ -254,20 +273,15 @@ public class UserRepository {
         return new LearningPathOverviewDTO(learningPath.getContentId(), learningPath.getTitle(), learningPath.getDescription(), learningPath.getTags(), (int) videoCount, viewProgress, learningPath.getColor(), saved);
     }
 
+    public boolean isLearningPathSaved(Long userId, Long learningPathId) {
+        User user = getById(userId);
+        return user.getSavedContent().stream().anyMatch(learningPath -> learningPath.getContentId().equals(learningPathId));
+    }
+
     public void toggleSavedVideo(Long userId, Long contentId) {
         User user = getById(userId);
         user.toggleSavedContent(em.find(Content.class, contentId));
         em.merge(user);
-    }
-
-    public boolean isVideoSaved(Long userId, Long videoId) {
-        User user = getById(userId);
-        return user.getSavedContent().stream().anyMatch(video -> video.getContentId().equals(videoId));
-    }
-
-    public boolean isLearningPathSaved(Long userId, Long learningPathId) {
-        User user = getById(userId);
-        return user.getSavedContent().stream().anyMatch(learningPath -> learningPath.getContentId().equals(learningPathId));
     }
 
     public List<MyVideoContentDTO> getUserContent(Long userId) {
