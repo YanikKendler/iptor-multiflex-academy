@@ -8,6 +8,7 @@ import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import model.AnswerOption;
 import model.Video;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import repository.VideoFileRepository;
 import repository.VideoRepository;
 
 import java.io.File;
+import java.util.List;
 
 @Path("video")
 public class VideoResource {
@@ -135,5 +137,29 @@ public class VideoResource {
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("{videoId: [0-9]+}/finishquiz/{score: [0-9]+}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response finishQuiz(@PathParam("videoId") Long videoId, @QueryParam("userId") Long userId, @PathParam("score") int quiz, List<AnswerOption> selectedAnswers){
+        try{
+            videoRepository.finishQuiz(videoId, userId, quiz, selectedAnswers);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("{videoId: [0-9]+}/quizresults")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getQuizResults(@PathParam("videoId") Long videoId, @QueryParam("userId") Long userId){
+        try{
+            return Response.ok(videoRepository.getQuizResults(videoId, userId)).build();
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
     }
 }

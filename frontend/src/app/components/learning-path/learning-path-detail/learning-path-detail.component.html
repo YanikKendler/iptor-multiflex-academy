@@ -26,7 +26,7 @@
       <app-media-player [video]="currentVideo"></app-media-player>
       <div class="right">
         @if(currentVideo.questions){
-          <app-video-quiz [questions]="currentVideo.questions"></app-video-quiz>
+          <app-video-quiz [questions]="currentVideo.questions" [videoId]="currentVideo.contentId"></app-video-quiz>
         }
       </div>
     </div>

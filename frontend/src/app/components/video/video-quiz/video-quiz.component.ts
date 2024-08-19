@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, inject, Input, OnInit, ViewChild} from '@angular/core';
 import {VideoQuizAnswersComponent} from "../video-quiz-answers/video-quiz-answers.component";
 import {NgClass, NgForOf} from "@angular/common";
-import {Question} from "../../../service/question.service"
+import {AnswerOption, Question} from "../../../service/question.service"
+import {VideoService} from "../../../service/video.service";
 
 @Component({
   selector: 'app-video-quiz',
@@ -14,8 +15,11 @@ import {Question} from "../../../service/question.service"
   templateUrl: './video-quiz.component.html',
   styleUrl: './video-quiz.component.scss'
 })
-export class VideoQuizComponent implements OnInit {
+export class VideoQuizComponent implements OnInit, AfterViewInit {
   @Input() questions: Question[] | undefined = [];
+  @Input() videoId: number = 0;
+
+  @ViewChild(VideoQuizAnswersComponent) videoQuizAnswersComponent: VideoQuizAnswersComponent | undefined;
 
   questionNr: number = 0;
   checkedQuestions: Question[] = [];
@@ -23,11 +27,42 @@ export class VideoQuizComponent implements OnInit {
 
   isQuizFinished: boolean = false
 
+  //todo when the user swaps to another page, the quiz should keep the progress
+
   ngOnInit() {
     // auto-select first question
     if (this.questions) {
       this.selectedQuestion = this.questions[0];
     }
+  }
+
+  ngAfterViewInit() {
+    console.log("init")
+    this.videoQuizAnswersComponent?.tryToGetPreviousResult(this.videoId, (result) => {
+      if (result) {
+        this.isQuizFinished = true;
+
+        let count = 0;
+        this.questions?.forEach(question => {
+          this.checkedQuestions.push(question);
+          this.videoQuizAnswersComponent?.checkedQuestions.push(count++);
+
+          question.answerOptions.forEach(answerOption => {
+            let selectedAnswers = this.videoQuizAnswersComponent?.selectedAnswers || []
+            if (answerOption.isCorrect && selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId) ||
+                !answerOption.isCorrect && !selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId)) {
+              this.videoQuizAnswersComponent?.correctAnswers.push(answerOption);
+            } else if (!answerOption.isCorrect && selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId)) {
+              this.videoQuizAnswersComponent?.wrongAnswers.push(answerOption);
+            } else {
+              this.videoQuizAnswersComponent?.missedAnswers.push(answerOption);
+            }
+          });
+        });
+
+        this.selectedQuestion = null;
+      }
+    });
   }
 
   selectQuestion(question: Question, questionNumber: number) {
@@ -57,6 +92,8 @@ export class VideoQuizComponent implements OnInit {
       if(this.questionNr >= this.questions.length - 1){
         this.isQuizFinished = true
         this.viewResults()
+
+        this.videoQuizAnswersComponent?.finishQuiz(this.videoId)
         return
       }
 

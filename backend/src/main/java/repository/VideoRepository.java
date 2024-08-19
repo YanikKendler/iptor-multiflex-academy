@@ -1,9 +1,6 @@
 package repository;
 
-import dtos.CreateVideoDTO;
-import dtos.EditVideoDTO;
-import dtos.VideoDetailDTO;
-import dtos.VideoOverviewDTO;
+import dtos.*;
 import enums.VisibilityEnum;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -14,6 +11,7 @@ import model.Question;
 import model.Tag;
 import model.Video;
 import model.VideoFile;
+import model.*;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
@@ -25,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
@@ -142,5 +141,40 @@ public class VideoRepository {
     public void updateVideoVisibility(Long videoId, VisibilityEnum v) {
         Video video = em.find(Video.class, videoId);
         video.setVisibility(v);
+    }
+
+    @Transactional
+    public void finishQuiz(Long videoId, Long userId, int score, List<AnswerOption> questionResults) {
+        try{
+            QuizResult quizResult = em.createQuery("select qr from QuizResult qr where qr.video.contentId = :videoId and qr.user.userId = :userId", QuizResult.class)
+                    .setParameter("videoId", videoId)
+                    .setParameter("userId", userId)
+                    .getSingleResult();
+
+            if(quizResult.getScore() < score){
+                System.out.println("better score");
+                quizResult.setScore(score);
+                quizResult.setQuestionResults(questionResults);
+                quizResult.setTimestamp(System.currentTimeMillis());
+                em.merge(quizResult);
+            }
+
+        }catch (NoResultException e){
+            QuizResult quizResult = new QuizResult(em.find(Video.class, videoId), em.find(User.class, userId), score);
+            quizResult.setQuestionResults(questionResults);
+            em.persist(quizResult);
+        }
+    }
+
+    public QuizResultDTO getQuizResults(Long videoId, Long userId) {
+        try{
+            QuizResult result = em.createQuery("select qr from QuizResult qr where qr.video.contentId = :videoId and qr.user.userId = :userId", QuizResult.class)
+                    .setParameter("videoId", videoId)
+                    .setParameter("userId", userId)
+                    .getSingleResult();
+            return new QuizResultDTO(result.getQuizResultId(), result.getQuestionResults(), result.getScore());
+        } catch (NoResultException e){
+            return null;
+        }
     }
 }
