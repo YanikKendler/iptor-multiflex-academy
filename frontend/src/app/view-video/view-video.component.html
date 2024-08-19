@@ -1,0 +1,39 @@
+<app-navigation [simple]="true"></app-navigation>
+
+<main>
+  <div class="top">
+    <img src="http://unsplash.it/1080/720" alt="">
+    <div class="right">
+      <h1>{{video?.title}}</h1>
+      <p class="description">{{video?.description}}</p>
+      <div class="actions">
+        <app-star-icon [stared]="true"></app-star-icon>
+        <app-star-icon [stared]="true"></app-star-icon>
+        <app-star-icon [stared]="true"></app-star-icon>
+        <app-star-icon></app-star-icon>
+        <app-star-icon></app-star-icon>
+        <p>3.2</p>
+        <!--replace with rating component-->
+
+        <app-bookmark-icon></app-bookmark-icon>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="tab-selector" #tabSelector>
+      <p class="comments" (click)="selectTab('comments')">Comments</p>
+      <p class="quiz" (click)="selectTab('quiz')">Quiz</p>
+      <span class="marker"></span>
+    </div>
+
+    @switch(this.currentTab){
+      @case('comments'){
+        <app-video-comments [comments]="video?.comments"></app-video-comments>
+      }
+      @case('quiz'){
+        <app-video-quiz [questions]="video?.questions"></app-video-quiz>
+      }
+    }
+  </div>
+</main>

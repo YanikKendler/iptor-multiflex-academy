@@ -1,0 +1,22 @@
+@import "../variables";
+
+:host{
+  display: flex;
+  gap: 1rem;
+}
+
+.sidebar{
+  display: flex;
+  padding: 1rem;
+  border-right: 1px solid $gray-600;
+
+  div{
+    p:first-child{
+      color: $secondary-500;
+    }
+
+    display: flex;
+    flex-direction: row;
+    gap: .25rem;
+  }
+}

@@ -23,7 +23,7 @@ For file storrage its required to have the folders "uploads" adnd "processed" in
 
 For file uploading please download a [windows build](https://github.com/BtbN/FFmpeg-Builds/releases) of ffmeg and place "ffmpeg.exe" and "ffmprobe.exe" in a folder called "tools" in the backend root.
 
-# Guidlines
+# Guidelines
 
 ## Comments
 
