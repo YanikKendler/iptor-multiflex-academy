@@ -1,10 +1,37 @@
+<p>logo</p>
+
 @if(simple){
-  <p>logo</p>
-  <a routerLink="/">back to the lobby</a>
-  <p>account</p>
+  <a routerLink="/">Zurück zum Dashboard</a>
 } @else {
-  <p>logo</p>
-  <p>search</p>
-  <p routerLink="/account/settings">account</p>
+  <p>Search for a Video</p>
 }
+
+<div class="right">
+  <app-icon-button>
+    <fa-icon [icon]="faBell"></fa-icon>
+  </app-icon-button>
+
+  <app-icon-button [cdkMenuTriggerFor]="menu">
+    <fa-icon [icon]="faCircleUser" class="userIcon"></fa-icon>
+  </app-icon-button>
+
+  <ng-template #menu>
+    <div class="menu" cdkMenu>
+      <div routerLink="/account/settings">
+        <fa-icon [icon]="faGear"></fa-icon>
+        <p>Settings</p>
+      </div>
+
+      <div>
+        <fa-icon [icon]="faCirclePlay"></fa-icon>
+        <p>My Content</p>
+      </div>
+
+      <div>
+        <fa-icon [icon]="faUsersGear"></fa-icon>
+        <p>Manage Users</p>
+      </div>
+    </div>
+  </ng-template>
+</div>
 
