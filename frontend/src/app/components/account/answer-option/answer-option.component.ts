@@ -19,7 +19,7 @@ export class AnswerOptionComponent {
   @Input() letter: string = "";
 
   updateIsCorrect(change: MatCheckboxChange) {
-    this.answer.correct = change.checked;
+    this.answer.isCorrect = change.checked;
     this.answerChange.emit(this.answer);
   }
 }

@@ -4,8 +4,8 @@ import {map, Observable} from "rxjs";
 
 export interface AnswerOption {
   answerOptionId: number;
-  text: string;
-  correct: boolean;
+  text: string
+  isCorrect: boolean;
 }
 
 export interface Question {

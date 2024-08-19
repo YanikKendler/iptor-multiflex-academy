@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
 import {Tag} from "./tag.service";
-import {Question} from "./question.service";
+import {AnswerOption, Question} from "./question.service";
 import {Comment} from "./comment.service";
 import {User} from "./user.service";
 import {Config} from "../config"
@@ -62,6 +62,12 @@ export interface VideoAndLearningPathOverviewCollection {
   learningPaths: LearningPathOverviewDTO[];
 }
 
+export interface QuizResultDTO{
+  quizResultId: number;
+  selectedAnswers: AnswerOption[];
+  score: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -115,5 +121,13 @@ export class VideoService {
   updateVideoVisibility(contentId: number, visibility: VisibilityEnum){
     console.log(visibility)
     this.http.put(`${Config.API_URL}/video/${contentId}/visibility`, {visibility: visibility}).subscribe()
+  }
+
+  finishQuiz(videoId: number, score: number, selectedAnswers: AnswerOption[]){
+    this.http.post(`${Config.API_URL}/video/${videoId}/finishquiz/${score}?userId=${Config.USER_ID}`, selectedAnswers).subscribe();
+  }
+
+  getQuizResults(videoId: number){
+    return this.http.get<QuizResultDTO>(`${Config.API_URL}/video/${videoId}/quizresults?userId=${Config.USER_ID}`)
   }
 }

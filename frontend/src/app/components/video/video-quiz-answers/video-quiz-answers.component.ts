@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {NgClass} from "@angular/common";
 import {MatRipple} from "@angular/material/core"
 import {AnswerOption} from "../../../service/question.service"
+import {VideoService} from "../../../service/video.service";
 
 @Component({
   selector: 'app-video-quiz-answers',
@@ -19,6 +20,7 @@ export class VideoQuizAnswersComponent implements OnChanges{
   @Input() questionNumber!: number;
   @Input() isQuizFinished: boolean = false;
   @Output() nextQuestion: EventEmitter<boolean> = new EventEmitter<boolean>()
+  @Output() giveSelectedAnswers: EventEmitter<AnswerOption[]> = new EventEmitter<AnswerOption[]>()
 
   isAnswerCheckedIn : boolean = false
 
@@ -67,14 +69,21 @@ export class VideoQuizAnswersComponent implements OnChanges{
     this.isAnswerCheckedIn = true
     this.checkedQuestions.push(this.questionNumber)
     this.answers?.forEach(answer => {
-      if(this.selectedAnswers.includes(answer) && answer.correct || !this.selectedAnswers.includes(answer) && !answer.correct){
+      if(this.selectedAnswers.includes(answer) && answer.isCorrect || !this.selectedAnswers.includes(answer) && !answer.isCorrect){
         this.correctAnswers.push(answer)
-      } else if (this.selectedAnswers.includes(answer) && !answer.correct){
+      } else if (this.selectedAnswers.includes(answer) && !answer.isCorrect){
         this.wrongAnswers.push(answer)
       } else {
         this.missedAnswers.push(answer)
       }
     })
+
+    this.giveSelectedAnswers.emit(this.selectedAnswers)
+  }
+
+  videoService = inject(VideoService)
+  finishQuiz(videoId: number) {
+    this.videoService.finishQuiz(videoId, this.correctAnswers.length, this.selectedAnswers)
   }
 
   restartQuiz() {
@@ -88,5 +97,16 @@ export class VideoQuizAnswersComponent implements OnChanges{
     this.missedAnswers = []
 
     this.nextQuestion.emit(true)
+  }
+
+  tryToGetPreviousResult(videoId: number, callback: (result: boolean) => void) {
+      this.videoService.getQuizResults(videoId).subscribe(result => {
+        this.selectedAnswers = result.selectedAnswers;
+        console.log(this.selectedAnswers);
+        callback(true);
+      }, error => {
+        console.log(error);
+        callback(false);
+      });
   }
 }
