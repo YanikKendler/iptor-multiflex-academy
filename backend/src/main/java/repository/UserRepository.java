@@ -13,7 +13,6 @@ import model.*;
 import java.util.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Transactional
@@ -43,7 +42,8 @@ public class UserRepository {
         return new ContentForUserDTO(
                 getCurrentContent(userId),
                 getAssignedContent(userId),
-                new VideoAndLearningPathOverviewCollection(getSuggestedVideos(userId), getSuggestedLearningPaths(userId)));
+                getSuggestedContent(userId)
+        );
     }
 
     public VideoAndLearningPathOverviewCollection getCurrentContent(Long userId) {
@@ -85,7 +85,8 @@ public class UserRepository {
         List<LearningPath> unfinishedLearningPaths = em.createQuery(
                         "select distinct lp from ViewProgress vp " +
                                 "join LearningPath lp on lp.contentId = vp.content.contentId " +
-                                "where vp.user.userId = :userId and vp.ignored = false", LearningPath.class)
+                                "where vp.user.userId = :userId and vp.ignored = false and vp.progress < " +
+                                "(select count(e) from lp.entries e)", LearningPath.class)
                 .setParameter("userId", userId)
                 .getResultList();
 
@@ -116,8 +117,8 @@ public class UserRepository {
         return new VideoAndLearningPathOverviewCollection(assignedVideosDTO, assignedLearningPathsDTO);
     }
 
-    public List<VideoOverviewDTO> getSuggestedVideos (Long userId){
-        // get all tags of the users watched videos
+    public VideoAndLearningPathOverviewCollection getSuggestedContent(Long userId){
+        // get all tags of the users watched videos and learning paths
         List<Tag> tags = em.createQuery("select distinct t from Video v " +
                         "join ViewProgress vp on vp.content.contentId = v.contentId " +
                         "join v.tags t " +
@@ -130,11 +131,19 @@ public class UserRepository {
                 .setParameter("userId", userId).getResultList();
 
         List<Video> videos;
+        List<LearningPath> learningPaths;
         if (savedContent.isEmpty()) {
             videos = em.createQuery(
                             "select v from Video v " +
                                     "where v.contentId not in " +
-                                    "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId)", Video.class)
+                                    "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId and ignored = false)", Video.class)
+                    .setParameter("userId", userId)
+                    .getResultList();
+
+            learningPaths = em.createQuery(
+                            "select lp from LearningPath lp " +
+                                    "where lp.contentId not in " +
+                                    "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId and ignored = false)", LearningPath.class)
                     .setParameter("userId", userId)
                     .getResultList();
         } else {
@@ -146,50 +155,7 @@ public class UserRepository {
                     .setParameter("userId", userId)
                     .setParameter("savedContent", savedContent)
                     .getResultList();
-        }
 
-        HashMap<Video, Integer> videoScores = new HashMap<>();
-        videos.forEach(video -> {
-            double avgStarRating = starRatingRepository.getAverage(video.getContentId());
-            double tagScore = video.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
-
-            videoScores.put(video, (int) (avgStarRating + tagScore*2.5));
-        });
-
-        // sort by score
-        List<Map.Entry<Video, Integer>> sortedEntries = videoScores.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toList());
-
-        Collections.reverse(sortedEntries);
-
-        // parse it into the video overview dto
-        return sortedEntries.stream().map(entry -> convertVideoToOverviewDTO(entry.getKey(), userId)).toList();
-    }
-
-    public List<LearningPathOverviewDTO> getSuggestedLearningPaths (Long userId){
-        // get all tags of the users watched videos
-        List<Tag> tags = em.createQuery("select distinct t from Video v " +
-                        "join ViewProgress vp on vp.content.contentId = v.contentId " +
-                        "join v.tags t " +
-                        "where vp.user.userId = :userId", Tag.class)
-                .setParameter("userId", userId).getResultList();
-
-        List<Long> savedContent = em.createQuery("select c.contentId from User u " +
-                        "join u.savedContent c " +
-                        "where u.userId = :userId", Long.class)
-                .setParameter("userId", userId).getResultList();
-
-        List<LearningPath> learningPaths;
-        if (savedContent.isEmpty()) {
-            learningPaths = em.createQuery(
-                            "select lp from LearningPath lp " +
-                                    "where lp.contentId not in " +
-                                    "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId)", LearningPath.class)
-                    .setParameter("userId", userId)
-                    .getResultList();
-        } else {
             learningPaths = em.createQuery(
                             "select lp from LearningPath lp " +
                                     "where lp.contentId not in " +
@@ -200,7 +166,16 @@ public class UserRepository {
                     .getResultList();
         }
 
+        HashMap<Video, Integer> videoScores = new HashMap<>();
         HashMap<LearningPath, Integer> learningPathScores = new HashMap<>();
+
+        videos.forEach(video -> {
+            double avgStarRating = starRatingRepository.getAverage(video.getContentId());
+            double tagScore = video.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
+
+            videoScores.put(video, (int) (avgStarRating + tagScore*2.5));
+        });
+
         learningPaths.forEach(learningPath -> {
             double avgStarRating = starRatingRepository.getAverage(learningPath.getContentId());
             double tagScore = learningPath.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
@@ -209,15 +184,21 @@ public class UserRepository {
         });
 
         // sort by score
-        List<Map.Entry<LearningPath, Integer>> sortedEntries = learningPathScores.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue())
-                .collect(Collectors.toList());
+        List<Map.Entry<Video, Integer>> sortedVideos = new ArrayList<>(videoScores.entrySet()
+                .stream().sorted(Map.Entry.comparingByValue()).toList());
 
-        Collections.reverse(sortedEntries);
+        List<Map.Entry<LearningPath, Integer>> sortedLearningPaths = new ArrayList<>(learningPathScores.entrySet()
+                .stream().sorted(Map.Entry.comparingByValue()).toList());
+
+        Collections.reverse(sortedVideos);
+        Collections.reverse(sortedLearningPaths);
 
         // parse it into the video overview dto
-        return sortedEntries.stream().map(entry -> convertLearningPathToOverviewDTO(entry.getKey(), userId)).toList();
+
+        return new VideoAndLearningPathOverviewCollection(
+                sortedVideos.stream().map(entry -> convertVideoToOverviewDTO(entry.getKey(), userId)).toList(),
+                sortedLearningPaths.stream().map(entry -> convertLearningPathToOverviewDTO(entry.getKey(), userId)).toList()
+        );
     }
 
     public VideoOverviewDTO convertVideoToOverviewDTO(Video video, Long userId) {

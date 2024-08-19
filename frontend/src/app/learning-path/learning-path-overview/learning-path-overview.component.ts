@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {NgOptimizedImage} from "@angular/common"
+import {NgForOf, NgOptimizedImage} from "@angular/common"
 import {MatChip} from "@angular/material/chips"
 import {Router} from "@angular/router"
 import {MatTooltip} from "@angular/material/tooltip"
@@ -44,7 +44,8 @@ export interface UpdateLearningPathDashboardEvent {
     ChipComponent,
     FaIconComponent,
     PlayIconComponent,
-    LearningPathIconComponent
+    LearningPathIconComponent,
+    NgForOf
   ],
   templateUrl: './learning-path-overview.component.html',
   styleUrl: './learning-path-overview.component.scss',
@@ -53,6 +54,8 @@ export class LearningPathOverviewComponent implements OnInit{
   @Input() learningPath: LearningPathOverviewDTO = {} as LearningPathOverviewDTO
   @Input() removable: boolean = false
   @Output() updateDashboard: EventEmitter<UpdateLearningPathDashboardEvent> = new EventEmitter<UpdateLearningPathDashboardEvent>();
+
+  videoProgress: number[] = []
 
   userService = inject(UserService)
   viewProgressService = inject(ViewProgressService)
@@ -64,13 +67,25 @@ export class LearningPathOverviewComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.videoProgress = []
+
     this.tagToolTipString = this.learningPath.tags?.map(tag => tag.name).join(", ")
-    console.log(this.learningPath)
+    for (let i = 1; i <= this.learningPath.videoCount; i++) {
+      this.videoProgress.push(i)
+    }
   }
 
   @HostListener('click', ['$event'])
   openVideo(){
     this._router.navigate(['video/' + this.learningPath?.contentId])
+  }
+
+  getProgressBarColor(number: number): string {
+    if(this.learningPath.viewProgress && number <= this.learningPath.viewProgress.progress){
+      return this.learningPath.color
+    } else{
+      return "hsl(0, 0%, 69%)"
+    }
   }
 
   addToBookmarks(event: MouseEvent){

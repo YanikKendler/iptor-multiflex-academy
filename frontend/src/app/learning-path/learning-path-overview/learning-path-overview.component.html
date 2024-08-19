@@ -24,10 +24,11 @@
 
 @if(learningPath.viewProgress){
   <div class="progress-bar">
-    <span
-      [style.width.%]="0.5"
-      [style.background-color]="learningPath.color"
-    ></span>
+    @for(video of videoProgress; track video) {
+      <span
+        [style.background-color]="getProgressBarColor(video)"
+      ></span>
+    }
   </div>
 }
 
