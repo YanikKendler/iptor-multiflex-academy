@@ -3,6 +3,7 @@ package model;
 import dtos.VideoDetailDTO;
 import enums.VisibilityEnum;
 import jakarta.annotation.Nullable;
+import jakarta.inject.Inject;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

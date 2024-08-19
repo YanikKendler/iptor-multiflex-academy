@@ -11,7 +11,7 @@ import repository.VideoFileRepository;
 import java.io.File;
 import java.io.InputStream;
 
-@Path("/")
+@Path("video/videofile")
 public class VideoFileResource {
     @Inject
     VideoFileRepository repository;
@@ -19,7 +19,6 @@ public class VideoFileResource {
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("video/videofile")
     public Response uploadVideoFile(@FormParam("file") InputStream uploadedInputStream, @QueryParam("filename") String filename) {
         try {
             VideoFile videoFile = repository.uploadVideo(uploadedInputStream, filename);
@@ -32,7 +31,7 @@ public class VideoFileResource {
     }
 
     @DELETE
-    @Path("video/videofile/{fileId: [0-9]+}")
+    @Path("/{fileId: [0-9]+}")
     public Response deleteVideoFile(@PathParam("fileId") Long fileId) {
         try {
             repository.deleteVideoFile(fileId);
