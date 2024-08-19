@@ -136,7 +136,11 @@ INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_
 INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (5, 3, 1, '2023-10-05');
 
 -- Insert demo data for ViewProgress
-INSERT INTO ViewProgress (content_contentid, user_userid, durationSeconds, timestamp, ignored) VALUES (1, 1, 8, '2023-10-01 10:00:00', false);
-INSERT INTO ViewProgress (content_contentid, user_userid, durationSeconds, timestamp, ignored) VALUES (1, 2, 75, '2023-10-01 10:30:00', false);
-INSERT INTO ViewProgress (content_contentid, user_userid, durationSeconds, timestamp, ignored) VALUES (2, 1, 200, '2023-10-02 11:00:00', false);
-INSERT INTO ViewProgress (content_contentid, user_userid, durationSeconds, timestamp, ignored) VALUES (2, 2, 300, '2023-10-02 11:30:00', false);
+INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (1, 1, 8, '2023-10-01 10:00:00', false);
+INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (1, 2, 75, '2023-10-01 10:30:00', false);
+INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (2, 1, 200, '2023-10-02 11:00:00', false);
+INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (2, 2, 300, '2023-10-02 11:30:00', false);
+
+INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (5, 1, 3, '2023-10-02 11:30:00', false);
+INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (5, 2, 1, '2023-10-02 11:30:00', false);
+INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (6, 1, 2, '2023-10-02 11:30:00', false);

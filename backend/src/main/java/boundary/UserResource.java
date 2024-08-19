@@ -13,6 +13,7 @@ import model.User;
 import model.Employee;
 import repository.EmployeeRepository;
 import repository.UserRepository;
+import repository.VideoRepository;
 
 import java.util.List;
 
@@ -20,6 +21,10 @@ import java.util.List;
 public class UserResource {
     @Inject
     UserRepository repository;
+    @Inject
+    UserRepository userRepository;
+    @Inject
+    VideoRepository videoRepository;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -61,7 +66,7 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response isVideoSaved(@PathParam("userId") Long userId, @PathParam("videoId") Long videoId) {
         try {
-            return Response.ok(repository.isVideoSaved(userId, videoId)).build();
+            return Response.ok(repository.isVideoSaved(videoId, userId)).build();
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

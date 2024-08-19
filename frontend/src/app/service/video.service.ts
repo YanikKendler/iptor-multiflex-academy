@@ -19,7 +19,7 @@ export interface StarRating {
 
 export interface ViewProgress {
   progressId: number;
-  durationSeconds: number;
+  progress: number;
   user: User;
 }
 
