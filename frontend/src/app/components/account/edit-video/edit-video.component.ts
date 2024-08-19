@@ -1,7 +1,7 @@
 import {Component, ElementRef, inject, model, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {VideoDetailDTO, VideoService, VisibilityEnum} from "../../../service/video.service";
-import {NgForOf} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {TextfieldComponent} from "../../basic/textfield/textfield.component"
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
@@ -26,7 +26,8 @@ import {AnswerOptionComponent} from "../answer-option/answer-option.component"
     MatButton,
     DropdownComponent,
     MatDivider,
-    AnswerOptionComponent
+    AnswerOptionComponent,
+    NgClass
   ],
   templateUrl: './edit-video.component.html',
   styleUrl: './edit-video.component.scss'
@@ -41,17 +42,15 @@ export class EditVideoComponent implements OnInit{
   video: VideoDetailDTO = {} as VideoDetailDTO;
   oldVideo: VideoDetailDTO = {} as VideoDetailDTO; //used for checking for changes
 
-  @ViewChild("color") colorInput!: ElementRef<HTMLInputElement>;
-
   selectedQuestion: Question = {} as Question;
 
   ngOnInit(): void {
+    console.log(this.data)
     this.videoService.getVideoDetails(this.data).subscribe(video => {
       this.video = video;
       this.oldVideo= {...video} //actual deep clone
 
       this.selectedQuestion = video.questions[0]
-      console.log(this.selectedQuestion)
     })
 
     this.dialogRef.backdropClick().subscribe(() => {
@@ -67,8 +66,10 @@ export class EditVideoComponent implements OnInit{
 
   saveChanges() {
     this.videoService.updateVideo(this.video).subscribe(result => {
+      let selectedQuestionPos = this.video.questions.indexOf(this.selectedQuestion)
       this.video = result;
       this.oldVideo = {...result}
+      this.selectedQuestion = this.video.questions[selectedQuestionPos] || this.video.questions[0]
     })
   }
 
@@ -96,6 +97,13 @@ export class EditVideoComponent implements OnInit{
     })
   }
 
+  addQuestion() {
+    this.video.questions.push({text: "New Question"} as Question)
+    this.selectedQuestion = this.video.questions[this.video.questions.length - 1]
+  }
+
+  //UPDATE functions
+
   videoFileUpdated(fileId:number) {
     if(this.video.contentId)
       this.videoService.linkVideoFile(this.video.contentId, fileId).subscribe(result => {
@@ -110,8 +118,17 @@ export class EditVideoComponent implements OnInit{
     this.video.visibility = VisibilityEnum[option.id as keyof typeof VisibilityEnum]
   }
 
-  colorUpdated(){
-    this.video.color = this.colorInput.nativeElement.value;
+  colorUpdated(color: string){
+    this.video.color = color;
+  }
+
+  questionTitleUpdated(text: string){
+    this.selectedQuestion.text = text
+  }
+
+  answerUpdated(answer: AnswerOption){
+    console.log(answer)
+    this.selectedQuestion.answerOptions = this.selectedQuestion.answerOptions.map(a => a.answerOptionId == answer.answerOptionId ? answer : a)
   }
 
   protected readonly Utils = Utils

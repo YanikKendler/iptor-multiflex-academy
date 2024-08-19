@@ -24,7 +24,7 @@
 <section class="details">
   <div>
     <p>video-color:</p>
-    <input type="color" [value]="video.color" (input)="colorUpdated()" #color>
+    <input type="color" [value]="video.color" (input)="colorUpdated(color.value)" #color>
   </div>
 
   <mat-divider [vertical]="true"></mat-divider>
@@ -46,20 +46,31 @@
 <section class="questions">
   <div class="left">
     @for (question of video.questions; track question.questionId){
-      <p>
-        <span>{{ $index + 1 }}.</span>
+      <p
+        [class]="question.questionId == selectedQuestion.questionId ? 'selected' : ''"
+        (click)="selectedQuestion = question"
+      >
+        <span class="number">{{ $index + 1 }}.</span>
         <span>{{ question.text }}</span>
       </p>
     }
-    <button>
+    <button (click)="addQuestion()">
       <fa-icon [icon]="faPlus"></fa-icon>
     </button>
   </div>
+  <mat-divider [vertical]="true"></mat-divider>
   <div class="right">
-    <input type="text" class="question">
-    @for(answer of selectedQuestion.answerOptions; track answer.answerOptionId){
-      <app-answer-option [answer]="answer"></app-answer-option>
-    }
+    <input type="text" class="question" placeholder="Frage" [value]="selectedQuestion.text" (input)="questionTitleUpdated(questionTitle.value)" #questionTitle>
+    <div class="scrollable">
+      @for (answer of selectedQuestion.answerOptions; track answer.answerOptionId) {
+        <app-answer-option
+          [answer]="answer"
+          (answerChange)="answerUpdated(answerComponent.answer)"
+          [letter]="Utils.numberToLetter($index)"
+          #answerComponent
+        ></app-answer-option>
+      }
+    </div>
   </div>
 </section>
 

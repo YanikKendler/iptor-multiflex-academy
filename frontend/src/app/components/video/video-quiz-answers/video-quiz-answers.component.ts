@@ -67,9 +67,9 @@ export class VideoQuizAnswersComponent implements OnChanges{
     this.isAnswerCheckedIn = true
     this.checkedQuestions.push(this.questionNumber)
     this.answers?.forEach(answer => {
-      if(this.selectedAnswers.includes(answer) && answer.correct || !this.selectedAnswers.includes(answer) && !answer.correct){
+      if(this.selectedAnswers.includes(answer) && answer.isCorrect || !this.selectedAnswers.includes(answer) && !answer.isCorrect){
         this.correctAnswers.push(answer)
-      } else if (this.selectedAnswers.includes(answer) && !answer.correct){
+      } else if (this.selectedAnswers.includes(answer) && !answer.isCorrect){
         this.wrongAnswers.push(answer)
       } else {
         this.missedAnswers.push(answer)

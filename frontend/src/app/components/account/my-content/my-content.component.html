@@ -29,7 +29,7 @@
       {{ video.rating.toFixed(1) }}
     </td>
     <td>
-      <app-dropdown  [selectedId]="video.visibility" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+      <app-dropdown [selectedId]="video.visibility.toString()" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
     </td>
 
     <td class="small">{{ getQuestionCountToString(video.questionCount) }}</td>

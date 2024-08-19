@@ -9,6 +9,7 @@ public record EditVideoDTO(
         Long contentId,
         String title,
         String description,
+        String color,
         List<Tag> tags,
         List<Question> questions,
         VideoFile videoFile,
