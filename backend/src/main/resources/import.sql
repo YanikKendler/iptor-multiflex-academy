@@ -32,14 +32,14 @@ INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Yanik ist schlecht in Prog
 INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Leif Erikson war der erste Europäer in Amerika', true);
 
 -- Insert demo data for question_answer_option
-INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (1, 1);
-INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (1, 2);
-INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (1, 3);
-INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (2, 4);
-INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (3, 5);
-INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (3, 6);
-INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (4, 7);
-INSERT INTO question_answeroption (question_questionid, answeroptions_questionoptionid) VALUES (4, 8);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (1, 1);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (1, 2);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (1, 3);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (2, 4);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (3, 5);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (3, 6);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (4, 7);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (4, 8);
 
 -- Insert demo data for Comment
 INSERT INTO Comment (text, user_userid, timestamp) VALUES ('Great video!', 1, '2023-4-01 10:00:00');
