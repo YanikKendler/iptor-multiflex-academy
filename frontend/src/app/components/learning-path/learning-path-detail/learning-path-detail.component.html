@@ -1,0 +1,54 @@
+<app-navigation [simple]="true"></app-navigation>
+
+<main>
+  <div class="sidebar">
+    <h1>{{ this.learningPath.title }}</h1>
+    <p>{{ this.learningPath.description }}</p>
+
+    <div class="progress-bar">
+      <p>{{progressPercent.toFixed(0)}}%</p>
+      @for(video of videoProgress; track video) {
+        <span [style.background-color]="getProgressBarColor(video)"></span>
+      }
+    </div>
+
+    <div class="steps">
+      @for(video of learningPath.entries; track video){
+        <div class="entry" [ngClass]="currentVideo.contentId == video.videoId ? 'active' : ''">
+          <p>{{video.videoTitle}}</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="videoSection">
+    <div class="top">
+      <app-media-player [video]="currentVideo"></app-media-player>
+      <div class="right">
+        @if(currentVideo.questions){
+          <app-video-quiz [questions]="currentVideo.questions"></app-video-quiz>
+        }
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="tab-selector" #tabSelector>
+        <p class="description" (click)="selectTab('description')">Description</p>
+        <p class="comments" (click)="selectTab('comments')">Comments</p>
+        <span class="marker"></span>
+      </div>
+
+      @switch(this.currentTab){
+        @case('description'){
+          <div class="descriptionField">
+            <h2>{{currentVideo.title}}</h2>
+            <p class="description" [innerHTML]="generateDescriptionWithLinebreaks()"></p>
+          </div>
+        }
+        @case('comments'){
+          <app-video-comment-container [comments]="currentVideo.comments" [videoId]="this.currentVideo.contentId"></app-video-comment-container>
+        }
+      }
+    </div>
+  </div>
+</main>

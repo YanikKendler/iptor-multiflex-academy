@@ -13,18 +13,18 @@ import {NgForOf, NgOptimizedImage} from "@angular/common"
 import {MatChip} from "@angular/material/chips"
 import {Router} from "@angular/router"
 import {MatTooltip} from "@angular/material/tooltip"
-import {UserService} from "../../service/user.service";
-import {ViewProgressService} from "../../service/view-progress.service";
-import {BookmarkIconComponent} from "../../components/icons/bookmark/bookmark.icon.component";
-import {LearningPathOverviewDTO} from "../../service/learning-path.service";
-import {IconButtonComponent} from "../../components/basic/icon-button/icon-button.component";
-import {RemoveIconComponent} from "../../components/icons/remove-icon/remove-icon.component";
-import {Utils} from "../../utils";
-import {ChipComponent} from "../../components/basic/chip/chip.component";
+import {UserService} from "../../../service/user.service";
+import {ViewProgressService} from "../../../service/view-progress.service";
+import {BookmarkIconComponent} from "../../icons/bookmark/bookmark.icon.component";
+import {LearningPathOverviewDTO} from "../../../service/learning-path.service";
+import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
+import {RemoveIconComponent} from "../../icons/remove-icon/remove-icon.component";
+import {Utils} from "../../../utils";
+import {ChipComponent} from "../../basic/chip/chip.component";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
-import {PlayIconComponent} from "../../components/icons/playicon/play.icon.component";
-import {LearningPathIconComponent} from "../../components/icons/learning-path-icon/learning-path-icon.component";
+import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
+import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning-path-icon.component";
 
 export interface UpdateLearningPathDashboardEvent {
   learningPath: LearningPathOverviewDTO;
@@ -77,7 +77,7 @@ export class LearningPathOverviewComponent implements OnInit{
 
   @HostListener('click', ['$event'])
   openVideo(){
-    this._router.navigate(['video/' + this.learningPath?.contentId])
+    this._router.navigate(['learningpath/' + this.learningPath?.contentId])
   }
 
   getProgressBarColor(number: number): string {

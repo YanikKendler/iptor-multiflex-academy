@@ -51,7 +51,7 @@ public class VideoResource {
         return Response.ok().entity(videoDetailDTO).build();
     }
 
-    @GET
+/*    @GET
     @Path("{id: [0-9]+}")
     public Response getVideo(@PathParam("id") Long id){
         Video video;
@@ -62,7 +62,7 @@ public class VideoResource {
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().entity(video).build();
-    }
+    }*/
 
     @GET
     @Produces(MediaType.MULTIPART_FORM_DATA)

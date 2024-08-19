@@ -10,7 +10,7 @@ import {ViewProgressService} from "../../service/view-progress.service"
 import {ContentForUser, UserService} from "../../service/user.service";
 import {
   LearningPathOverviewComponent, UpdateLearningPathDashboardEvent
-} from "../../learning-path/learning-path-overview/learning-path-overview.component";
+} from "../learning-path/learning-path-overview/learning-path-overview.component";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {PlayIconComponent} from "../icons/playicon/play.icon.component";
 
