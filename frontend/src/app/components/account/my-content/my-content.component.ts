@@ -23,6 +23,7 @@ import {IconButtonComponent} from "../../basic/icon-button/icon-button.component
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
 import {MatButton} from "@angular/material/button";
 import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
+import {DropdownComponent, DropdownOption} from "../../basic/dropdown/dropdown.component"
 
 
 @Component({
@@ -37,7 +38,8 @@ import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
     CdkMenu,
     MatButton,
     CdkMenuTrigger,
-    PlayIconComponent
+    PlayIconComponent,
+    DropdownComponent
   ],
   templateUrl: './my-content.component.html',
   styleUrl: './my-content.component.scss'
@@ -47,9 +49,6 @@ export class MyContentComponent {
   protected readonly faEye = faEye;
   protected readonly faStar = faStar;
   protected readonly faPen = faPen;
-
-  @ViewChild(CdkMenuTrigger) menuTrigger!: CdkMenuTrigger;
-  visibilityOptions = Object.values(VisibilityEnum);
 
   userService = inject(UserService);
   videoService = inject(VideoService);
@@ -95,23 +94,24 @@ export class MyContentComponent {
     return text.substring(0, 24) + (text.length > 24 ? "..." : "");
   }
 
-  protected readonly faArrowRightToBracket = faArrowRightToBracket;
-
-  updateVisibility(videoId: number, visibility: string) {
-    console.log(videoId, visibility);
-    const visibilityEnumValue = VisibilityEnum[visibility as keyof typeof VisibilityEnum];
-
-    this.userContent.forEach((content) => {
-      if (content.contentId === videoId) {
-        content.visibility = visibilityEnumValue;
-      }
-    });
+  updateVisibility(videoId: number, selectedOption: DropdownOption) {
+    const visibilityEnumValue = VisibilityEnum[selectedOption.id as keyof typeof VisibilityEnum];
 
     this.videoService.updateVideoVisibility(videoId, visibilityEnumValue);
-
-    this.menuTrigger.close();
   }
 
+  getVisibilityOptions(){
+    let options = [];
+    for(let visibility in VisibilityEnum){
+      options.push({
+        id: visibility,
+        name: visibility
+      })
+    }
+    return options;
+  }
+
+  protected readonly faArrowRightToBracket = faArrowRightToBracket;
   protected readonly faTrash = faTrash;
   protected readonly faSortDown = faSortDown;
 }

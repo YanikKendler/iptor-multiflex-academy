@@ -1,0 +1,30 @@
+@import "../../../variables";
+
+.dropDown{
+  display: flex;
+  cursor: pointer;
+  gap: .3rem;
+  padding: .75rem .5rem;
+
+  fa-icon{
+    translate: 0 -.2rem;
+  }
+}
+
+.actionMenu{
+  width: 6vw;
+  background-color: white;
+  @include floating-box;
+
+  p{
+    padding-block: .25rem;
+    padding-inline: .25rem;
+    cursor: pointer;
+    transition: all .2s ease;
+
+    &:hover{
+      background-color: $gray-800;
+    }
+  }
+}
+

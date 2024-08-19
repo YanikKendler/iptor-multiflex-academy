@@ -1,0 +1,12 @@
+<div class="dropDown" [cdkMenuTriggerFor]="menu" #dropdown="cdkMenuTriggerFor">
+  <p>{{ getSelectedOptionName() }}</p>
+  <fa-icon [icon]="faSortDown"></fa-icon>
+</div>
+
+<ng-template #menu>
+  <div class="actionMenu" cdkMenu>
+    @for(option of options; track option.id){
+      <p (click)="selectOption(option)">{{ option.name }}</p>
+    }
+  </div>
+</ng-template>

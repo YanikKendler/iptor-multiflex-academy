@@ -44,10 +44,6 @@ export class MediaPlayerComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if(!this.video){
       this.loadingState = "loading"
-
-     /* setTimeout(() => {
-        Utils.spinAnimation(this.spinner!.nativeElement)
-      },0)*/
     }
     else if(!this.video.videoFile){
       this.loadingState = "error"

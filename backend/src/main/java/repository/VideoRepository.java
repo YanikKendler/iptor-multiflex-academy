@@ -81,6 +81,10 @@ public class VideoRepository {
 
         Video video = em.find(Video.class, videoId);
 
+        if(video == null) {
+            return null;
+        }
+
         int viewProgressDuration;
         try {
             viewProgressDuration = em.createQuery(

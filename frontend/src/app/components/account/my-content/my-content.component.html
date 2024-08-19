@@ -29,16 +29,7 @@
       {{ video.rating.toFixed(1) }}
     </td>
     <td>
-      <div class="dropDown" [cdkMenuTriggerFor]="menu" #menuTrigger="cdkMenuTriggerFor">
-          <p>{{ video.visibility }}</p>
-          <fa-icon [icon]="faSortDown"></fa-icon>
-      </div>
-
-      <ng-template #menu>
-        <div class="actionMenu" cdkMenu>
-          <p *ngFor="let visibility of visibilityOptions" (click)="updateVisibility(video.contentId, visibility)">{{ visibility }}</p>
-        </div>
-      </ng-template>
+      <app-dropdown  [(selectedId)]="video.visibility" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="getVisibilityOptions()"></app-dropdown>
     </td>
 
     <td class="small">{{ getQuestionCountToString(video.questionCount) }}</td>
