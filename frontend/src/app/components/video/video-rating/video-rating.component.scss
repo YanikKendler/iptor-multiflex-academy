@@ -12,8 +12,7 @@
   }
 
   main{
-    box-shadow: 1px 3px 4px 0px rgba(0, 0, 0, 0.25);
-    border-color: $gray-500;
+    @include floating-box;
   }
 
   app-star-icon{

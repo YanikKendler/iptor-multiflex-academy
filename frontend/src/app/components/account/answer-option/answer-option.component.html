@@ -1,0 +1,8 @@
+<mat-checkbox aria-label="isCorrectAnswer" (change)="updateIsCorrect($event)"></mat-checkbox>
+
+<app-textfield
+  [(value)]="answer.text"
+  label="Answer {{letter}}"
+  placeholder=""
+  [rows]="1"
+></app-textfield>

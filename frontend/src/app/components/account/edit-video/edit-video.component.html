@@ -20,19 +20,21 @@
   ></app-upload-video>
 </section>
 
-<h2>Details</h2>
+<h2 class="details">Details</h2>
 <section class="details">
   <div>
     <p>video-color:</p>
-    <input type="color">
+    <input type="color" [value]="video.color" (input)="colorUpdated()" #color>
   </div>
+
+  <mat-divider [vertical]="true"></mat-divider>
 
   <div>
     <p>visibility:</p>
-    <select name="" id="visibilitySelect">
-      <option *ngFor="let visibility of visibilityOptions" [value]="visibility">{{ visibility }}</option>
-    </select>
+    <app-dropdown [selectedId]="video.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
   </div>
+
+  <mat-divider [vertical]="true"></mat-divider>
 
   <div>
     <p>tags:</p>
@@ -42,7 +44,23 @@
 
 <h2>Questions</h2>
 <section class="questions">
-
+  <div class="left">
+    @for (question of video.questions; track question.questionId){
+      <p>
+        <span>{{ $index + 1 }}.</span>
+        <span>{{ question.text }}</span>
+      </p>
+    }
+    <button>
+      <fa-icon [icon]="faPlus"></fa-icon>
+    </button>
+  </div>
+  <div class="right">
+    <input type="text" class="question">
+    @for(answer of selectedQuestion.answerOptions; track answer.answerOptionId){
+      <app-answer-option [answer]="answer"></app-answer-option>
+    }
+  </div>
 </section>
 
 <div class="bottom">

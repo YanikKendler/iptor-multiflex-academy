@@ -9,7 +9,7 @@
   <p class="text">{{this.questionText}}</p>
 
   <main [ngClass]="{'checked' : isAnswerCheckedIn}">
-    @for (answer of this.answers; track answer.questionOptionId) {
+    @for (answer of this.answers; track answer.answerOptionId) {
       <div class="answer"
            (click)="toggleAnswer(answer)"
            [ngClass]="{'checked' : this.selectedAnswers.includes(answer),

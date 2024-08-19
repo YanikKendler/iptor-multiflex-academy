@@ -4,7 +4,6 @@
   display: flex;
   cursor: pointer;
   gap: .3rem;
-  padding: .75rem .5rem;
 
   fa-icon{
     translate: 0 -.2rem;
@@ -14,6 +13,8 @@
 .actionMenu{
   width: 6vw;
   background-color: white;
+  @include floating-box;
+  translate: -.3rem .2rem;
 
   p{
     padding-block: .25rem;

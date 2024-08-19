@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class AnswerOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long questionOptionId;
+    private Long answerOptionId;
 
     private String text;
 
@@ -20,8 +20,8 @@ public class AnswerOption {
     public AnswerOption() {
     }
 
-    public Long getQuestionOptionId() {
-        return questionOptionId;
+    public Long getAnswerOptionId() {
+        return answerOptionId;
     }
 
     public String getText() {
@@ -32,8 +32,8 @@ public class AnswerOption {
         this.text = text;
     }
 
-    public void setQuestionOptionId(Long questionOptionId) {
-        this.questionOptionId = questionOptionId;
+    public void setAnswerOptionId(Long questionOptionId) {
+        this.answerOptionId = questionOptionId;
     }
 
     public boolean isCorrect() {

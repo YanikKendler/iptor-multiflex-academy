@@ -8,6 +8,7 @@ public record VideoDetailDTO(
         Long contentId,
         String title,
         String description,
+        String color,
         List<Tag> tags,
         List<Comment> comments,
         List<Question> questions,

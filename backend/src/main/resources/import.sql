@@ -10,10 +10,10 @@ INSERT INTO app_user (username, email, user_type) VALUES ('yanik kendler', 'yani
 INSERT INTO VideoFile(durationseconds, sizebytes, originalfileextension) values (32, 1000000, 'mp4');
 
 -- Insert demo data for Video
-INSERT INTO content (dtype, title, description, visibility, color, user_userid, videofile_videofileid) VALUES ('Video', 'Java Basics', 'Introduction to Java', 'self' , 'red', 1, 1);
-INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Advanced Java', 'Deep dive into Java', 'customers' , 'pink', 1);
-INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Spring Boot Tutorial', 'Getting started with Spring Boot', 'internal' , 'orange', 1);
-INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , 'blue', 2);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid, videofile_videofileid) VALUES ('Video', 'Java Basics', 'Introduction to Java', 'self' , '#ABCDEF', 1, 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Advanced Java', 'Deep dive into Java', 'customers' , '#FEDCBA', 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Spring Boot Tutorial', 'Getting started with Spring Boot', 'internal' , '#BABA11', 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , '#AFFE55', 2);
 
 -- Insert demo data for Question
 INSERT INTO Question (text, title) VALUES ('What is the main topic of the video?', 'Main Topic');

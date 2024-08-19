@@ -12,6 +12,7 @@ $gray-900: hsl(0, 0%, 95%);
 $gray-800: hsl(0, 0%, 92%);
 $gray-600: hsl(0, 0%, 85%);
 $gray-500: hsl(0, 0%, 69%);
+$gray-450: hsl(0, 0%, 65%);
 $gray-400: hsl(0, 0%, 50%);
 $gray-300: hsl(0, 0%, 28%);
 $gray-250: hsl(0, 0%, 22%);
@@ -19,3 +20,11 @@ $gray-250: hsl(0, 0%, 22%);
 $transition-time-short: .15s;
 $transition-time-default: .3s;
 $transition-time-long: .5s;
+
+@mixin floating-box {
+  background-color: white;
+  box-shadow: 1px 3px 4px 0px rgba(0, 0, 0, 0.25);
+  border: 1px solid $gray-500;
+  border-radius: 0.4rem;
+  overflow: hidden;
+}

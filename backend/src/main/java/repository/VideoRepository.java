@@ -103,6 +103,7 @@ public class VideoRepository {
             video.getContentId(),
             video.getTitle(),
             video.getDescription(),
+            video.getColor(),
             video.getTags(),
             video.getComments(userId),
             video.getQuestions(),

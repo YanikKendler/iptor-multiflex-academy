@@ -15,9 +15,9 @@
   <tr *ngFor="let video of userContent">
     <td class="mid">
       <app-play-icon [style.color]="video.color" [style.font-size]="'2rem'"></app-play-icon>
-      <div>
+      <div class="title">
         <p>Video</p>
-        {{ video.title }}
+        <h2>{{ video.title }}</h2>
       </div>
     </td>
     <td class="smallColumn">
@@ -29,7 +29,7 @@
       {{ video.rating.toFixed(1) }}
     </td>
     <td>
-      <app-dropdown  [(selectedId)]="video.visibility" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="getVisibilityOptions()"></app-dropdown>
+      <app-dropdown  [selectedId]="video.visibility" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
     </td>
 
     <td class="small">{{ getQuestionCountToString(video.questionCount) }}</td>

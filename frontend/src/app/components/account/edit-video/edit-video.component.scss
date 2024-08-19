@@ -6,11 +6,21 @@
   padding: 1.75rem;
   border-radius: 0.5rem;
   background-color: white;
+  height: 100%;
 }
 
 h2{
   font-weight: 500;
   margin-block: .5rem;
+  font-size: 1.1rem;
+
+  &.details {
+    margin-bottom: 0;
+  }
+}
+
+section{
+  padding-left: .5rem;
 }
 
 section.basics{
@@ -31,8 +41,27 @@ section.basics{
 
 section.details{
   display: flex;
+  align-items: center;
+  gap: 1rem;
 
-  div{
+  > div{
     display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    p{
+      font-weight: 500;
+    }
   }
+}
+
+section.questions{
+  display: flex;
+}
+
+.bottom{
+  margin-top: auto;
+  display: flex;
+  gap: 2rem;
+  justify-content: flex-end;
 }

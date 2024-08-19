@@ -12,14 +12,3 @@ label{
   font-size: 0.85rem;
   font-weight: 400;
 }
-
-textarea{
-  border-radius: 0.25rem;
-  border: 2px solid $gray-600;
-  padding: 0.25rem;
-
-  &:focus{
-    border-color: $gray-250;
-    outline: none;
-  }
-}
