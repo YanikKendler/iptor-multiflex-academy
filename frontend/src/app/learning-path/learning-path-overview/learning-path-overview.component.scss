@@ -50,12 +50,15 @@
 
 .progress-bar{
   height: .3rem;
-  background-color: $gray-500;
   width: 100%;
+
+  display: flex;
+  gap: .2rem;
 
   span{
     display: block;
     height: 100%;
+    width: 100%;
   }
 }
 

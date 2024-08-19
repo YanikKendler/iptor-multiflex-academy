@@ -88,7 +88,7 @@ public class VideoRepository {
         int viewProgressDuration;
         try {
             viewProgressDuration = em.createQuery(
-                            "select vp.durationSeconds from ViewProgress vp " +
+                            "select vp.progress from ViewProgress vp " +
                                     "where vp.user.userId = :userId " +
                                     "and vp.content.contentId = :videoId", Integer.class)
                     .setParameter("userId", userId)

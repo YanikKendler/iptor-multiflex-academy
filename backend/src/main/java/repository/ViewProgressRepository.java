@@ -9,8 +9,6 @@ import model.User;
 import model.Video;
 import model.ViewProgress;
 
-import java.util.List;
-
 @Transactional
 @ApplicationScoped
 public class ViewProgressRepository {
@@ -41,7 +39,7 @@ public class ViewProgressRepository {
             em.persist(viewProgress);
         }
         else{
-            viewProgress.setDurationSeconds(durationSeconds);
+            viewProgress.setProgress(durationSeconds);
             viewProgress.setIgnored(false);
         }
     }

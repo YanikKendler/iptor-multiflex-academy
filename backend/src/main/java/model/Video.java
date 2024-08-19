@@ -1,10 +1,12 @@
 package model;
 
 import dtos.VideoDetailDTO;
+import dtos.VideoOverviewDTO;
 import enums.VisibilityEnum;
 import jakarta.annotation.Nullable;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
+import repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;

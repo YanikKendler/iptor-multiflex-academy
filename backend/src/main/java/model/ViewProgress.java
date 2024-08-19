@@ -20,15 +20,16 @@ public class ViewProgress {
     @Unique
     private User user;
 
-    private int durationSeconds;
+    /** Duration of the video in seconds or progress for learning paths */
+    private int progress;
     private boolean ignored;
     private LocalDateTime timestamp;
 
 
-    public ViewProgress(Video content, User user, int durationSeconds) {
+    public ViewProgress(Video content, User user, int progress) {
         this.content = content;
         this.user = user;
-        this.durationSeconds = durationSeconds;
+        this.progress = progress;
         this.timestamp = LocalDateTime.now();
     }
 
@@ -63,12 +64,12 @@ public class ViewProgress {
         this.content = video;
     }
 
-    public int getDurationSeconds() {
-        return durationSeconds;
+    public int getProgress() {
+        return progress;
     }
 
-    public void setDurationSeconds(int durationSeconds) {
-        this.durationSeconds = durationSeconds;
+    public void setProgress(int durationSeconds) {
+        this.progress = durationSeconds;
     }
 
     public boolean isIgnored() {
