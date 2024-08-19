@@ -36,6 +36,7 @@ export interface VideoDetailDTO {
   contentId: number
   title: string
   description: string
+  color: string
   tags: Tag[]
   comments: Comment[]
   questions: Question[]
@@ -46,14 +47,14 @@ export interface VideoDetailDTO {
 }
 
 export interface VideoOverviewDTO {
-  contentId: number;
-  title: string;
-  description: string;
-  tags: Tag[];
-  saved: boolean;
-  color: string;
-  durationSeconds: number;
-  viewProgress: ViewProgress;
+  contentId: number
+  title: string
+  description: string
+  tags: Tag[]
+  saved: boolean
+  color: string
+  durationSeconds: number
+  viewProgress: ViewProgress
 }
 
 export interface VideoAndLearningPathOverviewCollection {

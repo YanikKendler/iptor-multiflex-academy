@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 
 export interface AnswerOption {
-  questionOptionId: number;
+  answerOptionId: number;
   text: string;
   correct: boolean;
 }

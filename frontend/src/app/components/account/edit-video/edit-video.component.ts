@@ -1,16 +1,21 @@
-import {Component, inject, model, OnInit} from '@angular/core';
+import {Component, ElementRef, inject, model, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {VideoDetailDTO, VideoService, VisibilityEnum} from "../../../service/video.service";
 import {NgForOf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {TextfieldComponent} from "../../basic/textfield/textfield.component"
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faArrowUpFromBracket} from "@fortawesome/free-solid-svg-icons";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {UploadVideoComponent} from "../upload-video/upload-video.component"
 import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {MatButton} from "@angular/material/button"
+import {DropdownComponent, DropdownOption} from "../../basic/dropdown/dropdown.component"
+import {Utils} from "../../../utils"
+import {MatDivider} from "@angular/material/divider"
+import {AnswerOption, Question} from "../../../service/question.service"
+import {AnswerOptionComponent} from "../answer-option/answer-option.component"
 @Component({
-  selector: 'app-edit-pop-up',
+  selector: 'app-edit-video',
   standalone: true,
   imports: [
     NgForOf,
@@ -18,7 +23,10 @@ import {MatButton} from "@angular/material/button"
     TextfieldComponent,
     FaIconComponent,
     UploadVideoComponent,
-    MatButton
+    MatButton,
+    DropdownComponent,
+    MatDivider,
+    AnswerOptionComponent
   ],
   templateUrl: './edit-video.component.html',
   styleUrl: './edit-video.component.scss'
@@ -33,12 +41,17 @@ export class EditVideoComponent implements OnInit{
   video: VideoDetailDTO = {} as VideoDetailDTO;
   oldVideo: VideoDetailDTO = {} as VideoDetailDTO; //used for checking for changes
 
-  visibilityOptions = Object.values(VisibilityEnum);
+  @ViewChild("color") colorInput!: ElementRef<HTMLInputElement>;
+
+  selectedQuestion: Question = {} as Question;
 
   ngOnInit(): void {
     this.videoService.getVideoDetails(this.data).subscribe(video => {
       this.video = video;
       this.oldVideo= {...video} //actual deep clone
+
+      this.selectedQuestion = video.questions[0]
+      console.log(this.selectedQuestion)
     })
 
     this.dialogRef.backdropClick().subscribe(() => {
@@ -52,6 +65,13 @@ export class EditVideoComponent implements OnInit{
     })
   }
 
+  saveChanges() {
+    this.videoService.updateVideo(this.video).subscribe(result => {
+      this.video = result;
+      this.oldVideo = {...result}
+    })
+  }
+
   close(){
     //compare the actual data currently in the video vs the data when the dialog was opened to see if there are any changes
     if(JSON.stringify(this.video) !== JSON.stringify(this.oldVideo)){
@@ -60,13 +80,6 @@ export class EditVideoComponent implements OnInit{
     else {
       this.dialogRef.close();
     }
-  }
-
-  saveChanges() {
-    this.videoService.updateVideo(this.video).subscribe(result => {
-      this.video = result;
-      this.oldVideo = {...result}
-    })
   }
 
   confirmClose() {
@@ -93,5 +106,14 @@ export class EditVideoComponent implements OnInit{
     }
   }
 
-  protected readonly faArrowUpFromBracket = faArrowUpFromBracket
+  visibilityUpdated(option: DropdownOption){
+    this.video.visibility = VisibilityEnum[option.id as keyof typeof VisibilityEnum]
+  }
+
+  colorUpdated(){
+    this.video.color = this.colorInput.nativeElement.value;
+  }
+
+  protected readonly Utils = Utils
+  protected readonly faPlus = faPlus
 }

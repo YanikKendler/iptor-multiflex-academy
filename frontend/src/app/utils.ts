@@ -1,3 +1,6 @@
+import {VisibilityEnum} from "./service/video.service"
+import {DropdownOption} from "./components/basic/dropdown/dropdown.component"
+
 export class Utils{
   static time = {
     msPerSecond: 1000,
@@ -90,6 +93,17 @@ export class Utils{
 
   static roundNumber(num: number, digits:number): number {
     return parseFloat(num.toFixed(digits));
+  }
+
+  static visibilityEnumAsDropdownOption():DropdownOption[]{
+    let options = [];
+    for(let visibility in VisibilityEnum){
+      options.push({
+        id: visibility,
+        name: visibility
+      })
+    }
+    return options;
   }
 
   static spinAnimation(element: HTMLElement){

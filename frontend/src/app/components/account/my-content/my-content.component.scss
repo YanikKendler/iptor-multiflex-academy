@@ -4,10 +4,6 @@ table{
   padding-inline: 1rem;
   text-align: left;
 
-  p{
-    color: hsla(0, 0%, 43%, 1);
-  }
-
   tr{
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -63,6 +59,16 @@ table{
   }
 }
 
+.title{
+  display: flex;
+  flex-direction: column;
+
+  p{
+    font-size: .85rem;
+    color: $gray-450;
+  }
+}
+
 app-play-icon{
   height: 1.75rem;
 }
@@ -73,16 +79,6 @@ fa-icon{
   }
   &.grey{
     color: hsla(0, 0%, 65%, 1);
-  }
-}
-
-.video div{
-  display: flex;
-  flex-direction: column;
-
-  p{
-    font-size: .8rem;
-    color: hsla(0, 0%, 43%, 1);
   }
 }
 

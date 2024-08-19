@@ -38,6 +38,7 @@ public class Video extends Content {
                 this.getContentId(),
                 this.getTitle(),
                 this.getDescription(),
+                this.getColor(),
                 this.getTags(),
                 this.getComments(null),
                 this.getQuestions(),

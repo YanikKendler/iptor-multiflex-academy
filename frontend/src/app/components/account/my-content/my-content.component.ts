@@ -24,6 +24,7 @@ import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
 import {MatButton} from "@angular/material/button";
 import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
 import {DropdownComponent, DropdownOption} from "../../basic/dropdown/dropdown.component"
+import {Utils} from "../../../utils"
 
 
 @Component({
@@ -68,7 +69,6 @@ export class MyContentComponent {
     let dialogRef = this.dialog.open(EditVideoComponent, {
       maxWidth: "80vw",
       width: "800px",
-      height: "800px",
       disableClose: true,
       data: videoId
     });
@@ -96,22 +96,11 @@ export class MyContentComponent {
 
   updateVisibility(videoId: number, selectedOption: DropdownOption) {
     const visibilityEnumValue = VisibilityEnum[selectedOption.id as keyof typeof VisibilityEnum];
-
     this.videoService.updateVideoVisibility(videoId, visibilityEnumValue);
-  }
-
-  getVisibilityOptions(){
-    let options = [];
-    for(let visibility in VisibilityEnum){
-      options.push({
-        id: visibility,
-        name: visibility
-      })
-    }
-    return options;
   }
 
   protected readonly faArrowRightToBracket = faArrowRightToBracket;
   protected readonly faTrash = faTrash;
   protected readonly faSortDown = faSortDown;
+  protected readonly Utils = Utils
 }

@@ -47,9 +47,6 @@
   flex-direction: column;
   gap: 0.5rem;
   padding: .5rem;
-  background-color: white;
-  /*position: absolute;
-  right: 3rem;*/
 
-
+  @include floating-box;
 }
