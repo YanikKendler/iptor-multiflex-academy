@@ -42,7 +42,7 @@ public class AnswerOption {
         return isCorrect;
     }
 
-    public void setCorrect(boolean correct) {
-        isCorrect = correct;
+    public void setIsCorrect(boolean isCorrect) {
+        this.isCorrect = isCorrect;
     }
 }

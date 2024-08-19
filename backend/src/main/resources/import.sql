@@ -16,10 +16,10 @@ INSERT INTO content (dtype, title, description, visibility, color, user_userid) 
 INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , '#AFFE55', 2);
 
 -- Insert demo data for Question
-INSERT INTO Question (text, title) VALUES ('What is the main topic of the video?', 'Main Topic');
-INSERT INTO Question (text, title) VALUES ('Can you explain the key concepts covered?', 'Key Concepts');
-INSERT INTO Question (text, title) VALUES ('What is the key takeaway from the tutorial?', 'Key Takeaway');
-INSERT INTO Question (text, title) VALUES ('How can I apply this knowledge in practice?', 'Application');
+INSERT INTO Question (text, timestamp) VALUES ('What is the main topic of the video?', '2023-10-01 10:00:00');
+INSERT INTO Question (text, timestamp) VALUES ('Can you explain the key concepts covered?', '2023-10-02 11:30:00');
+INSERT INTO Question (text, timestamp) VALUES ('What is the key takeaway from the tutorial?', '2023-10-03 14:45:00');
+INSERT INTO Question (text, timestamp) VALUES ('How can I apply this knowledge in practice?', '2023-10-04 09:20:00');
 
 -- Insert demo data for AnswerOption
 INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Option 1', true);

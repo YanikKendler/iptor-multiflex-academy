@@ -2,6 +2,7 @@
 @if(rows == 1){
   <input
     id="input"
+    [ngClass]="slim ? 'slim' : ''"
     placeholder="{{placeholder}}"
     (input)="valueChange.emit(input.value)"
     #input
@@ -11,6 +12,7 @@
   <textarea
     rows="{{rows}}"
     id="input"
+    [ngClass]="slim ? 'slim' : ''"
     placeholder="{{placeholder}}"
     (input)="valueChange.emit(input.value)"
     #input

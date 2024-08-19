@@ -7,6 +7,10 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
+import model.Question;
+import model.Tag;
+import model.Video;
+import model.VideoFile;
 import model.*;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
@@ -52,11 +56,21 @@ public class VideoRepository {
         videoToUpdate.setTags(video.tags());
         videoToUpdate.setQuestions(video.questions());
         videoToUpdate.setVisibility(video.visibility());
+        videoToUpdate.setColor(video.color());
+
         try{
             videoToUpdate.setVideoFile(em.find(VideoFile.class, video.videoFile().getVideoFileId()));
         }
         catch (NullPointerException ignored){ };
 
+        for (Question question : video.questions()) {
+            try{
+                em.merge(question);
+            }catch (Exception e) {
+                em.persist(new Question(question.getText()));
+            }
+
+        }
 
         em.merge(videoToUpdate);
 

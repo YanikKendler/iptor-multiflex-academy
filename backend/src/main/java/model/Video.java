@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -91,6 +92,7 @@ public class Video extends Content {
     }
 
     public List<Question> getQuestions() {
+        questions.sort(Question::compareTo);
         return questions;
     }
 

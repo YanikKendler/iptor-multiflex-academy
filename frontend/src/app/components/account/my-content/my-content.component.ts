@@ -1,4 +1,4 @@
-import {Component, inject, model, signal, ViewChild} from '@angular/core';
+import {Component, inject, model, OnInit, signal, ViewChild} from '@angular/core';
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {
   faArrowRightToBracket,
@@ -26,7 +26,6 @@ import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
 import {DropdownComponent, DropdownOption} from "../../basic/dropdown/dropdown.component"
 import {Utils} from "../../../utils"
 
-
 @Component({
   selector: 'app-my-content',
   standalone: true,
@@ -45,7 +44,7 @@ import {Utils} from "../../../utils"
   templateUrl: './my-content.component.html',
   styleUrl: './my-content.component.scss'
 })
-export class MyContentComponent {
+export class MyContentComponent implements OnInit{
   protected readonly faPlayCircle = faPlayCircle;
   protected readonly faEye = faEye;
   protected readonly faStar = faStar;
@@ -61,6 +60,10 @@ export class MyContentComponent {
       this.userContent = data;
       console.log(this.userContent)
     });
+  }
+
+  ngOnInit(): void {
+    /*this.openEditPopUp(1)*/
   }
 
   readonly dialog = inject(MatDialog);

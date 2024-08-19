@@ -4,14 +4,12 @@ import {map, Observable} from "rxjs";
 
 export interface AnswerOption {
   answerOptionId: number;
-  text: string
+  text: string;
   isCorrect: boolean;
-}
 
 export interface Question {
   questionId: number;
   answerOptions: AnswerOption[];
-  title: string;
   text: string;
 }
 

@@ -106,6 +106,12 @@ export class Utils{
     return options;
   }
 
+  static numberToLetter(number: number, lowercase: boolean = false): string {
+    const lettersUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lettersLower = 'abcdefghijklmnopqrstuvwxyz';
+    return lowercase ? lettersLower[number % 26] : lettersUpper[number % 26]
+  }
+
   static spinAnimation(element: HTMLElement){
     if(element.classList.contains('spinning')) return //prevents adding multiple animations
 

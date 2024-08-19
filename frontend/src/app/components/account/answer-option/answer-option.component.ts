@@ -22,4 +22,9 @@ export class AnswerOptionComponent {
     this.answer.isCorrect = change.checked;
     this.answerChange.emit(this.answer);
   }
+
+  updatedAnswerText(text: string) {
+    this.answer.text = text;
+    this.answerChange.emit(this.answer);
+  }
 }
