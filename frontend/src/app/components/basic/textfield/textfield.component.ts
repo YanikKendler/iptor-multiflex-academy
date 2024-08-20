@@ -16,5 +16,5 @@ export class TextfieldComponent {
   @Input() value: string = "";
   @Output() valueChange = new EventEmitter<string>();
   @Input() rows: number = 1;
-  @Input() slim: boolean = false;
+  @Input() small: boolean = false;
 }

@@ -56,6 +56,10 @@ export class MyContentComponent implements OnInit{
   userContent : MyVideoContentDTO[] = [];
 
   constructor() {
+    this.getUserContent();
+  }
+
+  getUserContent() {
     this.userService.getUserContent().subscribe((data) => {
       this.userContent = data;
       console.log(this.userContent)
@@ -77,6 +81,7 @@ export class MyContentComponent implements OnInit{
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.getUserContent();
     });
   }
 

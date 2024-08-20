@@ -51,7 +51,54 @@ section.details{
 
     p{
       font-weight: 500;
+      white-space: nowrap;
     }
+  }
+
+  mat-divider{
+    height: 2rem;
+  }
+
+  .tags{
+    flex-grow: 1;
+
+    .tagList{
+      width: 100%;
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      align-items: center;
+
+      border-radius: .4rem;
+      border: 2px solid $gray-500;
+      padding: .2rem .3rem;
+    }
+
+    input{
+      border: none;
+      flex-grow: 1;
+      font-size: .9rem;
+      min-width: 0;
+      width: 8ch;
+      height: 1rem;
+    }
+  }
+}
+
+.tagOptions{
+  @include floating-box;
+  padding: .4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .2rem;
+
+  .no-results{
+    font-size: .9rem;
+  }
+
+  app-chip{
+    cursor: pointer;
   }
 }
 
@@ -84,26 +131,13 @@ section.questions{
         display: inline-block;
       }
     }
-
-    button{
-      margin-top: auto;
-      font-size: 1.2rem;
-      border: none;
-      background-color: $gray-600;
-      padding: .2rem;
-      border-radius: .3rem;
-      transition: background-color $transition-time-short;
-      cursor: pointer;
-
-      &:hover, &:focus-visible{
-        background-color: $gray-550;
-      }
-    }
   }
 
   .right{
     width: 100%;
     height: 300px;
+    display: flex;
+    flex-direction: column;
 
     .scrollable{
       height: 100%;
@@ -117,6 +151,32 @@ section.questions{
       border-bottom: 2px solid $gray-500;
       width: 100%;
       margin-bottom: 1rem;
+    }
+
+    button{
+      margin: {
+        top: .5rem;
+        left: 56px; /*sorry for the magic number.. if its not appreciated in the future, one could modify the answer-option
+        to have a property that adds a flexbox around the textfield which could align the button*/
+      }
+    }
+  }
+
+  button{
+    margin-top: auto;
+    border: none;
+    background-color: $gray-600;
+    padding: .3rem .8rem;
+    border-radius: .3rem;
+    transition: background-color $transition-time-short;
+    cursor: pointer;
+
+    &:hover, &:focus-visible{
+      background-color: $gray-550;
+    }
+
+    fa-icon{
+      font-size: 1.2rem;
     }
   }
 }

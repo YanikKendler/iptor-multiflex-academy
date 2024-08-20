@@ -42,6 +42,8 @@ export class Utils{
   }
 
   static toTimeDurationString(timestamp: Date | string | number){
+    if(timestamp == null) return "unknown";
+
     let timeDate = this.anyToDate(timestamp);
     let timeMilliseconds = timeDate.valueOf();
 

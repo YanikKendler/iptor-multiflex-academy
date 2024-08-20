@@ -58,11 +58,6 @@ public class VideoRepository {
         videoToUpdate.setVisibility(video.visibility());
         videoToUpdate.setColor(video.color());
 
-        try{
-            videoToUpdate.setVideoFile(em.find(VideoFile.class, video.videoFile().getVideoFileId()));
-        }
-        catch (NullPointerException ignored){ };
-
         for (Question question : video.questions()) {
             try{
                 em.merge(question);

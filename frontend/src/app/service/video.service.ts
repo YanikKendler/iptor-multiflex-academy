@@ -131,6 +131,14 @@ export class VideoService {
     return this.http.get<QuizResultDTO>(`${Config.API_URL}/video/${videoId}/quizresults?userId=${Config.USER_ID}`)
   }
 
+  getAllTags(){
+    return this.http.get<Tag[]>(`${Config.API_URL}/tag/`)
+  }
+
+  createTag(name: string) {
+    return this.http.post<Tag>(`${Config.API_URL}/tag`, {name: name})
+  }
+
   searchContent(elem: string) {
     return this.http.get<ContentForUser>(`${Config.API_URL}/content/search?search=${elem}&userId=${Config.USER_ID}`)
   }
