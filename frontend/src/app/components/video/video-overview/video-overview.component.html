@@ -44,9 +44,9 @@
     </div>
     <p>
       @if(video.viewProgress){
-        {{Utils.toTimeDurationString(video.viewProgress.progress * 1000)}} of
+        {{Utils.toTimeDurationString(video.viewProgress.progress)}} of
       }
-      {{Utils.toTimeDurationString(video.durationSeconds * 1000)}}
+      {{Utils.toTimeDurationString(video.durationSeconds)}}
     </p>
   </div>
 </div>
