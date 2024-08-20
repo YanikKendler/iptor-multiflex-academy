@@ -26,6 +26,12 @@ table{
       width: 12vw;
     }
 
+    .tags{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     th:last-child, td:last-child{
       width: 20vw;
     }

@@ -11,8 +11,7 @@ import {
 } from '@angular/core';
 import {VideoQuizAnswersComponent} from "../video-quiz-answers/video-quiz-answers.component";
 import {NgClass, NgForOf} from "@angular/common";
-import {AnswerOption, Question} from "../../../service/question.service"
-import {VideoService} from "../../../service/video.service";
+import {Question, VideoService} from "../../../service/video.service";
 
 @Component({
   selector: 'app-video-quiz',
@@ -80,7 +79,7 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
           this.checkedQuestions.push(question);
           this.videoQuizAnswersComponent?.checkedQuestions.push(count++);
 
-          question.answerOptions.forEach(answerOption => {
+          question.answerOptions?.forEach(answerOption => {
             let selectedAnswers = this.videoQuizAnswersComponent?.selectedAnswers || [];
             if (answerOption.isCorrect && selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId) ||
               !answerOption.isCorrect && !selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId)) {

@@ -15,6 +15,7 @@ import {faShare} from "@fortawesome/free-solid-svg-icons";
 import {Config} from "../../../config";
 import {NgIf} from "@angular/common";
 import {MatSnackBar} from "@angular/material/snack-bar"
+import {MatTooltip} from "@angular/material/tooltip"
 
 @Component({
   selector: 'app-video-detail',
@@ -29,7 +30,8 @@ import {MatSnackBar} from "@angular/material/snack-bar"
     IconButtonComponent,
     VideoCommentContainerComponent,
     FaIconComponent,
-    NgIf
+    NgIf,
+    MatTooltip
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss'

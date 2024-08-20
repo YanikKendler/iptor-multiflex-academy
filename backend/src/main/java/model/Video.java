@@ -32,6 +32,15 @@ public class Video extends Content {
         super(title, description, visibility);
     }
 
+    public Video(String title, String description, VisibilityEnum visibility, String color, List<Tag> tags, List<Question> questions, @Nullable VideoFile videoFile, User creator) {
+        super(title, description, visibility);
+        this.setTags(tags);
+        this.setUser(creator);
+        this.setColor(color);
+        this.questions = questions;
+        this.videoFile = videoFile;
+    }
+
     public Video() { super(); }
 
     public VideoDetailDTO toVideoDetailDTO(){

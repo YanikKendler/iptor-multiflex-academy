@@ -1,6 +1,13 @@
 import {Component, ElementRef, inject, model, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {VideoDetailDTO, VideoService, VisibilityEnum} from "../../../service/video.service";
+import {
+  AnswerOption,
+  Question,
+  VideoDetailDTO,
+  VideoFile,
+  VideoService,
+  VisibilityEnum
+} from "../../../service/video.service";
 import {NgClass, NgForOf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {TextfieldComponent} from "../../basic/textfield/textfield.component"
@@ -12,37 +19,39 @@ import {MatButton} from "@angular/material/button"
 import {DropdownComponent, DropdownOption} from "../../basic/dropdown/dropdown.component"
 import {Utils} from "../../../utils"
 import {MatDivider} from "@angular/material/divider"
-import {AnswerOption, Question} from "../../../service/question.service"
 import {AnswerOptionComponent} from "../answer-option/answer-option.component"
-import {Tag} from "../../../service/tag.service"
+import {Tag, TagService} from "../../../service/tag.service"
 import {ChipComponent} from "../../basic/chip/chip.component"
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu"
 import {MatMenuTrigger} from "@angular/material/menu"
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component"
+import {MatTooltip} from "@angular/material/tooltip"
 @Component({
   selector: 'app-edit-video',
   standalone: true,
-  imports: [
-    NgForOf,
-    FormsModule,
-    TextfieldComponent,
-    FaIconComponent,
-    UploadVideoComponent,
-    MatButton,
-    DropdownComponent,
-    MatDivider,
-    AnswerOptionComponent,
-    NgClass,
-    ChipComponent,
-    CdkMenu,
-    CdkMenuTrigger,
-    IconButtonComponent
-  ],
+    imports: [
+        NgForOf,
+        FormsModule,
+        TextfieldComponent,
+        FaIconComponent,
+        UploadVideoComponent,
+        MatButton,
+        DropdownComponent,
+        MatDivider,
+        AnswerOptionComponent,
+        NgClass,
+        ChipComponent,
+        CdkMenu,
+        CdkMenuTrigger,
+        IconButtonComponent,
+        MatTooltip
+    ],
   templateUrl: './edit-video.component.html',
   styleUrl: './edit-video.component.scss'
 })
 export class EditVideoComponent implements OnInit{
   readonly videoService = inject(VideoService);
+  readonly tagService = inject(TagService);
 
   readonly dialogRef = inject(MatDialogRef<EditVideoComponent>);
   readonly data = inject<number>(MAT_DIALOG_DATA);
@@ -51,7 +60,7 @@ export class EditVideoComponent implements OnInit{
   video: VideoDetailDTO = {} as VideoDetailDTO;
   oldVideo: VideoDetailDTO = {} as VideoDetailDTO; //used for checking for changes
 
-  selectedQuestion: Question = {} as Question;
+  selectedQuestion: Question | undefined;
 
   allTags: Tag[] = [];
   tagOptions: Tag[] = [];
@@ -61,21 +70,21 @@ export class EditVideoComponent implements OnInit{
 
   ngOnInit(): void {
     console.log(this.data)
-    if(this.data > 0){
+    if(this.data > 0){ //editing existing video
       this.videoService.getVideoDetails(this.data).subscribe(video => {
         this.video = video;
         this.oldVideo= JSON.parse(JSON.stringify(this.video)) //actual nested deep copy
 
-        this.selectedQuestion = video.questions[0]
+        this.selectedQuestion = video.questions![0]
       })
     }
-    else{
+    else{ //creating new video
       this.video = {
         contentId: -1,
-        title: "New Video",
+        title: "",
         description: "",
         visibility: VisibilityEnum.self,
-        color: "#000000",
+        color: this.generateRandomVideoColor(),
         tags: [],
         questions: [],
         rating: 0,
@@ -83,7 +92,7 @@ export class EditVideoComponent implements OnInit{
       this.oldVideo= JSON.parse(JSON.stringify(this.video)) //actual nested deep copy
     }
 
-    this.videoService.getAllTags().subscribe(tags => {
+    this.tagService.getAll().subscribe(tags => {
       this.allTags = tags
     })
 
@@ -98,14 +107,27 @@ export class EditVideoComponent implements OnInit{
     })
   }
 
+  generateRandomVideoColor(): string {
+    return "#ABCDEF"
+  }
+
   saveChanges() {
-    this.videoService.updateVideo(this.video).subscribe(result => {
-      this.dialogRef.close();
-      /*let selectedQuestionPos = this.video.questions.indexOf(this.selectedQuestion)
-      this.video = result;
-      this.oldVideo = JSON.parse(JSON.stringify(this.video))
-      this.selectedQuestion = this.video.questions[selectedQuestionPos] || this.video.questions[0]*/
-    })
+    if(this.video.contentId > 0) { //saving changes to existing video
+      this.videoService.updateVideo(this.video).subscribe(result => {
+        this.dialogRef.close();
+        //code for saving and keeping the popup open and same question selected
+        /*let selectedQuestionPos = this.video.questions.indexOf(this.selectedQuestion)
+        this.video = result;
+        this.oldVideo = JSON.parse(JSON.stringify(this.video))
+        this.selectedQuestion = this.video.questions[selectedQuestionPos] || this.video.questions[0]*/
+      })
+    }
+    else { //creating new video
+      this.videoService.createVideo(this.video).subscribe(result => {
+        console.log(result)
+        this.dialogRef.close();
+      })
+    }
   }
 
   close(){
@@ -134,18 +156,26 @@ export class EditVideoComponent implements OnInit{
   }
 
   addQuestion() {
-    this.video.questions.push({text: "New Question", answerOptions: new Array<AnswerOption>()} as Question)
+    if(!this.video.questions) return
+
+    this.video.questions.push({questionId: this.video.questions.length * -1 ,text: "", answerOptions: new Array<AnswerOption>()} as Question)
     this.selectedQuestion = this.video.questions[this.video.questions.length - 1]
     this.addAnswerOption()
   }
 
   removeQuestion() {
-    this.video.questions = this.video.questions.filter(question => question.questionId !== this.selectedQuestion.questionId)
+    if(!this.selectedQuestion) return
+
+    this.video.questions = this.video.questions!.filter(question => question.questionId !== this.selectedQuestion!.questionId)
     this.selectedQuestion = this.video.questions[0]
   }
 
   addAnswerOption() {
-    this.selectedQuestion.answerOptions.push({text: "New Answer", answerOptionId: this.selectedQuestion.answerOptions.length * -1} as AnswerOption)
+    if(!this.selectedQuestion) return
+
+    if(!this.selectedQuestion!.answerOptions) this.selectedQuestion!.answerOptions = []
+
+    this.selectedQuestion.answerOptions?.push({text: "", answerOptionId: this.selectedQuestion.answerOptions.length * -1} as AnswerOption)
   }
 
   generateTagOptions(input: string) {
@@ -159,7 +189,7 @@ export class EditVideoComponent implements OnInit{
   }
 
   createTag(name: string) {
-    this.videoService.createTag(name).subscribe(tag => {
+    this.tagService.createTag(name).subscribe(tag => {
       this.addTag(tag)
     })
   }
@@ -177,13 +207,13 @@ export class EditVideoComponent implements OnInit{
 
   //region UPDATE functions
 
-  videoFileUpdated(fileId:number) {
-    if(this.video.contentId)
-      this.videoService.linkVideoFile(this.video.contentId, fileId).subscribe(result => {
+  videoFileUpdated(videoFile: VideoFile) {
+    if(this.video.contentId > 0)
+      this.videoService.linkVideoFile(this.video.contentId, videoFile.videoFileId).subscribe(result => {
         console.log("linked videos")
       })
     else {
-       this.video.videoFile = {videoFileId: fileId}
+       this.video.videoFile = videoFile
     }
   }
 
@@ -196,11 +226,11 @@ export class EditVideoComponent implements OnInit{
   }
 
   questionTitleUpdated(text: string){
-    this.selectedQuestion.text = text
+    this.selectedQuestion!.text = text
   }
 
   answerUpdated(answer: AnswerOption, index: number){
-    this.selectedQuestion.answerOptions[index] = answer
+    this.selectedQuestion!.answerOptions![index] = answer
   }
 
   //endregion

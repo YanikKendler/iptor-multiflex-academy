@@ -22,7 +22,7 @@ import {Utils} from "../../../utils"
 })
 export class UploadVideoComponent {
   @Input() videoFile: VideoFile = {} as VideoFile
-  @Output() uploadFinished = new EventEmitter<number>()
+  @Output() uploadFinished = new EventEmitter<VideoFile>()
 
   readonly videoService = inject(VideoService);
   readonly dialog = inject(MatDialog);
@@ -70,7 +70,7 @@ export class UploadVideoComponent {
     this.videoService.uploadVideoFile(file).subscribe(result => {
       console.log('File uploaded successfully:', result);
       this.videoFile = result
-      this.uploadFinished.emit(this.videoFile.videoFileId)
+      this.uploadFinished.emit(this.videoFile)
     });
   }
 

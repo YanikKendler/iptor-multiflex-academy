@@ -1,6 +1,9 @@
 <div class="header">
   <app-learning-path-icon [style.color]="learningPath.color"></app-learning-path-icon>
-  <h2>{{ learningPath.title }}</h2>
+  <div class="title">
+    <p>Learning Path</p>
+    <h2>{{ learningPath.title }}</h2>
+  </div>
   <div class="actions">
     @if(removable && !learningPath.saved){
       <app-icon-button

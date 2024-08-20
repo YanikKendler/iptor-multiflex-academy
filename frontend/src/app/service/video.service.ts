@@ -2,7 +2,6 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
 import {Tag} from "./tag.service";
-import {AnswerOption, Question} from "./question.service";
 import {Comment} from "./comment.service";
 import {ContentForUser, User} from "./user.service";
 import {Config} from "../config"
@@ -39,7 +38,7 @@ export interface VideoDetailDTO {
   color: string
   tags: Tag[]
   comments?: Comment[]
-  questions: Question[]
+  questions?: Question[]
   rating: number
   videoFile?: VideoFile
   viewProgress?: number
@@ -66,6 +65,18 @@ export interface QuizResultDTO{
   quizResultId: number;
   selectedAnswers: AnswerOption[];
   score: number;
+}
+
+export interface AnswerOption {
+  answerOptionId: number;
+  text: string;
+  isCorrect: boolean;
+}
+
+export interface Question {
+  questionId: number;
+  answerOptions?: AnswerOption[];
+  text: string;
 }
 
 @Injectable({
@@ -95,7 +106,7 @@ export class VideoService {
   }
 
   createVideo(video: VideoDetailDTO){
-    return this.http.post<VideoDetailDTO>(`${Config.API_URL}/video/`, video)
+    return this.http.post<VideoDetailDTO>(`${Config.API_URL}/video/?userId=${Config.USER_ID}`, video)
   }
 
   updateVideo(video: VideoDetailDTO){
@@ -129,14 +140,6 @@ export class VideoService {
 
   getQuizResults(videoId: number){
     return this.http.get<QuizResultDTO>(`${Config.API_URL}/video/${videoId}/quizresults?userId=${Config.USER_ID}`)
-  }
-
-  getAllTags(){
-    return this.http.get<Tag[]>(`${Config.API_URL}/tag/`)
-  }
-
-  createTag(name: string) {
-    return this.http.post<Tag>(`${Config.API_URL}/tag`, {name: name})
   }
 
   searchContent(elem: string) {

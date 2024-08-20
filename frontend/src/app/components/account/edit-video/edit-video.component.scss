@@ -114,7 +114,7 @@ section.questions{
     gap: .2rem;
 
     p{
-      max-width: 20ch;
+      width: 20ch;
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
@@ -131,6 +131,14 @@ section.questions{
         min-width: 2ch;
         display: inline-block;
       }
+    }
+
+    .no-results{
+      white-space: wrap;
+      color: $gray-400;
+      text-align: center;
+      margin-top: 1rem;
+      cursor: initial;
     }
   }
 
@@ -158,13 +166,18 @@ section.questions{
       }
     }
 
-
     button{
       margin: {
         top: .5rem;
         left: 56px; /*sorry for the magic number.. if its not appreciated in the future, one could modify the answer-option
         to have a property that adds a flexbox around the textfield which could align the button*/
       }
+    }
+
+    .no-results{
+      text-align: center;
+      margin-top: 1rem;
+      color: $gray-400;
     }
   }
 

@@ -8,12 +8,18 @@
   justify-content: space-between;
   align-items: center;
   padding-block: .25rem;
+  padding-inline: .25rem;
   color: white;
+}
+
+img{
+  height: 1.8rem;
+  margin-left: .5rem;
 }
 
 fa-icon{
   color: white;
-  font-size: 1.5em;
+  font-size: 1.2rem;
 }
 
 .right{

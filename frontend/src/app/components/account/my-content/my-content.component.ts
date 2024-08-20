@@ -25,6 +25,7 @@ import {MatButton} from "@angular/material/button";
 import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
 import {DropdownComponent, DropdownOption} from "../../basic/dropdown/dropdown.component"
 import {Utils} from "../../../utils"
+import {MatTooltip} from "@angular/material/tooltip"
 
 @Component({
   selector: 'app-my-content',
@@ -39,7 +40,8 @@ import {Utils} from "../../../utils"
     MatButton,
     CdkMenuTrigger,
     PlayIconComponent,
-    DropdownComponent
+    DropdownComponent,
+    MatTooltip
   ],
   templateUrl: './my-content.component.html',
   styleUrl: './my-content.component.scss'
@@ -98,12 +100,15 @@ export class MyContentComponent implements OnInit{
   }
 
   getTags(tags: Tag[]) {
-    let text = ""
+    //lol was n crazy code
+    /*let text = ""
     tags.forEach(tag => {
       text += tag.name + ", ";
     })
 
-    return text.substring(0, 24) + (text.length > 24 ? "..." : "");
+    return text.substring(0, 24) + (text.length > 24 ? "..." : "");*/
+
+    return tags.map(tag => tag.name).join(", ");
   }
 
   updateVisibility(videoId: number, selectedOption: DropdownOption) {

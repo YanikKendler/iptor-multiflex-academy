@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -33,16 +34,40 @@ public class VideoRepository {
     @Inject
     EntityManager em;
 
-    public Video create(CreateVideoDTO video) {
-        System.out.println(video.toString());
+    public Video create(CreateVideoDTO createVideoDTO, Long userId) {
+        System.out.println(createVideoDTO.toString());
 
-        Video newVideo = new Video(video.title(), video.description(), video.visibility());
-        for (Integer tagId : video.tags()) {
-            Tag tag = em.find(Tag.class, tagId.longValue());
-            newVideo.addTag(tag);
+        List<Question> questions = new LinkedList<>();
+
+        for (Question question : createVideoDTO.questions()) {
+            List<AnswerOption> answerOptions = new LinkedList<>();
+
+            for(AnswerOption answerOption : question.getAnswerOptions()){
+                AnswerOption newAnswerOption = new AnswerOption(answerOption.getText(), answerOption.isCorrect());
+                em.persist(newAnswerOption);
+                answerOptions.add(newAnswerOption);
+            }
+
+            Question newQuestion = new Question(question.getText(), answerOptions);
+            em.persist(newQuestion);
+            questions.add(newQuestion);
         }
-        newVideo.setQuestions(video.questions());
-        newVideo.setColor(video.color());
+
+        String title = createVideoDTO.title();
+        if(title == null || title.isEmpty()){
+            title = "Untitled Video";
+        }
+
+        Video newVideo = new Video(
+                title,
+                createVideoDTO.description(),
+                createVideoDTO.visibility(),
+                createVideoDTO.color(),
+                createVideoDTO.tags(),
+                questions,
+                createVideoDTO.videoFile(),
+                em.find(User.class, userId)
+        );
         em.persist(newVideo);
 
         return newVideo;
@@ -64,7 +89,6 @@ public class VideoRepository {
             }catch (Exception e) {
                 em.persist(new Question(question.getText()));
             }
-
         }
 
         em.merge(videoToUpdate);

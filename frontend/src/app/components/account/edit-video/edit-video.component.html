@@ -66,15 +66,15 @@
   <div class="left">
     @for (question of video.questions; track question.questionId){
       <p
-        [class]="question.questionId == selectedQuestion.questionId ? 'selected' : ''"
+        [class]="question.questionId == selectedQuestion?.questionId ? 'selected' : ''"
         (click)="selectedQuestion = question"
       >
         <span class="number">{{ $index + 1 }}.</span>
         <span>{{ question.text }}</span>
       </p>
     }
-    @if(video.questions.length == 0){
-      <p class="no-results">No question yet</p>
+    @if(video?.questions?.length == 0){
+      <p class="no-results">Start by creating a Question</p>
     }
     <button (click)="addQuestion()">
       <fa-icon [icon]="faPlus"></fa-icon>
@@ -82,23 +82,28 @@
   </div>
   <mat-divider [vertical]="true"></mat-divider>
   <div class="right">
-    <div class="questionTitle">
-      <input type="text" class="question" placeholder="Frage" [value]="selectedQuestion.text" (input)="questionTitleUpdated(questionTitle.value)" #questionTitle>
-      <app-icon-button (click)="removeQuestion()">
-        <fa-icon [icon]="faTrash"></fa-icon>
-      </app-icon-button>
-    </div>
-    <div class="scrollable">
-      @for (answer of selectedQuestion.answerOptions; track answer.answerOptionId) {
-        <app-answer-option
-          [answer]="answer"
-          (answerChange)="answerUpdated(answerComponent.answer, $index)"
-          [letter]="Utils.numberToLetter($index)"
-          #answerComponent
-        ></app-answer-option>
-      }
-      <button (click)="addAnswerOption()">add answer</button>
-    </div>
+    @if(selectedQuestion != undefined){
+      <div class="questionTitle">
+        <input type="text" class="question" placeholder="Question" [value]="selectedQuestion.text" (input)="questionTitleUpdated(questionTitle.value)" #questionTitle>
+        <app-icon-button (click)="removeQuestion()" matTooltip="delete question" matTooltipShowDelay="500">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </app-icon-button>
+      </div>
+      <div class="scrollable">
+        @for (answer of selectedQuestion.answerOptions; track answer.answerOptionId) {
+          <app-answer-option
+            [answer]="answer"
+            (answerChange)="answerUpdated(answerComponent.answer, $index)"
+            [letter]="Utils.numberToLetter($index)"
+            #answerComponent
+          ></app-answer-option>
+        }
+        <button (click)="addAnswerOption()">add answer</button>
+      </div>
+    }
+    @else {
+      <p class="no-results">No Question selected</p>
+    }
   </div>
 </section>
 

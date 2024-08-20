@@ -30,11 +30,11 @@ public class VideoResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createVideo(CreateVideoDTO v){
+    public Response createVideo(@QueryParam("userId") Long userId, CreateVideoDTO createVideoDTO){
         try {
-            Video video = videoRepository.create(v);
+            Video video = videoRepository.create(createVideoDTO, userId);
 
-            return Response.ok().build();
+            return Response.ok(video).build();
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

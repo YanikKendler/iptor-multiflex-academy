@@ -1,8 +1,7 @@
 import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {NgClass} from "@angular/common";
 import {MatRipple} from "@angular/material/core"
-import {AnswerOption} from "../../../service/question.service"
-import {VideoService} from "../../../service/video.service";
+import {AnswerOption, VideoService} from "../../../service/video.service";
 import {MatButton} from "@angular/material/button";
 
 @Component({
@@ -27,22 +26,22 @@ export class VideoQuizAnswersComponent implements OnChanges{
   @Output() nextVideo: EventEmitter<any> = new EventEmitter()
   @Output() giveSelectedAnswers: EventEmitter<AnswerOption[]> = new EventEmitter<AnswerOption[]>()
 
-  isAnswerCheckedIn : boolean = false
+  answerIsSubmitted : boolean = false
 
   checkedQuestions: number[] = []
   selectedAnswers: AnswerOption[] = [];
 
   ngOnChanges(changes: SimpleChanges) {
-    // i check if the question is already checked in, that way i can highlight the correct answers
+    // check if the question is already checked, that way i can highlight the correct answers
     if(this.checkedQuestions.includes(this.questionNumber)) {
-      this.isAnswerCheckedIn = true
+      this.answerIsSubmitted = true
     } else{
-      this.isAnswerCheckedIn = false
+      this.answerIsSubmitted = false
     }
   }
 
   toggleAnswer(answer: AnswerOption) {
-    if(this.isAnswerCheckedIn) return // if the answer is already checked in, the user shouldn't be able to change it
+    if(this.answerIsSubmitted) return // if the answer is already checked in, the user shouldn't be able to change it
 
     if (this.selectedAnswers.includes(answer)) {
       this.selectedAnswers = this.selectedAnswers.filter(selectedAnswer => selectedAnswer !== answer);
@@ -62,23 +61,23 @@ export class VideoQuizAnswersComponent implements OnChanges{
   checkAnswer() {
     if(this.isQuizFinished) this.restartQuiz()
 
-    // if answer got already logged in the function should request for the next question
-    if(this.isAnswerCheckedIn){
-      this.isAnswerCheckedIn = false
+    // if answer got already submitted the function should request the next question
+    if(this.answerIsSubmitted){
+      this.answerIsSubmitted = false
       this.nextQuestion.emit()
       return
     }
 
-    // if answer isn't logged in yet, it should check every field and push the correct answers into the array
+    // if answer isn't submitted yet, it should check every field and push the correct answers into the array
     // the correct answers get highlighted green and the others red
-    this.isAnswerCheckedIn = true
+    this.answerIsSubmitted = true
     this.checkedQuestions.push(this.questionNumber)
     this.answers?.forEach(answer => {
-      if(this.selectedAnswers.includes(answer) && answer.isCorrect || !this.selectedAnswers.includes(answer) && !answer.isCorrect){
+      if(this.selectedAnswers.includes(answer) && answer.isCorrect /*|| !this.selectedAnswers.includes(answer) && !answer.isCorrect*/){
         this.correctAnswers.push(answer)
       } else if (this.selectedAnswers.includes(answer) && !answer.isCorrect){
         this.wrongAnswers.push(answer)
-      } else {
+      } else if (!this.selectedAnswers.includes(answer) && answer.isCorrect){
         this.missedAnswers.push(answer)
       }
     })
@@ -100,7 +99,7 @@ export class VideoQuizAnswersComponent implements OnChanges{
     this.checkedQuestions = []
     this.selectedAnswers = []
 
-    this.isAnswerCheckedIn = false
+    this.answerIsSubmitted = false
     this.selectedAnswers = []
     this.correctAnswers = []
     this.wrongAnswers = []

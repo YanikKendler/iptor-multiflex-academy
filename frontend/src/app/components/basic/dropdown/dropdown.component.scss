@@ -9,20 +9,22 @@
   gap: .3rem;
 
   fa-icon{
-    translate: 0 -.2rem;
+    translate: 0 -.1rem;
   }
 }
 
 .actionMenu{
   background-color: white;
   @include floating-box;
-  translate: -.3rem .2rem;
+  translate: -.4rem .2rem;
+  padding: .2rem;
 
   p{
     padding-block: .25rem;
-    padding-inline: .25rem;
+    padding-inline: .4rem;
     cursor: pointer;
     transition: all .2s ease;
+    border-radius: .2rem;
 
     &:hover{
       background-color: $gray-800;

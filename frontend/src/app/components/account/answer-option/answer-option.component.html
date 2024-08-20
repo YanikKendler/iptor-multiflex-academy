@@ -1,4 +1,10 @@
-<mat-checkbox aria-label="isCorrectAnswer" (change)="updateIsCorrect($event)" [checked]="answer.isCorrect"></mat-checkbox>
+<mat-checkbox
+  aria-label="isCorrectAnswer"
+  (change)="updateIsCorrect($event)"
+  [checked]="answer.isCorrect"
+  matTooltip="mark as correct"
+  matTooltipShowDelay="500"
+></mat-checkbox>
 
 <app-textfield
   [(value)]="answer.text"
@@ -7,4 +13,5 @@
   (valueChange)="updatedAnswerText($event)"
   [rows]="1"
   [small]="true"
+
 ></app-textfield>

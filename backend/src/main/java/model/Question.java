@@ -17,7 +17,13 @@ public class Question implements Comparable<Question> {
 
     private String text;
 
-    private LocalDateTime timestamp;
+    private final LocalDateTime timestamp;
+
+    public Question(String text, List<AnswerOption> answerOptions) {
+        this();
+        this.text = text;
+        this.answerOptions = answerOptions;
+    }
 
     public Question(String text) {
         this();

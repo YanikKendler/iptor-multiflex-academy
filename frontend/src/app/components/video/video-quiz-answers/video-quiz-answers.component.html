@@ -17,7 +17,7 @@
   <h2>Frage {{ getFormattedQuestionNumber() }}</h2>
   <p class="text">{{this.questionText}}</p>
 
-  <main [ngClass]="{'checked' : isAnswerCheckedIn}">
+  <main [ngClass]="{'checked' : answerIsSubmitted}">
     @for (answer of this.answers; track answer.answerOptionId) {
       <div class="answer"
            (click)="toggleAnswer(answer)"
@@ -35,12 +35,12 @@
   <div class="buttons">
     @if(inLearningPath && isQuizFinished && calculateScoreInPercent() > 0.8){
       <button mat-stroked-button color="secondary" (click)="checkAnswer()">
-        {{ isQuizFinished ? 'Restart Quiz' : isAnswerCheckedIn ? 'Next Question' : 'Submit' }}</button>
+        {{ isQuizFinished ? 'Restart Quiz' : answerIsSubmitted ? 'Next Question' : 'Submit' }}</button>
 
       <button mat-flat-button color="secondary" (click)="this.nextVideo.emit()">{{ isLastVideo ? 'Finish Quiz' : 'Next Video'}}</button>
     } @else {
       <button mat-flat-button color="secondary" (click)="checkAnswer()">
-        {{ isQuizFinished ? 'Restart Quiz' : isAnswerCheckedIn ? 'Next Question' : 'Submit' }}</button>
+        {{ isQuizFinished ? 'Restart Quiz' : answerIsSubmitted ? 'Next Question' : 'Submit' }}</button>
     }
   </div>
 }

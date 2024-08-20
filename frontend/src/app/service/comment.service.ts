@@ -19,32 +19,23 @@ export class CommentService {
   http = inject(HttpClient)
 
   getCommentList(videoId: number): Observable<Comment[]>{
-    return this.http.get<Comment[]>(`http://localhost:8080/api/video/${videoId}/comment?userId=${Config.USER_ID}`)
+    return this.http.get<Comment[]>(`${Config.API_URL}/video/${videoId}/comment?userId=${Config.USER_ID}`)
   }
 
   createComment(videoId: number, text: string){
-    return this.http.post(`http://localhost:8080/api/video/${videoId}/comment`, {
+    return this.http.post(`${Config.API_URL}/video/${videoId}/comment`, {
       text: text,
       userId: Config.USER_ID
     });
   }
 
   deleteComment(videoId: number, commentId: number){
-    return this.http.delete(`http://localhost:8080/api/video/${videoId}/comment/${commentId}?userId=${Config.USER_ID}`);
+    return this.http.delete(`${Config.API_URL}/video/${videoId}/comment/${commentId}?userId=${Config.USER_ID}`);
   }
 
   updateComment(videoId: number, commentId: number, text: string){
-    this.http.put("http://localhost:8080/api/video/" + videoId + "/comment/" + commentId, {
+    this.http.put(`${Config.API_URL}/video/${videoId}/comment/${commentId}`, {
       text: text
-    }).subscribe(response =>{
-      console.log('Response from server:', response);
-      // Weitere Verarbeitung der Response hier
-    }, error => {
-      console.error('Error occurred:', error);
-      // Fehlerbehandlung hier
     });
   }
-
-
-  constructor() { }
 }

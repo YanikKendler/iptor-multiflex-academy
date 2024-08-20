@@ -11,39 +11,44 @@
       <!--<button class="outlined">Lernpfad Erstellen</button>-->
     </th>
   </tr>
+  @for (video of userContent; track video.contentId){
+    <tr>
+      <td class="mid">
+        <app-play-icon [style.color]="video.color" [style.font-size]="'2rem'"></app-play-icon>
+        <div class="title">
+          <p>Video</p>
+          <h2>{{ video.title }}</h2>
+        </div>
+      </td>
+      <td class="smallColumn">
+        <fa-icon [icon]="faEye" class="grey"></fa-icon>
+        {{ video.views }}
+      </td>
+      <td class="smallColumn">
+        <fa-icon [icon]="faStar" class="grey starIcon"></fa-icon>
+        {{ video.rating.toFixed(1) }}
+      </td>
+      <td>
+        <app-dropdown [selectedId]="video.visibility.toString()" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+      </td>
 
-  <tr *ngFor="let video of userContent">
-    <td class="mid">
-      <app-play-icon [style.color]="video.color" [style.font-size]="'2rem'"></app-play-icon>
-      <div class="title">
-        <p>Video</p>
-        <h2>{{ video.title }}</h2>
-      </div>
-    </td>
-    <td class="smallColumn">
-      <fa-icon [icon]="faEye" class="grey"></fa-icon>
-      {{ video.views }}
-    </td>
-    <td class="smallColumn">
-      <fa-icon [icon]="faStar" class="grey starIcon"></fa-icon>
-      {{ video.rating.toFixed(1) }}
-    </td>
-    <td>
-      <app-dropdown [selectedId]="video.visibility.toString()" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
-    </td>
+      <td class="small">{{ getQuestionCountToString(video.questionCount) }}</td>
+      <td class="mid">
+        <p class="tags" matTooltip="{{ getTags(video.tags) }}" matTooltipShowDelay="500">
+          {{ getTags(video.tags) }}
+        </p>
+      </td>
 
-    <td class="small">{{ getQuestionCountToString(video.questionCount) }}</td>
-    <td class="mid">{{ getTags(video.tags) }}</td>
-
-    <td>
-      <a [routerLink]="['/video/' + video.contentId]" target="_blank">
-        <app-icon-button>
-          <fa-icon [icon]="faArrowRightToBracket"></fa-icon>
+      <td>
+        <a [routerLink]="['/video/' + video.contentId]" target="_blank" matTooltip="go to video" matTooltipShowDelay="500">
+          <app-icon-button>
+            <fa-icon [icon]="faArrowRightToBracket"></fa-icon>
+          </app-icon-button>
+        </a>
+        <app-icon-button (click)="openEditPopUp(video.contentId)">
+          <fa-icon [icon]="faPen" class="small"></fa-icon>
         </app-icon-button>
-      </a>
-      <app-icon-button (click)="openEditPopUp(video.contentId)">
-        <fa-icon [icon]="faPen" class="small"></fa-icon>
-      </app-icon-button>
-    </td>
-  </tr>
+      </td>
+    </tr>
+  }
 </table>

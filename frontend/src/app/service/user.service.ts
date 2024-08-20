@@ -36,18 +36,18 @@ export class UserService {
   constructor() { }
 
   toggleSavedContent(contentId: number){
-    return this.http.put(`http://localhost:8080/api/user/${Config.USER_ID}/togglesavedcontent/${contentId}`, {}).subscribe()
+    return this.http.put(`${Config.API_URL}/user/${Config.USER_ID}/togglesavedcontent/${contentId}`, {}).subscribe()
   }
 
   isVideoSaved(videoId: number){
-    return this.http.get<boolean>(`http://localhost:8080/api/user/${Config.USER_ID}/isvideosaved/${videoId}`)
+    return this.http.get<boolean>(`${Config.API_URL}/user/${Config.USER_ID}/isvideosaved/${videoId}`)
   }
 
   getContentForUser(){
-    return this.http.get<ContentForUser>(`http://localhost:8080/api/user/${Config.USER_ID}/contentforuser`)
+    return this.http.get<ContentForUser>(`${Config.API_URL}/user/${Config.USER_ID}/contentforuser`)
   }
 
   getUserContent(){
-    return this.http.get<MyVideoContentDTO[]>(`http://localhost:8080/api/user/${Config.USER_ID}/usercontent`)
+    return this.http.get<MyVideoContentDTO[]>(`${Config.API_URL}/user/${Config.USER_ID}/usercontent`)
   }
 }
