@@ -146,13 +146,18 @@ section.questions{
       padding-right: 1rem;
     }
 
-    input.question{
-      border-radius: 0;
-      border: none;
-      border-bottom: 2px solid $gray-500;
-      width: 100%;
-      margin-bottom: 1rem;
+    .questionTitle{
+      display: flex;
+
+      input{
+        border-radius: 0;
+        border: none;
+        border-bottom: 2px solid $gray-500;
+        width: 100%;
+        margin-bottom: 1rem;
+      }
     }
+
 
     button{
       margin: {

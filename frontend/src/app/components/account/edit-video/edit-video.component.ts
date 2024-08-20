@@ -5,7 +5,7 @@ import {NgClass, NgForOf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {TextfieldComponent} from "../../basic/textfield/textfield.component"
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {UploadVideoComponent} from "../upload-video/upload-video.component"
 import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {MatButton} from "@angular/material/button"
@@ -18,6 +18,7 @@ import {Tag} from "../../../service/tag.service"
 import {ChipComponent} from "../../basic/chip/chip.component"
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu"
 import {MatMenuTrigger} from "@angular/material/menu"
+import {IconButtonComponent} from "../../basic/icon-button/icon-button.component"
 @Component({
   selector: 'app-edit-video',
   standalone: true,
@@ -34,7 +35,8 @@ import {MatMenuTrigger} from "@angular/material/menu"
     NgClass,
     ChipComponent,
     CdkMenu,
-    CdkMenuTrigger
+    CdkMenuTrigger,
+    IconButtonComponent
   ],
   templateUrl: './edit-video.component.html',
   styleUrl: './edit-video.component.scss'
@@ -137,6 +139,11 @@ export class EditVideoComponent implements OnInit{
     this.addAnswerOption()
   }
 
+  removeQuestion() {
+    this.video.questions = this.video.questions.filter(question => question.questionId !== this.selectedQuestion.questionId)
+    this.selectedQuestion = this.video.questions[0]
+  }
+
   addAnswerOption() {
     this.selectedQuestion.answerOptions.push({text: "New Answer", answerOptionId: this.selectedQuestion.answerOptions.length * -1} as AnswerOption)
   }
@@ -200,4 +207,5 @@ export class EditVideoComponent implements OnInit{
 
   protected readonly Utils = Utils
   protected readonly faPlus = faPlus
+  protected readonly faTrash = faTrash
 }

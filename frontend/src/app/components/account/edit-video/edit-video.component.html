@@ -82,7 +82,12 @@
   </div>
   <mat-divider [vertical]="true"></mat-divider>
   <div class="right">
-    <input type="text" class="question" placeholder="Frage" [value]="selectedQuestion.text" (input)="questionTitleUpdated(questionTitle.value)" #questionTitle>
+    <div class="questionTitle">
+      <input type="text" class="question" placeholder="Frage" [value]="selectedQuestion.text" (input)="questionTitleUpdated(questionTitle.value)" #questionTitle>
+      <app-icon-button (click)="removeQuestion()">
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </app-icon-button>
+    </div>
     <div class="scrollable">
       @for (answer of selectedQuestion.answerOptions; track answer.answerOptionId) {
         <app-answer-option

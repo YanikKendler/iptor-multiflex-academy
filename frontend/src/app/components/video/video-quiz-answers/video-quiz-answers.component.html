@@ -1,7 +1,6 @@
 @if(!this.answers){
   <h2>Finished quiz</h2>
   <p>Score {{correctAnswers.length}} / {{correctAnswers.length + wrongAnswers.length + missedAnswers.length}}</p>
-  <button (click)="restartQuiz()">Restart Quiz</button>
 
   <div class="buttons">
     @if(inLearningPath && isQuizFinished && calculateScoreInPercent() > 0.8 || calculateScoreInPercent() < 0){
