@@ -85,6 +85,10 @@ export class MyContentComponent implements OnInit{
     });
   }
 
+  createVideo(){
+    this.openEditPopUp(-1)
+  }
+
   getQuestionCountToString(questionCount:number){
     if(questionCount == 0){
       return "no questions"

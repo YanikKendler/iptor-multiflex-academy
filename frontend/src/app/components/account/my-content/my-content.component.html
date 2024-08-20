@@ -7,8 +7,8 @@
     <th>Questions</th>
     <th class="mid">Tags</th>
     <th>
-      <button class="filled">Video Erstellen</button>
-      <button class="outlined">Lernpfad Erstellen</button>
+      <button mat-flat-button color="secondary" (click)="createVideo()">Create Video</button>
+      <!--<button class="outlined">Lernpfad Erstellen</button>-->
     </th>
   </tr>
 
@@ -38,11 +38,11 @@
     <td>
       <a [routerLink]="['/video/' + video.contentId]" target="_blank">
         <app-icon-button>
-          <fa-icon [icon]="faArrowRightToBracket" class="small"></fa-icon>
+          <fa-icon [icon]="faArrowRightToBracket"></fa-icon>
         </app-icon-button>
       </a>
       <app-icon-button (click)="openEditPopUp(video.contentId)">
-        <fa-icon [icon]="faPen" ></fa-icon>
+        <fa-icon [icon]="faPen" class="small"></fa-icon>
       </app-icon-button>
     </td>
   </tr>

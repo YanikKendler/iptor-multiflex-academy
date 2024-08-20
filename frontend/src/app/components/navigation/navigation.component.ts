@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {RouterLink} from "@angular/router"
 import {
   faBell,
@@ -31,6 +31,13 @@ import {MatButton} from "@angular/material/button";
 })
 export class NavigationComponent {
   @Input() simple: boolean = false;
+
+  @ViewChild(CdkMenuTrigger) trigger!: CdkMenuTrigger;
+
+  closeMenu() {
+    this.trigger.close();
+  }
+
   protected readonly faTrash = faTrash;
   protected readonly faEllipsis = faEllipsis;
   protected readonly faUser = faUser;

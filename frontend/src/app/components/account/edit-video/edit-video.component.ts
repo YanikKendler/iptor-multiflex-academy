@@ -59,12 +59,27 @@ export class EditVideoComponent implements OnInit{
 
   ngOnInit(): void {
     console.log(this.data)
-    this.videoService.getVideoDetails(this.data).subscribe(video => {
-      this.video = video;
-      this.oldVideo= JSON.parse(JSON.stringify(this.video)) //actual nested deep copy
+    if(this.data > 0){
+      this.videoService.getVideoDetails(this.data).subscribe(video => {
+        this.video = video;
+        this.oldVideo= JSON.parse(JSON.stringify(this.video)) //actual nested deep copy
 
-      this.selectedQuestion = video.questions[0]
-    })
+        this.selectedQuestion = video.questions[0]
+      })
+    }
+    else{
+      this.video = {
+        contentId: -1,
+        title: "New Video",
+        description: "",
+        visibility: VisibilityEnum.self,
+        color: "#000000",
+        tags: [],
+        questions: [],
+        rating: 0,
+      } as VideoDetailDTO
+      this.oldVideo= JSON.parse(JSON.stringify(this.video)) //actual nested deep copy
+    }
 
     this.videoService.getAllTags().subscribe(tags => {
       this.allTags = tags

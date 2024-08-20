@@ -38,11 +38,11 @@ export interface VideoDetailDTO {
   description: string
   color: string
   tags: Tag[]
-  comments: Comment[]
+  comments?: Comment[]
   questions: Question[]
   rating: number
   videoFile?: VideoFile
-  viewProgress: number
+  viewProgress?: number
   visibility: VisibilityEnum
 }
 

@@ -73,6 +73,9 @@
         <span>{{ question.text }}</span>
       </p>
     }
+    @if(video.questions.length == 0){
+      <p class="no-results">No question yet</p>
+    }
     <button (click)="addQuestion()">
       <fa-icon [icon]="faPlus"></fa-icon>
     </button>
