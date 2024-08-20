@@ -1,1 +1,9 @@
-<p><ng-content></ng-content></p>
+<p>
+  <ng-content></ng-content>
+</p>
+
+@if(removable){
+  <app-icon-button size="2rem">
+    <fa-icon [icon]="faXmark" (click)="remove($event)"></fa-icon>
+  </app-icon-button>
+}

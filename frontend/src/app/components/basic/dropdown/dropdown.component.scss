@@ -1,5 +1,8 @@
 @import "../../../variables";
 
+:host{
+}
+
 .dropDown{
   display: flex;
   cursor: pointer;
@@ -11,7 +14,6 @@
 }
 
 .actionMenu{
-  width: 6vw;
   background-color: white;
   @include floating-box;
   translate: -.3rem .2rem;

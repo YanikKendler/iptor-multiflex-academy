@@ -9,32 +9,44 @@ import repository.TagRepository;
 
 import java.util.List;
 
-@Path("/video/{videoId: [0-9]+}/tag")
+@Path("/tag")
 public class TagResource {
     @Inject
     TagRepository repository;
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTag(@PathParam("videoId")Long vid, Tag t){
-        try {
-            repository.create(vid, t);
-        } catch (Exception ex) {
-            return Response.status(400).entity(ex).build();
-        }
-        return Response.ok().build();
-    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(@PathParam("videoId")Long vid){
+    public Response getTag(){
         List<Tag> tags;
         try{
-            tags = repository.getAll(vid);
+            tags = repository.getAll();
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().entity(tags).build();
+    }
+
+/*    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getForVideo(@QueryParam("videoId") Long vid){
+        List<Tag> tags;
+        try{
+            tags = repository.tagsForVideo(vid);
+        }catch (Exception ex){
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().entity(tags).build();
+    }*/
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createTag(Tag tagInput){
+        try {
+            Tag tag = repository.create(tagInput);
+            return Response.ok(tag).build();
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
     }
 
     @DELETE
@@ -49,9 +61,8 @@ public class TagResource {
     }
 
     @PUT
-    @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateTag(@PathParam("id") Long id, Tag t){
+    public Response updateTag(Tag t){
         try{
             repository.update(t);
         } catch (Exception ex) {

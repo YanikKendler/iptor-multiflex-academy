@@ -18,10 +18,9 @@ public class TagRepository {
     VideoRepository videoRepository;
 
     @Transactional
-    public void create(Long videoId, Tag tag) {
-        Video video = videoRepository.getById(videoId);
-        video.addTag(tag);
+    public Tag create(Tag tag) {
         em.persist(tag);
+        return tag;
     }
 
     @Transactional
@@ -33,9 +32,15 @@ public class TagRepository {
     }
 
     @Transactional
-    public List<Tag> getAll(Long videoId) {
+    public List<Tag> tagsForVideo(Long videoId) {
         return em.createQuery("select t from Video v join v.tags t where v.contentId = :videoId", Tag.class)
                 .setParameter("videoId", videoId)
+                .getResultList();
+    }
+
+    @Transactional
+    public List<Tag> getAll() {
+        return em.createQuery("select t from Tag t", Tag.class)
                 .getResultList();
     }
 

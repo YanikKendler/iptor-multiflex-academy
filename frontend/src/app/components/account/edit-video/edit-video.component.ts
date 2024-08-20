@@ -14,6 +14,10 @@ import {Utils} from "../../../utils"
 import {MatDivider} from "@angular/material/divider"
 import {AnswerOption, Question} from "../../../service/question.service"
 import {AnswerOptionComponent} from "../answer-option/answer-option.component"
+import {Tag} from "../../../service/tag.service"
+import {ChipComponent} from "../../basic/chip/chip.component"
+import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu"
+import {MatMenuTrigger} from "@angular/material/menu"
 @Component({
   selector: 'app-edit-video',
   standalone: true,
@@ -27,7 +31,10 @@ import {AnswerOptionComponent} from "../answer-option/answer-option.component"
     DropdownComponent,
     MatDivider,
     AnswerOptionComponent,
-    NgClass
+    NgClass,
+    ChipComponent,
+    CdkMenu,
+    CdkMenuTrigger
   ],
   templateUrl: './edit-video.component.html',
   styleUrl: './edit-video.component.scss'
@@ -44,6 +51,12 @@ export class EditVideoComponent implements OnInit{
 
   selectedQuestion: Question = {} as Question;
 
+  allTags: Tag[] = [];
+  tagOptions: Tag[] = [];
+
+  @ViewChild(CdkMenuTrigger) tagPopupTrigger!: CdkMenuTrigger;
+  @ViewChild("tagInput") tagInput!: ElementRef;
+
   ngOnInit(): void {
     console.log(this.data)
     this.videoService.getVideoDetails(this.data).subscribe(video => {
@@ -51,6 +64,10 @@ export class EditVideoComponent implements OnInit{
       this.oldVideo= {...video} //actual deep clone
 
       this.selectedQuestion = video.questions[0]
+    })
+
+    this.videoService.getAllTags().subscribe(tags => {
+      this.allTags = tags
     })
 
     this.dialogRef.backdropClick().subscribe(() => {
@@ -98,11 +115,45 @@ export class EditVideoComponent implements OnInit{
   }
 
   addQuestion() {
-    this.video.questions.push({text: "New Question"} as Question)
+    this.video.questions.push({text: "New Question", answerOptions: new Array<AnswerOption>()} as Question)
     this.selectedQuestion = this.video.questions[this.video.questions.length - 1]
+    this.addAnswerOption()
   }
 
-  //UPDATE functions
+  addAnswerOption() {
+    this.selectedQuestion.answerOptions.push({text: "New Answer"} as AnswerOption)
+  }
+
+  generateTagOptions(input: string) {
+    console.log(this.video.tags)
+    this.tagOptions = this.allTags.filter(tag => !this.video.tags.filter(videoTag => videoTag.tagId === tag.tagId).length)
+    console.log(this.tagOptions)
+    this.tagOptions = this.tagOptions.filter(tag => tag.name.toLowerCase().includes(input.toLowerCase()))
+  }
+
+  openTagPopup(){
+    this.tagPopupTrigger.open()
+    this.tagInput.nativeElement.focus()
+  }
+
+  createTag(name: string) {
+    this.videoService.createTag(name).subscribe(tag => {
+      this.addTag(tag)
+    })
+  }
+
+  addTag(tag: Tag) {
+    this.video.tags.push(tag)
+    this.tagInput.nativeElement.value = ""
+    this.generateTagOptions("")
+  }
+
+  removeTag(tag: Tag){
+    this.video.tags = this.video.tags.filter(t => t.tagId !== tag.tagId)
+    this.generateTagOptions("")
+  }
+
+  //region UPDATE functions
 
   videoFileUpdated(fileId:number) {
     if(this.video.contentId)
@@ -126,10 +177,11 @@ export class EditVideoComponent implements OnInit{
     this.selectedQuestion.text = text
   }
 
-  answerUpdated(answer: AnswerOption){
-    console.log(answer)
-    this.selectedQuestion.answerOptions = this.selectedQuestion.answerOptions.map(a => a.answerOptionId == answer.answerOptionId ? answer : a)
+  answerUpdated(answer: AnswerOption, index: number){
+    this.selectedQuestion.answerOptions[index] = answer
   }
+
+  //endregion
 
   protected readonly Utils = Utils
   protected readonly faPlus = faPlus
