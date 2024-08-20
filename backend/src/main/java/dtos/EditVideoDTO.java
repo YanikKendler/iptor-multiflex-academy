@@ -12,6 +12,5 @@ public record EditVideoDTO(
         String color,
         List<Tag> tags,
         List<Question> questions,
-        VideoFile videoFile,
         VisibilityEnum visibility
 ) { }

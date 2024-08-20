@@ -71,13 +71,16 @@ section.details{
 
       border-radius: .4rem;
       border: 2px solid $gray-500;
-      padding: .1rem .3rem;
+      padding: .2rem .3rem;
     }
 
     input{
       border: none;
       flex-grow: 1;
       font-size: .9rem;
+      min-width: 0;
+      width: 8ch;
+      height: 1rem;
     }
   }
 }

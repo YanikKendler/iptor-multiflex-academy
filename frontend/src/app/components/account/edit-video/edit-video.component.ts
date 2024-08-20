@@ -61,7 +61,7 @@ export class EditVideoComponent implements OnInit{
     console.log(this.data)
     this.videoService.getVideoDetails(this.data).subscribe(video => {
       this.video = video;
-      this.oldVideo= {...video} //actual deep clone
+      this.oldVideo= JSON.parse(JSON.stringify(this.video)) //actual nested deep copy
 
       this.selectedQuestion = video.questions[0]
     })
@@ -83,14 +83,16 @@ export class EditVideoComponent implements OnInit{
 
   saveChanges() {
     this.videoService.updateVideo(this.video).subscribe(result => {
-      let selectedQuestionPos = this.video.questions.indexOf(this.selectedQuestion)
+      this.dialogRef.close();
+      /*let selectedQuestionPos = this.video.questions.indexOf(this.selectedQuestion)
       this.video = result;
-      this.oldVideo = {...result}
-      this.selectedQuestion = this.video.questions[selectedQuestionPos] || this.video.questions[0]
+      this.oldVideo = JSON.parse(JSON.stringify(this.video))
+      this.selectedQuestion = this.video.questions[selectedQuestionPos] || this.video.questions[0]*/
     })
   }
 
   close(){
+    console.log(this.video, this.oldVideo)
     //compare the actual data currently in the video vs the data when the dialog was opened to see if there are any changes
     if(JSON.stringify(this.video) !== JSON.stringify(this.oldVideo)){
       this.confirmClose()
@@ -121,13 +123,11 @@ export class EditVideoComponent implements OnInit{
   }
 
   addAnswerOption() {
-    this.selectedQuestion.answerOptions.push({text: "New Answer"} as AnswerOption)
+    this.selectedQuestion.answerOptions.push({text: "New Answer", answerOptionId: this.selectedQuestion.answerOptions.length * -1} as AnswerOption)
   }
 
   generateTagOptions(input: string) {
-    console.log(this.video.tags)
     this.tagOptions = this.allTags.filter(tag => !this.video.tags.filter(videoTag => videoTag.tagId === tag.tagId).length)
-    console.log(this.tagOptions)
     this.tagOptions = this.tagOptions.filter(tag => tag.name.toLowerCase().includes(input.toLowerCase()))
   }
 
