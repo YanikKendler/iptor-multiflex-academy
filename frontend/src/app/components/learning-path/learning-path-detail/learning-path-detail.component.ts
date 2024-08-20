@@ -3,8 +3,6 @@ import {LearningPathDetailDTO, LearningPathEntryDTO, LearningPathService} from "
 import {ActivatedRoute, Params} from "@angular/router";
 import {MediaPlayerComponent} from "../../basic/media-player/media-player.component";
 import {VideoDetailDTO, VideoService} from "../../../service/video.service";
-import { faShare} from "@fortawesome/free-solid-svg-icons";
-import {faCircle, faCircleCheck, } from "@fortawesome/free-regular-svg-icons";
 import {BookmarkIconComponent} from "../../icons/bookmark/bookmark.icon.component";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
@@ -82,8 +80,6 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
     this.videoService.getVideoDetails(videoId).subscribe(video => {
       this.currentVideo = video
       this.currentVideoPosition = this.learningPath.entries.findIndex(entry => entry.videoId == videoId)
-
-      console.log(this)
     })
   }
 
@@ -128,9 +124,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
         return 'active'
       }
       return 'available'
-    }
-
-    if(this.currentVideo.contentId == video.videoId && this.currentVideoPosition != this.learningPath.entries.length){
+    } else if(this.currentVideo.contentId == video.videoId && this.currentVideoPosition != this.learningPath.entries.length){
       return 'active'
     } else if(this.learningPath.viewProgress && video.entryPosition <= this.learningPath.viewProgress.progress + 1){
       return 'available'
@@ -141,10 +135,8 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
 
   selectVideo(video: LearningPathEntryDTO | undefined) {
     if(video == undefined) {
-      this.currentVideoPosition = this.learningPath.entries.length;
-      return
+      this.currentVideoPosition = this.learningPath.entries.length; return
     }
-
     this.getVideoDetails(video.videoId)
   }
 
@@ -152,8 +144,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
     let currentId = this.currentVideo.contentId
 
     if(this.isFinished){
-      this.currentVideoPosition = this.learningPath.entries.length
-      return
+      this.currentVideoPosition = this.learningPath.entries.length; return
     }
 
     if(currentId == this.learningPath.entries[this.learningPath.viewProgress.progress].videoId){

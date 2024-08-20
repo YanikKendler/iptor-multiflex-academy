@@ -66,6 +66,10 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
     this.tryToGetPreviousResult()
   }
 
+  /**
+   * Try to get previous result from database
+   * if the user has already finished the quiz once before the quiz starts with the results of the saved quiz
+   */
   tryToGetPreviousResult() {
     this.videoQuizAnswersComponent?.tryToGetPreviousResult(this.videoId, (result) => {
       if (result) {
