@@ -11,7 +11,7 @@ import {NgClass} from "@angular/common"
   styleUrl: './textfield.component.scss'
 })
 export class TextfieldComponent {
-  @Input() label: string = "Lable";
+  @Input() label: string = "Label";
   @Input() placeholder: string = "";
   @Input() value: string = "";
   @Output() valueChange = new EventEmitter<string>();

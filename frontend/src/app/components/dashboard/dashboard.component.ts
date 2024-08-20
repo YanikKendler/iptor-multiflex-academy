@@ -1,7 +1,13 @@
 import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {NavigationComponent} from "../navigation/navigation.component"
 import {UpdateVideoDashboardEvent, VideoOverviewComponent} from "../video/video-overview/video-overview.component"
-import {VideoOverviewDTO, VideoService, ViewProgress, VisibilityEnum} from "../../service/video.service"
+import {
+  VideoAndLearningPathOverviewCollection,
+  VideoOverviewDTO,
+  VideoService,
+  ViewProgress,
+  VisibilityEnum
+} from "../../service/video.service"
 import {MediaPlayerComponent} from "../basic/media-player/media-player.component"
 import {HttpClient} from "@angular/common/http"
 import {StarIconComponent} from "../icons/star/star.icon.component"
@@ -32,12 +38,10 @@ import {PlayIconComponent} from "../icons/playicon/play.icon.component";
 })
 export class DashboardComponent implements OnInit {
   videoService = inject(VideoService);
-  viewProgressService = inject(ViewProgressService);
   userService = inject(UserService);
-  videoList: VideoOverviewDTO[] | undefined;
-  progressList: [number, ViewProgress][] | undefined;
 
   content: ContentForUser | undefined;
+  isSearchContent: boolean = false;
 
   @ViewChild('videoId', { static: true }) videoIdInput!: ElementRef<HTMLInputElement>;
   @ViewChild('fileId', { static: true }) fileIdInput!: ElementRef<HTMLInputElement>;
@@ -135,5 +139,36 @@ export class DashboardComponent implements OnInit {
         console.error('There was an error uploading the file:', error);
       });
     }
+  }
+
+
+  searchContent(elem: string) {
+    if(!elem && elem.length <= 0){
+      this.isSearchContent = false;
+      this.userService.getContentForUser().subscribe(content => {
+        this.content = content;
+      });
+      return;
+    }
+
+    this.videoService.searchContent(elem).subscribe(response => {
+      console.log('Search results:', response);
+      this.content = response
+      this.isSearchContent = true;
+    });
+  }
+
+  debounce(func: Function, timeout = 300) {
+    let timer: any;
+    return (...args: any[]) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+  }
+
+  private debouncedSearch = this.debounce((event: any) => this.searchContent(event), 300);
+
+  processSearch(event: any) {
+    this.debouncedSearch(event);
   }
 }

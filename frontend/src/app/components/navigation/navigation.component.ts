@@ -1,11 +1,11 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
 import {RouterLink} from "@angular/router"
 import {
   faBell,
   faCirclePlay,
   faCircleUser,
   faEllipsis,
-  faGear,
+  faGear, faMagnifyingGlass,
   faTrash,
   faUser,
   faUsersGear
@@ -14,6 +14,8 @@ import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {IconButtonComponent} from "../basic/icon-button/icon-button.component";
 import {MatButton} from "@angular/material/button";
+import {TextfieldComponent} from "../basic/textfield/textfield.component";
+import {VideoService} from "../../service/video.service";
 
 @Component({
   selector: 'app-navigation',
@@ -24,7 +26,8 @@ import {MatButton} from "@angular/material/button";
     FaIconComponent,
     IconButtonComponent,
     MatButton,
-    CdkMenuTrigger
+    CdkMenuTrigger,
+    TextfieldComponent
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
@@ -38,6 +41,7 @@ export class NavigationComponent {
     this.trigger.close();
   }
 
+  @Output() search = new EventEmitter<string>();
   protected readonly faTrash = faTrash;
   protected readonly faEllipsis = faEllipsis;
   protected readonly faUser = faUser;
@@ -46,4 +50,7 @@ export class NavigationComponent {
   protected readonly faCirclePlay = faCirclePlay;
   protected readonly faUsersGear = faUsersGear;
   protected readonly faBell = faBell;
+  protected readonly faMagnifyingGlass = faMagnifyingGlass;
 }
+
+

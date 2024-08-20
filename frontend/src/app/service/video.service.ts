@@ -4,7 +4,7 @@ import {catchError, map, Observable, of} from "rxjs";
 import {Tag} from "./tag.service";
 import {AnswerOption, Question} from "./question.service";
 import {Comment} from "./comment.service";
-import {User} from "./user.service";
+import {ContentForUser, User} from "./user.service";
 import {Config} from "../config"
 import {LearningPathOverviewDTO} from "./learning-path.service";
 
@@ -137,5 +137,9 @@ export class VideoService {
 
   createTag(name: string) {
     return this.http.post<Tag>(`${Config.API_URL}/tag`, {name: name})
+  }
+
+  searchContent(elem: string) {
+    return this.http.get<ContentForUser>(`${Config.API_URL}/content/search?search=${elem}&userId=${Config.USER_ID}`)
   }
 }
