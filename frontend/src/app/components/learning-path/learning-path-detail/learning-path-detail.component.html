@@ -14,41 +14,51 @@
 
     <div class="steps">
       @for(video of learningPath.entries; track video){
-        <div class="entry" [ngClass]="currentVideo.contentId == video.videoId ? 'active' : ''">
+        <div class="entry" [ngClass]="getClassAvailability(video)" (click)="getClassAvailability(video) != 'unavailable' ? selectVideo(video) : ''">
           <p>{{video.videoTitle}}</p>
+        </div>
+      }
+      @if(isFinished){
+        <div class="entry finished" [ngClass]="getClassAvailability(undefined)" (click)="selectVideo(undefined)">
+          <p>Finished</p>
         </div>
       }
     </div>
   </div>
 
-  <div class="videoSection">
-    <div class="top">
-      <app-media-player [video]="currentVideo"></app-media-player>
-      <div class="right">
-        @if(currentVideo.questions){
-          <app-video-quiz [questions]="currentVideo.questions" [videoId]="currentVideo.contentId"></app-video-quiz>
+  @if(this.learningPath && this.learningPath.entries && this.currentVideoPosition < this.learningPath.entries.length){
+    <div class="videoSection">
+      <div class="top">
+        <app-media-player [video]="currentVideo"></app-media-player>
+        <div class="right">
+          @if(currentVideo.questions){
+            <app-video-quiz [questions]="currentVideo.questions" [videoId]="currentVideo.contentId"
+                            [inLearningPath]="true" (nextVideo)="nextVideo()" [isLastVideo]="isLastVideo"></app-video-quiz>
+          }
+        </div>
+      </div>
+
+      <div class="bottom">
+        <div class="tab-selector" #tabSelector>
+          <p class="description" (click)="selectTab('description')">Description</p>
+          <p class="comments" (click)="selectTab('comments')">Comments</p>
+          <span class="marker"></span>
+        </div>
+
+        @switch(this.currentTab){
+          @case('description'){
+            <div class="descriptionField">
+              <h2>{{currentVideo.title}}</h2>
+              <p class="description" [innerHTML]="generateDescriptionWithLinebreaks()"></p>
+            </div>
+          }
+          @case('comments'){
+            <app-video-comment-container [comments]="currentVideo.comments" [videoId]="this.currentVideo.contentId"></app-video-comment-container>
+          }
         }
       </div>
     </div>
-
-    <div class="bottom">
-      <div class="tab-selector" #tabSelector>
-        <p class="description" (click)="selectTab('description')">Description</p>
-        <p class="comments" (click)="selectTab('comments')">Comments</p>
-        <span class="marker"></span>
-      </div>
-
-      @switch(this.currentTab){
-        @case('description'){
-          <div class="descriptionField">
-            <h2>{{currentVideo.title}}</h2>
-            <p class="description" [innerHTML]="generateDescriptionWithLinebreaks()"></p>
-          </div>
-        }
-        @case('comments'){
-          <app-video-comment-container [comments]="currentVideo.comments" [videoId]="this.currentVideo.contentId"></app-video-comment-container>
-        }
-      }
-    </div>
-  </div>
+  } @else{
+    <h2>Finished learning path</h2>
+  }
 </main>

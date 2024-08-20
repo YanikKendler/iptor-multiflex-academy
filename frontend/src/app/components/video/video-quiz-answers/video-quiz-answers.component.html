@@ -2,6 +2,16 @@
   <h2>Finished quiz</h2>
   <p>Score {{correctAnswers.length}} / {{correctAnswers.length + wrongAnswers.length + missedAnswers.length}}</p>
   <button (click)="restartQuiz()">Restart Quiz</button>
+
+  <div class="buttons">
+    @if(inLearningPath && isQuizFinished && calculateScoreInPercent() > 0.8 || calculateScoreInPercent() < 0){
+      <button mat-stroked-button (click)="restartQuiz()" color="secondary">Quiz neustarten</button>
+
+      <button mat-flat-button color="secondary" (click)="this.nextVideo.emit()">{{ isLastVideo ? 'Quiz abschließen' : 'Nächstes Video'}}</button>
+    } @else {
+      <button mat-flat-button (click)="restartQuiz()" color="secondary">Quiz neustarten</button>
+    }
+  </div>
   <p></p>
 }
 @else{
@@ -23,5 +33,15 @@
     }
   </main>
 
-  <button (click)="checkAnswer()">{{ isQuizFinished ? 'Restart Quiz' : isAnswerCheckedIn ? 'Next Question' : 'Submit' }}</button>
+  <div class="buttons">
+    @if(inLearningPath && isQuizFinished && calculateScoreInPercent() > 0.8){
+      <button mat-stroked-button color="secondary" (click)="checkAnswer()">
+        {{ isQuizFinished ? 'Restart Quiz' : isAnswerCheckedIn ? 'Next Question' : 'Submit' }}</button>
+
+      <button mat-flat-button color="secondary" (click)="this.nextVideo.emit()">{{ isLastVideo ? 'Finish Quiz' : 'Next Video'}}</button>
+    } @else {
+      <button mat-flat-button color="secondary" (click)="checkAnswer()">
+        {{ isQuizFinished ? 'Restart Quiz' : isAnswerCheckedIn ? 'Next Question' : 'Submit' }}</button>
+    }
+  </div>
 }

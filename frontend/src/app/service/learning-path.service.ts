@@ -42,6 +42,10 @@ export class LearningPathService {
   constructor() { }
 
   getLearningPathDetails(pathId: number){
-    return this.service.get<LearningPathDetailDTO>(`${Config.BACKEND_URL}/api/learningpath/${pathId}?userId=${Config.USER_ID}`)
+    return this.service.get<LearningPathDetailDTO>(`${Config.API_URL}/learningpath/${pathId}?userId=${Config.USER_ID}`)
+  }
+
+  nextVideoForLearningPath(pathId: number) {
+    this.service.post<LearningPathEntryDTO>(`${Config.API_URL}/learningpath/${pathId}/next?userId=${Config.USER_ID}`, {}).subscribe();
   }
 }

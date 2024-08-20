@@ -1,4 +1,14 @@
-import {AfterViewInit, Component, inject, Input, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component, EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {VideoQuizAnswersComponent} from "../video-quiz-answers/video-quiz-answers.component";
 import {NgClass, NgForOf} from "@angular/common";
 import {AnswerOption, Question} from "../../../service/question.service"
@@ -15,9 +25,12 @@ import {VideoService} from "../../../service/video.service";
   templateUrl: './video-quiz.component.html',
   styleUrl: './video-quiz.component.scss'
 })
-export class VideoQuizComponent implements OnInit, AfterViewInit {
+export class VideoQuizComponent implements AfterViewInit, OnChanges{
   @Input() questions: Question[] | undefined = [];
   @Input() videoId: number = 0;
+  @Input() inLearningPath: boolean = false;
+  @Input() isLastVideo: boolean = false;
+  @Output() nextVideo: EventEmitter<any> = new EventEmitter()
 
   @ViewChild(VideoQuizAnswersComponent) videoQuizAnswersComponent: VideoQuizAnswersComponent | undefined;
 
@@ -29,15 +42,35 @@ export class VideoQuizComponent implements OnInit, AfterViewInit {
 
   //todo when the user swaps to another page, the quiz should keep the progress
 
-  ngOnInit() {
-    // auto-select first question
-    if (this.questions) {
-      this.selectedQuestion = this.questions[0];
-    }
+  ngOnChanges() {
+    this.resetQuiz()
+    this.tryToGetPreviousResult()
+  }
+
+  resetQuiz() {
+    this.questionNr = 0
+    this.checkedQuestions = []
+    this.isQuizFinished = false
+    this.selectedQuestion = this.questions ? this.questions[0] : null
+    this.videoQuizAnswersComponent?.resetQuiz()
   }
 
   ngAfterViewInit() {
-    console.log("init")
+    if (!this.questions || this.questions.length === 0) {
+      this.nextQuestion(true);
+      return;
+    } else {
+      this.selectedQuestion = this.questions[0];
+    }
+
+    this.tryToGetPreviousResult()
+  }
+
+  /**
+   * Try to get previous result from database
+   * if the user has already finished the quiz once before the quiz starts with the results of the saved quiz
+   */
+  tryToGetPreviousResult() {
     this.videoQuizAnswersComponent?.tryToGetPreviousResult(this.videoId, (result) => {
       if (result) {
         this.isQuizFinished = true;
@@ -48,9 +81,9 @@ export class VideoQuizComponent implements OnInit, AfterViewInit {
           this.videoQuizAnswersComponent?.checkedQuestions.push(count++);
 
           question.answerOptions.forEach(answerOption => {
-            let selectedAnswers = this.videoQuizAnswersComponent?.selectedAnswers || []
+            let selectedAnswers = this.videoQuizAnswersComponent?.selectedAnswers || [];
             if (answerOption.isCorrect && selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId) ||
-                !answerOption.isCorrect && !selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId)) {
+              !answerOption.isCorrect && !selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId)) {
               this.videoQuizAnswersComponent?.correctAnswers.push(answerOption);
             } else if (!answerOption.isCorrect && selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId)) {
               this.videoQuizAnswersComponent?.wrongAnswers.push(answerOption);
@@ -82,10 +115,10 @@ export class VideoQuizComponent implements OnInit, AfterViewInit {
   nextQuestion(isRestart: boolean = false) {
     if(this.questions){
       if(isRestart){
-        this.questionNr = 0
-        this.checkedQuestions = []
+        this.questionNr = 0;
+        this.checkedQuestions = [];
+        this.isQuizFinished = false;
         this.selectedQuestion = this.questions[this.questionNr]
-        this.isQuizFinished = false
         return
       }
 

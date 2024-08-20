@@ -26,7 +26,7 @@ public class ViewProgress {
     private LocalDateTime timestamp;
 
 
-    public ViewProgress(Video content, User user, int progress) {
+    public ViewProgress(Content content, User user, int progress) {
         this.content = content;
         this.user = user;
         this.progress = progress;
@@ -60,8 +60,8 @@ public class ViewProgress {
         return content;
     }
 
-    public void setContent(Video video) {
-        this.content = video;
+    public void setContent(Content content) {
+        this.content = content;
     }
 
     public int getProgress() {

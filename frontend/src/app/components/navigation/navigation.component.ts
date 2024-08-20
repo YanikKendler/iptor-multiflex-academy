@@ -31,8 +31,8 @@ import {MatButton} from "@angular/material/button";
 })
 export class NavigationComponent {
   @Input() simple: boolean = false;
-    protected readonly faTrash = faTrash;
-    protected readonly faEllipsis = faEllipsis;
+  protected readonly faTrash = faTrash;
+  protected readonly faEllipsis = faEllipsis;
   protected readonly faUser = faUser;
   protected readonly faCircleUser = faCircleUser;
   protected readonly faGear = faGear;
