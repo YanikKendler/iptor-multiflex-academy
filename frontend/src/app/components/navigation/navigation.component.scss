@@ -20,9 +20,16 @@ fa-icon{
   display: flex;
 }
 
-app-textfield{
+input{
   width: 20vw;
-  background: none;
+  background-color: $primary-600;
+  border: none;
+  color: white;
+
+  &::placeholder {
+    color: $gray-900;
+    font-weight: lighter;
+  }
 }
 
 .menu{

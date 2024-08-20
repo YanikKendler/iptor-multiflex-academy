@@ -3,7 +3,7 @@
 @if(simple){
   <a routerLink="/">Back to the Dashboard</a>
 } @else {
-  <app-textfield [label]="''" [placeholder]="'Search for a Video'" (valueChange)="search.emit($event)"></app-textfield>
+  <input placeholder="Search for a Video" (input)="search.emit(searchInput.value)" #searchInput>
 }
 
 <div class="right">
