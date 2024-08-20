@@ -56,13 +56,7 @@ main.checked .answer{
   }
 }
 
-button{
-  background: $primary-500;
-  color: white;
-  padding: 0.25rem 2rem;
-  border: none;
-  border-radius: 0.5rem;
+.buttons{
+  display: flex;
   margin-top: 1rem;
-  cursor: pointer;
-  user-select: none;
 }

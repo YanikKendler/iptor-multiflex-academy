@@ -94,7 +94,7 @@ INSERT INTO content (dtype, title, description, visibility, color, user_userid) 
 INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (1, 1);
 INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (2, 2);
 INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (3, 1);
-INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (4, 2);
+INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (1, 2);
 INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (2, 3);
 INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (4, 1);
 
@@ -145,4 +145,4 @@ INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, i
 
 INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (5, 1, 1, '2023-10-02 11:30:00', false);
 INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (5, 2, 1, '2023-10-02 11:30:00', false);
-INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (6, 1, 2, '2023-10-02 11:30:00', false);
+INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (6, 1, 1, '2023-10-02 11:30:00', false);

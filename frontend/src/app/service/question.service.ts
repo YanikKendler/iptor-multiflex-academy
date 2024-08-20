@@ -6,7 +6,7 @@ export interface AnswerOption {
   answerOptionId: number;
   text: string;
   isCorrect: boolean;
-
+}
 export interface Question {
   questionId: number;
   answerOptions: AnswerOption[];
