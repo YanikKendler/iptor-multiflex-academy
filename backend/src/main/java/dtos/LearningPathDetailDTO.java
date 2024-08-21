@@ -14,7 +14,6 @@ public record LearningPathDetailDTO(
         ViewProgress viewProgress,
         VisibilityEnum visibility,
         String color,
-        List<LearningPathEntryDTO> entries,
-        Long userId
+        List<LearningPathEntryDTO> entries
 ) {
 }

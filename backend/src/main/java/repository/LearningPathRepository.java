@@ -27,16 +27,31 @@ public class LearningPathRepository {
             viewProgress = null;
         }
 
-        return new LearningPathDetailDTO(learningPath.getContentId(), learningPath.getTitle(), learningPath.getDescription(),
-                learningPath.getTags(), viewProgress, learningPath.getVisibility(), learningPath.getColor(),
-                learningPath.getEntries().stream().map(entry -> {
-                    Long duration = 0L;
-                    try{
-                            duration = entry.getVideo().getVideoFile().getDurationSeconds();
-                    }catch (NullPointerException ignored){ }
+        return new LearningPathDetailDTO(
+            learningPath.getContentId(),
+            learningPath.getTitle(),
+            learningPath.getDescription(),
+            learningPath.getTags(),
+            viewProgress,
+            learningPath.getVisibility(),
+            learningPath.getColor(),
+            learningPath.getEntries().stream().map(entry -> {
+                Long duration = 0L;
+                try{
+                        duration = entry.getVideo().getVideoFile().getDurationSeconds();
+                }catch (NullPointerException ignored){ }
 
-                    return new LearningPathEntryDTO(entry.getPathEntryId(), entry.getVideo().getContentId(), entry.getVideo().getTitle(), duration, entry.getVideo().getComments(null).size(), entry.getEntryPosition(), learningPath.getUser().getUserId());
-                }).toList());
+                return new LearningPathEntryDTO(
+                    entry.getPathEntryId(),
+                    entry.getVideo().getContentId(),
+                    entry.getVideo().getTitle(),
+                    duration,
+                    entry.getVideo().getComments(null).size(),
+                    entry.getEntryPosition(),
+                    learningPath.getUser().getUserId()
+                );
+            }
+        ).toList());
     }
 
     public void getNext(Long pathId, Long userId) {

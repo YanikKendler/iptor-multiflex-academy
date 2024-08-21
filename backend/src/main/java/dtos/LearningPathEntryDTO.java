@@ -6,6 +6,7 @@ public record LearningPathEntryDTO(
         String videoTitle,
         Long durationSeconds,
         int questionCount,
-        int entryPosition
+        int entryPosition,
+        Long userId
 ) {
 }
