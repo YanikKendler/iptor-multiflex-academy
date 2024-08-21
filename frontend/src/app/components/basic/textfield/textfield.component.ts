@@ -1,11 +1,13 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgClass} from "@angular/common"
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-textfield',
   standalone: true,
   imports: [
-    NgClass
+    NgClass,
+    FormsModule
   ],
   templateUrl: './textfield.component.html',
   styleUrl: './textfield.component.scss'

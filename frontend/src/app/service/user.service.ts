@@ -27,6 +27,22 @@ export interface MyVideoContentDTO{
   color: String
 }
 
+export interface UserDTO{
+  username: string,
+  email: string,
+  password: string,
+  userType: UserEnum
+}
+
+export interface UserLoginDTO{
+  userId: number,
+  password: string
+}
+
+export enum UserEnum{
+  ADMIN, EMPLOYEE, CUSTOMER
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -49,5 +65,17 @@ export class UserService {
 
   getUserContent(){
     return this.http.get<MyVideoContentDTO[]>(`${Config.API_URL}/user/${Config.USER_ID}/usercontent`)
+  }
+
+  createUser(userDTO: UserDTO){
+    return this.http.post<number>(`${Config.API_URL}/user`, userDTO)
+  }
+
+  login(userDTO: UserDTO) {
+    return this.http.post<number>(`${Config.API_URL}/user/login`, userDTO)
+  }
+
+  isLoggedIn(user: UserLoginDTO) {
+    return this.http.post<boolean>(`${Config.API_URL}/user/isloggedin`, user)
   }
 }

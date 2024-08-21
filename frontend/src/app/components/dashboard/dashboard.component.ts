@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {NavigationComponent} from "../navigation/navigation.component"
 import {UpdateVideoDashboardEvent, VideoOverviewComponent} from "../video/video-overview/video-overview.component"
 import {
@@ -19,6 +19,7 @@ import {
 } from "../learning-path/learning-path-overview/learning-path-overview.component";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {PlayIconComponent} from "../icons/playicon/play.icon.component";
+import {Config} from "../../config";
 
 @Component({
   selector: 'app-dashboard',

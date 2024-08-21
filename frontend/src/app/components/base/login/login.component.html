@@ -1,0 +1,19 @@
+<nav>
+  <a routerLink="/login" routerLinkActive="active">Login</a>
+  <a routerLink="/register" routerLinkActive="active">Register</a>
+</nav>
+
+<form [formGroup]="regForm">
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" class="form-control" formControlName="email">
+    <span *ngIf="!regForm.get('email')?.valid && !regForm.get('email')?.untouched">Valid email required!</span>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" class="form-control" formControlName="password">
+    <span *ngIf="!regForm.get('password')?.valid && !regForm.get('password')?.untouched">Valid password required!</span>
+  </div>
+
+  <button class="btn btn-primary" type="submit" (click)="onSubmit()">Submit</button>
+</form>

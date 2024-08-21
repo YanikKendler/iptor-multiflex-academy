@@ -276,4 +276,38 @@ public class UserRepository {
             return new MyVideoContentDTO(video.getContentId(), video.getTitle(), (int) views, starRatingRepository.getAverage(video.getContentId()), video.getVisibility(), video.getQuestions().size(), video.getTags(), video.getColor());
         }).toList();
     }
+
+    @Transactional
+    public Long create(UserDTO user) {
+        User createdUser = new User(user.username(), user.email(), user.password(), user.userType());
+        em.persist(createdUser);
+        return createdUser.getUserId();
+    }
+
+    public Long login(UserDTO user) {
+        User createdUser = em.createQuery("select u from User u where u.email = :email", User.class)
+                .setParameter("email", user.email()).getSingleResult();
+
+        System.out.println(user.password());
+        System.out.println(createdUser.getPassword());
+        createdUser.setPassword(user.password());
+        System.out.println(createdUser.getPassword());
+
+
+        if (!createdUser.verifyPassword(user.password())) {
+            throw new IllegalArgumentException("Invalid password");
+        }
+
+        return createdUser.getUserId();
+    }
+
+    public boolean isLoggedIn(UserLoginDTO user1) {
+        try {
+            User user = em.createQuery("select u from User u where u.userId = :userId", User.class)
+                    .setParameter("userId", user1.userId()).getSingleResult();
+            return user.verifyPassword(user1.password());
+        } catch (NoResultException e) {
+            return false;
+        }
+    }
 }

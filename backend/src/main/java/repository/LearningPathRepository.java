@@ -7,7 +7,6 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import model.LearningPath;
-import model.LearningPathEntry;
 import model.User;
 import model.ViewProgress;
 
