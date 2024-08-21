@@ -3,6 +3,7 @@ package boundary;
 import dtos.CreateVideoDTO;
 import dtos.EditVideoDTO;
 import dtos.VideoDetailDTO;
+import dtos.VideoOverviewDTO;
 import enums.VisibilityEnum;
 import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
@@ -51,6 +52,18 @@ public class VideoResource {
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().entity(videoDetailDTO).build();
+    }
+
+    @GET
+    public Response getAllAsOverviewDTO(){
+        List<VideoOverviewDTO> videoOverviewDTOs;
+        try{
+            videoOverviewDTOs = videoRepository.getAllAsOverviewDTO();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().entity(videoOverviewDTOs).build();
     }
 
 /*    @GET

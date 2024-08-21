@@ -6,12 +6,13 @@ import model.Tag;
 import model.VideoFile;
 
 import java.util.List;
+import java.util.Set;
 
 public record CreateVideoDTO(
         String title,
         String description,
         String color,
-        List<Tag> tags,
+        Set<Tag> tags,
         List<Question> questions,
         VisibilityEnum visibility,
         VideoFile videoFile

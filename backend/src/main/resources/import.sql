@@ -12,7 +12,7 @@ INSERT INTO VideoFile(durationseconds, sizebytes, originalfileextension) values 
 -- Insert demo data for Video
 INSERT INTO content (dtype, title, description, visibility, color, user_userid, videofile_videofileid) VALUES ('Video', 'Java Basics', 'Introduction to Java', 'self' , '#ABCDEF', 1, 1);
 INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Advanced Java', 'Deep dive into Java', 'customers' , '#FEDCBA', 1);
-INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Spring Boot Tutorial', 'Getting started with Spring Boot', 'internal' , '#BABA11', 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Spring Boot Tutorial', 'Getting started with Spring Boot', 'internal' , '#BABA22', 1);
 INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , '#AFFE55', 2);
 
 -- Insert demo data for Question
@@ -96,9 +96,9 @@ INSERT INTO content_starrating (video_contentid, starratings_ratingid) VALUES (1
 INSERT INTO content_starrating (video_contentid, starratings_ratingid) VALUES (1, 4);
 
 -- Insert demo data for Learning Paths
-INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('LearningPath', 'Java Developer', 'Become a Java Developer', 'everyone', 'blue', 1);
-INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('LearningPath', 'Spring Boot Developer', 'Become a Spring Boot Developer', 'everyone', 'green', 1);
-INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('LearningPath', 'Hibernate ORM Developer', 'Become a Hibernate ORM Developer', 'everyone', 'red', 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('LearningPath', 'Java Developer', 'Become a Java Developer', 'everyone', '#BDA123', 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('LearningPath', 'Spring Boot Developer', 'Become a Spring Boot Developer', 'everyone', '#123456', 1);
+INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('LearningPath', 'Hibernate ORM Developer', 'Become a Hibernate ORM Developer', 'everyone', '#A1B2C3', 1);
 
 -- Insert demo data for Learning Path Entry
 INSERT INTO learningpathentry (video_contentid, entryposition) VALUES (1, 1);

@@ -16,13 +16,23 @@ export interface ContentForUser {
   suggested: VideoAndLearningPathOverviewCollection
 }
 
-export interface MyVideoContentDTO{
+export interface MyLearningpathDTO {
   contentId: number,
   title: String,
   views: number,
   rating: number,
   visibility: VisibilityEnum,
   questionCount: number,
+  tags: Tag[],
+  color: String
+}
+
+export interface MyLearningpathDTO {
+  contentId: number,
+  title: String,
+  views: number,
+  visibility: VisibilityEnum,
+  videoCount: number,
   tags: Tag[],
   color: String
 }
@@ -47,7 +57,11 @@ export class UserService {
     return this.http.get<ContentForUser>(`${Config.API_URL}/user/${Config.USER_ID}/contentforuser`)
   }
 
-  getUserContent(){
-    return this.http.get<MyVideoContentDTO[]>(`${Config.API_URL}/user/${Config.USER_ID}/usercontent`)
+  getUserVideos(){
+    return this.http.get<MyLearningpathDTO[]>(`${Config.API_URL}/user/${Config.USER_ID}/videos`)
+  }
+
+  getUserLearningpaths(){
+    return this.http.get<MyLearningpathDTO[]>(`${Config.API_URL}/user/${Config.USER_ID}/learningpaths`)
   }
 }

@@ -3,37 +3,35 @@
 table{
   padding-inline: 1rem;
   text-align: left;
+  width: 100%;
 
   tr{
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(6, min-content) auto;
     padding-block: .5rem;
+    gap: 1rem;
+    width: 100%;
 
     &:not(:last-child){
       border-bottom: 1px solid $gray-600;
     }
 
     th, td{
-      align-items: center;
-      width: 8vw;
+      min-width: 8vw;
     }
 
     .smallColumn{
-      width: 5vw;
+      min-width: 5vw;
     }
 
     .mid{
-      width: 12vw;
+      min-width: 12vw;
     }
 
     .tags{
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-
-    th:last-child, td:last-child{
-      width: 20vw;
     }
   }
 
@@ -45,7 +43,6 @@ table{
   }
 
   th:last-child{
-    gap: .5rem;
     justify-content: flex-end;
   }
 
@@ -54,15 +51,9 @@ table{
     align-items: center;
     gap: .5rem;
 
-    &:last-child{
+    &.actions{
       justify-content: flex-end;
-
-      fa-icon{
-        font-size: 1.2rem;
-      }
-      fa-icon.small{
-        font-size: 1rem;
-      }
+      width: 100%;
     }
   }
 }

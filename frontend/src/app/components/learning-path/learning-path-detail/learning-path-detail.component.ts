@@ -84,7 +84,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   }
 
   getProgressBarColor(number: number): string {
-    if(this.learningPath.viewProgress && number <= this.learningPath.viewProgress.progress){
+    if(this.learningPath.viewProgress && number <= this.learningPath.viewProgress.progress && this.learningPath.color){
       return this.learningPath.color
     } else{
       return "hsl(0, 0%, 69%)"
@@ -147,7 +147,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
       this.currentVideoPosition = this.learningPath.entries.length; return
     }
 
-    if(currentId == this.learningPath.entries[this.learningPath.viewProgress.progress].videoId){
+    if(this.learningPath.viewProgress && currentId == this.learningPath.entries[this.learningPath.viewProgress.progress].videoId){
       this.learningPath.viewProgress.progress++
       this.progressPercent = this.learningPath.viewProgress.progress / this.learningPath.entries.length * 100
 

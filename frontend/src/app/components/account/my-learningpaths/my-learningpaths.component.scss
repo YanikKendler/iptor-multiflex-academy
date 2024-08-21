@@ -1,0 +1,100 @@
+@import "../../../variables";
+
+table{
+  padding-inline: 1rem;
+  text-align: left;
+  width: 100%;
+
+  tr{
+    display: grid;
+    grid-template-columns: repeat(5, min-content) auto;
+    padding-block: .5rem;
+    gap: 1rem;
+    width: 100%;
+
+    &:not(:last-child){
+      border-bottom: 1px solid $gray-600;
+    }
+
+    th, td{
+      min-width: 8vw;
+    }
+
+    .smallColumn{
+      min-width: 5vw;
+    }
+
+    .mid{
+      min-width: 12vw;
+    }
+
+    .tags{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  th{
+    display: flex;
+    align-items: end;
+    color: $gray-400;
+    font-size: .95rem;
+  }
+
+  th:last-child{
+    justify-content: flex-end;
+  }
+
+  td{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    &.actions{
+      justify-content: flex-end;
+      width: 100%;
+    }
+  }
+}
+
+.title{
+  display: flex;
+  flex-direction: column;
+
+  p{
+    font-size: .85rem;
+    color: $gray-450;
+  }
+}
+
+app-play-icon{
+  height: 1.75rem;
+}
+
+fa-icon{
+  &.starIcon{
+    font-size: 1.2rem;
+  }
+  &.grey{
+    color: hsla(0, 0%, 65%, 1);
+  }
+}
+
+button{
+  display: flex;
+  min-width: 6.25rem;
+  padding: 0.25rem 0.75rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: .25rem;
+  cursor: pointer;
+  transition: all .2s ease;
+
+  &.filled{
+    background: $secondary-500;
+    border: $secondary-500;
+    color: white;
+  }
+}

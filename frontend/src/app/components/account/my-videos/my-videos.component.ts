@@ -2,12 +2,12 @@ import {Component, inject, model, OnInit, signal, ViewChild} from '@angular/core
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {
   faArrowRightToBracket,
-  faCirclePlay,
-  faEdit,
+  faShareFromSquare,
   faEye,
   faPen,
-  faPencil, faSortDown,
-  faStar, faTrash
+  faSortDown,
+  faStar,
+  faTrash
 } from "@fortawesome/free-solid-svg-icons";
 import {faPlayCircle} from "@fortawesome/free-regular-svg-icons";
 import {RouterLink} from "@angular/router";
@@ -17,7 +17,7 @@ import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {FormsModule} from "@angular/forms";
 import {NgForOf} from "@angular/common";
 import {VideoAndLearningPathOverviewCollection, VideoService, VisibilityEnum} from "../../../service/video.service";
-import {MyVideoContentDTO, UserService} from "../../../service/user.service";
+import {MyLearningpathDTO, UserService} from "../../../service/user.service";
 import {Tag} from "../../../service/tag.service";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
@@ -28,7 +28,7 @@ import {Utils} from "../../../utils"
 import {MatTooltip} from "@angular/material/tooltip"
 
 @Component({
-  selector: 'app-my-content',
+  selector: 'app-my-videos',
   standalone: true,
   imports: [
     FaIconComponent,
@@ -43,10 +43,10 @@ import {MatTooltip} from "@angular/material/tooltip"
     DropdownComponent,
     MatTooltip
   ],
-  templateUrl: './my-content.component.html',
-  styleUrl: './my-content.component.scss'
+  templateUrl: './my-videos.component.html',
+  styleUrl: './my-videos.component.scss'
 })
-export class MyContentComponent implements OnInit{
+export class MyVideosComponent implements OnInit{
   protected readonly faPlayCircle = faPlayCircle;
   protected readonly faEye = faEye;
   protected readonly faStar = faStar;
@@ -55,14 +55,14 @@ export class MyContentComponent implements OnInit{
   userService = inject(UserService);
   videoService = inject(VideoService);
 
-  userContent : MyVideoContentDTO[] = [];
+  userContent : MyLearningpathDTO[] = [];
 
   constructor() {
     this.getUserContent();
   }
 
   getUserContent() {
-    this.userService.getUserContent().subscribe((data) => {
+    this.userService.getUserVideos().subscribe((data) => {
       this.userContent = data;
       console.log(this.userContent)
     });
@@ -116,8 +116,13 @@ export class MyContentComponent implements OnInit{
     this.videoService.updateVideoVisibility(videoId, visibilityEnumValue);
   }
 
+  deleteVideo(videoId: number){
+
+  }
+
   protected readonly faArrowRightToBracket = faArrowRightToBracket;
   protected readonly faTrash = faTrash;
   protected readonly faSortDown = faSortDown;
   protected readonly Utils = Utils
+  protected readonly faShareFromSquare = faShareFromSquare
 }

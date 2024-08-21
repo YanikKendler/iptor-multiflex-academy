@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {Tag} from "./tag.service";
-import {ViewProgress, VisibilityEnum} from "./video.service";
+import {VideoDetailDTO, ViewProgress, VisibilityEnum} from "./video.service";
 import {HttpClient} from "@angular/common/http";
 import {Config} from "../config";
 
@@ -20,9 +20,9 @@ export interface LearningPathDetailDTO {
   title: string;
   description: string;
   tags: Tag[];
-  viewProgress: ViewProgress;
+  viewProgress?: ViewProgress;
   visibility: VisibilityEnum;
-  color: string;
+  color?: string;
   entries: LearningPathEntryDTO[];
 }
 
@@ -30,6 +30,8 @@ export interface LearningPathEntryDTO {
   pathEntryId: number,
   videoId: number,
   videoTitle: string,
+  durationSeconds: number,
+  questionCount: number,
   entryPosition: number;
 }
 
@@ -37,15 +39,28 @@ export interface LearningPathEntryDTO {
   providedIn: 'root'
 })
 export class LearningPathService {
-  service = inject(HttpClient)
+  http = inject(HttpClient)
 
   constructor() { }
 
   getLearningPathDetails(pathId: number){
-    return this.service.get<LearningPathDetailDTO>(`${Config.API_URL}/learningpath/${pathId}?userId=${Config.USER_ID}`)
+    return this.http.get<LearningPathDetailDTO>(`${Config.API_URL}/learningpath/${pathId}?userId=${Config.USER_ID}`)
   }
 
   nextVideoForLearningPath(pathId: number) {
-    this.service.post<LearningPathEntryDTO>(`${Config.API_URL}/learningpath/${pathId}/next?userId=${Config.USER_ID}`, {}).subscribe();
+    this.http.post<LearningPathEntryDTO>(`${Config.API_URL}/learningpath/${pathId}/next?userId=${Config.USER_ID}`, {}).subscribe();
+  }
+
+  updatePathVisibility(contentId: number, visibility: VisibilityEnum){
+    this.http.put(`${Config.API_URL}/learningpath/${contentId}/visibility`, {visibility: visibility}).subscribe()
+  }
+
+  updateLearningPath(learningPath: LearningPathDetailDTO){
+    console.log("updating learningpath", learningPath)
+    return this.http.put<LearningPathDetailDTO>(`${Config.API_URL}/learningpath/`, learningPath)
+  }
+
+  createLearningPath(learningPath: LearningPathDetailDTO){
+    return this.http.post<LearningPathDetailDTO>(`${Config.API_URL}/learningpath/?userId=${Config.USER_ID}`, learningPath)
   }
 }

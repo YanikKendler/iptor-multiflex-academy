@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MyContentComponent } from './my-content.component';
+import { TagSelectorComponent } from './tag-selector.component';
 
-describe('MyContentComponent', () => {
-  let component: MyContentComponent;
-  let fixture: ComponentFixture<MyContentComponent>;
+describe('TagSelectorComponent', () => {
+  let component: TagSelectorComponent;
+  let fixture: ComponentFixture<TagSelectorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MyContentComponent]
+      imports: [TagSelectorComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MyContentComponent);
+    fixture = TestBed.createComponent(TagSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
