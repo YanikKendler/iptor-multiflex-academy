@@ -54,6 +54,7 @@ export class VideoQuizAnswersComponent implements OnChanges{
     return this.questionNumber < 10 ? `0${this.questionNumber + 1}` : `${this.questionNumber + 1}`;
   }
 
+  noneSelectedButTrueAnswers : AnswerOption[] = []
   correctAnswers : AnswerOption[] = []
   wrongAnswers : AnswerOption[] = []
   missedAnswers : AnswerOption[] = []
@@ -73,8 +74,10 @@ export class VideoQuizAnswersComponent implements OnChanges{
     this.answerIsSubmitted = true
     this.checkedQuestions.push(this.questionNumber)
     this.answers?.forEach(answer => {
-      if(this.selectedAnswers.includes(answer) && answer.isCorrect /*|| !this.selectedAnswers.includes(answer) && !answer.isCorrect*/){
+      if(this.selectedAnswers.includes(answer) && answer.isCorrect){
         this.correctAnswers.push(answer)
+      } else if(!this.selectedAnswers.includes(answer) && !answer.isCorrect){
+        this.noneSelectedButTrueAnswers.push(answer)
       } else if (this.selectedAnswers.includes(answer) && !answer.isCorrect){
         this.wrongAnswers.push(answer)
       } else if (!this.selectedAnswers.includes(answer) && answer.isCorrect){
@@ -101,14 +104,15 @@ export class VideoQuizAnswersComponent implements OnChanges{
 
     this.answerIsSubmitted = false
     this.selectedAnswers = []
+    this.noneSelectedButTrueAnswers = []
     this.correctAnswers = []
     this.wrongAnswers = []
     this.missedAnswers = []
   }
 
   calculateScoreInPercent() {
-    if(this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length === 0) return -1
-    return this.correctAnswers.length / (this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length)
+    if(this.noneSelectedButTrueAnswers.length + this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length === 0) return -1
+    return this.correctAnswers.length + this.noneSelectedButTrueAnswers.length / (this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length + this.noneSelectedButTrueAnswers.length)
   }
 
   tryToGetPreviousResult(videoId: number, callback: (result: boolean) => void) {
@@ -124,5 +128,13 @@ export class VideoQuizAnswersComponent implements OnChanges{
       console.log(error);
       callback(false);
     });
+  }
+
+  getButtonLabel(): string {
+    return this.isQuizFinished ? 'Restart Quiz' : this.answerIsSubmitted ? 'Next Question' : 'Submit';
+  }
+
+  showNextVideoButton(): boolean {
+    return this.inLearningPath && this.isQuizFinished && this.calculateScoreInPercent() > 0.8;
   }
 }

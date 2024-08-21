@@ -1,14 +1,15 @@
 @if(!this.answers){
   <h2>Finished quiz</h2>
-  <p>Score {{correctAnswers.length}} / {{correctAnswers.length + wrongAnswers.length + missedAnswers.length}}</p>
+  <p>Score {{correctAnswers.length + noneSelectedButTrueAnswers.length}} /
+    {{noneSelectedButTrueAnswers.length + correctAnswers.length + wrongAnswers.length + missedAnswers.length}}</p>
 
   <div class="buttons">
     @if(inLearningPath && isQuizFinished && calculateScoreInPercent() > 0.8 || calculateScoreInPercent() < 0){
-      <button mat-stroked-button (click)="restartQuiz()" color="secondary">Quiz neustarten</button>
+      <button mat-stroked-button (click)="restartQuiz()" color="secondary">Restart Quiz</button>
 
-      <button mat-flat-button color="secondary" (click)="this.nextVideo.emit()">{{ isLastVideo ? 'Quiz abschließen' : 'Nächstes Video'}}</button>
+      <button mat-flat-button color="secondary" (click)="this.nextVideo.emit()">{{ isLastVideo ? 'Finish Quiz' : 'Next Video'}}</button>
     } @else {
-      <button mat-flat-button (click)="restartQuiz()" color="secondary">Quiz neustarten</button>
+      <button mat-flat-button (click)="restartQuiz()" color="secondary">Restart Quiz</button>
     }
   </div>
   <p></p>
