@@ -12,7 +12,7 @@ public class Comment {
     @ManyToOne
     private User user;
     private String text;
-    private final LocalDateTime timestamp;
+    private LocalDateTime timestamp;
 
     public Comment(User user, String text) {
         this();
@@ -21,6 +21,10 @@ public class Comment {
     }
 
     public Comment() {
+        timestamp = LocalDateTime.now();
+    }
+
+    public void updateTimestamp() {
         timestamp = LocalDateTime.now();
     }
 

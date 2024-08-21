@@ -43,6 +43,7 @@ export interface VideoDetailDTO {
   videoFile?: VideoFile
   viewProgress?: number
   visibility: VisibilityEnum
+  userId: number
 }
 
 export interface VideoOverviewDTO {

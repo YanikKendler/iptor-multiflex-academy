@@ -33,9 +33,7 @@ export class CommentService {
     return this.http.delete(`${Config.API_URL}/video/${videoId}/comment/${commentId}?userId=${Config.USER_ID}`);
   }
 
-  updateComment(videoId: number, commentId: number, text: string){
-    this.http.put(`${Config.API_URL}/video/${videoId}/comment/${commentId}`, {
-      text: text
-    });
+  updateComment(videoId: number, comment: Comment){
+    return this.http.put(`${Config.API_URL}/video/${videoId}/comment/${comment.commentId}`, comment);
   }
 }

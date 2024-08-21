@@ -30,7 +30,7 @@ public class LearningPathRepository {
 
         return new LearningPathDetailDTO(learningPath.getContentId(), learningPath.getTitle(), learningPath.getDescription(),
                 learningPath.getTags(), viewProgress, learningPath.getVisibility(), learningPath.getColor(),
-                learningPath.getEntries().stream().map(entry -> new LearningPathEntryDTO(entry.getPathEntryId(), entry.getVideo().getContentId(), entry.getVideo().getTitle(), entry.getEntryPosition())).toList());
+                learningPath.getEntries().stream().map(entry -> new LearningPathEntryDTO(entry.getPathEntryId(), entry.getVideo().getContentId(), entry.getVideo().getTitle(), entry.getEntryPosition())).toList(), learningPath.getUser().getUserId());
     }
 
     public void getNext(Long pathId, Long userId) {

@@ -8,10 +8,19 @@
       {{Utils.toRelativeTimeString(comment.timestamp)}}
     </p>
   </div>
-  <p class="text">{{comment.text}}</p>
+
+  @if(!editMode){
+    <p class="text">{{comment.text}}</p>
+  } @else {
+    <div class="editSection">
+      <input #editInput (keydown)="keyDownFunction($event)" type="text" [(ngModel)]="comment.text">
+      <button (click)="editMode = false">Cancel</button>
+      <button (click)="updateComment()">Post</button>
+    </div>
+  }
 </div>
 
-@if(comment.user.userId === userId){
+@if(videoOwnerId === userId){
   <div class="right">
     <app-icon-button [cdkMenuTriggerFor]="menu">
       <fa-icon [icon]="faEllipsis"></fa-icon>
@@ -19,8 +28,10 @@
 
     <ng-template #menu>
       <div class="actionMenu" cdkMenu>
-          <!--<button (click)="editComment(comment)">Edit</button>-->
-          <button (click)="deleteComment(comment)" mat-button><fa-icon [icon]="faTrash"></fa-icon> Delete</button>
+        @if(comment.user.userId === userId){
+          <button (click)="editComment();" mat-button><fa-icon [icon]="faPen"></fa-icon>Edit</button>
+        }
+        <button (click)="deleteComment(comment)" mat-button><fa-icon [icon]="faTrash"></fa-icon> Delete</button>
       </div>
     </ng-template>
   </div>

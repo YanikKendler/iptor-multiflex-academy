@@ -27,7 +27,10 @@ public class CommentRepository {
     }
 
     @Transactional
-    public void update(Comment comment) {}
+    public void update(Comment comment) {
+        comment.updateTimestamp();
+        em.merge(comment);
+    }
 
     @Transactional
     public void delete(Long id, Long videoId, Long userId) {
