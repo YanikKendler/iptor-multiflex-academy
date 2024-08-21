@@ -16,30 +16,40 @@ INSERT INTO content (dtype, title, description, visibility, color, user_userid) 
 INSERT INTO content (dtype, title, description, visibility, color, user_userid) VALUES ('Video', 'Hibernate ORM', 'Understanding Hibernate ORM', 'everyone' , '#AFFE55', 2);
 
 -- Insert demo data for Question
-INSERT INTO Question (text, timestamp) VALUES ('What is the main topic of the video?', '2023-10-01 10:00:00');
-INSERT INTO Question (text, timestamp) VALUES ('Can you explain the key concepts covered?', '2023-10-02 11:30:00');
-INSERT INTO Question (text, timestamp) VALUES ('What is the key takeaway from the tutorial?', '2023-10-03 14:45:00');
-INSERT INTO Question (text, timestamp) VALUES ('How can I apply this knowledge in practice?', '2023-10-04 09:20:00');
+INSERT INTO Question (text, timestamp) VALUES ('Which planet is known as the Red Planet?', '2023-10-01 10:00:00');
+INSERT INTO Question (text, timestamp) VALUES ('What is the capital of Tuvalu?', '2023-10-02 11:30:00');
+INSERT INTO Question (text, timestamp) VALUES ('Wie kann man Geld am besten zu mehr Geld machen?', '2023-10-03 14:45:00');
+INSERT INTO Question (text, timestamp) VALUES ('Who was the first European in America', '2023-10-04 09:20:00');
 
 -- Insert demo data for AnswerOption
-INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Option 1', true);
-INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Option 2', false);
-INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Leon hardcarried', false);
-INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Leon wird hardcarried', true);
-INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Michi und Leon sind zusammen', true);
-INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Michi ist single', false);
-INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Yanik ist schlecht in Programmieren', false);
-INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Leif Erikson war der erste Europäer in Amerika', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Mars', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Earth', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Jupiter', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Pago Pago', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Montevideo', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Funafuti', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Ouagadougou', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Einfach das Geld anpflanzen.', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'In Aktien Investieren', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Alles für Essen ausgeben', true);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Gold kaufen', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Barack Obama', false);
+INSERT INTO AnswerOption ( text, isCorrect) VALUES ( 'Leif Erikson', true);
 
 -- Insert demo data for question_answer_option
 INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (1, 1);
 INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (1, 2);
 INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (1, 3);
 INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (2, 4);
-INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (3, 5);
-INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (3, 6);
-INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (4, 7);
-INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (4, 8);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (2, 5);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (2, 6);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (2, 7);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (3, 8);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (3, 9);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (3, 10);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (3, 11);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (4, 12);
+INSERT INTO question_answeroption (question_questionid, answeroptions_answeroptionid) VALUES (4, 13);
 
 -- Insert demo data for Comment
 INSERT INTO Comment (text, user_userid, timestamp) VALUES ('Great video!', 1, '2023-4-01 10:00:00');
