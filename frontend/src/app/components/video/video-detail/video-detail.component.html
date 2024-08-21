@@ -38,7 +38,7 @@
 
     @switch(this.currentTab){
       @case('comments'){
-        <app-video-comment-container [comments]="video.comments" [videoId]="this.video.contentId"></app-video-comment-container>
+        <app-video-comment-container [comments]="video.comments" [videoId]="video.contentId" [videoOwnerId]="video.userId"></app-video-comment-container>
       }
       @case('quiz'){
         <app-video-quiz [questions]="video.questions" [videoId]="video.contentId"></app-video-quiz>

@@ -163,7 +163,8 @@ public class VideoRepository {
             video.calculateStarRating(),
             video.getVideoFile(),
             viewProgressDuration,
-            video.getVisibility()
+            video.getVisibility(),
+            video.getUser().getUserId()
         );
     }
 

@@ -56,7 +56,8 @@ public class Video extends Content {
                 this.calculateStarRating(),
                 this.getVideoFile(),
                 0,
-                this.getVisibility()
+                this.getVisibility(),
+                this.getUser().getUserId()
         );
     }
 

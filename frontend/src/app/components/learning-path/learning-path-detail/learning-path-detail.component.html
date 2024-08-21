@@ -53,7 +53,7 @@
             </div>
           }
           @case('comments'){
-            <app-video-comment-container [comments]="currentVideo.comments" [videoId]="this.currentVideo.contentId"></app-video-comment-container>
+            <app-video-comment-container [comments]="currentVideo.comments" [videoId]="this.currentVideo.contentId" [videoOwnerId]="currentVideo.userId"></app-video-comment-container>
           }
         }
       </div>

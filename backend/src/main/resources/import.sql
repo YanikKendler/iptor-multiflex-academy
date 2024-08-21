@@ -1,11 +1,12 @@
 -- Insert demo data for User
-INSERT INTO app_user (username, email, user_type) VALUES ('john_doe', 'john.doe@example.com', 'CUSTOMER');
-INSERT INTO app_user (username, email, user_type) VALUES ('jane_smith', 'jane.smith@example.com', 'CUSTOMER');
-INSERT INTO app_user (username, email, user_type) VALUES ('alice_jones', 'alice.jones@example.com', 'EMPLOYEE');
-INSERT INTO app_user (username, email, user_type) VALUES ('bob_brown', 'bob.brown@example.com', 'EMPLOYEE');
-INSERT INTO app_user (username, email, user_type) VALUES ('leon steinhuber', 'leon.steinhuber@example.com', 'EMPLOYEE');
-INSERT INTO app_user (username, email, user_type) VALUES ('michael leisch', 'michael.leisch@example.com', 'EMPLOYEE');
-INSERT INTO app_user (username, email, user_type) VALUES ('yanik kendler', 'yanik.kendler@example.com', 'EMPLOYEE');
+INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('admin', 'admin@admin.at', 'ADMIN', '$2a$10$//9XMI4F0iERZqp7so7VAOsbH3GRgSYb8xtcZIXdliG12YEezaP6W', NULL, NULL);
+INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('john_doe', 'john.doe@example.com', 'EMPLOYEE', '$2a$10$JZcfmZu750yAzChOBXpDT.KflaI0ViCXJu8WOTL632GpDUIh4HiVy', 1, 1);
+INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('jane_smith', 'jane.smith@example.com', 'EMPLOYEE', '$2a$10$Sjasj01areX482nzo4QQqejPPOvFfOySFZxtToJouDsbpFMorWht6', 1, 1);
+INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('alice_jones', 'alice.jones@example.com', 'EMPLOYEE', '$2a$10$KM7tedBITuicqq0I8VOGTOAe7lY9tTXy.0jvuqqHJUawTAPyUV/oS', 1, 1);
+INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('bob_brown', 'bob.brown@example.com', 'EMPLOYEE', '$2a$10$INXg8Oyw1Y.2oGyNzFuTSeNSwgdFNo9Cc3jEcFzqibCDHlJY9EHFG', 1, 1);
+INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('leon steinhuber', 'leon.steinhuber@example.com', 'CUSTOMER', '$2a$10$L1J.O0rIkj9mJChc6wyO9utjuAMYDDe5/wJXvPhx51fBc/aJMCxfW', 2, 2);
+INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('michael leisch', 'michael.leisch@example.com', 'CUSTOMER', '$2a$10$cYAjuzcXgiAVvCIyh8jtyeLqts02esLWzUu54m1NmEFJ/f2ThlJK.', 2, 2);
+INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('yanik kendler', 'yanik.kendler@example.com', 'CUSTOMER', '$2a$10$Sfcpxtigra.DjEmHz8mlmuQwN8iHT9clPFGq8AEcUyPdgYqTJ0fIO', 2, 2);
 
 INSERT INTO VideoFile(durationseconds, sizebytes, originalfileextension) values (32, 1000000, 'mp4');
 
@@ -122,17 +123,6 @@ INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (5, 3);
 INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (6, 3);
 INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (6, 4);
 INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (7, 4);
-
--- Insert demo data for Customer
-INSERT INTO Customer (userid, companyName, isManager, supervisor_userid) VALUES (1, 'TechCorp', true, null);
-INSERT INTO Customer (userid, companyName, isManager, supervisor_userid) VALUES (2, 'TechCorp', false, 1);
-
--- Insert demo data for Employee
-INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (3 , NULL, NULL, false);
-INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (4 ,3, null, true);
-INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (5 ,3, 4, false);
-INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (6 ,4, 5, false);
-INSERT INTO Employee (userid,supervisor_userId, deputySupervisor_userId, isAdmin) VALUES (7 ,6, 4, true);
 
 -- Insert demo data for Notification
 INSERT INTO Notification (text, user_userid, timestamp) VALUES ('Your video has been approved.', 1, '2023-10-01 10:00:00');

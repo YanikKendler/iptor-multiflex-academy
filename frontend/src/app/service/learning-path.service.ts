@@ -24,6 +24,7 @@ export interface LearningPathDetailDTO {
   visibility: VisibilityEnum;
   color?: string;
   entries: LearningPathEntryDTO[];
+  userId: number;
 }
 
 export interface LearningPathEntryDTO {

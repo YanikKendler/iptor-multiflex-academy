@@ -3,6 +3,7 @@ package repository;
 import dtos.*;
 import dtos.ContentForUserDTO;
 import dtos.VideoOverviewDTO;
+import io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -27,6 +28,8 @@ public class UserRepository {
 
     @Inject
     StarRatingRepository starRatingRepository;
+    @Inject
+    DataSourcesBuildTimeConfig dataSourcesBuildTimeConfig;
 
     public User getById(Long id) {
         return em.find(User.class, id);
@@ -171,18 +174,24 @@ public class UserRepository {
         HashMap<Video, Integer> videoScores = new HashMap<>();
         HashMap<LearningPath, Integer> learningPathScores = new HashMap<>();
 
+        User user = em.find(User.class, userId);
         videos.forEach(video -> {
-            double avgStarRating = starRatingRepository.getAverage(video.getContentId());
-            double tagScore = video.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
+            if(video.isVisibleForUser(user)){
+                double avgStarRating = starRatingRepository.getAverage(video.getContentId());
+                double tagScore = video.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
 
-            videoScores.put(video, (int) (avgStarRating + tagScore*2.5));
+                videoScores.put(video, (int) (avgStarRating + tagScore*2.5));
+            }
         });
 
         learningPaths.forEach(learningPath -> {
-            double avgStarRating = starRatingRepository.getAverage(learningPath.getContentId());
-            double tagScore = learningPath.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
+            if(learningPath.isVisibleForUser(user)){
 
-            learningPathScores.put(learningPath, (int) (avgStarRating + tagScore*2.5));
+                double avgStarRating = starRatingRepository.getAverage(learningPath.getContentId());
+                double tagScore = learningPath.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
+
+                learningPathScores.put(learningPath, (int) (avgStarRating + tagScore*2.5));
+            }
         });
 
         // sort by score
@@ -300,5 +309,39 @@ public class UserRepository {
                             lp.getTags(),
                             lp.getColor());
                 }).toList();
+    }
+
+    @Transactional
+    public Long create(UserDTO user) {
+        User createdUser = new User(user.username(), user.email(), user.password(), user.userType());
+        em.persist(createdUser);
+        return createdUser.getUserId();
+    }
+
+    public Long login(UserDTO user) {
+        User createdUser = em.createQuery("select u from User u where u.email = :email", User.class)
+                .setParameter("email", user.email()).getSingleResult();
+
+        System.out.println(user.password());
+        System.out.println(createdUser.getPassword());
+        createdUser.setPassword(user.password());
+        System.out.println(createdUser.getPassword());
+
+
+        if (!createdUser.verifyPassword(user.password())) {
+            throw new IllegalArgumentException("Invalid password");
+        }
+
+        return createdUser.getUserId();
+    }
+
+    public boolean isLoggedIn(UserLoginDTO user1) {
+        try {
+            User user = em.createQuery("select u from User u where u.userId = :userId", User.class)
+                    .setParameter("userId", user1.userId()).getSingleResult();
+            return user.verifyPassword(user1.password());
+        } catch (NoResultException e) {
+            return false;
+        }
     }
 }

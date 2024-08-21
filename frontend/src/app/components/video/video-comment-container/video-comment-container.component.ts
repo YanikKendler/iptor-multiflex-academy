@@ -29,6 +29,7 @@ import {VideoCommentComponent} from "../video-comment/video-comment.component"
 })
 export class VideoCommentContainerComponent implements OnInit {
   @Input() videoId: number = 0;
+  @Input() videoOwnerId: number = 0;
   @Input() comments: Comment[] | undefined = [];
   protected readonly Utils = Utils
   protected readonly faEllipsis = faEllipsis;

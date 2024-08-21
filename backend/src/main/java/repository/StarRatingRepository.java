@@ -5,11 +5,9 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
-import model.Comment;
 import model.StarRating;
 import model.User;
 import model.Video;
-import org.hibernate.sql.ast.tree.expression.Star;
 
 import java.util.List;
 

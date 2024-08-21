@@ -41,6 +41,11 @@
         <fa-icon [icon]="faUsersGear"></fa-icon>
         <p>Manage Users</p>
       </div>
+
+      <div routerLink="/login" (click)="closeMenu();logout()">
+        <fa-icon [icon]="faRightFromBracket"></fa-icon>
+        <p>Logout</p>
+      </div>
     </div>
   </ng-template>
 </div>

@@ -1,6 +1,8 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import enums.UserEnum;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.json.JsonObject;
 import jakarta.persistence.*;
 
@@ -8,26 +10,38 @@ import java.util.List;
 
 @Entity
 @Table(name = "app_user")
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "user_type")
-public abstract class User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @ManyToOne
+    private User supervisor;
+
+    @ManyToOne
+    private User deputySupervisor;
+
+    @Enumerated(EnumType.STRING)
+    private UserEnum userType;
 
     @OneToMany
     @JsonIgnore
     private List<Content> savedContent;
 
-    public User(String username, String email) {
+    public User(String username, String email, String password, UserEnum userType) {
         this.username = username;
         this.email = email;
+        setPassword(password);
+        this.userType = userType;
     }
 
     public User() { }
@@ -46,6 +60,10 @@ public abstract class User {
         return null;
     }
 
+    public boolean verifyPassword(String password) {
+        return BcryptUtil.matches(password, this.password);
+    }
+
     public void toggleSavedContent(Content content) {
         if (savedContent.contains(content)) {
             savedContent.remove(content);
@@ -61,6 +79,14 @@ public abstract class User {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public void setPassword(String password) {
+        this.password = BcryptUtil.bcryptHash(password);
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getUsername() {
@@ -86,5 +112,34 @@ public abstract class User {
     public void setSavedVideos(List<Content> saved) {
         this.savedContent = saved;
     }
+
+    public User getSupervisor() {
+        return supervisor;
+    }
+
+    public void setSupervisor(User supervisor) {
+        this.supervisor = supervisor;
+    }
+
+    public User getDeputySupervisor() {
+        return deputySupervisor;
+    }
+
+    public void setDeputySupervisor(User deputySupervisor) {
+        this.deputySupervisor = deputySupervisor;
+    }
+
+    public UserEnum getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserEnum userType) {
+        this.userType = userType;
+    }
+
+    public void setSavedContent(List<Content> savedContent) {
+        this.savedContent = savedContent;
+    }
+
     //</editor-fold>
 }

@@ -16,5 +16,6 @@ public record VideoDetailDTO(
         double rating,
         VideoFile videoFile,
         int viewProgress,
-        VisibilityEnum visibility
+        VisibilityEnum visibility,
+        Long userId
 ) { }

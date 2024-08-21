@@ -27,6 +27,7 @@ import {MatMenuTrigger} from "@angular/material/menu"
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component"
 import {MatTooltip} from "@angular/material/tooltip"
 import {TagSelectorComponent} from "../../basic/tag-selector/tag-selector.component"
+import {Config} from "../../../config";
 @Component({
   selector: 'app-edit-video',
   standalone: true,
@@ -83,6 +84,7 @@ export class EditVideoComponent implements OnInit{
         tags: [],
         questions: [],
         rating: 0,
+        userId: Config.USER_ID
       } as VideoDetailDTO
       this.oldVideo= JSON.parse(JSON.stringify(this.video)) //actual nested deep copy
     }

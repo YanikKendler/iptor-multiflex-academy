@@ -35,7 +35,7 @@ public class LearningPathRepository {
                             duration = entry.getVideo().getVideoFile().getDurationSeconds();
                     }catch (NullPointerException ignored){ }
 
-                    return new LearningPathEntryDTO(entry.getPathEntryId(), entry.getVideo().getContentId(), entry.getVideo().getTitle(), duration, entry.getVideo().getComments(null).size(), entry.getEntryPosition());
+                    return new LearningPathEntryDTO(entry.getPathEntryId(), entry.getVideo().getContentId(), entry.getVideo().getTitle(), duration, entry.getVideo().getComments(null).size(), entry.getEntryPosition(), learningPath.getUser().getUserId());
                 }).toList());
     }
 

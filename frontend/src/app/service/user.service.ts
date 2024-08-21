@@ -37,6 +37,22 @@ export interface MyLearningpathDTO {
   color: String
 }
 
+export interface UserDTO{
+  username: string,
+  email: string,
+  password: string,
+  userType: UserEnum
+}
+
+export interface UserLoginDTO{
+  userId: number,
+  password: string
+}
+
+export enum UserEnum{
+  ADMIN, EMPLOYEE, CUSTOMER
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -63,5 +79,17 @@ export class UserService {
 
   getUserLearningpaths(){
     return this.http.get<MyLearningpathDTO[]>(`${Config.API_URL}/user/${Config.USER_ID}/learningpaths`)
+  }
+
+  createUser(userDTO: UserDTO){
+    return this.http.post<number>(`${Config.API_URL}/user`, userDTO)
+  }
+
+  login(userDTO: UserDTO) {
+    return this.http.post<number>(`${Config.API_URL}/user/login`, userDTO)
+  }
+
+  isLoggedIn(user: UserLoginDTO) {
+    return this.http.post<boolean>(`${Config.API_URL}/user/isloggedin`, user)
   }
 }

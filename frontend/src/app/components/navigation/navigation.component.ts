@@ -5,7 +5,7 @@ import {
   faCirclePlay,
   faCircleUser,
   faEllipsis,
-  faGear, faMagnifyingGlass,
+  faGear, faMagnifyingGlass, faRightFromBracket,
   faTrash,
   faUser,
   faUsersGear, faXmark
@@ -16,6 +16,8 @@ import {IconButtonComponent} from "../basic/icon-button/icon-button.component";
 import {MatButton} from "@angular/material/button";
 import {TextfieldComponent} from "../basic/textfield/textfield.component";
 import {VideoService} from "../../service/video.service";
+import {UserService} from "../../service/user.service";
+import {Config} from "../../config";
 
 @Component({
   selector: 'app-navigation',
@@ -52,6 +54,13 @@ export class NavigationComponent {
   protected readonly faBell = faBell;
   protected readonly faMagnifyingGlass = faMagnifyingGlass;
   protected readonly faXmark = faXmark
+  protected readonly faRightFromBracket = faRightFromBracket;
+
+  logout() {
+    localStorage.removeItem("USER_ID")
+    localStorage.removeItem("USER_PASSWORD")
+    Config.USER_ID = -1
+  }
 }
 
 

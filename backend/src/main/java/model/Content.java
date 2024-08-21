@@ -1,7 +1,9 @@
 package model;
 
+import enums.UserEnum;
 import enums.VisibilityEnum;
 import jakarta.persistence.*;
+import org.hibernate.usertype.UserType;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -102,5 +104,18 @@ public abstract class Content {
 
     public LocalDateTime getCreationTime() {
         return creationTime;
+    }
+
+    public boolean isVisibleForUser(User user) {
+        if (visibility == VisibilityEnum.self) {
+            return this.user.equals(user);
+        } else if (visibility == VisibilityEnum.everyone) {
+            return true;
+        } else if (visibility == VisibilityEnum.customers) {
+            return user.getUserType() == UserEnum.CUSTOMER || user.getUserType() == UserEnum.ADMIN;
+        } else if (visibility == VisibilityEnum.internal) {
+            return user.getUserType() == UserEnum.EMPLOYEE || user.getUserType() == UserEnum.ADMIN;
+        }
+        return false;
     }
 }
