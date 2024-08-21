@@ -35,7 +35,7 @@ export interface VideoDetailDTO {
   contentId: number
   title: string
   description: string
-  color: string
+  color?: string
   tags: Tag[]
   comments?: Comment[]
   questions?: Question[]

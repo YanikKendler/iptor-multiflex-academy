@@ -233,6 +233,10 @@ export class EditVideoComponent implements OnInit{
     this.selectedQuestion!.answerOptions![index] = answer
   }
 
+  removeAnswer(index: number){
+    this.selectedQuestion!.answerOptions?.splice(index, 1)
+  }
+
   //endregion
 
   protected readonly Utils = Utils

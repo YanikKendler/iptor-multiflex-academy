@@ -3,7 +3,7 @@
     @for (number of numbers; track number) {
       <app-star-icon (click)="setRating(number)" [state]="getStarStateFromNumber(number)"></app-star-icon>
     }
-    <p>{{ getDoubleDigitRating() }}/5</p>
+    <p>{{ getDoubleDigitRating() }}</p>
   </div>
 
   <button mat-stroked-button color="secondary" (click)="sendRating()">{{buttonText}}</button>

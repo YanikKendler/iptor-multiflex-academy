@@ -13,5 +13,12 @@
   (valueChange)="updatedAnswerText($event)"
   [rows]="1"
   [small]="true"
-
 ></app-textfield>
+
+<app-icon-button
+  (click)="removeAnswer()"
+  matTooltip="remove answer"
+  matTooltipShowDelay="500"
+>
+  <fa-icon [icon]="faXmark"></fa-icon>
+</app-icon-button>

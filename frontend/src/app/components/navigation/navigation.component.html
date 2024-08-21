@@ -3,7 +3,17 @@
 @if(simple){
   <a routerLink="/">Back to the Dashboard</a>
 } @else {
-  <input placeholder="Search for a Video" (input)="search.emit(searchInput.value)" #searchInput>
+  <div class="search">
+    <input placeholder="Search for a Video" (input)="search.emit(searchInput.value)" #searchInput>
+    @if(searchInput.value != ''){
+      <app-icon-button (click)="searchInput.value = ''; search.emit('')">
+        <fa-icon [icon]="faXmark"></fa-icon>
+      </app-icon-button>
+    }
+    @else{
+      <fa-icon class="search" [icon]="faMagnifyingGlass"></fa-icon>
+    }
+  </div>
 }
 
 <div class="right">

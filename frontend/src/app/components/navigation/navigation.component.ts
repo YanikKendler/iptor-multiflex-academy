@@ -8,7 +8,7 @@ import {
   faGear, faMagnifyingGlass,
   faTrash,
   faUser,
-  faUsersGear
+  faUsersGear, faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
@@ -51,6 +51,7 @@ export class NavigationComponent {
   protected readonly faUsersGear = faUsersGear;
   protected readonly faBell = faBell;
   protected readonly faMagnifyingGlass = faMagnifyingGlass;
+  protected readonly faXmark = faXmark
 }
 
 

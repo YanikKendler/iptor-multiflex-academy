@@ -24,7 +24,7 @@
 <section class="details">
   <div>
     <p>video-color:</p>
-    <input type="color" [value]="video.color" (input)="colorUpdated(color.value)" #color>
+    <input type="color" [value]="video?.color" (input)="colorUpdated(color.value)" #color>
   </div>
 
   <mat-divider [vertical]="true"></mat-divider>
@@ -95,6 +95,7 @@
             [answer]="answer"
             (answerChange)="answerUpdated(answerComponent.answer, $index)"
             [letter]="Utils.numberToLetter($index)"
+            (remove)="removeAnswer($index)"
             #answerComponent
           ></app-answer-option>
         }

@@ -1,5 +1,8 @@
+@import "../../../variables";
+
 :host{
   display: flex;
+  width: 100%;
 }
 
 /*mat-checkbox{
@@ -9,4 +12,12 @@
 
 mat-checkbox{
   translate: 0 .5rem;
+}
+
+app-icon-button{
+  translate: 0 .1rem;
+  align-self: center;
+  fa-icon{
+    color: $gray-400
+  }
 }

@@ -54,7 +54,7 @@ h2{
   }
 }
 
-main.checked .answer{
+main.checked .answer.correct, main.checked .answer.missing, main.checked .answer.wrong{
   ::before{
     content: '';
     font-size: .9rem;
@@ -127,5 +127,16 @@ main.checked .answer{
 
 .buttons{
   display: flex;
+  margin-top: 1rem;
+}
+
+.finished{
+  h2{
+    font-size: 1.2rem;
+  }
+
+  display: grid;
+  place-items: center;
+  margin-left: 3rem;
   margin-top: 1rem;
 }

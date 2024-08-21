@@ -26,15 +26,33 @@ fa-icon{
   display: flex;
 }
 
-input{
+div.search{
+  display: flex;
+  align-items: center;
   width: 20vw;
   background-color: $primary-600;
-  border: none;
-  color: white;
+  border-radius: .3rem;
 
-  &::placeholder {
+  input{
+    background-color: transparent;
+    border: none;
+    color: white;
+    width: 100%;
+
+    &::placeholder {
+      color: $gray-900;
+      font-weight: lighter;
+      font-size: .9rem;
+    }
+  }
+
+  fa-icon{
     color: $gray-900;
-    font-weight: lighter;
+    font-size: 1rem;
+
+    &.search {
+      margin-right: .5rem;
+    }
   }
 }
 
