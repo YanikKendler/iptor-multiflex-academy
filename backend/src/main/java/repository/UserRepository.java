@@ -3,6 +3,7 @@ package repository;
 import dtos.*;
 import dtos.ContentForUserDTO;
 import dtos.VideoOverviewDTO;
+import io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -25,6 +26,8 @@ public class UserRepository {
 
     @Inject
     StarRatingRepository starRatingRepository;
+    @Inject
+    DataSourcesBuildTimeConfig dataSourcesBuildTimeConfig;
 
     public User getById(Long id) {
         return em.find(User.class, id);
@@ -169,18 +172,24 @@ public class UserRepository {
         HashMap<Video, Integer> videoScores = new HashMap<>();
         HashMap<LearningPath, Integer> learningPathScores = new HashMap<>();
 
+        User user = em.find(User.class, userId);
         videos.forEach(video -> {
-            double avgStarRating = starRatingRepository.getAverage(video.getContentId());
-            double tagScore = video.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
+            if(video.isVisibleForUser(user)){
+                double avgStarRating = starRatingRepository.getAverage(video.getContentId());
+                double tagScore = video.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
 
-            videoScores.put(video, (int) (avgStarRating + tagScore*2.5));
+                videoScores.put(video, (int) (avgStarRating + tagScore*2.5));
+            }
         });
 
         learningPaths.forEach(learningPath -> {
-            double avgStarRating = starRatingRepository.getAverage(learningPath.getContentId());
-            double tagScore = learningPath.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
+            if(learningPath.isVisibleForUser(user)){
 
-            learningPathScores.put(learningPath, (int) (avgStarRating + tagScore*2.5));
+                double avgStarRating = starRatingRepository.getAverage(learningPath.getContentId());
+                double tagScore = learningPath.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
+
+                learningPathScores.put(learningPath, (int) (avgStarRating + tagScore*2.5));
+            }
         });
 
         // sort by score
