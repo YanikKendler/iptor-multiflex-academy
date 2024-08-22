@@ -14,17 +14,10 @@ import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
 import {MatButton} from "@angular/material/button";
-import {TextfieldComponent} from "../basic/textfield/textfield.component";
-import {VideoService} from "../../service/video.service";
-import {UserService} from "../../service/user.service";
-import {Config} from "../../config";
 import {TextfieldComponent} from "../../basic/textfield/textfield.component";
-import {VideoService} from "../../../service/video.service";
-import {UserService} from "../../../service/user.service";
 import {Config} from "../../../config";
 import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning-path-icon.component"
 import {MatDivider} from "@angular/material/divider"
-import {LearningPathIconComponent} from "../icons/learning-path-icon/learning-path-icon.component";
 
 @Component({
   selector: 'app-navigation',
