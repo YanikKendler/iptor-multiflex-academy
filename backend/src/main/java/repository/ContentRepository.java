@@ -21,12 +21,19 @@ public class ContentRepository {
     @Inject
     UserRepository userRepository;
 
-    public ContentForUserDTO searchContent(String search, Long userId) {
+    public ContentForUserDTO searchContent(String search, Long userId, List<Tag> tags) {
         try {
-            List<Content> content = em.createQuery("SELECT c FROM Content c " +
-                            "WHERE LOWER(c.title) LIKE LOWER(:search) " +
-                            "OR LOWER(c.description) LIKE LOWER(:search)", Content.class)
-                    .setParameter("search", "%" + search + "%").getResultList();
+            List<Content> content = em.createQuery("SELECT distinct c FROM Content c " +
+                            "join c.tags t " +
+                            "WHERE not exists(" +
+                            "    select t from Tag t " +
+                            "    where t in :tags and t not in elements(c.tags)" +
+                            ") and LOWER(c.title) LIKE LOWER (:search) or LOWER(c.description) LIKE LOWER(:search) " +
+                            "and not exists(" +
+                            "    select t from Tag t " +
+                            "    where t in :tags and t not in elements(c.tags)" +
+                            ")", Content.class)
+                    .setParameter("search", "%" + search + "%").setParameter("tags", tags).getResultList();
 
             List<VideoOverviewDTO> videos = content.stream()
                     .filter(c -> c instanceof Video).map(c -> userRepository.convertVideoToOverviewDTO((Video) c, userId)).toList();

@@ -1,10 +1,8 @@
 package boundary;
 
+import dtos.FilterDTO;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import repository.ContentRepository;
@@ -14,12 +12,12 @@ public class ContentResource {
     @Inject
     ContentRepository repository;
 
-    @GET
+    @POST
     @Path("search")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response searchContent(@QueryParam("search") String search, @QueryParam("userId") Long userId){
+    public Response searchContent(@QueryParam("search") String search, @QueryParam("userId") Long userId, FilterDTO filterDTO){
         try{
-            return Response.ok(repository.searchContent(search, userId)).build();
+            return Response.ok(repository.searchContent(search, userId, filterDTO.tags())).build();
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

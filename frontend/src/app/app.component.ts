@@ -26,8 +26,6 @@ export class AppComponent implements OnInit {
       console.log(isLoggedIn)
       if (!isLoggedIn) {
         this.router.navigate(['login'])
-      } else {
-        console.log(Config.USER_ID)
       }
     })*/
   }

@@ -47,6 +47,7 @@ export class DashboardComponent implements OnInit {
   content: ContentForUser | undefined;
   filterTags: Tag[] = [];
   isSearchContent: boolean = false;
+  searchTerm : string = ""
 
   @ViewChild('videoId', { static: true }) videoIdInput!: ElementRef<HTMLInputElement>;
   @ViewChild('fileId', { static: true }) fileIdInput!: ElementRef<HTMLInputElement>;
@@ -55,6 +56,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.content = undefined
+    this.getLocalStorageTags()
     this.loadContent()
 
     /*    console.log(Utils.toSmartTimeString(new Date()))
@@ -64,16 +66,34 @@ export class DashboardComponent implements OnInit {
         console.log(Utils.toSmartTimeString(new Date("07.06.2020")))*/
   }
 
+  getLocalStorageTags(){
+    let tags = localStorage.getItem("selectedTags");
+    if(tags){
+      this.filterTags = JSON.parse(tags) as Tag[];
+    }
+  }
+
   loadContent(): void{
+    if(this.isSearchContent){
+      this.videoService.searchContent(this.searchTerm, this.filterTags).subscribe(response => {
+        this.content = response
+      });
+      return
+    }
+
     this.userService.getContentForUser(this.filterTags).subscribe(content => {
       this.content = content;
     });
   }
 
+  searchContent(elem: string) {
+    this.isSearchContent = !(!elem && elem.length <= 0);
+    this.searchTerm = elem
+    this.loadContent()
+  }
+
   updateVideoDashboard(event?: UpdateVideoDashboardEvent) {
     if(event){
-      console.log(event)
-
       if(event.action === "add"){
         if(!this.content?.current.videos.includes(event.video)){
           event.video.saved = true;
@@ -99,8 +119,6 @@ export class DashboardComponent implements OnInit {
 
   updateLearningPathDashboard(event?: UpdateLearningPathDashboardEvent){
     if(event){
-      console.log(event)
-
       if(event.action === "add"){
         event.learningPath.saved = true;
         if(!this.content?.current.learningPaths.includes(event.learningPath)){
@@ -148,23 +166,6 @@ export class DashboardComponent implements OnInit {
         console.error('There was an error uploading the file:', error);
       });
     }
-  }
-
-
-  searchContent(elem: string) {
-    if(!elem && elem.length <= 0){
-      this.isSearchContent = false;
-      this.userService.getContentForUser([]).subscribe(content => {
-        this.content = content;
-      });
-      return;
-    }
-
-    this.videoService.searchContent(elem).subscribe(response => {
-      console.log('Search results:', response);
-      this.content = response
-      this.isSearchContent = true;
-    });
   }
 
   debounce(func: Function, timeout = 300) {

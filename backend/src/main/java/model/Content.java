@@ -107,14 +107,18 @@ public abstract class Content {
     }
 
     public boolean isVisibleForUser(User user) {
+        if(UserEnum.ADMIN == user.getUserType()) {
+            return true;
+        }
+
         if (visibility == VisibilityEnum.self) {
             return false;
         } else if (visibility == VisibilityEnum.everyone) {
             return true;
         } else if (visibility == VisibilityEnum.customers) {
-            return user.getUserType() == UserEnum.CUSTOMER || user.getUserType() == UserEnum.ADMIN;
+            return user.getUserType() == UserEnum.CUSTOMER;
         } else if (visibility == VisibilityEnum.internal) {
-            return user.getUserType() == UserEnum.EMPLOYEE || user.getUserType() == UserEnum.ADMIN;
+            return user.getUserType() == UserEnum.EMPLOYEE;
         }
         return false;
     }

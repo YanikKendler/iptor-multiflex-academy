@@ -19,28 +19,27 @@ import * as bcrypt from 'bcryptjs';
 export class RegisterComponent{
   regForm: FormGroup;
   userService = inject(UserService)
-  router: Router = inject(Router);
 
-  constructor() {
+  constructor(private router: Router) {
     this.regForm = new FormGroup({
       'username': new FormControl(''),
       'email': new FormControl('', [Validators.required, Validators.email]),
-      'password': new FormControl('', [Validators.required, Validators.minLength(8)]),
+      'password': new FormControl('', [Validators.required, Validators.minLength(4)]),
     })
   }
 
   onSubmit() {
     if (this.regForm.valid) {
-      const hashedPassword = bcrypt.hashSync(this.regForm.get('password')?.value, 10);
-
       let userDTO: UserDTO = {
         username: this.regForm.get('username')?.value,
         email: this.regForm.get('email')?.value,
-        password: hashedPassword,
-        userType: UserEnum.CUSTOMER
+        password: this.regForm.get('password')?.value,
+        userType: "CUSTOMER"
       }
       this.userService.createUser(userDTO).subscribe(response => {
         Config.USER_ID = response
+        localStorage.setItem('USER_ID', response.toString());
+        localStorage.setItem('USER_PASSWORD', userDTO.password);
         this.router.navigate([''])
       }, error => {
         console.error(error)

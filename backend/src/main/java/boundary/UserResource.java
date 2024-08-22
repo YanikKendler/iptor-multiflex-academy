@@ -1,10 +1,9 @@
 package boundary;
 
-import dtos.FilterTagDTO;
+import dtos.FilterDTO;
 import dtos.UserDTO;
 import dtos.UserLoginDTO;
 import jakarta.inject.Inject;
-import jakarta.json.JsonObject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -12,10 +11,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.Tag;
 import model.User;
 import repository.UserRepository;
-import repository.VideoRepository;
 
 import java.util.List;
 
@@ -23,18 +20,16 @@ import java.util.List;
 public class UserResource {
     @Inject
     UserRepository repository;
-    @Inject
-    UserRepository userRepository;
-    @Inject
-    VideoRepository videoRepository;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createUser(UserDTO user){
+        System.out.println(user);
         Long userId;
         try{
             userId = repository.create(user);
         }catch (Exception ex){
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
         return Response.ok(userId).build();
@@ -136,7 +131,7 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{userId}/contentforuser")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getContentForUser(@PathParam("userId") Long userId, FilterTagDTO filterTags) {
+    public Response getContentForUser(@PathParam("userId") Long userId, FilterDTO filterTags) {
         try {
             return Response.ok(repository.getContentForUser(userId, filterTags.tags())).build();
         } catch (Exception ex) {

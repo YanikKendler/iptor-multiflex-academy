@@ -45,7 +45,7 @@ export interface UserDTO{
   username: string,
   email: string,
   password: string,
-  userType: UserEnum
+  userType: string
 }
 
 export interface UserLoginDTO{
@@ -71,7 +71,6 @@ export class UserService {
   }
 
   getContentForUser(filterTags: Tag[]){
-    console.log(filterTags)
     return this.http.post<ContentForUser>(`${Config.API_URL}/user/${Config.USER_ID}/contentforuser`, {tags: filterTags})
   }
 
@@ -84,11 +83,12 @@ export class UserService {
   }
 
   createUser(userDTO: UserDTO){
+    console.log(userDTO)
     return this.http.post<number>(`${Config.API_URL}/user`, userDTO)
   }
 
   login(userDTO: UserDTO) {
-    return this.http.post<number>(`${Config.API_URL}/user/login`, userDTO)
+    return this.http.post<number>(`${Config.API_URL}/user/login`, {email: userDTO.email, password: userDTO.password})
   }
 
   isLoggedIn(user: UserLoginDTO) {
