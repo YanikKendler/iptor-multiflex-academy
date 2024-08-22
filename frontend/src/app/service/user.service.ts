@@ -53,6 +53,12 @@ export interface UserLoginDTO{
   password: string
 }
 
+export interface UserAssignedContentDTO {
+  contentId: number,
+  title: string,
+  progressPercent: number
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -93,5 +99,13 @@ export class UserService {
 
   isLoggedIn(user: UserLoginDTO) {
     return this.http.post<boolean>(`${Config.API_URL}/user/isloggedin`, user)
+  }
+
+  getManageableUsers() {
+    return this.http.get<User[]>(`${Config.API_URL}/user/${Config.USER_ID}/getusers`)
+  }
+
+  getAssignedUserContent(userId: number){
+    return this.http.get<UserAssignedContentDTO[]>(`${Config.API_URL}/user/${userId}/assignedcontent`)
   }
 }

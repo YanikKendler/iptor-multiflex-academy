@@ -27,24 +27,19 @@
 
   <ng-template #menu>
     <div class="menu" cdkMenu>
-      <div routerLink="/account/settings" (click)="closeMenu()">
-        <fa-icon [icon]="faGear"></fa-icon>
-        <p>Settings</p>
+      <div routerLink="/account/my-videos" (click)="closeMenu()">
+        <fa-icon [icon]="faCirclePlay"></fa-icon>
+        <p>My Videos</p>
       </div>
 
-      <div routerLink="/account/my-content" (click)="closeMenu()">
+      <div routerLink="/account/my-learningpaths" (click)="closeMenu()">
         <fa-icon [icon]="faCirclePlay"></fa-icon>
-        <p>My Content</p>
+        <p>My Learningpaths</p>
       </div>
 
       <div routerLink="/account/manage-users" (click)="closeMenu()">
         <fa-icon [icon]="faUsersGear"></fa-icon>
         <p>Manage Users</p>
-      </div>
-
-      <div routerLink="/login" (click)="closeMenu();logout()">
-        <fa-icon [icon]="faRightFromBracket"></fa-icon>
-        <p>Logout</p>
       </div>
     </div>
   </ng-template>

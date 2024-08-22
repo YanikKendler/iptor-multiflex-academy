@@ -18,6 +18,7 @@ import {TextfieldComponent} from "../basic/textfield/textfield.component";
 import {VideoService} from "../../service/video.service";
 import {UserService} from "../../service/user.service";
 import {Config} from "../../config";
+import {LearningPathIconComponent} from "../icons/learning-path-icon/learning-path-icon.component";
 
 @Component({
   selector: 'app-navigation',
@@ -29,7 +30,8 @@ import {Config} from "../../config";
     IconButtonComponent,
     MatButton,
     CdkMenuTrigger,
-    TextfieldComponent
+    TextfieldComponent,
+    LearningPathIconComponent
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'

@@ -12,6 +12,8 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 @Transactional
 public class UserRepository {
+    private static final Logger log = LoggerFactory.getLogger(UserRepository.class);
     @Inject
     EntityManager em;
 
@@ -400,6 +403,57 @@ public class UserRepository {
             return user.verifyPassword(user1.password());
         } catch (NoResultException e) {
             return false;
+        }
+    }
+
+    public List<User> getUsers(Long userId) {
+        try {
+            return em.createQuery("select u from User u where u.supervisor.userId = :userId or u.deputySupervisor.userId = :userId", User.class)
+                    .setParameter("userId", userId)
+                    .getResultList();
+        } catch(NoResultException e){
+            return null;
+        }
+    }
+
+    public List<UserAssignedContentDTO> getUserAssignedContent(Long userId) {
+        try{
+            List<Content> contents = em.createQuery("select c from Content c " +
+                            "join ContentAssignment ca on ca.content.contentId = c.contentId where ca.assignedTo.userId = :userId", Content.class)
+                    .setParameter("userId", userId).getResultList();
+
+            List<UserAssignedContentDTO> dtos = new LinkedList<>();
+            contents.forEach(content -> {
+                int progress;
+                try{
+                    progress = em.createQuery("select vp.progress from ViewProgress vp " +
+                                    "where vp.user.userId = :userId and vp.content.contentId = :contentId", Integer.class)
+                            .setParameter("userId", userId).setParameter("contentId", content.getContentId()).getSingleResult();
+                } catch(NoResultException e){
+                    progress = 0;
+                }
+
+
+                System.out.println(content.getTitle());
+                double progressPercentage = 0;
+                System.out.println(progress);
+                if(content instanceof Video && progress > 0){
+                    Video video = (Video) content;
+                    if(video.getVideoFile() != null){
+                        progressPercentage = (double) progress / video.getVideoFile().getDurationSeconds();
+                    }
+                } else if(progress > 0) {
+                    LearningPath learningPath = (LearningPath) content;
+                    progressPercentage = (double) progress / learningPath.getEntries().size() / progress;
+                }
+
+                System.out.println(progressPercentage);
+                dtos.add(new UserAssignedContentDTO(content.getContentId(), content.getTitle(), progressPercentage));
+            });
+
+            return dtos;
+        } catch(Exception e){
+            return null;
         }
     }
 }
