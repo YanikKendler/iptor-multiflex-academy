@@ -139,4 +139,28 @@ public class UserResource {
             return Response.status(400).entity(ex).build();
         }
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{userId}/getusers")
+    public Response manageUsers(@PathParam("userId") Long userId) {
+        try {
+            return Response.ok(repository.getUsers(userId)).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{userId}/assignedcontent")
+    public Response getAssignedContent(@PathParam("userId") Long userId) {
+        try {
+            return Response.ok(repository.getUserAssignedContent(userId)).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+    }
 }

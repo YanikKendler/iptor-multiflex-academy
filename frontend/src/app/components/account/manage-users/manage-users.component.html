@@ -1,1 +1,3 @@
-<p>manage-users works!</p>
+@for (user of users; track user.userId){
+  <app-manage-user-field [user]="user"></app-manage-user-field>
+}
