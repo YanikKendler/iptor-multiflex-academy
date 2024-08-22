@@ -71,7 +71,6 @@ export class UserService {
   }
 
   getContentForUser(filterTags: Tag[]){
-    console.log(filterTags)
     return this.http.post<ContentForUser>(`${Config.API_URL}/user/${Config.USER_ID}/contentforuser`, {tags: filterTags})
   }
 
