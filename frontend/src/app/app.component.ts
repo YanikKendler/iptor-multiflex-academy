@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
       password: localStorage.getItem('USER_PASSWORD')!
     }
 
+    console.log(userLoginDTO)
     this.userService.isLoggedIn(userLoginDTO).subscribe(isLoggedIn => {
       console.log(isLoggedIn)
       if (!isLoggedIn) {

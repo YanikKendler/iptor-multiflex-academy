@@ -4,6 +4,7 @@ import dtos.*;
 import dtos.ContentForUserDTO;
 import dtos.VideoOverviewDTO;
 import io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -43,21 +44,22 @@ public class UserRepository {
         return em.createQuery("select u from User u", User.class).getResultList();
     }
 
-    public ContentForUserDTO getContentForUser(Long userId) {
+    public ContentForUserDTO getContentForUser(Long userId, List<Tag> tags) {
         return new ContentForUserDTO(
-                getCurrentContent(userId),
+                getCurrentContent(userId, tags),
                 getAssignedContent(userId),
                 getSuggestedContent(userId)
         );
     }
 
-    public VideoAndLearningPathOverviewCollection getCurrentContent(Long userId) {
+    public VideoAndLearningPathOverviewCollection getCurrentContent(Long userId, List<Tag> tags) {
         // Fetch unfinished videos
         List<Video> unfinishedVideos = em.createQuery(
                         "select distinct v from ViewProgress vp " +
                                 "join Video v on v.contentId = vp.content.contentId " +
+                                "join v.tags vt " +
                                 "where vp.user.userId = :userId and vp.ignored = false " +
-                                "and vp.progress < v.videoFile.durationSeconds * 0.90", Video.class)
+                                "and vp.progress < v.videoFile.durationSeconds * 0.90 ", Video.class)
                 .setParameter("userId", userId)
                 .getResultList();
 

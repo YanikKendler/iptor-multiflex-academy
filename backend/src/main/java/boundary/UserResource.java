@@ -1,5 +1,6 @@
 package boundary;
 
+import dtos.FilterTagDTO;
 import dtos.UserDTO;
 import dtos.UserLoginDTO;
 import jakarta.inject.Inject;
@@ -135,10 +136,9 @@ public class UserResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{userId}/contentforuser")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getContentForUser(@PathParam("userId") Long userId, JsonObject filterTags) {
-        System.out.println(filterTags);
+    public Response getContentForUser(@PathParam("userId") Long userId, FilterTagDTO filterTags) {
         try {
-            return Response.ok(repository.getContentForUser(userId)).build();
+            return Response.ok(repository.getContentForUser(userId, filterTags.tags())).build();
         } catch (Exception ex) {
             ex.printStackTrace();
             return Response.status(400).entity(ex).build();

@@ -3,12 +3,15 @@ import {HttpClient} from "@angular/common/http";
 import {VideoAndLearningPathOverviewCollection, VisibilityEnum} from "./video.service";
 import {Config} from "../config"
 import {Tag} from "./tag.service";
-import {filter} from "rxjs";
 
 export interface User {
   userId: number;
   username: string;
   email: string;
+}
+
+export enum UserEnum{
+  ADMIN="admin", EMPLOYEE="employee", CUSTOMER="customer"
 }
 
 export interface ContentForUser {
@@ -50,9 +53,6 @@ export interface UserLoginDTO{
   password: string
 }
 
-export enum UserEnum{
-  ADMIN, EMPLOYEE, CUSTOMER
-}
 
 @Injectable({
   providedIn: 'root'
@@ -72,7 +72,7 @@ export class UserService {
 
   getContentForUser(filterTags: Tag[]){
     console.log(filterTags)
-    return this.http.post<ContentForUser>(`${Config.API_URL}/user/${Config.USER_ID}/contentforuser`, filterTags)
+    return this.http.post<ContentForUser>(`${Config.API_URL}/user/${Config.USER_ID}/contentforuser`, {tags: filterTags})
   }
 
   getUserVideos(){

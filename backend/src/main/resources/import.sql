@@ -1,5 +1,5 @@
 -- Insert demo data for User
-INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('admin', 'admin@admin.at', 'ADMIN', '$2a$10$//9XMI4F0iERZqp7so7VAOsbH3GRgSYb8xtcZIXdliG12YEezaP6W', NULL, NULL);
+INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('admin', 'admin@admin.at', 'ADMIN', '$2a$10$JW4oWw4wFwq7c5j2CuZQheVOUsdQlS/JtTihKwWhXtulYPzC.5WTC', NULL, NULL);
 INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('john_doe', 'john.doe@example.com', 'EMPLOYEE', '$2a$10$JZcfmZu750yAzChOBXpDT.KflaI0ViCXJu8WOTL632GpDUIh4HiVy', 1, 1);
 INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('jane_smith', 'jane.smith@example.com', 'EMPLOYEE', '$2a$10$Sjasj01areX482nzo4QQqejPPOvFfOySFZxtToJouDsbpFMorWht6', 1, 1);
 INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('alice_jones', 'alice.jones@example.com', 'EMPLOYEE', '$2a$10$KM7tedBITuicqq0I8VOGTOAe7lY9tTXy.0jvuqqHJUawTAPyUV/oS', 1, 1);
