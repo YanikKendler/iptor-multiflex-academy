@@ -36,29 +36,7 @@
 
   <mat-divider [vertical]="true"></mat-divider>
 
-  <div class="tags" (click)="openTagPopup()">
-    <p>tags:</p>
-    <div class="tagList">
-      @for(tag of video.tags; track tag.tagId){
-        <app-chip [removable]="true" (onRemove)="removeTag(tag)">{{tag.name}}</app-chip>
-      }
-      <input type="text" #tagInput [cdkMenuTriggerFor]="tagPopup" placeholder="add tag" (input)="generateTagOptions(tagInput.value)" (focus)="generateTagOptions('')">
-    </div>
-
-    <ng-template #tagPopup>
-      <div class="tagOptions" cdkMenu>
-        @for(tag of tagOptions; track tag.tagId){
-          <app-chip (click)="addTag(tag)">{{tag.name}}</app-chip>
-        }
-        @if(tagInput.value.length >= 2){
-          <button mat-flat-button color="secondary" (click)="createTag(tagInput.value)">Create tag {{tagInput.value}}</button>
-        }
-        @else if(tagOptions.length == 0){
-          <p class="no-results">No tags found</p>
-        }
-      </div>
-    </ng-template>
-  </div>
+  <app-tag-selector [(selectedTags)]="video.tags"></app-tag-selector>
 </section>
 
 <h2>Questions</h2>

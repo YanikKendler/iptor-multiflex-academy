@@ -8,12 +8,14 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import model.*;
 
 import java.util.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Transactional
@@ -273,7 +275,7 @@ public class UserRepository {
         em.merge(user);
     }
 
-    public List<MyVideoContentDTO> getUserContent(Long userId) {
+    public List<MyVideoDTO> getUserVideos(Long userId) {
         List<Video> videos = em.createQuery("select v from Video v where v.user.userId = :userId order by v.contentId", Video.class)
                 .setParameter("userId", userId)
                 .getResultList();
@@ -282,8 +284,31 @@ public class UserRepository {
             long views = em.createQuery("select count(vp) from ViewProgress vp where vp.content.contentId = :contentId", Long.class)
                     .setParameter("contentId", video.getContentId())
                     .getSingleResult();
-            return new MyVideoContentDTO(video.getContentId(), video.getTitle(), (int) views, starRatingRepository.getAverage(video.getContentId()), video.getVisibility(), video.getQuestions().size(), video.getTags(), video.getColor());
+            return new MyVideoDTO(video.getContentId(), video.getTitle(), (int) views, starRatingRepository.getAverage(video.getContentId()), video.getVisibility(), video.getQuestions().size(), video.getTags(), video.getColor());
         }).toList();
+    }
+
+    public List<MyLearningpathDTO> getUserLearningpaths(Long userId) {
+        TypedQuery<LearningPath> query = em.createQuery(
+                "SELECT l FROM LearningPath l WHERE l.user.userId = :userId ORDER BY l.contentId",
+                LearningPath.class);
+        query.setParameter("userId", userId);
+        List<LearningPath> learningPaths = query.getResultList();
+
+        return learningPaths.stream()
+                .map(lp -> {
+                    long views = em.createQuery("select count(vp) from ViewProgress vp where vp.content.contentId = :contentId", Long.class)
+                    .setParameter("contentId", lp.getContentId())
+                    .getSingleResult();
+                    return new MyLearningpathDTO(
+                            lp.getContentId(),
+                            lp.getTitle(),
+                            views,
+                            lp.getVisibility(),
+                            lp.getEntries().size(),
+                            lp.getTags(),
+                            lp.getColor());
+                }).toList();
     }
 
     @Transactional

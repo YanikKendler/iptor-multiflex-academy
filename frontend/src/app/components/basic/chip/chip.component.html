@@ -3,7 +3,7 @@
 </p>
 
 @if(removable){
-  <app-icon-button size="2rem">
-    <fa-icon [icon]="faXmark" (click)="remove($event)"></fa-icon>
+  <app-icon-button size="2rem" (click)="remove($event)">
+    <fa-icon [icon]="faXmark"></fa-icon>
   </app-icon-button>
 }

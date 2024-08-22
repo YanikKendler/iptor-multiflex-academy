@@ -32,17 +32,20 @@
         <app-dropdown [selectedId]="video.visibility.toString()" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
       </td>
 
-      <td class="small">{{ getQuestionCountToString(video.questionCount) }}</td>
+      <td>{{ getQuestionCountToString(video.questionCount) }}</td>
       <td class="mid">
         <p class="tags" matTooltip="{{ getTags(video.tags) }}" matTooltipShowDelay="500">
           {{ getTags(video.tags) }}
         </p>
       </td>
 
-      <td>
+      <td class="actions">
+        <app-icon-button (click)="deleteVideo(video.contentId)">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </app-icon-button>
         <a [routerLink]="['/video/' + video.contentId]" target="_blank" matTooltip="go to video" matTooltipShowDelay="500">
           <app-icon-button>
-            <fa-icon [icon]="faArrowRightToBracket"></fa-icon>
+            <fa-icon [icon]="faShareFromSquare"></fa-icon>
           </app-icon-button>
         </a>
         <app-icon-button (click)="openEditPopUp(video.contentId)">

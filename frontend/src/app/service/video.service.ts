@@ -86,7 +86,7 @@ export interface Question {
 export class VideoService {
   http = inject(HttpClient)
 
-  getVideoList(): Observable<VideoOverviewDTO[]>{
+  getAll(): Observable<VideoOverviewDTO[]>{
     return this.http.get<VideoOverviewDTO[]>(`${Config.API_URL}/video/`)
   }
 
@@ -111,7 +111,6 @@ export class VideoService {
   }
 
   updateVideo(video: VideoDetailDTO){
-    console.log("updating video", video)
     return this.http.put<VideoDetailDTO>(`${Config.API_URL}/video/`, video)
   }
 
@@ -131,7 +130,6 @@ export class VideoService {
   }
 
   updateVideoVisibility(contentId: number, visibility: VisibilityEnum){
-    console.log(visibility)
     this.http.put(`${Config.API_URL}/video/${contentId}/visibility`, {visibility: visibility}).subscribe()
   }
 

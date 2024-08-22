@@ -1,0 +1,76 @@
+<h2>Description</h2>
+<section class="basics">
+  <div class="left">
+    <app-textfield
+      [(value)]="learningPath.title"
+      label="Title"
+      placeholder="My amazing tutorial"
+    ></app-textfield>
+
+    <app-textfield
+      [(value)]="learningPath.description"
+      label="Description"
+      placeholder="In this tutorial you will learn..."
+      [rows]="5"
+    ></app-textfield>
+  </div>
+</section>
+
+<h2 class="details">Details</h2>
+<section class="details">
+  <div>
+    <p>path-color:</p>
+    <input type="color" [value]="learningPath?.color" (input)="colorUpdated(color.value)" #color>
+  </div>
+
+  <mat-divider [vertical]="true"></mat-divider>
+
+  <div>
+    <p>visibility:</p>
+    <app-dropdown [selectedId]="learningPath.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+  </div>
+
+  <mat-divider [vertical]="true"></mat-divider>
+
+  <app-tag-selector [(selectedTags)]="learningPath.tags"></app-tag-selector>
+</section>
+
+<h2>Videos</h2>
+<section class="videos">
+  @for (videoEntry of learningPath.entries; track videoEntry.videoId) {
+    <app-video-entry
+      [videoEntry]="videoEntry"
+      [position]="videoEntry.entryPosition"
+      (positionUpdated)="updateVideoPosition(videoEntry, $event)"
+      (onDelete)="deleteVideoEntry(videoEntry)"
+    ></app-video-entry>
+  }
+
+  <input
+    type="text"
+    placeholder="search for video"
+    #tagInput
+    [cdkMenuTriggerFor]="videoPopup"
+    (input)="generateVideoOptions(tagInput.value)"
+    (focus)="generateVideoOptions('')"
+  >
+
+  <ng-template #videoPopup>
+    <div class="videoOptions" cdkMenu>
+      @for(video of videoOptions; track video.contentId){
+        <p (click)="addVideoEntry(video)">
+          {{video.title}} • {{Utils.toTimeDurationString(video.durationSeconds)}}
+        </p>
+      }
+      @if(videoOptions.length == 0){
+        <p class="no-results">No tags found</p>
+      }
+    </div>
+  </ng-template>
+
+</section>
+
+<div class="bottom">
+  <button (click)="close()" mat-stroked-button color="secondary">close</button>
+  <button (click)="saveChanges()" mat-flat-button color="secondary">save changes</button>
+</div>

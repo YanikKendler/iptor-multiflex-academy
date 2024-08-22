@@ -17,14 +17,15 @@ main{
   width: 15vw;
   margin-right: 1rem;
 
-  fa-icon{
+  fa-icon, .icon{
     font-size: 1.5rem;
+    height: 1.5rem;
   }
 
   &.active{
     background: $gray-800;
 
-    fa-icon{
+    fa-icon, .icon{
       color: $secondary-500;
     }
   }

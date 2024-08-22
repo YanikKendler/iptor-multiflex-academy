@@ -4,9 +4,11 @@ import {NavigationComponent} from "../../navigation/navigation.component";
 import {faCirclePlay, faGear, faUsersGear} from "@fortawesome/free-solid-svg-icons";
 import {SettingsComponent} from "../settings/settings.component";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MyContentComponent} from "../my-content/my-content.component";
 import {ManageUsersComponent} from "../manage-users/manage-users.component";
 import {NgClass} from "@angular/common";
+import {MyVideosComponent} from "../my-videos/my-videos.component"
+import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning-path-icon.component"
+import {MyLearningpathsComponent} from "../my-learningpaths/my-learningpaths.component"
 
 @Component({
   selector: 'app-account',
@@ -15,9 +17,11 @@ import {NgClass} from "@angular/common";
     FaIconComponent,
     NavigationComponent,
     SettingsComponent,
-    MyContentComponent,
+    MyVideosComponent,
     ManageUsersComponent,
-    NgClass
+    NgClass,
+    LearningPathIconComponent,
+    MyLearningpathsComponent
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
@@ -38,7 +42,7 @@ export class AccountComponent implements OnInit{
     })
   }
 
-  switchPage(page: "settings" | "my-content" | "manage-users"){
+  switchPage(page: "my-videos" | "my-learningpaths" | "manage-users"){
     this.router.navigate(['/account/' + page])
   }
 }

@@ -109,12 +109,24 @@ public class UserResource {
     }
 
     @GET
-    @Path("{userId}/usercontent")
+    @Path("{userId}/videos")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserContent(@PathParam("userId") Long userId) {
+    public Response getUserVideos(@PathParam("userId") Long userId) {
         try {
-            return Response.ok(repository.getUserContent(userId)).build();
+            return Response.ok(repository.getUserVideos(userId)).build();
         } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+    }
+
+    @GET
+    @Path("{userId}/learningpaths")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserLearningpaths(@PathParam("userId") Long userId) {
+        try {
+            return Response.ok(repository.getUserLearningpaths(userId)).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
     }

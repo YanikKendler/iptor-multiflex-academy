@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Video extends Content {
@@ -32,7 +33,7 @@ public class Video extends Content {
         super(title, description, visibility);
     }
 
-    public Video(String title, String description, VisibilityEnum visibility, String color, List<Tag> tags, List<Question> questions, @Nullable VideoFile videoFile, User creator) {
+    public Video(String title, String description, VisibilityEnum visibility, String color, Set<Tag> tags, List<Question> questions, @Nullable VideoFile videoFile, User creator) {
         super(title, description, visibility);
         this.setTags(tags);
         this.setUser(creator);

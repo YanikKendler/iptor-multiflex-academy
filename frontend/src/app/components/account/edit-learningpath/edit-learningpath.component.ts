@@ -4,7 +4,7 @@ import {
   AnswerOption,
   Question,
   VideoDetailDTO,
-  VideoFile,
+  VideoFile, VideoOverviewDTO,
   VideoService,
   VisibilityEnum
 } from "../../../service/video.service";
@@ -26,10 +26,11 @@ import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu"
 import {MatMenuTrigger} from "@angular/material/menu"
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component"
 import {MatTooltip} from "@angular/material/tooltip"
+import {LearningPathDetailDTO, LearningPathEntryDTO, LearningPathService} from "../../../service/learning-path.service"
 import {TagSelectorComponent} from "../../basic/tag-selector/tag-selector.component"
-import {Config} from "../../../config";
+import {VideoEntryComponent} from "../video-entry/video-entry.component"
 @Component({
-  selector: 'app-edit-video',
+  selector: 'app-edit-learningpath',
   standalone: true,
   imports: [
     NgForOf,
@@ -47,46 +48,49 @@ import {Config} from "../../../config";
     CdkMenuTrigger,
     IconButtonComponent,
     MatTooltip,
-    TagSelectorComponent
+    TagSelectorComponent,
+    VideoEntryComponent
   ],
-  templateUrl: './edit-video.component.html',
-  styleUrl: './edit-video.component.scss'
+  templateUrl: './edit-learningpath.component.html',
+  styleUrl: './edit-learningpath.component.scss'
 })
-export class EditVideoComponent implements OnInit{
+export class EditLearningpathComponent implements OnInit{
+  readonly learningPathService = inject(LearningPathService);
   readonly videoService = inject(VideoService);
 
-  readonly dialogRef = inject(MatDialogRef<EditVideoComponent>);
+  readonly dialogRef = inject(MatDialogRef<EditLearningpathComponent>);
   readonly data = inject<number>(MAT_DIALOG_DATA);
   readonly dialog = inject(MatDialog);
 
-  video: VideoDetailDTO = {} as VideoDetailDTO;
-  oldVideo: VideoDetailDTO = {} as VideoDetailDTO; //used for checking for changes
+  learningPath: LearningPathDetailDTO = {} as LearningPathDetailDTO;
+  oldLearningPath: LearningPathDetailDTO = {} as LearningPathDetailDTO; //used for checking for changes
 
-  selectedQuestion: Question | undefined;
+  allVideos: VideoOverviewDTO[] = []
+  videoOptions: VideoOverviewDTO[] = []
+
+  @ViewChild(CdkMenuTrigger) videoPopupTrigger!: CdkMenuTrigger
 
   ngOnInit(): void {
     console.log(this.data)
     if(this.data > 0){ //editing existing video
-      this.videoService.getVideoDetails(this.data).subscribe(video => {
-        this.video = video;
-        this.oldVideo= JSON.parse(JSON.stringify(this.video)) //actual nested deep copy
-
-        this.selectedQuestion = video.questions![0]
+      this.learningPathService.getLearningPathDetails(this.data).subscribe(path => {
+        this.learningPath = path;
+        console.log(path)
+        this.oldLearningPath= JSON.parse(JSON.stringify(this.learningPath)) //actual nested deep copy
       })
     }
     else{ //creating new video
-      this.video = {
+      this.learningPath = {
         contentId: -1,
         title: "",
         description: "",
         visibility: VisibilityEnum.self,
         color: this.generateRandomVideoColor(),
         tags: [],
-        questions: [],
+        entries: [],
         rating: 0,
-        userId: Config.USER_ID
-      } as VideoDetailDTO
-      this.oldVideo= JSON.parse(JSON.stringify(this.video)) //actual nested deep copy
+      } as LearningPathDetailDTO
+      this.oldLearningPath= JSON.parse(JSON.stringify(this.learningPath)) //actual nested deep copy
     }
 
     this.dialogRef.backdropClick().subscribe(() => {
@@ -98,6 +102,10 @@ export class EditVideoComponent implements OnInit{
         this.close()
       }
     })
+
+    this.videoService.getAll().subscribe(videos => {
+      this.allVideos = videos
+    })
   }
 
   generateRandomVideoColor(): string {
@@ -105,18 +113,13 @@ export class EditVideoComponent implements OnInit{
   }
 
   saveChanges() {
-    if(this.video.contentId > 0) { //saving changes to existing video
-      this.videoService.updateVideo(this.video).subscribe(result => {
+    if(this.learningPath.contentId > 0) { //saving changes to existing path
+      this.learningPathService.updateLearningPath(this.learningPath).subscribe(result => {
         this.dialogRef.close();
-        //code for saving and keeping the popup open and same question selected
-        /*let selectedQuestionPos = this.video.questions.indexOf(this.selectedQuestion)
-        this.video = result;
-        this.oldVideo = JSON.parse(JSON.stringify(this.video))
-        this.selectedQuestion = this.video.questions[selectedQuestionPos] || this.video.questions[0]*/
       })
     }
-    else { //creating new video
-      this.videoService.createVideo(this.video).subscribe(result => {
+    else { //creating new path
+      this.learningPathService.createLearningPath(this.learningPath).subscribe(result => {
         console.log(result)
         this.dialogRef.close();
       })
@@ -124,9 +127,9 @@ export class EditVideoComponent implements OnInit{
   }
 
   close(){
-    console.log(this.video, this.oldVideo)
+    console.log(this.learningPath, this.oldLearningPath)
     //compare the actual data currently in the video vs the data when the dialog was opened to see if there are any changes
-    if(JSON.stringify(this.video) !== JSON.stringify(this.oldVideo)){
+    if(JSON.stringify(this.learningPath) !== JSON.stringify(this.oldLearningPath)){
       this.confirmClose()
     }
     else {
@@ -148,59 +151,47 @@ export class EditVideoComponent implements OnInit{
     })
   }
 
-  addQuestion() {
-    if(!this.video.questions) return
-
-    this.video.questions.push({questionId: this.video.questions.length * -1 ,text: "", answerOptions: new Array<AnswerOption>()} as Question)
-    this.selectedQuestion = this.video.questions[this.video.questions.length - 1]
-    this.addAnswerOption()
-  }
-
-  removeQuestion() {
-    if(!this.selectedQuestion) return
-
-    this.video.questions = this.video.questions!.filter(question => question.questionId !== this.selectedQuestion!.questionId)
-    this.selectedQuestion = this.video.questions[0]
-  }
-
-  addAnswerOption() {
-    if(!this.selectedQuestion) return
-
-    if(!this.selectedQuestion!.answerOptions) this.selectedQuestion!.answerOptions = []
-
-    this.selectedQuestion.answerOptions?.push({text: "", answerOptionId: this.selectedQuestion.answerOptions.length * -1} as AnswerOption)
+  generateVideoOptions(input: string) {
+    this.videoOptions = this.allVideos.filter(video => !this.learningPath.entries.filter(t => t.videoId === video.contentId).length)
+    this.videoOptions = this.videoOptions.filter(video => video.title.toLowerCase().includes(input.toLowerCase()))
   }
 
   //region UPDATE functions
 
-  videoFileUpdated(videoFile: VideoFile) {
-    if(this.video.contentId > 0)
-      this.videoService.linkVideoFile(this.video.contentId, videoFile.videoFileId).subscribe(result => {
-        console.log("linked videos")
-      })
-    else {
-       this.video.videoFile = videoFile
-    }
+  updateVideoPosition(video: LearningPathEntryDTO, position: number){
+    let index = this.learningPath.entries.indexOf(video)
+    let videoToSwapWIth = this.learningPath.entries[index + position]
+
+    if(!videoToSwapWIth) return
+
+    this.learningPath.entries[index + position].entryPosition -= position
+    video.entryPosition += position
+
+    this.learningPath.entries.sort((a, b) => a.entryPosition - b.entryPosition)
+  }
+
+  deleteVideoEntry(video: LearningPathEntryDTO){
+    this.learningPath.entries = this.learningPath.entries.filter(v => v !== video)
   }
 
   visibilityUpdated(option: DropdownOption){
-    this.video.visibility = VisibilityEnum[option.id as keyof typeof VisibilityEnum]
+    this.learningPath.visibility = VisibilityEnum[option.id as keyof typeof VisibilityEnum]
   }
 
   colorUpdated(color: string){
-    this.video.color = color;
+    this.learningPath.color = color;
   }
 
-  questionTitleUpdated(text: string){
-    this.selectedQuestion!.text = text
-  }
-
-  answerUpdated(answer: AnswerOption, index: number){
-    this.selectedQuestion!.answerOptions![index] = answer
-  }
-
-  removeAnswer(index: number){
-    this.selectedQuestion!.answerOptions?.splice(index, 1)
+  addVideoEntry(video: VideoOverviewDTO){
+    this.learningPath.entries.push({
+      pathEntryId: this.learningPath.entries.length * -1,
+      videoId: video.contentId,
+      videoTitle: video.title,
+      durationSeconds: video.durationSeconds,
+      questionCount: 0,
+      entryPosition: this.learningPath.entries.length
+    })
+    this.videoPopupTrigger.close()
   }
 
   //endregion

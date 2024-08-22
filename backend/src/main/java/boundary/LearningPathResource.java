@@ -1,9 +1,11 @@
 package boundary;
 
+import enums.VisibilityEnum;
 import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.LearningPath;
 import repository.LearningPathRepository;
 
 @Path("learningpath/")
@@ -17,6 +19,7 @@ public class LearningPathResource {
         try{
             return Response.ok().entity(repository.getById(pathId, userId)).build();
         } catch (Exception ex) {
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
     }
@@ -30,5 +33,18 @@ public class LearningPathResource {
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
+    }
+
+    @PUT
+    @Path("{pathId: [0-9]+}/visibility")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateVisibility(@PathParam("pathId") Long pathId, JsonObject data){
+        try{
+            System.out.println(data);
+            repository.updatePathVisibility(pathId, VisibilityEnum.valueOf(data.getString("visibility")));
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().build();
     }
 }

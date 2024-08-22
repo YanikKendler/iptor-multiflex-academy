@@ -105,6 +105,30 @@ public class VideoRepository {
         return em.find(Video.class, id);
     }
 
+    public List<VideoOverviewDTO> getAllAsOverviewDTO() {
+        return em.createQuery(
+                "select v from Video v " +
+                        "where v.visibility != 'self'"
+                , Video.class)
+                .getResultStream()
+                .map(video -> {
+                    Long duration = 0L;
+                    try{
+                        duration = video.getVideoFile().getDurationSeconds();
+                    } catch (NullPointerException ignored){ }
+                    return new VideoOverviewDTO(
+                            video.getContentId(),
+                            video.getTitle(),
+                            video.getDescription(),
+                            video.getTags(),
+                            false,
+                            video.getColor(),
+                            duration,
+                            null
+                    );
+                }).toList();
+    }
+
     public VideoDetailDTO getVideoDetailsForUser(Long videoId, Long userId) {
         System.out.println("getVideoDetails user: " + userId + " video: " + videoId);
 

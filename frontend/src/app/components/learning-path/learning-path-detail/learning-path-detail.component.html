@@ -47,7 +47,7 @@
 
         @switch(this.currentTab){
           @case('description'){
-            <div class="descriptionField">
+            <div class="descriptionContainer">
               <h2>{{currentVideo.title}}</h2>
               <p class="description" [innerHTML]="generateDescriptionWithLinebreaks()"></p>
             </div>

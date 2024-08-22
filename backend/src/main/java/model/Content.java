@@ -6,8 +6,10 @@ import jakarta.persistence.*;
 import org.hibernate.usertype.UserType;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public abstract class Content {
@@ -16,7 +18,7 @@ public abstract class Content {
     private Long contentId;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Tag> tags;
+    private Set<Tag> tags;
 
     @ManyToOne
     private User user;
@@ -37,7 +39,7 @@ public abstract class Content {
 
     public Content() {
         this.creationTime = LocalDateTime.now();
-        this.tags = new LinkedList<>();
+        this.tags = new HashSet<>();
     }
 
     public User getUser() {
@@ -52,11 +54,11 @@ public abstract class Content {
         return contentId;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 

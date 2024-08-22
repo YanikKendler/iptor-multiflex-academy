@@ -1,0 +1,18 @@
+<p class="number">{{position}}.</p>
+<p class="title">{{videoEntry.videoTitle}}</p>
+<p>{{Utils.toTimeDurationString(videoEntry.durationSeconds)}} • {{videoEntry.questionCount}} questions</p>
+
+<div class="right">
+  <div class="moveButtons">
+    <app-icon-button size="2rem" (click)="moveEntry(-1)">
+      <fa-icon [icon]="faAngleUp"></fa-icon>
+    </app-icon-button>
+    <app-icon-button size="2rem" (click)="moveEntry(1)">
+      <fa-icon [icon]="faAngleDown"></fa-icon>
+    </app-icon-button>
+  </div>
+
+  <app-icon-button size="2rem" (click)="deleteEntry()">
+    <fa-icon [icon]="faXmark"></fa-icon>
+  </app-icon-button>
+</div>

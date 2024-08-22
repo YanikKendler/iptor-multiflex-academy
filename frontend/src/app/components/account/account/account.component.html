@@ -2,14 +2,14 @@
 
 <main>
   <div class="sidebar">
-    <div [ngClass]="{'active': currentPage === 'settings'}" (click)="switchPage('settings')">
-      <fa-icon [icon]="faGear"></fa-icon>
-      <p>Settings</p>
+    <div [ngClass]="{'active': currentPage === 'my-videos'}" (click)="switchPage('my-videos')">
+      <fa-icon [icon]="faCirclePlay"></fa-icon>
+      <p>My Videos</p>
     </div>
 
-    <div [ngClass]="{'active': currentPage === 'my-content'}" (click)="switchPage('my-content')">
-      <fa-icon [icon]="faCirclePlay"></fa-icon>
-      <p>My Content</p>
+    <div [ngClass]="{'active': currentPage === 'my-learningpaths'}" (click)="switchPage('my-learningpaths')">
+      <app-learning-path-icon class="icon"></app-learning-path-icon>
+      <p>My Learningpaths</p>
     </div>
 
     <div [ngClass]="{'active': currentPage === 'manage-users'}" (click)="switchPage('manage-users')">
@@ -20,11 +20,11 @@
 
   <section>
     @switch (currentPage){
-      @case('settings'){
-        <app-settings></app-settings>
+      @case('my-videos'){
+        <app-my-videos></app-my-videos>
       }
-      @case('my-content'){
-        <app-my-content></app-my-content>
+      @case('my-learningpaths'){
+        <app-my-learningpaths></app-my-learningpaths>
       }
       @case('manage-users'){
         <app-manage-users></app-manage-users>
