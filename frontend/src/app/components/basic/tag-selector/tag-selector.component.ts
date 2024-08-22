@@ -23,6 +23,7 @@ export class TagSelectorComponent implements OnInit{
   readonly tagService = inject(TagService)
 
   @ViewChild(CdkMenuTrigger) tagPopupTrigger!: CdkMenuTrigger
+  @ViewChild(CdkMenu) tagPopup!: CdkMenu
   @ViewChild("tagInput") tagInput!: ElementRef
 
   allTags: Tag[] = []
@@ -38,11 +39,12 @@ export class TagSelectorComponent implements OnInit{
   generateTagOptions(input: string) {
     this.tagOptions = this.allTags.filter(tag => !this.selectedTags.filter(t => t.tagId === tag.tagId).length)
     this.tagOptions = this.tagOptions.filter(tag => tag.name.toLowerCase().includes(input.toLowerCase()))
+
+    /*if(!this.tagPopupTrigger.isOpen()) this.tagPopupTrigger.open()*/
   }
 
   openTagPopup(){
     this.tagPopupTrigger.open()
-    this.tagInput.nativeElement.focus()
   }
 
   createTag(name: string) {

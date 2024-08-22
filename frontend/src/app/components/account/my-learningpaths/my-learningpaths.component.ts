@@ -29,6 +29,7 @@ import {MatTooltip} from "@angular/material/tooltip"
 import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning-path-icon.component"
 import {LearningPathService} from "../../../service/learning-path.service"
 import {EditLearningpathComponent} from "../edit-learningpath/edit-learningpath.component"
+import {MatDivider} from "@angular/material/divider"
 
 @Component({
   selector: 'app-my-learningpaths',
@@ -45,7 +46,8 @@ import {EditLearningpathComponent} from "../edit-learningpath/edit-learningpath.
     PlayIconComponent,
     DropdownComponent,
     MatTooltip,
-    LearningPathIconComponent
+    LearningPathIconComponent,
+    MatDivider
   ],
   templateUrl: './my-learningpaths.component.html',
   styleUrl: './my-learningpaths.component.scss'
@@ -110,7 +112,7 @@ export class MyLearningpathsComponent implements OnInit{
   }
 
   deleteLearningPath(learningPathId: number) {
-    
+
   }
 
   protected readonly faTrash = faTrash;

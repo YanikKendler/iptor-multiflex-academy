@@ -108,6 +108,10 @@ export class Utils{
     return options;
   }
 
+  static generateRandomColor(): string {
+    return "#ABCDEF"
+  }
+
   static numberToLetter(number: number, lowercase: boolean = false): string {
     const lettersUpper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const lettersLower = 'abcdefghijklmnopqrstuvwxyz';

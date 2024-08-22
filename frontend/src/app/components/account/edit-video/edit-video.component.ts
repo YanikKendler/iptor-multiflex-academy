@@ -80,7 +80,7 @@ export class EditVideoComponent implements OnInit{
         title: "",
         description: "",
         visibility: VisibilityEnum.self,
-        color: this.generateRandomVideoColor(),
+        color: Utils.generateRandomColor(),
         tags: [],
         questions: [],
         rating: 0,
@@ -98,10 +98,6 @@ export class EditVideoComponent implements OnInit{
         this.close()
       }
     })
-  }
-
-  generateRandomVideoColor(): string {
-    return "#ABCDEF"
   }
 
   saveChanges() {

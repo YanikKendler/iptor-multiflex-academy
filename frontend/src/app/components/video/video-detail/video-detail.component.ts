@@ -67,6 +67,10 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
     )
   }
 
+  ngAfterViewInit(): void {
+    this.selectTab("comments")
+  }
+
   selectTab(tab: "comments" | "quiz"){
     this.currentTab = tab
     let tabElement: HTMLElement
@@ -82,10 +86,6 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
     marker.style.left = tabElement.offsetLeft + 8 + "px"
 
     this.markerPos = {width: tabElement.clientWidth, left: tabElement.offsetLeft}
-  }
-
-  ngAfterViewInit(): void {
-    this.selectTab("comments")
   }
 
   addToBookmarks(event: MouseEvent){

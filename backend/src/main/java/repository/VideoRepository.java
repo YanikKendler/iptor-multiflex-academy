@@ -124,6 +124,7 @@ public class VideoRepository {
                             false,
                             video.getColor(),
                             duration,
+                            video.getQuestions().size(),
                             null
                     );
                 }).toList();

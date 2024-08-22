@@ -3,18 +3,30 @@
 <main>
   <div class="sidebar">
     <h1>{{ this.learningPath.title }}</h1>
-    <p>{{ this.learningPath.description }}</p>
+    <p class="description" [style.--show-lines]="fullDescription ? 50 : 5">{{ this.learningPath.description }}</p>
+    <span (click)="fullDescription = !fullDescription" class="toggleDescription">{{ fullDescription ? 'minimize description' : 'show full description' }}</span>
 
     <div class="progress-bar">
       <p>{{progressPercent.toFixed(0)}}%</p>
-      @for(video of videoProgress; track video) {
-        <span [style.background-color]="getProgressBarColor(video)"></span>
-      }
+      <div class="bar">
+        @for (video of videoProgress; track video) {
+          <span [style.background-color]="getProgressBarColor(video)"></span>
+        }
+      </div>
     </div>
 
     <div class="steps">
       @for(video of learningPath.entries; track video){
         <div class="entry" [ngClass]="getClassAvailability(video)" (click)="getClassAvailability(video) != 'unavailable' ? selectVideo(video) : ''">
+          @if(getClassAvailability(video) == "available"){
+            <fa-icon [icon]="faCircleCheck" [style.color]="learningPath.color"></fa-icon>
+          }
+          @else if (getClassAvailability(video) == "unavailable"){
+            <app-play-icon></app-play-icon>
+          }
+          @else{
+            <app-play-icon [style.color]="learningPath.color"></app-play-icon>
+          }
           <p>{{video.videoTitle}}</p>
         </div>
       }

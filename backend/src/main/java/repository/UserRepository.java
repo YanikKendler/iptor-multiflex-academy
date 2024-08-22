@@ -295,9 +295,9 @@ public class UserRepository {
         boolean saved = isVideoSaved(video.getContentId(), userId);
 
         if (video.getVideoFile() != null) {
-            return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), saved, video.getColor(), video.getVideoFile().getDurationSeconds(), viewProgress);
+            return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), saved, video.getColor(), video.getVideoFile().getDurationSeconds(), video.getQuestions().size(), viewProgress);
         }
-        return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), saved, video.getColor(), null, viewProgress);
+        return new VideoOverviewDTO(video.getContentId(), video.getTitle(), video.getDescription(), video.getTags(), saved, video.getColor(), null, video.getQuestions().size(), viewProgress);
     }
 
     public boolean isVideoSaved(Long contentId, Long userId) {

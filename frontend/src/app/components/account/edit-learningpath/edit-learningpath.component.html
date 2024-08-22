@@ -45,6 +45,9 @@
       (onDelete)="deleteVideoEntry(videoEntry)"
     ></app-video-entry>
   }
+  @if (learningPath.entries?.length == 0) {
+    <p class="no-results">No videos yet</p>
+  }
 
   <input
     type="text"
@@ -59,7 +62,7 @@
     <div class="videoOptions" cdkMenu>
       @for(video of videoOptions; track video.contentId){
         <p (click)="addVideoEntry(video)">
-          {{video.title}} • {{Utils.toTimeDurationString(video.durationSeconds)}}
+          {{video.title}} • {{Utils.toTimeDurationString(video.durationSeconds)}} • {{video.questionCount}} questions
         </p>
       }
       @if(videoOptions.length == 0){

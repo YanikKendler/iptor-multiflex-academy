@@ -14,12 +14,23 @@ public class LearningPath extends Content {
     @OneToMany(fetch = FetchType.EAGER)
     private List<LearningPathEntry> entries = new LinkedList<>();
 
+    public LearningPath(String title, String description, VisibilityEnum visibility, List<LearningPathEntry> entries, String color, User user) {
+        super(title, description, visibility);
+        this.entries = entries;
+        this.setColor(color);
+        this.setUser(user);
+    }
+
     public LearningPath(String title, String description, VisibilityEnum visibility) {
         super(title, description, visibility);
     }
 
     public LearningPath() {
         super();
+    }
+
+    public void setEntries(List<LearningPathEntry> entries) {
+        this.entries = entries;
     }
 
     public List<LearningPathEntry> addEntry(LearningPathEntry entry) {

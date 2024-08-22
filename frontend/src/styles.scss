@@ -147,6 +147,7 @@ body {
 
   .mdc-button {
     height: 2rem;
+    white-space: nowrap;
 
     &:not([color="secondary"]):not([color="error"]) {
       &[mat-button] {

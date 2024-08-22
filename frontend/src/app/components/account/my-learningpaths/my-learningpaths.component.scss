@@ -32,6 +32,8 @@ table{
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      max-width: 30ch;
+      flex-shrink: 1;
     }
   }
 

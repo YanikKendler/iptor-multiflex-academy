@@ -36,7 +36,7 @@
     }
   </main>
 
-  <div class="buttons">
+  <div class="buttons" [style.justify-content]="isQuizFinished ? 'center' : 'flex-start'">
     @if(inLearningPath && isQuizFinished && calculateScoreInPercent() > 0.8){
       <button mat-stroked-button color="secondary" (click)="checkAnswer()">
         {{ isQuizFinished ? 'Restart Quiz' : answerIsSubmitted ? 'Next Question' : 'Submit' }}</button>
