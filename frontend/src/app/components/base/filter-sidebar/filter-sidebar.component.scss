@@ -1,9 +1,8 @@
 @import "../../../variables.scss";
 
-*{
-  width: 15vw;
+:host{
   display: flex;
-  align-items: center;
+  flex-direction: column;
   border-right: 1px solid $gray-500;
 }
 

@@ -28,6 +28,7 @@ export class FilterSidebarComponent {
   tags : Tag[] = []
   tagService = inject(TagService);
   visibilityTypes = Object.values(VisibilityEnum);
+  selectedTags: Tag[] = []
 
   constructor() {
     this.tagService.getAll().subscribe(tags => {
@@ -43,7 +44,13 @@ export class FilterSidebarComponent {
     (event?.target as HTMLElement).classList.toggle('selected');
   }
 
-  updateFilter(){
-    this.updateFilterEmitter.emit(this.tags)
+  updateFilter(tag: Tag) {
+    if (this.selectedTags.includes(tag)) {
+      this.selectedTags = this.selectedTags.filter(t => t !== tag);
+    } else {
+      this.selectedTags.push(tag);
+    }
+
+    this.updateFilterEmitter.emit(this.selectedTags)
   }
 }

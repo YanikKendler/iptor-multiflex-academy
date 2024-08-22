@@ -23,18 +23,16 @@ import java.util.List;
 public class UserResource {
     @Inject
     UserRepository repository;
-    @Inject
-    UserRepository userRepository;
-    @Inject
-    VideoRepository videoRepository;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createUser(UserDTO user){
+        System.out.println(user);
         Long userId;
         try{
             userId = repository.create(user);
         }catch (Exception ex){
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
         return Response.ok(userId).build();

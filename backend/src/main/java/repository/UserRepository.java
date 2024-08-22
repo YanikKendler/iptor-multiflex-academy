@@ -47,8 +47,8 @@ public class UserRepository {
     public ContentForUserDTO getContentForUser(Long userId, List<Tag> tags) {
         return new ContentForUserDTO(
                 getCurrentContent(userId, tags),
-                getAssignedContent(userId),
-                getSuggestedContent(userId)
+                getAssignedContent(userId, tags),
+                getSuggestedContent(userId, tags)
         );
     }
 
@@ -59,16 +59,27 @@ public class UserRepository {
                                 "join Video v on v.contentId = vp.content.contentId " +
                                 "join v.tags vt " +
                                 "where vp.user.userId = :userId and vp.ignored = false " +
-                                "and vp.progress < v.videoFile.durationSeconds * 0.90 ", Video.class)
+                                "and vp.progress < v.videoFile.durationSeconds * 0.90 " +
+                                "and not exists (" +
+                                "    select t from Tag t " +
+                                "    where t in :tags and t not in elements(v.tags)" +
+                                ") ", Video.class)
                 .setParameter("userId", userId)
+                .setParameter("tags", tags)
                 .getResultList();
 
         // Fetch saved content
         List<Content> savedContent = em.createQuery(
-                        "select sv from User u " +
+                        "select distinct sv from User u " +
                                 "join u.savedContent sv " +
-                                "where u.userId = :userId", Content.class)
+                                "join sv.tags vt " +
+                                "where u.userId = :userId " +
+                                "and not exists (" +
+                                "    select t from Tag t " +
+                                "    where t in :tags and t not in elements(sv.tags)" +
+                                ")", Content.class)
                 .setParameter("userId", userId)
+                .setParameter("tags", tags)
                 .getResultList();
 
         // Separate saved videos and learning paths
@@ -92,9 +103,15 @@ public class UserRepository {
         List<LearningPath> unfinishedLearningPaths = em.createQuery(
                         "select distinct lp from ViewProgress vp " +
                                 "join LearningPath lp on lp.contentId = vp.content.contentId " +
+                                "join lp.tags t " +
                                 "where vp.user.userId = :userId and vp.ignored = false and vp.progress < " +
-                                "(select count(e) from lp.entries e)", LearningPath.class)
+                                "(select count(e) from lp.entries e) " +
+                                "and not exists (" +
+                                "    select t from Tag t " +
+                                "    where t in :tags and t not in elements(lp.tags)" +
+                                ")", LearningPath.class)
                 .setParameter("userId", userId)
+                .setParameter("tags", tags)
                 .getResultList();
 
         // Combine unfinished and saved learning paths
@@ -108,33 +125,44 @@ public class UserRepository {
         return new VideoAndLearningPathOverviewCollection(currentVideos, currentLearningPaths);
     }
 
-    public VideoAndLearningPathOverviewCollection getAssignedContent (Long userId){
+    public VideoAndLearningPathOverviewCollection getAssignedContent (Long userId, List<Tag> tags){
         List<Video> assignedVideos = em.createQuery("select distinct v from Video v " +
                 "join ContentAssignment va on va.content.contentId = v.contentId " +
-                "where va.assignedTo.userId = :userId", Video.class).setParameter("userId", userId).getResultList();
+                "join v.tags t " +
+                "where va.assignedTo.userId = :userId " +
+                "and not exists (" +
+                "    select t from Tag t " +
+                "    where t in :tags and t not in elements(v.tags)" +
+                ")", Video.class).setParameter("userId", userId).setParameter("tags", tags).getResultList();
 
         List<VideoOverviewDTO> assignedVideosDTO = assignedVideos.stream().map(video -> {return convertVideoToOverviewDTO(video, userId);}).toList();
 
         List<LearningPath> assignedLearningPaths = em.createQuery("select distinct lp from LearningPath lp " +
                 "join ContentAssignment va on va.content.contentId = lp.contentId " +
-                "where va.assignedTo.userId = :userId", LearningPath.class).setParameter("userId", userId).getResultList();
+                "join lp.tags t " +
+                "where va.assignedTo.userId = :userId " +
+                "and not exists (" +
+                "    select t from Tag t " +
+                "    where t in :tags and t not in elements(lp.tags)" +
+                ")", LearningPath.class).setParameter("userId", userId).setParameter("tags", tags).getResultList();
 
         List<LearningPathOverviewDTO> assignedLearningPathsDTO = assignedLearningPaths.stream().map(learningPath -> {return convertLearningPathToOverviewDTO(learningPath, userId);}).toList();
 
         return new VideoAndLearningPathOverviewCollection(assignedVideosDTO, assignedLearningPathsDTO);
     }
 
-    public VideoAndLearningPathOverviewCollection getSuggestedContent(Long userId){
+    public VideoAndLearningPathOverviewCollection getSuggestedContent(Long userId, List<Tag> filterTags){
         // get all tags of the users watched videos and learning paths
         List<Tag> tags = em.createQuery("select distinct t from Video v " +
                         "join ViewProgress vp on vp.content.contentId = v.contentId " +
                         "join v.tags t " +
-                        "where vp.user.userId = :userId", Tag.class)
+                        "where vp.user.userId = :userId ", Tag.class)
                 .setParameter("userId", userId).getResultList();
 
         List<Long> savedContent = em.createQuery("select c.contentId from User u " +
                         "join u.savedContent c " +
-                        "where u.userId = :userId", Long.class)
+                        "join c.tags t " +
+                        "where u.userId = :userId ", Long.class)
                 .setParameter("userId", userId).getResultList();
 
         List<Video> videos;
@@ -142,35 +170,49 @@ public class UserRepository {
         if (savedContent.isEmpty()) {
             videos = em.createQuery(
                             "select v from Video v " +
+                                    "join v.tags t " +
                                     "where v.contentId not in " +
-                                    "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId and ignored = false)", Video.class)
-                    .setParameter("userId", userId)
-                    .getResultList();
+                                    "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId and ignored = false) " +
+                                    "and not exists(" +
+                                    "    select t from Tag t " +
+                                    "    where t in :tags and t not in elements(v.tags)" +
+                                    ")", Video.class)
+                    .setParameter("userId", userId).setParameter("tags", filterTags).getResultList();
 
             learningPaths = em.createQuery(
                             "select lp from LearningPath lp " +
+                                    "join lp.tags t " +
                                     "where lp.contentId not in " +
-                                    "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId and ignored = false)", LearningPath.class)
-                    .setParameter("userId", userId)
-                    .getResultList();
+                                    "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId and ignored = false) " +
+                                    "and not exists(" +
+                                    "    select t from Tag t " +
+                                    "    where t in :tags and t not in elements(lp.tags)" +
+                                    ")", LearningPath.class)
+                    .setParameter("userId", userId).setParameter("tags", filterTags).getResultList();
         } else {
             videos = em.createQuery(
                             "select v from Video v " +
+                                    "join v.tags t " +
                                     "where v.contentId not in " +
                                     "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId) and " +
-                                    "v.contentId not in :savedContent", Video.class)
-                    .setParameter("userId", userId)
-                    .setParameter("savedContent", savedContent)
-                    .getResultList();
+                                    "v.contentId not in :savedContent " +
+                                    "and not exists(" +
+                                    "    select t from Tag t " +
+                                    "    where t in :tags and t not in elements(v.tags)" +
+                                    ")", Video.class)
+                    .setParameter("userId", userId).setParameter("tags", filterTags).setParameter("savedContent", savedContent).getResultList();
 
             learningPaths = em.createQuery(
                             "select lp from LearningPath lp " +
+                                    "join lp.tags t " +
                                     "where lp.contentId not in " +
                                     "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId) and " +
-                                    "lp.contentId not in :savedVideos", LearningPath.class)
-                    .setParameter("userId", userId)
-                    .setParameter("savedVideos", savedContent)
-                    .getResultList();
+                                    "lp.contentId not in :savedVideos " +
+                                    "and not exists(" +
+                                    "    select t from Tag t " +
+                                    "    where t in :tags and t not in elements(lp.tags)" +
+                                    ")", LearningPath.class)
+                    .setParameter("userId", userId).setParameter("tags", filterTags).setParameter("savedVideos", savedContent).getResultList();
         }
 
         HashMap<Video, Integer> videoScores = new HashMap<>();
@@ -313,7 +355,6 @@ public class UserRepository {
                 }).toList();
     }
 
-    @Transactional
     public Long create(UserDTO user) {
         User createdUser = new User(user.username(), user.email(), user.password(), user.userType());
         em.persist(createdUser);
@@ -321,20 +362,17 @@ public class UserRepository {
     }
 
     public Long login(UserDTO user) {
-        User createdUser = em.createQuery("select u from User u where u.email = :email", User.class)
-                .setParameter("email", user.email()).getSingleResult();
+        try{
+            User createdUser = em.createQuery("select u from User u where u.email = :email", User.class)
+                    .setParameter("email", user.email()).getSingleResult();
 
-        System.out.println(user.password());
-        System.out.println(createdUser.getPassword());
-        createdUser.setPassword(user.password());
-        System.out.println(createdUser.getPassword());
-
-
-        if (!createdUser.verifyPassword(user.password())) {
-            throw new IllegalArgumentException("Invalid password");
+            if (!createdUser.verifyPassword(user.password())) {
+                return -1L;
+            }
+            return createdUser.getUserId();
+        } catch(NoResultException e){
+            return -2L;
         }
-
-        return createdUser.getUserId();
     }
 
     public boolean isLoggedIn(UserLoginDTO user1) {

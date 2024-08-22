@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {UserDTO, UserEnum, UserService} from "../../../service/user.service";
@@ -19,12 +19,12 @@ import * as bcrypt from "bcryptjs";
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent{
   regForm: FormGroup;
   userService = inject(UserService)
-  router: Router = inject(Router);
+  error: string = "";
 
-  constructor() {
+  constructor(private router: Router) {
     this.regForm = new FormGroup({
       'username': new FormControl(''),
       'email': new FormControl('', [Validators.required, Validators.email]),
@@ -34,21 +34,25 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.regForm.valid) {
-      const hashedPassword = bcrypt.hashSync(this.regForm.get('password')?.value, 10);
 
       let userDTO: UserDTO = {
         username: "",
         email: this.regForm.get('email')?.value,
-        password: hashedPassword,
-        userType: UserEnum.CUSTOMER
+        password: this.regForm.get('password')?.value,
+        userType: "CUSTOMER"
       }
       this.userService.login(userDTO).subscribe(response => {
-        Config.USER_ID = response
-        localStorage.setItem('USER_ID', response.toString());
-        localStorage.setItem('USER_PASSWORD', userDTO.password);
-        this.router.navigate([''])
-      }, error => {
-        console.error(error)
+        console.log(response)
+        if(response > 0){
+          Config.USER_ID = response
+          localStorage.setItem('USER_ID', response.toString());
+          localStorage.setItem('USER_PASSWORD', userDTO.password);
+          this.router.navigate([''])
+        } else if (response == -1){
+          this.error = "Invalid password"
+        } else {
+          this.error = "Invalid email"
+        }
       })
     }
   }
