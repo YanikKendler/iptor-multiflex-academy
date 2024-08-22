@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostBinding, inject, OnChanges, OnInit, Output} from '@angular/core';
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faAnglesLeft, faAnglesRight, faSearch} from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +6,8 @@ import {Tag, TagService} from "../../../service/tag.service";
 import {ChipComponent} from "../../basic/chip/chip.component";
 import {VisibilityEnum} from "../../../service/video.service";
 import {NgClass} from "@angular/common";
+import {MatRipple} from "@angular/material/core"
+import {MatBadge} from "@angular/material/badge"
 
 @Component({
   selector: 'app-filter-sidebar',
@@ -14,7 +16,9 @@ import {NgClass} from "@angular/common";
     IconButtonComponent,
     FaIconComponent,
     ChipComponent,
-    NgClass
+    NgClass,
+    MatRipple,
+    MatBadge
   ],
   templateUrl: './filter-sidebar.component.html',
   styleUrl: './filter-sidebar.component.scss'
@@ -25,6 +29,7 @@ export class FilterSidebarComponent implements OnInit {
 
   @Output() updateFilterEmitter : EventEmitter<Tag[]> = new EventEmitter<Tag[]>();
 
+  @HostBinding('class.open')
   isOpenState: boolean = true;
 
   tags : Tag[] = []
