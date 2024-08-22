@@ -20,6 +20,8 @@ import {
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {PlayIconComponent} from "../icons/playicon/play.icon.component";
 import {Config} from "../../config";
+import {FilterSidebarComponent} from "../base/filter-sidebar/filter-sidebar.component";
+import {Tag} from "../../service/tag.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -33,6 +35,7 @@ import {Config} from "../../config";
     LearningPathOverviewComponent,
     FaIconComponent,
     PlayIconComponent,
+    FilterSidebarComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
@@ -42,6 +45,7 @@ export class DashboardComponent implements OnInit {
   userService = inject(UserService);
 
   content: ContentForUser | undefined;
+  filterTags: Tag[] = [];
   isSearchContent: boolean = false;
 
   @ViewChild('videoId', { static: true }) videoIdInput!: ElementRef<HTMLInputElement>;
@@ -51,15 +55,19 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.content = undefined
-    this.userService.getContentForUser().subscribe(content => {
-      this.content = content;
-    });
+    this.loadContent()
 
     /*    console.log(Utils.toSmartTimeString(new Date()))
         console.log(Utils.toSmartTimeString(new Date("07.08.2024 20:54")))
         console.log(Utils.toSmartTimeString(new Date(1000*60*80)))
         console.log(Utils.toSmartTimeString(new Date("05.08.2024")))
         console.log(Utils.toSmartTimeString(new Date("07.06.2020")))*/
+  }
+
+  loadContent(): void{
+    this.userService.getContentForUser(this.filterTags).subscribe(content => {
+      this.content = content;
+    });
   }
 
   updateVideoDashboard(event?: UpdateVideoDashboardEvent) {
@@ -146,7 +154,7 @@ export class DashboardComponent implements OnInit {
   searchContent(elem: string) {
     if(!elem && elem.length <= 0){
       this.isSearchContent = false;
-      this.userService.getContentForUser().subscribe(content => {
+      this.userService.getContentForUser([]).subscribe(content => {
         this.content = content;
       });
       return;

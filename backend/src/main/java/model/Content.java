@@ -106,7 +106,7 @@ public abstract class Content {
 
     public boolean isVisibleForUser(User user) {
         if (visibility == VisibilityEnum.self) {
-            return this.user.equals(user);
+            return false;
         } else if (visibility == VisibilityEnum.everyone) {
             return true;
         } else if (visibility == VisibilityEnum.customers) {

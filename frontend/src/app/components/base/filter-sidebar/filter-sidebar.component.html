@@ -1,0 +1,29 @@
+@if(isOpenState){
+  <div class="search">
+    <input type="text" placeholder="Search for a Tag">
+    <app-icon-button (click)="isOpenState = false">
+      <fa-icon [icon]="faAnglesLeft"></fa-icon>
+    </app-icon-button>
+  </div>
+
+  <div class="tags">
+    @for(tag of tags; track tag){
+      <app-chip (click)="toggleSelect($event);updateFilter();">{{ tag.name }}</app-chip>
+    }
+  </div>
+
+  <p>Visibility</p>
+  <div class="visibility">
+    @for(type of visibilityTypes; track type){
+      @if(type != "self"){
+        <app-chip (click)="toggleSelect($event)">{{ type }}</app-chip>
+      }
+    }
+  </div>
+} @else{
+  <div class="closed">
+    <app-icon-button (click)="isOpenState = true">
+      <fa-icon [icon]="faAnglesRight"></fa-icon>
+    </app-icon-button>
+  </div>
+}

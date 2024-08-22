@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {VideoAndLearningPathOverviewCollection, VisibilityEnum} from "./video.service";
 import {Config} from "../config"
 import {Tag} from "./tag.service";
+import {filter} from "rxjs";
 
 export interface User {
   userId: number;
@@ -59,8 +60,9 @@ export class UserService {
     return this.http.get<boolean>(`${Config.API_URL}/user/${Config.USER_ID}/isvideosaved/${videoId}`)
   }
 
-  getContentForUser(){
-    return this.http.get<ContentForUser>(`${Config.API_URL}/user/${Config.USER_ID}/contentforuser`)
+  getContentForUser(filterTags: Tag[]){
+    console.log(filterTags)
+    return this.http.post<ContentForUser>(`${Config.API_URL}/user/${Config.USER_ID}/contentforuser`, filterTags)
   }
 
   getUserContent(){

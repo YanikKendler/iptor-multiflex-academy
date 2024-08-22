@@ -1,0 +1,44 @@
+@import "../../../variables.scss";
+
+*{
+  width: 15vw;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid $gray-500;
+}
+
+.closed {
+  width: 5vw;
+  padding: 1rem;
+}
+
+div.search{
+  display: flex;
+  gap: .5rem;
+  padding: 1rem;
+
+  input{
+    height: 3vh;
+  }
+}
+
+div.tags{
+  width: 100%;
+  display: grid;
+  gap: .5rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+fa-icon{
+  width: 100%;
+}
+
+app-chip{
+  width: 100%;
+  cursor: pointer;
+
+  &.selected{
+    background-color: $secondary-500;
+    color: white;
+  }
+}

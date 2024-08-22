@@ -3,6 +3,7 @@ package boundary;
 import dtos.UserDTO;
 import dtos.UserLoginDTO;
 import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -10,6 +11,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import model.Tag;
 import model.User;
 import repository.UserRepository;
 import repository.VideoRepository;
@@ -117,10 +119,12 @@ public class UserResource {
         }
     }
 
-    @GET
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("{userId}/contentforuser")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getContentForUser(@PathParam("userId") Long userId) {
+    public Response getContentForUser(@PathParam("userId") Long userId, JsonObject filterTags) {
+        System.out.println(filterTags);
         try {
             return Response.ok(repository.getContentForUser(userId)).build();
         } catch (Exception ex) {
