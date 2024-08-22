@@ -43,7 +43,7 @@
          matTooltip="{{ tagToolTipString }}"
          matTooltipShowDelay="500"
     >
-      @for (tag of learningPath.tags; track tag) {
+      @for (tag of learningPath.tags; track tag.tagId) {
         <app-chip>{{ tag.name }}</app-chip>
       }
     </div>

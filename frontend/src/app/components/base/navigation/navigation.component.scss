@@ -1,4 +1,4 @@
-@import "../../variables";
+@import "../../../variables";
 
 :host{
   background-color: $primary-500;
@@ -10,6 +10,8 @@
   padding-block: .25rem;
   padding-inline: .25rem;
   color: white;
+  height: fit-content;
+  overflow-y: hidden;
 }
 
 img{

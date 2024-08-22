@@ -38,7 +38,7 @@
          matTooltip="{{ tagToolTipString }}"
          matTooltipShowDelay="500"
     >
-      @for (tag of video.tags; track tag) {
+      @for (tag of video.tags; track tag.tagId) {
         <app-chip>{{ tag.name }}</app-chip>
       }
     </div>

@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {NavigationComponent} from "../../navigation/navigation.component";
+import {NavigationComponent} from "../../base/navigation/navigation.component";
 import {faCirclePlay, faGear, faUsersGear} from "@fortawesome/free-solid-svg-icons";
 import {SettingsComponent} from "../settings/settings.component";
 import {ActivatedRoute, Router} from "@angular/router";

@@ -1,10 +1,12 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
-import {UserDTO, UserEnum, UserService} from "../../../service/user.service";
-import {Router, RouterLink, RouterLinkActive} from "@angular/router";
+import {UserDTO, UserEnum, UserLoginDTO, UserService} from "../../../service/user.service";
+import {ActivatedRoute, Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {Config} from "../../../config";
 import * as bcrypt from "bcryptjs";
+import {MatButton} from "@angular/material/button"
+import {MatRipple} from "@angular/material/core"
 
 @Component({
   selector: 'app-login',
@@ -14,22 +16,52 @@ import * as bcrypt from "bcryptjs";
     NgIf,
     ReactiveFormsModule,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    MatButton,
+    MatRipple
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent{
+export class LoginComponent implements OnInit{
   regForm: FormGroup;
   userService = inject(UserService)
   error: string = "";
 
-  constructor(private router: Router) {
+  mode:"create" | "login" = "login"
+
+  constructor(private router: Router, private route: ActivatedRoute) {
     this.regForm = new FormGroup({
       'username': new FormControl(''),
       'email': new FormControl('', [Validators.required, Validators.email]),
       'password': new FormControl('', [Validators.required]),
     })
+  }
+
+  ngOnInit(): void {
+    let userLoginDTO: UserLoginDTO = {
+      userId: localStorage.getItem('USER_ID') ? parseInt(localStorage.getItem('USER_ID')!) : -1,
+      password: localStorage.getItem('USER_PASSWORD')!
+    }
+
+    this.userService.isLoggedIn(userLoginDTO).subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.router.navigate([''])
+      }
+    })
+
+    const mode = this.route.snapshot.queryParams['mode']
+    if(mode == "create") {
+      this.mode = "create"
+    }
+    else {
+      this.mode = "login"
+    }
+  }
+
+  changeMode(mode: "create" | "login") {
+    this.mode = mode
+    this.router.navigate(['login'], {queryParams: {mode: mode}})
   }
 
   onSubmit() {

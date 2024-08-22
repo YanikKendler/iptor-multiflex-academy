@@ -1,27 +1,27 @@
 import {Component, ElementRef, inject, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {NavigationComponent} from "../navigation/navigation.component"
-import {UpdateVideoDashboardEvent, VideoOverviewComponent} from "../video/video-overview/video-overview.component"
+import {UpdateVideoDashboardEvent, VideoOverviewComponent} from "../../video/video-overview/video-overview.component"
 import {
   VideoAndLearningPathOverviewCollection,
   VideoOverviewDTO,
   VideoService,
   ViewProgress,
   VisibilityEnum
-} from "../../service/video.service"
-import {MediaPlayerComponent} from "../basic/media-player/media-player.component"
+} from "../../../service/video.service"
+import {MediaPlayerComponent} from "../../basic/media-player/media-player.component"
 import {HttpClient} from "@angular/common/http"
-import {StarIconComponent} from "../icons/star/star.icon.component"
-import {RemoveIconComponent} from "../icons/remove-icon/remove-icon.component"
-import {ViewProgressService} from "../../service/view-progress.service"
-import {ContentForUser, UserService} from "../../service/user.service";
+import {StarIconComponent} from "../../icons/star/star.icon.component"
+import {RemoveIconComponent} from "../../icons/remove-icon/remove-icon.component"
+import {ViewProgressService} from "../../../service/view-progress.service"
+import {ContentForUser, UserService} from "../../../service/user.service";
 import {
   LearningPathOverviewComponent, UpdateLearningPathDashboardEvent
-} from "../learning-path/learning-path-overview/learning-path-overview.component";
+} from "../../learning-path/learning-path-overview/learning-path-overview.component";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {PlayIconComponent} from "../icons/playicon/play.icon.component";
-import {Config} from "../../config";
-import {FilterSidebarComponent} from "../base/filter-sidebar/filter-sidebar.component";
-import {Tag} from "../../service/tag.service";
+import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
+import {Config} from "../../../config";
+import {FilterSidebarComponent} from "../filter-sidebar/filter-sidebar.component";
+import {Tag} from "../../../service/tag.service";
 
 @Component({
   selector: 'app-dashboard',

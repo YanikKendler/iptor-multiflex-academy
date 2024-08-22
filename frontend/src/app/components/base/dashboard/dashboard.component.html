@@ -14,6 +14,9 @@
             <app-learning-path-overview [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)" [removable]="true"></app-learning-path-overview>
           }
         }
+        @if(content?.current?.videos?.length == 0 && content?.current?.learningPaths?.length == 0){
+          <p class="no-results">no results found</p>
+        }
       </div>
     } @else {
       <p>Continue Watching</p>
@@ -25,6 +28,9 @@
           @for(learningPath of content.current.learningPaths; track learningPath.contentId){
             <app-learning-path-overview [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)" [removable]="true"></app-learning-path-overview>
           }
+        }
+        @if(content?.current?.videos?.length == 0 && content?.current?.learningPaths?.length == 0){
+          <p class="no-results">no results found</p>
         }
       </div>
 
@@ -38,6 +44,9 @@
             <app-learning-path-overview [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)"></app-learning-path-overview>
           }
         }
+        @if(content?.assigned?.videos?.length == 0){
+          <p class="no-results">no results found</p>
+        }
       </div>
 
       <p>Suggested Videos</p>
@@ -47,6 +56,9 @@
             <app-video-overview [video]="video" (updateDashboard)="updateVideoDashboard($event)"></app-video-overview>
           }
         }
+        @if(content?.suggested?.videos?.length == 0){
+          <p class="no-results">no results found</p>
+        }
       </div>
 
       <p>Suggested learning paths</p>
@@ -55,6 +67,9 @@
           @for(learningPath of content.suggested.learningPaths; track learningPath.contentId){
             <app-learning-path-overview [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)"></app-learning-path-overview>
           }
+        }
+        @if(content?.suggested?.learningPaths?.length == 0){
+          <p class="no-results">no results found</p>
         }
       </div>
     }

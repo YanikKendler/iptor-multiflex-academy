@@ -9,7 +9,7 @@ import {IconButtonComponent} from "../../basic/icon-button/icon-button.component
 import {VideoRatingComponent} from "../../video/video-rating/video-rating.component";
 import {VideoCommentContainerComponent} from "../../video/video-comment-container/video-comment-container.component";
 import {VideoQuizComponent} from "../../video/video-quiz/video-quiz.component";
-import {NavigationComponent} from "../../navigation/navigation.component";
+import {NavigationComponent} from "../../base/navigation/navigation.component";
 import {NgClass, NgStyle} from "@angular/common";
 import {PlayIconComponent} from "../../icons/playicon/play.icon.component"
 import {faCircleCheck} from "@fortawesome/free-regular-svg-icons"

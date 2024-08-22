@@ -1,5 +1,5 @@
 import {AfterViewChecked, AfterViewInit, Component, ElementRef, inject, Input, OnInit, ViewChild} from '@angular/core';
-import {NavigationComponent} from "../../navigation/navigation.component"
+import {NavigationComponent} from "../../base/navigation/navigation.component"
 import {StarIconComponent} from "../../icons/star/star.icon.component"
 import {BookmarkIconComponent} from "../../icons/bookmark/bookmark.icon.component"
 import {ActivatedRoute, Params, Router} from "@angular/router";
