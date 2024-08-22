@@ -4,36 +4,63 @@
   display: flex;
   flex-direction: column;
   border-right: 1px solid $gray-500;
+  width: 3rem;
+  transition: width $transition-time-default;
 }
 
-.closed {
-  width: 5vw;
-  padding: 1rem;
+:host(.open){
+  width: 20vw;
 }
 
-div.search{
+:host(.open div.top .flip-button fa-icon){
+  transform: scaleX(1);
+}
+
+:host(:not(.open)) *:not(.flip-button *):not(.top):not(.flip-button) {
+  display: none;
+}
+
+div.top{
   display: flex;
-  gap: .5rem;
-  padding: 1rem;
+  gap: 1rem;
+  padding: .5rem;
+  justify-content: flex-end;
 
   input{
-    height: 3vh;
+    height: 2rem;
+    width: 100%;
+    min-width: 0;
+    /*flex-shrink: 1;
+    min-width: 0;*/
+  }
+
+  .flip-button{
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid $gray-300;
+    border-radius: .3rem;
+    flex-shrink: 0;
+
+    fa-icon{
+      display: block;
+      transform: scaleX(-1);
+      transition: transform $transition-time-short;
+    }
   }
 }
 
 div.tags{
   width: 100%;
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: .5rem;
-  grid-template-columns: repeat(3, 1fr);
-}
-
-fa-icon{
-  width: 100%;
+  padding: .5rem;
 }
 
 app-chip{
-  width: 100%;
   cursor: pointer;
 
   &.selected{
