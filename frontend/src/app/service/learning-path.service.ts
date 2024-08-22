@@ -1,39 +1,39 @@
-import {inject, Injectable} from '@angular/core';
-import {Tag} from "./tag.service";
-import {VideoDetailDTO, ViewProgress, VisibilityEnum} from "./video.service";
-import {HttpClient} from "@angular/common/http";
-import {Config} from "../config";
+import {inject, Injectable} from '@angular/core'
+import {Tag} from "./tag.service"
+import {VideoDetailDTO, ViewProgress, VisibilityEnum} from "./video.service"
+import {HttpClient} from "@angular/common/http"
+import {Config} from "../config"
 
 export interface LearningPathOverviewDTO {
-  contentId: number;
-  title: string;
-  description: string;
-  tags: Tag[];
-  videoCount: number;
-  viewProgress: ViewProgress;
-  color: string;
+  contentId: number
+  title: string
+  description: string
+  tags: Tag[]
+  videoCount: number
+  viewProgress: ViewProgress
+  color: string
   saved: boolean
 }
 
 export interface LearningPathDetailDTO {
-  contentId: number;
-  title: string;
-  description: string;
-  tags: Tag[];
-  viewProgress?: ViewProgress;
-  visibility: VisibilityEnum;
-  color?: string;
-  entries: LearningPathEntryDTO[];
-  userId: number;
+  contentId: number
+  title: string
+  description: string
+  tags: Tag[]
+  viewProgress?: ViewProgress
+  visibility: VisibilityEnum
+  color?: string
+  entries: LearningPathEntryDTO[]
+  userId: number
 }
 
 export interface LearningPathEntryDTO {
-  pathEntryId: number,
-  videoId: number,
-  videoTitle: string,
-  durationSeconds: number,
-  questionCount: number,
-  entryPosition: number;
+  pathEntryId: number
+  videoId: number
+  videoTitle: string
+  durationSeconds: number
+  questionCount: number
+  entryPosition: number
 }
 
 @Injectable({
@@ -49,7 +49,7 @@ export class LearningPathService {
   }
 
   nextVideoForLearningPath(pathId: number) {
-    this.http.post<LearningPathEntryDTO>(`${Config.API_URL}/learningpath/${pathId}/next?userId=${Config.USER_ID}`, {}).subscribe();
+    this.http.get<LearningPathEntryDTO>(`${Config.API_URL}/learningpath/${pathId}/next?userId=${Config.USER_ID}`).subscribe();
   }
 
   updatePathVisibility(contentId: number, visibility: VisibilityEnum){
@@ -58,7 +58,7 @@ export class LearningPathService {
 
   updateLearningPath(learningPath: LearningPathDetailDTO){
     console.log("updating learningpath", learningPath)
-    return this.http.put<LearningPathDetailDTO>(`${Config.API_URL}/learningpath/`, learningPath)
+    return this.http.put<LearningPathDetailDTO>(`${Config.API_URL}/learningpath`, learningPath)
   }
 
   createLearningPath(learningPath: LearningPathDetailDTO){

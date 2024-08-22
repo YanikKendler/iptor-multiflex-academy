@@ -25,28 +25,30 @@
     <fa-icon [icon]="faCircleUser" class="userIcon"></fa-icon>
   </app-icon-button>
 
-  <ng-template #menu>
-    <div class="menu" cdkMenu>
-      <div routerLink="/account/settings" (click)="closeMenu()">
-        <fa-icon [icon]="faGear"></fa-icon>
-        <p>Settings</p>
-      </div>
-
-      <div routerLink="/account/my-content" (click)="closeMenu()">
-        <fa-icon [icon]="faCirclePlay"></fa-icon>
-        <p>My Content</p>
-      </div>
-
-      <div routerLink="/account/manage-users" (click)="closeMenu()">
-        <fa-icon [icon]="faUsersGear"></fa-icon>
-        <p>Manage Users</p>
-      </div>
-
-      <div routerLink="/login" (click)="closeMenu();logout()">
-        <fa-icon [icon]="faRightFromBracket"></fa-icon>
-        <p>Logout</p>
-      </div>
-    </div>
-  </ng-template>
 </div>
 
+<ng-template #menu>
+  <div class="menu" cdkMenu>
+    <div routerLink="/account/my-videos" (click)="closeMenu()">
+      <fa-icon [icon]="faCirclePlay"></fa-icon>
+      <p>My Videos</p>
+    </div>
+
+    <div routerLink="/account/my-learningpaths" (click)="closeMenu()">
+      <app-learning-path-icon></app-learning-path-icon>
+      <p>My Learningpaths</p>
+    </div>
+
+    <div routerLink="/account/manage-users" (click)="closeMenu()">
+      <fa-icon [icon]="faUsersGear"></fa-icon>
+      <p>Manage Users</p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div routerLink="/login" (click)="closeMenu();logout()">
+      <fa-icon [icon]="faRightFromBracket"></fa-icon>
+      <p>Logout</p>
+    </div>
+  </div>
+</ng-template>

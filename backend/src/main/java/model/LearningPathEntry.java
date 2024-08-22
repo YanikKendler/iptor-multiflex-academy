@@ -22,6 +22,12 @@ public class LearningPathEntry {
         this.video = video;
     }
 
+    public LearningPathEntry(Video video, int entryPosition) {
+        this();
+        this.entryPosition = entryPosition;
+        this.video = video;
+    }
+
     public LearningPathEntry() {
         creationTime = LocalDateTime.now();
     }

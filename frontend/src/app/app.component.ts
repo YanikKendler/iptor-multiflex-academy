@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   router = inject(Router)
 
   ngOnInit(): void {
-    let userLoginDTO: UserLoginDTO = {
+    /*let userLoginDTO: UserLoginDTO = {
       userId: localStorage.getItem('USER_ID') ? parseInt(localStorage.getItem('USER_ID')!) : 0,
       password: localStorage.getItem('USER_PASSWORD')!
     }
@@ -29,6 +29,6 @@ export class AppComponent implements OnInit {
       } else {
         console.log(Config.USER_ID)
       }
-    })
+    })*/
   }
 }

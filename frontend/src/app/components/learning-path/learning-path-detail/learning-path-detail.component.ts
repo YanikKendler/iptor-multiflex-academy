@@ -11,6 +11,8 @@ import {VideoCommentContainerComponent} from "../../video/video-comment-containe
 import {VideoQuizComponent} from "../../video/video-quiz/video-quiz.component";
 import {NavigationComponent} from "../../navigation/navigation.component";
 import {NgClass, NgStyle} from "@angular/common";
+import {PlayIconComponent} from "../../icons/playicon/play.icon.component"
+import {faCircleCheck} from "@fortawesome/free-regular-svg-icons"
 
 @Component({
   selector: 'app-learning-path-detail',
@@ -25,13 +27,25 @@ import {NgClass, NgStyle} from "@angular/common";
     VideoQuizComponent,
     NavigationComponent,
     NgClass,
-    NgStyle
+    NgStyle,
+    PlayIconComponent
   ],
   templateUrl: './learning-path-detail.component.html',
   styleUrl: './learning-path-detail.component.scss'
 })
 export class LearningPathDetailComponent implements OnInit, AfterViewInit{
-  @ViewChild('tabSelector') tabSelector: ElementRef | undefined;
+  @ViewChild('tabSelector')
+  set pane(selector: ElementRef) {
+    setTimeout(() => {
+      this.tabSelector = selector?.nativeElement
+      if(this.tabSelector != undefined) this.selectTab("description")
+    }, 0);
+  }
+  tabSelector: HTMLElement | undefined
+
+  @ViewChild('descriptionTab') descriptionTab: ElementRef | undefined
+  @ViewChild('commentsTab') commentsTab: ElementRef | undefined
+
   currentTab : "description" | "comments" = "description"
   markerPos = {width: 0, left: 0}
 
@@ -48,6 +62,9 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   isFinished: boolean = false
 
   videoService = inject(VideoService)
+
+  //wheter or not the full learning path description is shown in the sidebar
+  fullDescription: boolean = false
 
   constructor(private route: ActivatedRoute) {  }
 
@@ -96,13 +113,14 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
     let tabElement: HTMLElement
 
     if(tab === "comments"){
-      tabElement = this.tabSelector?.nativeElement.querySelector('.comments') as HTMLElement
+      tabElement = this.tabSelector?.querySelector('.comments') as HTMLElement
     } else {
-      tabElement = this.tabSelector?.nativeElement.querySelector('.description') as HTMLElement
+      tabElement = this.tabSelector?.querySelector('.description') as HTMLElement
     }
 
-    let marker = this.tabSelector?.nativeElement.querySelector('.marker') as HTMLElement
-    if(marker == null) return
+    let marker = this.tabSelector?.querySelector('.marker') as HTMLElement
+    console.log(this.tabSelector, tabElement, marker)
+    if(marker == null || tabElement == null) return
     marker.style.width = tabElement.clientWidth - 16 + "px"
     marker.style.left = tabElement.offsetLeft + 8 + "px"
 
@@ -110,7 +128,8 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    this.selectTab("description")
+    setTimeout(() => {
+    })
   }
 
   generateDescriptionWithLinebreaks(){
@@ -167,4 +186,6 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
       this.getVideoDetails(++this.currentVideoPosition)
     }
   }
+
+  protected readonly faCircleCheck = faCircleCheck
 }

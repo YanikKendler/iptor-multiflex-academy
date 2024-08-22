@@ -66,11 +66,16 @@ section.details{
 }
 
 section.videos{
+  margin-bottom: 2rem;
+
   input{
     width: 100%;
   }
 
-  margin-bottom: 2rem;
+  .no-results{
+    color: $gray-400;
+    margin: .5rem;
+  }
 }
 
 .videoOptions{

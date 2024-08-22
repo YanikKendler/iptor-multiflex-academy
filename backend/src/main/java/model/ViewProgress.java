@@ -12,6 +12,7 @@ public class ViewProgress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long progressId;
 
+    @JsonIgnore
     @ManyToOne
     private Content content;
 

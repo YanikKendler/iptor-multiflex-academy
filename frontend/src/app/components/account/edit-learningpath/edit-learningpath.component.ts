@@ -72,20 +72,20 @@ export class EditLearningpathComponent implements OnInit{
 
   ngOnInit(): void {
     console.log(this.data)
-    if(this.data > 0){ //editing existing video
+    if(this.data > 0){ //editing existing learningpath
       this.learningPathService.getLearningPathDetails(this.data).subscribe(path => {
         this.learningPath = path;
         console.log(path)
         this.oldLearningPath= JSON.parse(JSON.stringify(this.learningPath)) //actual nested deep copy
       })
     }
-    else{ //creating new video
+    else{ //creating new learningpath
       this.learningPath = {
         contentId: -1,
         title: "",
         description: "",
         visibility: VisibilityEnum.self,
-        color: this.generateRandomVideoColor(),
+        color: Utils.generateRandomColor(),
         tags: [],
         entries: [],
         rating: 0,
@@ -107,10 +107,6 @@ export class EditLearningpathComponent implements OnInit{
     this.videoService.getAll().subscribe(videos => {
       this.allVideos = videos
     })
-  }
-
-  generateRandomVideoColor(): string {
-    return "#ABCDEF"
   }
 
   saveChanges() {
@@ -189,8 +185,8 @@ export class EditLearningpathComponent implements OnInit{
       videoId: video.contentId,
       videoTitle: video.title,
       durationSeconds: video.durationSeconds,
-      questionCount: 0,
-      entryPosition: this.learningPath.entries.length
+      questionCount: video.questionCount,
+      entryPosition: this.learningPath.entries.length + 1
     })
     this.videoPopupTrigger.close()
   }

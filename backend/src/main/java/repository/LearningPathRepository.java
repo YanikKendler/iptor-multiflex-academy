@@ -1,7 +1,6 @@
 package repository;
 
-import dtos.LearningPathDetailDTO;
-import dtos.LearningPathEntryDTO;
+import dtos.*;
 import enums.VisibilityEnum;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -9,13 +8,16 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import model.*;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @ApplicationScoped
 @Transactional
 public class LearningPathRepository {
     @Inject
     EntityManager em;
 
-    public LearningPathDetailDTO getById(Long pathId, Long userId){
+    public LearningPathDetailDTO getDetailDTO(Long pathId, Long userId){
         LearningPath learningPath = em.find(LearningPath.class, pathId);
 
         ViewProgress viewProgress;
@@ -52,6 +54,74 @@ public class LearningPathRepository {
                 );
             }
         ).toList());
+    }
+
+    public LearningPathDetailDTO update(EditLearningPathDTO data) {
+        LearningPath pathToUpdate = em.find(LearningPath.class, data.contentId());
+
+        pathToUpdate.setTitle(data.title());
+        pathToUpdate.setDescription(data.description());
+        pathToUpdate.setTags(data.tags());
+        pathToUpdate.setVisibility(data.visibility());
+        pathToUpdate.setColor(data.color());
+
+        List<LearningPathEntry> entries = new LinkedList<>();
+
+        for (LearningPathEntryDTO entry : data.entries()) {
+            LearningPathEntry entryToUpdate;
+
+            try{
+                entryToUpdate = em.find(LearningPathEntry.class, entry.pathEntryId());
+                entryToUpdate.setEntryPosition(entry.entryPosition());
+                em.merge(entryToUpdate);
+            }catch (Exception e) {
+                entryToUpdate = new LearningPathEntry(
+                        em.find(Video.class, entry.videoId()),
+                        entry.entryPosition()
+                );
+                em.persist(entryToUpdate);
+            }
+
+            entries.add(entryToUpdate);
+        }
+
+        pathToUpdate.setEntries(entries);
+
+        em.merge(pathToUpdate);
+
+        return null;
+    }
+
+    public LearningPath create(EditLearningPathDTO data, Long userId) {
+        System.out.println(data.toString());
+
+        List<LearningPathEntry> entries = new LinkedList<>();
+
+        for (LearningPathEntryDTO entryDTO : data.entries()) {
+            LearningPathEntry newEntry = new LearningPathEntry(
+                    em.find(Video.class, entryDTO.videoId()),
+                    entryDTO.entryPosition()
+            );
+            em.persist(newEntry);
+            entries.add(newEntry);
+        }
+
+        String title = data.title();
+        if(title == null || title.isEmpty()){
+            title = "Untitled Learningpath";
+        }
+
+        LearningPath newLearningPath = new LearningPath(
+                title,
+                data.description(),
+                data.visibility(),
+                entries,
+                data.color(),
+                em.find(User.class, userId)
+        );
+        em.persist(newLearningPath);
+
+        return newLearningPath;
     }
 
     public void getNext(Long pathId, Long userId) {

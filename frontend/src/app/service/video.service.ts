@@ -54,6 +54,7 @@ export interface VideoOverviewDTO {
   saved: boolean
   color: string
   durationSeconds: number
+  questionCount: number
   viewProgress: ViewProgress
 }
 
