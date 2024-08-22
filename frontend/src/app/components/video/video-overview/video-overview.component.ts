@@ -62,7 +62,6 @@ export class VideoOverviewComponent implements OnInit{
 
   ngOnInit(): void {
     this.tagToolTipString = this.video.tags?.map(tag => tag.name).join(", ")
-    console.log(this.video)
   }
 
   @HostListener('click', ['$event'])

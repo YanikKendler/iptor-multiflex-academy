@@ -56,6 +56,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.content = undefined
+    this.getLocalStorageTags()
     this.loadContent()
 
     /*    console.log(Utils.toSmartTimeString(new Date()))
@@ -63,6 +64,13 @@ export class DashboardComponent implements OnInit {
         console.log(Utils.toSmartTimeString(new Date(1000*60*80)))
         console.log(Utils.toSmartTimeString(new Date("05.08.2024")))
         console.log(Utils.toSmartTimeString(new Date("07.06.2020")))*/
+  }
+
+  getLocalStorageTags(){
+    let tags = localStorage.getItem("selectedTags");
+    if(tags){
+      this.filterTags = JSON.parse(tags) as Tag[];
+    }
   }
 
   loadContent(): void{

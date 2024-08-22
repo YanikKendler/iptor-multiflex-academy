@@ -7,17 +7,8 @@
   </div>
 
   <div class="tags">
-    @for(tag of tags; track tag){
-      <app-chip (click)="toggleSelect($event);updateFilter(tag);">{{ tag.name }}</app-chip>
-    }
-  </div>
-
-  <p>Visibility</p>
-  <div class="visibility">
-    @for(type of visibilityTypes; track type){
-      @if(type != "self"){
-        <app-chip (click)="toggleSelect($event)">{{ type }}</app-chip>
-      }
+    @for(tag of tags; track tag.tagId){
+      <app-chip (click)="updateFilter(tag);" [ngClass]="isSelected(tag) ? 'selected' : ''">{{ tag.name }}</app-chip>
     }
   </div>
 } @else{

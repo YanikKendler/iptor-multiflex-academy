@@ -63,7 +63,7 @@ public class UserRepository {
                                 "and not exists (" +
                                 "    select t from Tag t " +
                                 "    where t in :tags and t not in elements(v.tags)" +
-                                ") ", Video.class)
+                                ")", Video.class)
                 .setParameter("userId", userId)
                 .setParameter("tags", tags)
                 .getResultList();
@@ -125,33 +125,41 @@ public class UserRepository {
         return new VideoAndLearningPathOverviewCollection(currentVideos, currentLearningPaths);
     }
 
-    public VideoAndLearningPathOverviewCollection getAssignedContent (Long userId, List<Tag> tags){
+    public VideoAndLearningPathOverviewCollection getAssignedContent(Long userId, List<Tag> tags) {
         List<Video> assignedVideos = em.createQuery("select distinct v from Video v " +
-                "join ContentAssignment va on va.content.contentId = v.contentId " +
-                "join v.tags t " +
-                "where va.assignedTo.userId = :userId " +
-                "and not exists (" +
-                "    select t from Tag t " +
-                "    where t in :tags and t not in elements(v.tags)" +
-                ")", Video.class).setParameter("userId", userId).setParameter("tags", tags).getResultList();
+                        "join ContentAssignment va on va.content.contentId = v.contentId " +
+                        "join v.tags t " +
+                        "where va.assignedTo.userId = :userId " +
+                        "and not exists (" +
+                        "    select t from Tag t " +
+                        "    where t in :tags and t not in elements(v.tags)" +
+                        ")", Video.class)
+                .setParameter("userId", userId)
+                .setParameter("tags", tags)
+                .getResultList();
 
-        List<VideoOverviewDTO> assignedVideosDTO = assignedVideos.stream().map(video -> {return convertVideoToOverviewDTO(video, userId);}).toList();
+        List<VideoOverviewDTO> assignedVideosDTO = assignedVideos.stream()
+                .map(video -> convertVideoToOverviewDTO(video, userId)).toList();
 
         List<LearningPath> assignedLearningPaths = em.createQuery("select distinct lp from LearningPath lp " +
-                "join ContentAssignment va on va.content.contentId = lp.contentId " +
-                "join lp.tags t " +
-                "where va.assignedTo.userId = :userId " +
-                "and not exists (" +
-                "    select t from Tag t " +
-                "    where t in :tags and t not in elements(lp.tags)" +
-                ")", LearningPath.class).setParameter("userId", userId).setParameter("tags", tags).getResultList();
+                        "join ContentAssignment va on va.content.contentId = lp.contentId " +
+                        "join lp.tags t " +
+                        "where va.assignedTo.userId = :userId " +
+                        "and not exists (" +
+                        "    select t from Tag t " +
+                        "    where t in :tags and t not in elements(lp.tags)" +
+                        ")", LearningPath.class)
+                .setParameter("userId", userId)
+                .setParameter("tags", tags)
+                .getResultList();
 
-        List<LearningPathOverviewDTO> assignedLearningPathsDTO = assignedLearningPaths.stream().map(learningPath -> {return convertLearningPathToOverviewDTO(learningPath, userId);}).toList();
+        List<LearningPathOverviewDTO> assignedLearningPathsDTO = assignedLearningPaths.stream()
+                .map(learningPath -> convertLearningPathToOverviewDTO(learningPath, userId)).toList();
 
         return new VideoAndLearningPathOverviewCollection(assignedVideosDTO, assignedLearningPathsDTO);
     }
 
-    public VideoAndLearningPathOverviewCollection getSuggestedContent(Long userId, List<Tag> filterTags){
+    public VideoAndLearningPathOverviewCollection getSuggestedContent(Long userId, List<Tag> filterTags) {
         // get all tags of the users watched videos and learning paths
         List<Tag> tags = em.createQuery("select distinct t from Video v " +
                         "join ViewProgress vp on vp.content.contentId = v.contentId " +
@@ -177,7 +185,9 @@ public class UserRepository {
                                     "    select t from Tag t " +
                                     "    where t in :tags and t not in elements(v.tags)" +
                                     ")", Video.class)
-                    .setParameter("userId", userId).setParameter("tags", filterTags).getResultList();
+                    .setParameter("userId", userId)
+                    .setParameter("tags", filterTags)
+                    .getResultList();
 
             learningPaths = em.createQuery(
                             "select lp from LearningPath lp " +
@@ -188,7 +198,9 @@ public class UserRepository {
                                     "    select t from Tag t " +
                                     "    where t in :tags and t not in elements(lp.tags)" +
                                     ")", LearningPath.class)
-                    .setParameter("userId", userId).setParameter("tags", filterTags).getResultList();
+                    .setParameter("userId", userId)
+                    .setParameter("tags", filterTags)
+                    .getResultList();
         } else {
             videos = em.createQuery(
                             "select v from Video v " +
@@ -200,7 +212,10 @@ public class UserRepository {
                                     "    select t from Tag t " +
                                     "    where t in :tags and t not in elements(v.tags)" +
                                     ")", Video.class)
-                    .setParameter("userId", userId).setParameter("tags", filterTags).setParameter("savedContent", savedContent).getResultList();
+                    .setParameter("userId", userId)
+                    .setParameter("tags", filterTags)
+                    .setParameter("savedContent", savedContent)
+                    .getResultList();
 
             learningPaths = em.createQuery(
                             "select lp from LearningPath lp " +
@@ -212,7 +227,10 @@ public class UserRepository {
                                     "    select t from Tag t " +
                                     "    where t in :tags and t not in elements(lp.tags)" +
                                     ")", LearningPath.class)
-                    .setParameter("userId", userId).setParameter("tags", filterTags).setParameter("savedVideos", savedContent).getResultList();
+                    .setParameter("userId", userId)
+                    .setParameter("tags", filterTags)
+                    .setParameter("savedVideos", savedContent)
+                    .getResultList();
         }
 
         HashMap<Video, Integer> videoScores = new HashMap<>();
@@ -342,8 +360,8 @@ public class UserRepository {
         return learningPaths.stream()
                 .map(lp -> {
                     long views = em.createQuery("select count(vp) from ViewProgress vp where vp.content.contentId = :contentId", Long.class)
-                    .setParameter("contentId", lp.getContentId())
-                    .getSingleResult();
+                            .setParameter("contentId", lp.getContentId())
+                            .getSingleResult();
                     return new MyLearningpathDTO(
                             lp.getContentId(),
                             lp.getTitle(),
