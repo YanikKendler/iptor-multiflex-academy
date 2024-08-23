@@ -1,3 +1,3 @@
-@for (user of users; track user.userId){
-  <app-manage-user-field [user]="user"></app-manage-user-field>
+@if(rootUser){
+  <app-manage-user-field [user]="rootUser" [subordinates]="rootUser.subordinates"></app-manage-user-field>
 }

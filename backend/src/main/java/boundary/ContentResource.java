@@ -22,4 +22,14 @@ public class ContentResource {
             return Response.status(400).entity(ex).build();
         }
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFullContent(){
+        try{
+            return Response.ok(repository.getFullContent()).build();
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+    }
 }

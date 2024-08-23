@@ -9,6 +9,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import model.*;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,5 +45,17 @@ public class ContentRepository {
         } catch(NoResultException e) {
             return new ContentForUserDTO(null, null, null);
         }
+    }
+
+    public List<ContentOverviewDTO> getFullContent() {
+        List<Content> c =  em.createQuery("SELECT c FROM Content c", Content.class).getResultList();
+
+        return c.stream().map(content -> {
+            if(content instanceof Video) {
+                return new ContentOverviewDTO(content.getContentId(), content.getTitle(), "Video");
+            } else {
+                return new ContentOverviewDTO(content.getContentId(), content.getTitle(), "Learning Path");
+            }
+        }).toList();
     }
 }
