@@ -1,11 +1,17 @@
 <div class="top">
-  <input type="text" placeholder="Search for a Tag">
+  <input
+    type="text"
+    placeholder="Search for a Tag"
+    #tagInput
+    (input)="generateTagOptions(tagInput.value)"
+    (focus)="generateTagOptions('')"
+  >
   <div
     class="flip-button"
-    (click)="isOpenState = !isOpenState"
+    (click)="toggleSidebar()"
     matBadge="{{selectedTags.length}}"
     matBadgeSize="large"
-    [matBadgeHidden]="isOpenState || selectedTags.length == 0"
+    [matBadgeHidden]="sideBarOpen || selectedTags.length == 0"
     matBadgeDescription="dislays how many tags are selected even with the sidebar closed"
   >
     <div class="ripples" mat-ripple>
@@ -15,7 +21,10 @@
 </div>
 
 <div class="tags">
-  @for(tag of tags; track tag.tagId){
+  @for(tag of tagOptions; track tag.tagId){
     <app-chip (click)="updateFilter(tag);" [ngClass]="isSelected(tag) ? 'selected' : ''">{{ tag.name }}</app-chip>
+  }
+  @if(tagOptions.length == 0){
+    <p class="no-results">No tags found</p>
   }
 </div>

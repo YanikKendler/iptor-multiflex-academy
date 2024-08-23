@@ -1,12 +1,12 @@
 -- Insert demo data for User
-INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('admin', 'admin@admin', 'ADMIN', '$2a$10$862S1SeLTlFdf7kYFKpNyescyiNuAHGbiFeZ4z02VHdESGcw5ULfu', NULL, NULL);
-INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('john_doe', 'john@test', 'EMPLOYEE', '$2a$10$uoJGXc4bNnzppqsBB53s0epnvRDkvSE9xQe.fqUtrCZGWM0drRFGi', 1, 1);
-INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('jane_smith', 'jane@test', 'EMPLOYEE', '$2a$10$vFYOWxrLcR4SNHMY3z11oOiJGD.HpkBuxU/Uzr/ymipIW.myZQ6oO', 1, 1);
-INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('alice_jones', 'alice@test', 'EMPLOYEE', '$2a$10$cOW/k4lOFwx5zrYRlfTDDO60EO8ubn6ptLdLF86qooFtPEQcSSRfi', 1, 1);
-INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('bob_brown', 'bob@test', 'EMPLOYEE', '$2a$10$PrLNDgdld/EIqi4hmMVoIuhIvcAGsMggJ5MJuK2nNE.PbrUxHB2vO', 1, 1);
-INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('leon steinhuber', 'leon.steinhuber@test', 'CUSTOMER', '$2a$10$j6/dJGVxar/nl370BLSmLOpYtSgFEyAVkaUlLYxrDjQOaNEfeEucW', 2, 2);
-INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('michael leisch', 'michael.leisch@test', 'CUSTOMER', '$2a$10$ufluH.7UeSqY9xKIIx8OTObNcIE8pv8GR6EVWhMF1NofRm4uLzLUi', 2, 2);
-INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('yanik kendler', 'yanik.kendler@test', 'CUSTOMER', '$2a$10$F9R.Ol/vTxLmwIAivLum5.JcIxa81YAUtcqSnLaTPhXTaT3/OxZyS', 2, 2);
+INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('admin', 'admin@admin', 'ADMIN', '$2a$10$862S1SeLTlFdf7kYFKpNyescyiNuAHGbiFeZ4z02VHdESGcw5ULfu', NULL, NULL);
+INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('john_doe', 'john@test', 'EMPLOYEE', '$2a$10$uoJGXc4bNnzppqsBB53s0epnvRDkvSE9xQe.fqUtrCZGWM0drRFGi', 1, 1);
+INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('jane_smith', 'jane@test', 'EMPLOYEE', '$2a$10$vFYOWxrLcR4SNHMY3z11oOiJGD.HpkBuxU/Uzr/ymipIW.myZQ6oO', 1, 1);
+INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('alice_jones', 'alice@test', 'EMPLOYEE', '$2a$10$cOW/k4lOFwx5zrYRlfTDDO60EO8ubn6ptLdLF86qooFtPEQcSSRfi', 1, 1);
+INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('bob_brown', 'bob@test', 'EMPLOYEE', '$2a$10$PrLNDgdld/EIqi4hmMVoIuhIvcAGsMggJ5MJuK2nNE.PbrUxHB2vO', 1, 1);
+INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('leon steinhuber', 'leon.steinhuber@test', 'CUSTOMER', '$2a$10$j6/dJGVxar/nl370BLSmLOpYtSgFEyAVkaUlLYxrDjQOaNEfeEucW', 2, 2);
+INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('michael leisch', 'michael.leisch@test', 'CUSTOMER', '$2a$10$ufluH.7UeSqY9xKIIx8OTObNcIE8pv8GR6EVWhMF1NofRm4uLzLUi', 2, 2);
+INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('yanik kendler', 'yanik.kendler@test', 'CUSTOMER', '$2a$10$F9R.Ol/vTxLmwIAivLum5.JcIxa81YAUtcqSnLaTPhXTaT3/OxZyS', 2, 2);
 
 INSERT INTO VideoFile(durationseconds, sizebytes, originalfileextension) values (32, 1000000, 'mp4');
 

@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
-import {UserDTO, UserEnum, UserLoginDTO, UserService} from "../../../service/user.service";
+import {UserDTO, UserRoleEnum, UserLoginDTO, UserService} from "../../../service/user.service";
 import {ActivatedRoute, Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {Config} from "../../../config";
 import * as bcrypt from "bcryptjs";
@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit{
 
   ngOnInit(): void {
     let userLoginDTO: UserLoginDTO = {
-      userId: localStorage.getItem('USER_ID') ? parseInt(localStorage.getItem('USER_ID')!) : -1,
-      password: localStorage.getItem('USER_PASSWORD')!
+      userId: localStorage.getItem('IMA_USER_ID') ? parseInt(localStorage.getItem('IMA_USER_ID')!) : -1,
+      password: localStorage.getItem('IMA_USER_PASSWORD')!
     }
 
     this.userService.isLoggedIn(userLoginDTO).subscribe(isLoggedIn => {
@@ -71,14 +71,17 @@ export class LoginComponent implements OnInit{
         username: "",
         email: this.regForm.get('email')?.value,
         password: this.regForm.get('password')?.value,
-        userType: "CUSTOMER"
+        userRole: "CUSTOMER"
       }
       this.userService.login(userDTO).subscribe(response => {
         console.log(response)
-        if(response > 0){
-          Config.USER_ID = response
-          localStorage.setItem('USER_ID', response.toString());
-          localStorage.setItem('USER_PASSWORD', userDTO.password);
+        if(response != null){
+          this.userService.currentUser.next(response)
+
+          console.log(response)
+
+          localStorage.setItem('IMA_USER_ID', response.userId.toString());
+          localStorage.setItem('IMA_USER_PASSWORD', userDTO.password);
           this.router.navigate([''])
         } else if (response == -1){
           this.error = "Invalid password"

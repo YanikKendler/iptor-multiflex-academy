@@ -87,4 +87,5 @@ export class ManageUserFieldComponent implements OnInit {
   }
 
   protected readonly Config = Config;
+    protected readonly inject = inject
 }

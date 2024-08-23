@@ -1,7 +1,7 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import enums.UserEnum;
+import enums.UserRoleEnum;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.json.JsonObject;
 import jakarta.persistence.*;
@@ -31,17 +31,17 @@ public class User {
     private User deputySupervisor;
 
     @Enumerated(EnumType.STRING)
-    private UserEnum userType;
+    private UserRoleEnum userRole;
 
     @OneToMany
     @JsonIgnore
     private List<Content> savedContent;
 
-    public User(String username, String email, String password, UserEnum userType) {
+    public User(String username, String email, String password, UserRoleEnum userRole) {
         this.username = username;
         this.email = email;
         setPassword(password);
-        this.userType = userType;
+        this.userRole = userRole;
     }
 
     public User() { }
@@ -129,12 +129,12 @@ public class User {
         this.deputySupervisor = deputySupervisor;
     }
 
-    public UserEnum getUserType() {
-        return userType;
+    public UserRoleEnum getUserRole() {
+        return userRole;
     }
 
-    public void setUserType(UserEnum userType) {
-        this.userType = userType;
+    public void setUserRole(UserRoleEnum userType) {
+        this.userRole = userType;
     }
 
     public void setSavedContent(List<Content> savedContent) {

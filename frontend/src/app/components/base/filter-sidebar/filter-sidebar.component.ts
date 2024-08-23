@@ -30,27 +30,31 @@ export class FilterSidebarComponent implements OnInit {
   @Output() updateFilterEmitter : EventEmitter<Tag[]> = new EventEmitter<Tag[]>();
 
   @HostBinding('class.open')
-  isOpenState: boolean = true;
+  sideBarOpen: boolean = true;
 
-  tags : Tag[] = []
   tagService = inject(TagService);
+
+  allTags : Tag[] = []
   selectedTags: Tag[] = []
-
-  constructor() {
-    this.tagService.getAll().subscribe(tags => {
-      this.tags = tags;
-    });
-  }
-
-  protected readonly VisibilityEnum = VisibilityEnum;
-  protected readonly faAnglesRight = faAnglesRight;
+  tagOptions: Tag[] = []
 
   ngOnInit() {
     this.getLocalStorageTags()
+
+    this.sideBarOpen = localStorage.getItem("imaSidebarOpen") ? localStorage.getItem("imaSidebarOpen") === "true" : true;
+
+    this.tagService.getAll().subscribe(tags => {
+      this.allTags = tags;
+      this.tagOptions = tags;
+    });
+  }
+
+  generateTagOptions(query: string) {
+    this.tagOptions = this.tagOptions.filter(tag => tag.name.toLowerCase().includes(query.toLowerCase()) || this.selectedTags.includes(tag))
   }
 
   getLocalStorageTags(){
-    let tags = localStorage.getItem("selectedTags");
+    let tags = localStorage.getItem("imaSelectedTags");
     if(tags){
       let json = JSON.parse(tags) as Tag[];
       json.forEach(tag => {
@@ -60,10 +64,10 @@ export class FilterSidebarComponent implements OnInit {
   }
 
   setLocalStorageTags(){
-    localStorage.setItem("selectedTags", JSON.stringify(this.selectedTags));
+    localStorage.setItem("imaSelectedTags", JSON.stringify(this.selectedTags));
   }
 
-  updateFilter(tag: Tag, shouldNotEmit: boolean = false) {
+  updateFilter(tag: Tag, doNotEmit: boolean = false) {
     console.log("update " + tag.name)
 
     if (this.selectedTags.some(t => t.tagId === tag.tagId)) {
@@ -74,12 +78,17 @@ export class FilterSidebarComponent implements OnInit {
 
     this.setLocalStorageTags();
 
-    if(!shouldNotEmit) {
+    if(!doNotEmit) {
       this.updateFilterEmitter.emit(this.selectedTags);
     }
   }
 
   isSelected(tag: Tag) {
     return this.selectedTags.some(t => t.tagId === tag.tagId);
+  }
+
+  toggleSidebar() {
+    this.sideBarOpen = !this.sideBarOpen
+    localStorage.setItem("imaSidebarOpen", this.sideBarOpen.toString());
   }
 }

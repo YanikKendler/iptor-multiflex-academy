@@ -28,6 +28,7 @@ import {IconButtonComponent} from "../../basic/icon-button/icon-button.component
 import {MatTooltip} from "@angular/material/tooltip"
 import {TagSelectorComponent} from "../../basic/tag-selector/tag-selector.component"
 import {Config} from "../../../config";
+import {UserService} from "../../../service/user.service"
 @Component({
   selector: 'app-edit-video',
   standalone: true,
@@ -54,6 +55,8 @@ import {Config} from "../../../config";
 })
 export class EditVideoComponent implements OnInit{
   readonly videoService = inject(VideoService);
+  readonly userService = inject(UserService)
+
 
   readonly dialogRef = inject(MatDialogRef<EditVideoComponent>);
   readonly data = inject<number>(MAT_DIALOG_DATA);
@@ -84,7 +87,7 @@ export class EditVideoComponent implements OnInit{
         tags: [],
         questions: [],
         rating: 0,
-        userId: Config.USER_ID
+        userId: this.userService.currentUser.value.userId
       } as VideoDetailDTO
       this.oldVideo= JSON.parse(JSON.stringify(this.video)) //actual nested deep copy
     }

@@ -29,23 +29,24 @@
 
 <ng-template #menu>
   <div class="menu" cdkMenu>
-    <div routerLink="/account/my-videos" (click)="closeMenu()">
-      <fa-icon [icon]="faCirclePlay"></fa-icon>
-      <p>My Videos</p>
-    </div>
+    @if(userService.currentUser.value.userRole == UserRoleEnum.ADMIN || userService.currentUser.value.userRole == UserRoleEnum.EMPLOYEE){
+      <div routerLink="/account/my-videos" (click)="closeMenu()">
+        <fa-icon [icon]="faCirclePlay"></fa-icon>
+        <p>My Videos</p>
+      </div>
 
-    <div routerLink="/account/my-learningpaths" (click)="closeMenu()">
-      <app-learning-path-icon></app-learning-path-icon>
-      <p>My Learningpaths</p>
-    </div>
+      <div routerLink="/account/my-learningpaths" (click)="closeMenu()">
+        <app-learning-path-icon></app-learning-path-icon>
+        <p>My Learningpaths</p>
+      </div>
 
-    <div routerLink="/account/manage-users" (click)="closeMenu()">
-      <fa-icon [icon]="faUsersGear"></fa-icon>
-      <p>Manage Users</p>
-    </div>
+      <div routerLink="/account/manage-users" (click)="closeMenu()">
+        <fa-icon [icon]="faUsersGear"></fa-icon>
+        <p>Manage Users</p>
+      </div>
 
-    <mat-divider></mat-divider>
-
+      <mat-divider></mat-divider>
+    }
     <div routerLink="/login" (click)="closeMenu();logout()">
       <fa-icon [icon]="faRightFromBracket"></fa-icon>
       <p>Logout</p>

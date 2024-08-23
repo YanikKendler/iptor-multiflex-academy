@@ -1,14 +1,11 @@
 package model;
 
-import enums.UserEnum;
+import enums.UserRoleEnum;
 import enums.VisibilityEnum;
 import jakarta.persistence.*;
-import org.hibernate.usertype.UserType;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -107,7 +104,7 @@ public abstract class Content {
     }
 
     public boolean isVisibleForUser(User user) {
-        if(UserEnum.ADMIN == user.getUserType()) {
+        if(UserRoleEnum.ADMIN == user.getUserRole()) {
             return true;
         }
 
@@ -116,9 +113,9 @@ public abstract class Content {
         } else if (visibility == VisibilityEnum.everyone) {
             return true;
         } else if (visibility == VisibilityEnum.customers) {
-            return user.getUserType() == UserEnum.CUSTOMER;
+            return user.getUserRole() == UserRoleEnum.CUSTOMER;
         } else if (visibility == VisibilityEnum.internal) {
-            return user.getUserType() == UserEnum.EMPLOYEE;
+            return user.getUserRole() == UserRoleEnum.EMPLOYEE;
         }
         return false;
     }

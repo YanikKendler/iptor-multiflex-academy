@@ -57,8 +57,10 @@ export class MyVideosComponent implements OnInit{
 
   userContent : MyLearningpathDTO[] = [];
 
-  constructor() {
-    this.getUserContent();
+  ngOnInit(): void {
+    this.userService.currentUser.subscribe(user => {
+      this.getUserContent();
+    })
   }
 
   getUserContent() {
@@ -66,10 +68,6 @@ export class MyVideosComponent implements OnInit{
       this.userContent = data;
       console.log(this.userContent)
     });
-  }
-
-  ngOnInit(): void {
-    /*this.openEditPopUp(1)*/
   }
 
   readonly dialog = inject(MatDialog);

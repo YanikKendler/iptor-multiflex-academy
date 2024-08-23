@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {map, Observable} from "rxjs";
 import {Config} from "../config"
+import {UserService} from "./user.service"
 
 export interface Tag {
   tagId: number
@@ -14,6 +14,7 @@ export interface Tag {
 })
 export class TagService {
   http = inject(HttpClient)
+  userService = inject(UserService)
 
   getAll(){
     return this.http.get<Tag[]>(`${Config.API_URL}/tag/`)

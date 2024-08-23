@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
-import {User} from "./user.service"
+import {User, UserService} from "./user.service"
 import {Config} from "../config"
 
 export interface Comment {
@@ -17,20 +17,21 @@ export interface Comment {
 })
 export class CommentService {
   http = inject(HttpClient)
+  userService = inject(UserService)
 
   getCommentList(videoId: number): Observable<Comment[]>{
-    return this.http.get<Comment[]>(`${Config.API_URL}/video/${videoId}/comment?userId=${Config.USER_ID}`)
+    return this.http.get<Comment[]>(`${Config.API_URL}/video/${videoId}/comment?userId=${this.userService.currentUser.value.userId}`)
   }
 
   createComment(videoId: number, text: string){
     return this.http.post(`${Config.API_URL}/video/${videoId}/comment`, {
       text: text,
-      userId: Config.USER_ID
+      userId: this.userService.currentUser.value.userId
     });
   }
 
   deleteComment(videoId: number, commentId: number){
-    return this.http.delete(`${Config.API_URL}/video/${videoId}/comment/${commentId}?userId=${Config.USER_ID}`);
+    return this.http.delete(`${Config.API_URL}/video/${videoId}/comment/${commentId}?userId=${this.userService.currentUser.value.userId}`);
   }
 
   updateComment(videoId: number, comment: Comment){

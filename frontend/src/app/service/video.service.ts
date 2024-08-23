@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
 import {Tag} from "./tag.service";
 import {Comment} from "./comment.service";
-import {ContentForUser, User} from "./user.service";
+import {ContentForUser, User, UserService} from "./user.service";
 import {Config} from "../config"
 import {LearningPathOverviewDTO} from "./learning-path.service";
 
@@ -92,13 +92,14 @@ export interface ContentOverviewDTO{
 })
 export class VideoService {
   http = inject(HttpClient)
+  userService = inject(UserService)
 
   getAll(): Observable<VideoOverviewDTO[]>{
     return this.http.get<VideoOverviewDTO[]>(`${Config.API_URL}/video/`)
   }
 
   getVideoDetails(videoId: number): Observable<VideoDetailDTO>{
-    return this.http.get<VideoDetailDTO>(`${Config.API_URL}/video/${videoId}?userId=${Config.USER_ID}`)
+    return this.http.get<VideoDetailDTO>(`${Config.API_URL}/video/${videoId}?userId=${this.userService.currentUser.value.userId}`)
   }
 
   setStarRating(videoId: number, userId: number, rating: number) {
@@ -114,7 +115,7 @@ export class VideoService {
   }
 
   createVideo(video: VideoDetailDTO){
-    return this.http.post<VideoDetailDTO>(`${Config.API_URL}/video/?userId=${Config.USER_ID}`, video)
+    return this.http.post<VideoDetailDTO>(`${Config.API_URL}/video/?userId=${this.userService.currentUser.value.userId}`, video)
   }
 
   updateVideo(video: VideoDetailDTO){
@@ -141,15 +142,15 @@ export class VideoService {
   }
 
   finishQuiz(videoId: number, score: number, selectedAnswers: AnswerOption[]){
-    this.http.post(`${Config.API_URL}/video/${videoId}/finishquiz/${score}?userId=${Config.USER_ID}`, selectedAnswers).subscribe();
+    this.http.post(`${Config.API_URL}/video/${videoId}/finishquiz/${score}?userId=${this.userService.currentUser.value.userId}`, selectedAnswers).subscribe();
   }
 
   getQuizResults(videoId: number){
-    return this.http.get<QuizResultDTO>(`${Config.API_URL}/video/${videoId}/quizresults?userId=${Config.USER_ID}`)
+    return this.http.get<QuizResultDTO>(`${Config.API_URL}/video/${videoId}/quizresults?userId=${this.userService.currentUser.value.userId}`)
   }
 
   searchContent(elem: string, filterTags: Tag[]) {
-    return this.http.post<ContentForUser>(`${Config.API_URL}/content/search?search=${elem}&userId=${Config.USER_ID}`, {tags: filterTags})
+    return this.http.post<ContentForUser>(`${Config.API_URL}/content/search?search=${elem}&userId=${this.userService.currentUser.value.userId}`, {tags: filterTags})
   }
 
   getFullContent() {

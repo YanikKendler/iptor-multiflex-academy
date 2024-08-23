@@ -18,6 +18,7 @@ import {TextfieldComponent} from "../../basic/textfield/textfield.component";
 import {Config} from "../../../config";
 import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning-path-icon.component"
 import {MatDivider} from "@angular/material/divider"
+import {User, UserRoleEnum, UserService} from "../../../service/user.service"
 
 @Component({
   selector: 'app-navigation',
@@ -39,6 +40,8 @@ import {MatDivider} from "@angular/material/divider"
   styleUrl: './navigation.component.scss'
 })
 export class NavigationComponent {
+  userService = inject(UserService)
+
   @Input() simple: boolean = false;
 
   @ViewChild(CdkMenuTrigger) trigger!: CdkMenuTrigger;
@@ -61,10 +64,12 @@ export class NavigationComponent {
   protected readonly faRightFromBracket = faRightFromBracket;
 
   logout() {
-    localStorage.removeItem("USER_ID")
-    localStorage.removeItem("USER_PASSWORD")
-    Config.USER_ID = -1
+    localStorage.removeItem("IMA_USER_ID")
+    localStorage.removeItem("IMA_USER_PASSWORD")
+    this.userService.currentUser.next({userId: -1} as User)
   }
+
+  protected readonly UserRoleEnum = UserRoleEnum
 }
 
 

@@ -3,6 +3,7 @@ import {Tag} from "./tag.service"
 import {VideoDetailDTO, ViewProgress, VisibilityEnum} from "./video.service"
 import {HttpClient} from "@angular/common/http"
 import {Config} from "../config"
+import {UserService} from "./user.service"
 
 export interface LearningPathOverviewDTO {
   contentId: number
@@ -41,15 +42,16 @@ export interface LearningPathEntryDTO {
 })
 export class LearningPathService {
   http = inject(HttpClient)
+  userService = inject(UserService)
 
   constructor() { }
 
   getLearningPathDetails(pathId: number){
-    return this.http.get<LearningPathDetailDTO>(`${Config.API_URL}/learningpath/${pathId}?userId=${Config.USER_ID}`)
+    return this.http.get<LearningPathDetailDTO>(`${Config.API_URL}/learningpath/${pathId}?userId=${this.userService.currentUser.value.userId}`)
   }
 
   nextVideoForLearningPath(pathId: number) {
-    this.http.get<LearningPathEntryDTO>(`${Config.API_URL}/learningpath/${pathId}/next?userId=${Config.USER_ID}`).subscribe();
+    this.http.get<LearningPathEntryDTO>(`${Config.API_URL}/learningpath/${pathId}/next?userId=${this.userService.currentUser.value.userId}`).subscribe();
   }
 
   updatePathVisibility(contentId: number, visibility: VisibilityEnum){
@@ -62,6 +64,6 @@ export class LearningPathService {
   }
 
   createLearningPath(learningPath: LearningPathDetailDTO){
-    return this.http.post<LearningPathDetailDTO>(`${Config.API_URL}/learningpath/?userId=${Config.USER_ID}`, learningPath)
+    return this.http.post<LearningPathDetailDTO>(`${Config.API_URL}/learningpath/?userId=${this.userService.currentUser.value.userId}`, learningPath)
   }
 }
