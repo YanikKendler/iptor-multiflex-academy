@@ -24,7 +24,7 @@ export class CommentService {
   }
 
   createComment(videoId: number, text: string){
-    return this.http.post(`${Config.API_URL}/video/${videoId}/comment?userId=${Config.USER_ID}`, {
+    return this.http.post(`${Config.API_URL}/video/${videoId}/comment?userId=${this.userService.currentUser.value.userId}`, {
       text: text,
       userId: this.userService.currentUser.value.userId
     });

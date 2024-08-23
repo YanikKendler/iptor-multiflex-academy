@@ -46,28 +46,6 @@ import {NgForOf} from "@angular/common";
 })
 export class NavigationComponent implements OnInit{
   userService = inject(UserService)
-
-  @Input() simple: boolean = false;
-
-  @ViewChild(CdkMenuTrigger) trigger!: CdkMenuTrigger;
-
-  closeMenu() {
-    this.trigger.close();
-  }
-
-  @Output() search = new EventEmitter<string>();
-  protected readonly faTrash = faTrash;
-  protected readonly faEllipsis = faEllipsis;
-  protected readonly faUser = faUser;
-  protected readonly faCircleUser = faCircleUser;
-  protected readonly faGear = faGear;
-  protected readonly faCirclePlay = faCirclePlay;
-  protected readonly faUsersGear = faUsersGear;
-  protected readonly faBell = faBell;
-  protected readonly faMagnifyingGlass = faMagnifyingGlass;
-  protected readonly faXmark = faXmark
-  protected readonly faRightFromBracket = faRightFromBracket;
-
   @Input() simple: boolean = false;
   @Output() search = new EventEmitter<string>();
   @ViewChild(CdkMenuTrigger) trigger!: CdkMenuTrigger;
@@ -94,6 +72,18 @@ export class NavigationComponent implements OnInit{
 
   protected readonly Notification = Notification;
   protected readonly UserRoleEnum = UserRoleEnum
+
+  protected readonly faTrash = faTrash;
+  protected readonly faEllipsis = faEllipsis;
+  protected readonly faUser = faUser;
+  protected readonly faCircleUser = faCircleUser;
+  protected readonly faGear = faGear;
+  protected readonly faCirclePlay = faCirclePlay;
+  protected readonly faUsersGear = faUsersGear;
+  protected readonly faBell = faBell;
+  protected readonly faMagnifyingGlass = faMagnifyingGlass;
+  protected readonly faXmark = faXmark
+  protected readonly faRightFromBracket = faRightFromBracket;
 }
 
 
