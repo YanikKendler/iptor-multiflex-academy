@@ -7,29 +7,32 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
-public class Notification {
-
+public abstract class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long notificationId;
 
     @ManyToOne
-    private User user;
+    private User forUser;
 
-    @Column
-    private String text;
+    @ManyToOne
+    private User triggeredByUser;
+
+    private boolean done;
 
     @Column
     private final LocalDateTime timestamp;
 
-    public Notification(User user, String text) {
-        this();
-        this.user = user;
-        this.text = text;
-    }
-
     public Notification() {
         this.timestamp = LocalDateTime.now();
+        this.done = false;
+    }
+
+    public Notification(User forUser, User triggeredByUser) {
+        this.timestamp = LocalDateTime.now();
+        this.forUser = forUser;
+        this.triggeredByUser = triggeredByUser;
+        this.done = false;
     }
 
     //<editor-fold desc="Getter und Setter">
@@ -37,24 +40,32 @@ public class Notification {
         return notificationId;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
     public LocalDateTime getTimestamp() {
         return timestamp;
+    }
+
+    public User getForUser() {
+        return forUser;
+    }
+
+    public void setForUser(User forUser) {
+        this.forUser = forUser;
+    }
+
+    public User getTriggeredByUser() {
+        return triggeredByUser;
+    }
+
+    public void setTriggeredByUser(User triggeredByUser) {
+        this.triggeredByUser = triggeredByUser;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
     //</editor-fold>
 }

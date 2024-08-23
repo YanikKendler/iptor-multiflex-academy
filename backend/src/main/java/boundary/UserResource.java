@@ -3,6 +3,7 @@ package boundary;
 import dtos.FilterDTO;
 import dtos.UserDTO;
 import dtos.UserLoginDTO;
+import dtos.UserTreeDTO;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -145,7 +146,8 @@ public class UserResource {
     @Path("{userId}/getusers")
     public Response manageUsers(@PathParam("userId") Long userId) {
         try {
-            return Response.ok(repository.getFullUserTree(userId)).build();
+            UserTreeDTO userTree = repository.getFullUserTree(userId);
+            return Response.ok(userTree).build();
         } catch (Exception ex) {
             ex.printStackTrace();
             return Response.status(400).entity(ex).build();

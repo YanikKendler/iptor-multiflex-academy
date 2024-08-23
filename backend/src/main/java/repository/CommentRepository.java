@@ -1,10 +1,12 @@
 package repository;
 
+import enums.ContentNotificationEnum;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import model.Comment;
+import model.CommentNotification;
 import model.User;
 import model.Video;
 
@@ -19,11 +21,15 @@ public class CommentRepository {
     VideoRepository videoRepository;
 
     @Transactional
-    public void create(Long videoId, Comment comment) {
-        //todo when users are implemented, get the user from the session
-        comment.setUser(em.find(User.class, 1L));
-        videoRepository.getById(videoId).addComment(comment);
+    public void create(Long userId, Long videoId, Comment comment) {
+        comment.setUser(em.find(User.class, userId));
+        Video video = videoRepository.getById(videoId);
+        video.addComment(comment);
         em.persist(comment);
+
+        if(!comment.getUser().getUserId().equals(video.getUser().getUserId())){
+            em.persist(new CommentNotification(video.getUser(), comment.getUser(), comment, video));
+        }
     }
 
     @Transactional

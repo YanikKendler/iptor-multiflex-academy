@@ -120,7 +120,7 @@ export class UserService {
   }
 
   getManageableUsers() {
-    return this.http.get<UserTreeDTO[]>(`${Config.API_URL}/user/${this.currentUser.value.userId}/getusers`)
+    return this.http.get<UserTreeDTO>(`${Config.API_URL}/user/${this.currentUser.value.userId}/getusers`)
   }
 
   getAssignedUserContent(userId: number){

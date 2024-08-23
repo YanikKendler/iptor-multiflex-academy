@@ -28,8 +28,8 @@ public class NotificationRepository {
         em.merge(notification);
     }
 
-    public List<Notification> getAll() {
-        return em.createQuery("select n from Notification n", Notification.class).getResultList();
+    public List<Notification> getAll(Long userId) {
+        return em.createQuery("select n from Notification n where n.forUser.userId = :userId", Notification.class).setParameter("userId", userId).getResultList();
     }
 
     public Notification getById(Long id){
