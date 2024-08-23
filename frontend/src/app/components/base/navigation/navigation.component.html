@@ -55,6 +55,18 @@
       <p>Manage Users</p>
     </div>
 
+    <div routerLink="/account/video-requests">
+      <fa-icon [icon]="faListCheck"></fa-icon>
+      <p>Video Requests</p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div (click)="requestVideo()">
+      <fa-icon [icon]="faUserPlus"></fa-icon>
+      <p>Request a Video</p>
+    </div>
+
     <mat-divider></mat-divider>
 
     <div routerLink="/login" (click)="closeMenu();logout()">

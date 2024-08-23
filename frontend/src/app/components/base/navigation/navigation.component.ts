@@ -5,9 +5,9 @@ import {
   faCirclePlay,
   faCircleUser,
   faEllipsis,
-  faGear, faMagnifyingGlass, faRightFromBracket,
+  faGear, faListCheck, faMagnifyingGlass, faRightFromBracket,
   faTrash,
-  faUser,
+  faUser, faUserPlus,
   faUsersGear, faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
@@ -21,6 +21,9 @@ import {MatDivider} from "@angular/material/divider"
 import {Notification, NotificationService} from "../../../service/notification.service";
 import {NotificationComponent} from "../notification/notification.component";
 import {NgForOf} from "@angular/common";
+import {EditVideoComponent} from "../../account/edit-video/edit-video.component";
+import {MatDialog} from "@angular/material/dialog";
+import {RequestVideoComponent} from "../../account/request-video/request-video.component";
 
 @Component({
   selector: 'app-navigation',
@@ -70,6 +73,23 @@ export class NavigationComponent implements OnInit{
     })
   }
 
+  readonly dialog = inject(MatDialog);
+  requestVideo(){
+    this.openEditPopUp(-1)
+  }
+  openEditPopUp(videoId: number) {
+    let dialogRef = this.dialog.open(RequestVideoComponent, {
+      maxWidth: "80vw",
+      width: "800px",
+      disableClose: true,
+      data: videoId
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
+
   closeMenu() {
     this.trigger.close();
   }
@@ -81,6 +101,8 @@ export class NavigationComponent implements OnInit{
   }
 
   protected readonly Notification = Notification;
+  protected readonly faUserPlus = faUserPlus;
+  protected readonly faListCheck = faListCheck;
 }
 
 
