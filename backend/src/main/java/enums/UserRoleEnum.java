@@ -1,5 +1,5 @@
 package enums;
 
-public enum UserEnum {
+public enum UserRoleEnum {
     ADMIN, EMPLOYEE, CUSTOMER
 }

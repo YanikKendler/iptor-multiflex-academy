@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {User} from "./user.service";
+import {User, UserService} from "./user.service";
 import {ContentOverviewDTO, VideoOverviewDTO} from "./video.service";
 import {Comment} from "./comment.service";
 import {Config} from "../config";
@@ -42,9 +42,10 @@ export class NotificationService {
   constructor() { }
 
   http = inject(HttpClient)
+  userService = inject(UserService)
 
   getNotifications() {
-    return this.http.get<Notification[]>(`${Config.API_URL}/notification?userId=${Config.USER_ID}`)
+    return this.http.get<Notification[]>(`${Config.API_URL}/notification?userId=${this.userService.currentUser.value.userId}`)
   }
 
   update(notification: Notification) {

@@ -9,6 +9,7 @@ import { Comment, CommentService } from "../../../service/comment.service";
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from "@angular/cdk/menu";
 import { Config } from "../../../config";
 import { FormsModule } from "@angular/forms";
+import {UserService} from "../../../service/user.service"
 
 @Component({
   selector: 'app-video-comment',
@@ -33,7 +34,7 @@ export class VideoCommentComponent implements AfterViewInit {
 
   @Output() update = new EventEmitter<void>();
 
-  userId = Config.USER_ID;
+  userId = inject(UserService).currentUser.value.userId;
   editMode: boolean = false;
 
   commentService = inject(CommentService);

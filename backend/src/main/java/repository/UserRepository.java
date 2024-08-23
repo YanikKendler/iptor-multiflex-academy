@@ -5,7 +5,6 @@ import dtos.ContentForUserDTO;
 import dtos.VideoOverviewDTO;
 import enums.ContentNotificationEnum;
 import io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig;
-import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -19,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Transactional
@@ -378,33 +376,37 @@ public class UserRepository {
     }
 
     public Long create(UserDTO user) {
-        User createdUser = new User(user.username(), user.email(), user.password(), user.userType());
+        User createdUser = new User(user.username(), user.email(), user.password(), user.userRole());
         em.persist(createdUser);
         return createdUser.getUserId();
     }
 
-    public Long login(UserDTO user) {
+    public User login(UserDTO userDTO) {
         try{
-            User createdUser = em.createQuery("select u from User u where u.email = :email", User.class)
-                    .setParameter("email", user.email()).getSingleResult();
+            User user = em.createQuery("select u from User u where u.email = :email", User.class)
+                    .setParameter("email", userDTO.email()).getSingleResult();
 
-            if (!createdUser.verifyPassword(user.password())) {
-                return -1L;
+            if (!user.verifyPassword(userDTO.password())) {
+                return null;
             }
-            return createdUser.getUserId();
+
+            return user;
         } catch(NoResultException e){
-            return -2L;
+            return null;
         }
     }
 
-    public boolean isLoggedIn(UserLoginDTO user1) {
+    public User isLoggedIn(UserLoginDTO userLoginDTO) {
         try {
             User user = em.createQuery("select u from User u where u.userId = :userId", User.class)
-                    .setParameter("userId", user1.userId()).getSingleResult();
-            return user.verifyPassword(user1.password());
+                    .setParameter("userId", userLoginDTO.userId()).getSingleResult();
+            if(user.verifyPassword(userLoginDTO.password())){
+                return user;
+            }
         } catch (NoResultException e) {
-            return false;
+            return null;
         }
+        return null;
     }
 
     @Transactional

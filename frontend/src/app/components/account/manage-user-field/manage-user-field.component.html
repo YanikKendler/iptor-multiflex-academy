@@ -1,5 +1,5 @@
 <main>
-  @if(user.userId != Config.USER_ID){
+  @if(user.userId != this.userService.currentUser.value.userId){
     <p class="username" (click)="toggle()">{{user.username}}</p>
   }
 

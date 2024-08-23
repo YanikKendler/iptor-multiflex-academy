@@ -1,6 +1,6 @@
 package dtos;
 
-import enums.UserEnum;
+import enums.UserRoleEnum;
 
-public record UserDTO(String username, String email, String password, UserEnum userType) {
+public record UserDTO(String username, String email, String password, UserRoleEnum userRole) {
 }

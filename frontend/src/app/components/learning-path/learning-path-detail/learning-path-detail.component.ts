@@ -13,6 +13,7 @@ import {NavigationComponent} from "../../base/navigation/navigation.component";
 import {NgClass, NgStyle} from "@angular/common";
 import {PlayIconComponent} from "../../icons/playicon/play.icon.component"
 import {faCircleCheck} from "@fortawesome/free-regular-svg-icons"
+import {UserService} from "../../../service/user.service"
 
 @Component({
   selector: 'app-learning-path-detail',
@@ -62,6 +63,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   isFinished: boolean = false
 
   videoService = inject(VideoService)
+  userService = inject(UserService)
 
   //wheter or not the full learning path description is shown in the sidebar
   fullDescription: boolean = false
@@ -69,28 +71,32 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   constructor(private route: ActivatedRoute) {  }
 
   ngOnInit() {
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.service.getLearningPathDetails(params['id']).subscribe(learningPath => {
-          this.learningPath = learningPath
+    this.userService.currentUser.subscribe(user => {
+      if(user.userId <= 0) return
 
-          if(this.learningPath.viewProgress){
-            this.progressPercent = this.learningPath.viewProgress.progress / this.learningPath.entries.length * 100
-          }
+      this.route.params.subscribe(
+        (params: Params) => {
+          this.service.getLearningPathDetails(params['id']).subscribe(learningPath => {
+            this.learningPath = learningPath
 
-          for (let i = 1; i <= this.learningPath.entries.length; i++) {
-            this.videoProgress.push(i)
-          }
+            if(this.learningPath.viewProgress){
+              this.progressPercent = this.learningPath.viewProgress.progress / this.learningPath.entries.length * 100
+            }
 
-          if(this.progressPercent == 100){
-            this.isFinished = true
-            this.currentVideoPosition = this.learningPath.entries.length
-          } else{
-            this.getVideoDetails(this.learningPath.entries[this.learningPath.viewProgress ? this.learningPath.viewProgress.progress : 0].videoId)
-          }
-        })
-      }
-    )
+            for (let i = 1; i <= this.learningPath.entries.length; i++) {
+              this.videoProgress.push(i)
+            }
+
+            if(this.progressPercent == 100){
+              this.isFinished = true
+              this.currentVideoPosition = this.learningPath.entries.length
+            } else{
+              this.getVideoDetails(this.learningPath.entries[this.learningPath.viewProgress ? this.learningPath.viewProgress.progress : 0].videoId)
+            }
+          })
+        }
+      )
+    })
   }
 
   getVideoDetails(videoId: number){

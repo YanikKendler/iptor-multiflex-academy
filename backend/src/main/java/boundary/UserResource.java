@@ -39,21 +39,21 @@ public class UserResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("login")
-    public Response login(UserDTO user){
-        Long user1;
+    public Response login(UserDTO userDTO){
         try{
-            user1 = repository.login(user);
+            User user = repository.login(userDTO);
+            return Response.ok(user).build();
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok(user1).build();
     }
 
     @POST
     @Path("isloggedin")
     public Response isLoggedIn(UserLoginDTO user){
         try{
-            return Response.ok(repository.isLoggedIn(user)).build();
+            User isLoggedIn = repository.isLoggedIn(user);
+            return Response.ok(isLoggedIn).build();
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }

@@ -51,20 +51,24 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.service.getVideoDetails(params['id']).subscribe(video => {
-          console.log(video)
-          this.video = video
+    this.userService.currentUser.subscribe(user => {
+      if (user.userId <= 0) return
 
-          this.userService.isVideoSaved(this.video.contentId).subscribe(isSaved => {
-            if(isSaved){
-              this.bookmark?.toggleMarked()
-            }
+      this.route.params.subscribe(
+        (params: Params) => {
+          this.service.getVideoDetails(params['id']).subscribe(video => {
+            console.log(video)
+            this.video = video
+
+            this.userService.isVideoSaved(this.video.contentId).subscribe(isSaved => {
+              if (isSaved) {
+                this.bookmark?.toggleMarked()
+              }
+            })
           })
-        })
-      }
-    )
+        }
+      )
+    })
   }
 
   ngAfterViewInit(): void {

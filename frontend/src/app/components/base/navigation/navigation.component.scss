@@ -94,3 +94,8 @@ div.search{
     --mat-divider-color: #{$gray-500};
   }
 }
+
+.notifications{
+  @include floating-box;
+  padding: .5rem;
+}

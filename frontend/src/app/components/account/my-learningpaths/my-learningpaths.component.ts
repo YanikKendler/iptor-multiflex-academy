@@ -63,17 +63,17 @@ export class MyLearningpathsComponent implements OnInit{
 
   userLearningpaths : MyLearningpathDTO[] = [];
 
-  constructor() {
-    this.getUserContent();
-  }
-
   getUserContent() {
     this.userService.getUserLearningpaths().subscribe((data) => {
       this.userLearningpaths = data;
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.userService.currentUser.subscribe(user => {
+      this.getUserContent();
+    })
+  }
 
   readonly dialog = inject(MatDialog);
 

@@ -55,19 +55,17 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.content = undefined
-    this.getLocalStorageTags()
-    this.loadContent()
+    this.userService.currentUser.subscribe(user => {
+      if(user.userId <= 0) return
 
-    /*    console.log(Utils.toSmartTimeString(new Date()))
-        console.log(Utils.toSmartTimeString(new Date("07.08.2024 20:54")))
-        console.log(Utils.toSmartTimeString(new Date(1000*60*80)))
-        console.log(Utils.toSmartTimeString(new Date("05.08.2024")))
-        console.log(Utils.toSmartTimeString(new Date("07.06.2020")))*/
+      this.content = undefined
+      this.getLocalStorageTags()
+      this.loadContent()
+    })
   }
 
   getLocalStorageTags(){
-    let tags = localStorage.getItem("selectedTags");
+    let tags = localStorage.getItem("imaSelectedTags");
     if(tags){
       this.filterTags = JSON.parse(tags) as Tag[];
     }

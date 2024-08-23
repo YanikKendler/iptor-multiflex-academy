@@ -32,15 +32,12 @@ export class TagSelectorComponent implements OnInit{
   ngOnInit(): void {
     this.tagService.getAll().subscribe(tags => {
       this.allTags = tags
-      console.log(this.allTags)
     })
   }
 
   generateTagOptions(input: string) {
     this.tagOptions = this.allTags.filter(tag => !this.selectedTags.filter(t => t.tagId === tag.tagId).length)
     this.tagOptions = this.tagOptions.filter(tag => tag.name.toLowerCase().includes(input.toLowerCase()))
-
-    /*if(!this.tagPopupTrigger.isOpen()) this.tagPopupTrigger.open()*/
   }
 
   openTagPopup(){

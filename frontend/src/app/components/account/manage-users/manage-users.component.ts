@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {User, UserService, UserTreeDTO} from "../../../service/user.service";
 import {ManageUserFieldComponent} from "../manage-user-field/manage-user-field.component";
 import {NgClass, NgStyle} from "@angular/common";

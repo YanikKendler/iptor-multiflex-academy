@@ -1,6 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
-import {UserDTO, UserEnum, UserLoginDTO, UserService} from "./service/user.service";
+import {UserDTO, UserRoleEnum, UserLoginDTO, UserService} from "./service/user.service";
 import {Config} from "./config";
 
 @Component({
@@ -17,15 +17,17 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     let userLoginDTO: UserLoginDTO = {
-      userId: localStorage.getItem('USER_ID') ? parseInt(localStorage.getItem('USER_ID')!) : -1,
-      password: localStorage.getItem('USER_PASSWORD')!
+      userId: localStorage.getItem('IMA_USER_ID') ? parseInt(localStorage.getItem('IMA_USER_ID')!) : -1,
+      password: localStorage.getItem('IMA_USER_PASSWORD')!
     }
 
     console.log(userLoginDTO)
-    this.userService.isLoggedIn(userLoginDTO).subscribe(isLoggedIn => {
-      console.log(isLoggedIn)
-      if (!isLoggedIn) {
+    this.userService.isLoggedIn(userLoginDTO).subscribe(response => {
+      if (response == null) {
         this.router.navigate(['login'])
+      }
+      else {
+        this.userService.currentUser.next(response)
       }
     })
   }

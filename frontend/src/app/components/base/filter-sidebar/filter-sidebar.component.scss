@@ -9,7 +9,7 @@
 }
 
 :host(.open){
-  width: 20vw;
+  width: min(20vw, 300px);
 }
 
 :host(.open div.top .flip-button fa-icon){
@@ -22,7 +22,7 @@
 
 div.top{
   display: flex;
-  gap: 1rem;
+  gap: .5rem;
   padding: .5rem;
   justify-content: flex-end;
 
@@ -30,8 +30,12 @@ div.top{
     height: 2rem;
     width: 100%;
     min-width: 0;
-    /*flex-shrink: 1;
-    min-width: 0;*/
+    border: 1px solid $gray-300;
+
+    &::placeholder{
+      color: $gray-250;
+      font-size: .9rem;
+    }
   }
 
   .flip-button{
