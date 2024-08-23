@@ -27,11 +27,12 @@ export interface VideoRequestNotification extends Notification{
 }
 
 export interface TextNotification extends Notification{
+  headerText: string;
   text: string;
 }
 
 export enum ContentNotificationEnum {
-  update="update", assignment="assignment"
+  update="update", assignment="assignment", finishedRequest="finishedRequest"
 }
 
 @Injectable({

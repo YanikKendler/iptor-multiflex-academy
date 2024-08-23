@@ -1,3 +1,5 @@
+<!--todo link to video-->
+
 @if(getType() === "update"){
   <h2>{{ notification.triggeredByUser.username }} has updated a content</h2>
   <p>{{ contentNotification.content.title }}</p>
@@ -8,13 +10,18 @@
   <p>{{ contentNotification.content.title }}</p>
 }
 
+@else if(getType() === "finishedRequest"){
+  <h2>{{ notification.triggeredByUser.username }} has finished your video request</h2>
+  <p>{{ contentNotification.content.title }}</p>
+}
+
 @else if(getType() === "request"){
   <h2>{{ notification.triggeredByUser.username }} has requested a video</h2>
   <p></p>
 }
 
 @else if(getType() === "text"){
-  <h2>{{ notification.triggeredByUser.username }}</h2>
+  <h2>{{ notification.triggeredByUser.username }} {{ textNotification.headerText }}</h2>
   <p>{{ textNotification.text }}</p>
 }
 

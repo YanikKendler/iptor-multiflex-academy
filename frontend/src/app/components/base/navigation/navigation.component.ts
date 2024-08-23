@@ -4,7 +4,7 @@ import {
   faBell,
   faCirclePlay,
   faCircleUser,
-  faEllipsis,
+  faEllipsis, faFileVideo,
   faGear, faListCheck, faMagnifyingGlass, faRightFromBracket,
   faTrash,
   faUser, faUserPlus,
@@ -106,6 +106,7 @@ export class NavigationComponent implements OnInit{
   protected readonly faRightFromBracket = faRightFromBracket;
   protected readonly faUserPlus = faUserPlus;
   protected readonly faListCheck = faListCheck;
+  protected readonly faFileVideo = faFileVideo;
 }
 
 

@@ -57,11 +57,12 @@
       </div>
 
     <div routerLink="/account/video-requests">
-      <fa-icon [icon]="faListCheck"></fa-icon>
+      <fa-icon [icon]="faFileVideo"></fa-icon>
       <p>Video Requests</p>
     </div>
 
     <mat-divider></mat-divider>
+  }
 
     <div (click)="requestVideo()">
       <fa-icon [icon]="faUserPlus"></fa-icon>
@@ -70,7 +71,6 @@
 
     <mat-divider></mat-divider>
 
-    }
     <div routerLink="/login" (click)="closeMenu();logout()">
       <fa-icon [icon]="faRightFromBracket"></fa-icon>
       <p>Logout</p>
