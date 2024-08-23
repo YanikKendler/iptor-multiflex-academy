@@ -1,6 +1,7 @@
 package repository;
 
 import dtos.*;
+import enums.ContentNotificationEnum;
 import enums.VisibilityEnum;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -23,8 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.io.FileUtils;
 
@@ -92,8 +92,32 @@ public class VideoRepository {
         }
 
         em.merge(videoToUpdate);
+        alertRelevantUsers(videoToUpdate);
 
         return videoToUpdate.toVideoDetailDTO();
+    }
+
+    public void alertRelevantUsers(Video video){
+        System.out.println("alert relevant users");
+        List<User> savedUsers = em.createQuery("select distinct u from User u " +
+                        "join u.savedContent us on us.contentId = :contentId", User.class)
+                .setParameter("contentId", video.getContentId())
+                .getResultList();
+
+        List<User> assignedUsers = em.createQuery("select distinct u from User u " +
+                        "join ContentAssignment ca on ca.content.contentId = :contentId and ca.assignedTo.userId = u.userId", User.class)
+                .setParameter("contentId", video.getContentId())
+                .getResultList();
+
+        Set<User> allUsers = new HashSet<>(savedUsers);
+        allUsers.addAll(assignedUsers);
+
+        allUsers.forEach(user -> {
+            if(Objects.equals(video.getUser().getUserId(), user.getUserId())){
+                return;
+            }
+            em.persist(new ContentNotification(user, video.getUser(), video, ContentNotificationEnum.update));
+        });
     }
 
     public void delete(Long id) {

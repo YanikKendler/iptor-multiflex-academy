@@ -15,9 +15,9 @@ public class CommentResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createComment(@PathParam("videoId") Long vid, Comment c){
+    public Response createComment(@QueryParam("userId") Long uid, @PathParam("videoId") Long vid, Comment c){
         try {
-            repository.create(vid, c);
+            repository.create(uid, vid, c);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

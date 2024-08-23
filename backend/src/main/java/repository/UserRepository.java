@@ -3,6 +3,7 @@ package repository;
 import dtos.*;
 import dtos.ContentForUserDTO;
 import dtos.VideoOverviewDTO;
+import enums.ContentNotificationEnum;
 import io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -406,18 +407,42 @@ public class UserRepository {
         }
     }
 
-    public List<UserTreeDTO> getFullUserTree(Long userId) {
+    @Transactional
+    public UserTreeDTO getFullUserTree(Long userId) {
         User rootUser = em.find(User.class, userId);
         if (rootUser == null) {
-            return Collections.emptyList();
+            return null;
         }
-        UserTreeDTO rootDto = buildUserTreeDTO(rootUser, 0);
-        return Collections.singletonList(rootDto);
+        UserTreeDTO dto = buildUserTreeDTO(rootUser, 0);
+
+        List<Long> userIds = getSubordinates(dto);
+        List<User> directSubordinates = em.createQuery("select u from User u " +
+                        "where u.deputySupervisor.userId = :userId and u.userId not in (:userIds) and u.supervisor.id != :userId", User.class)
+                .setParameter("userId", userId)
+                .setParameter("userIds", userIds)
+                .getResultList();
+
+        List<UserTreeDTO> subordinateDtos = new ArrayList<>();
+        for (User subordinate : directSubordinates) {
+            subordinateDtos.add(new UserTreeDTO(subordinate.getUserId(), subordinate.getUsername(), 0, null));
+        }
+
+        dto.subordinates().addAll(subordinateDtos);
+        return dto;
     }
 
-    private UserTreeDTO buildUserTreeDTO(User user, int level) {
-        System.out.println("Building tree for user " + user.getUsername() + " at level " + level);
-        List<User> directSubordinates = em.createQuery("select u from User u where u.supervisor.userId = :userId or u.deputySupervisor.userId = :userId", User.class)
+    public List<Long> getSubordinates(UserTreeDTO user){
+        List<Long> subordinates = new ArrayList<>();
+        subordinates.add(user.userId());
+        for(UserTreeDTO u : user.subordinates()){
+            subordinates.addAll(getSubordinates(u));
+        }
+        return subordinates;
+    }
+
+    public UserTreeDTO buildUserTreeDTO(User user, int level) {
+        List<User> directSubordinates = em.createQuery("select u from User u " +
+                        "where u.supervisor.userId = :userId", User.class)
                 .setParameter("userId", user.getUserId())
                 .getResultList();
 
@@ -478,6 +503,8 @@ public class UserRepository {
 
         ContentAssignment contentAssignment = new ContentAssignment(user, assignToUser, content);
         em.persist(contentAssignment);
+
+        em.persist(new ContentNotification(assignToUser, user, content, ContentNotificationEnum.assignment));
     }
 
     public void unassignContent(Long userId, Long contentId) {

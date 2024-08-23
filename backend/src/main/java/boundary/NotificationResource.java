@@ -27,10 +27,10 @@ public class NotificationResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAll(){
+    public Response getAll(@QueryParam("userId") Long userId){
         List<Notification> notificationList;
         try{
-            notificationList = notificationRepository.getAll();
+            notificationList = notificationRepository.getAll(userId);
         }catch (Exception ex){
             return Response.status(400).entity(ex).build();
         }
@@ -61,10 +61,23 @@ public class NotificationResource {
     }
 
     @PUT
-    @Path("{id: [0-9]+}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateNotification(@PathParam("id") Long id, Notification notification){
+    public Response updateNotification(Notification notification){
         try{
+            System.out.println(notification.getNotificationId());
+            notificationRepository.update(notification);
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("done/{id: [0-9]+}/{done}")
+    public Response setDone(@PathParam("id") Long id, @PathParam("done") boolean done){
+        try{
+            Notification notification = notificationRepository.getById(id);
+            notification.setDone(done);
             notificationRepository.update(notification);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();

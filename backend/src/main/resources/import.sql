@@ -6,7 +6,7 @@ INSERT INTO app_user (username, email, usertype, password, deputysupervisor_user
 INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('bob_brown', 'bob@test', 'EMPLOYEE', '$2a$10$PrLNDgdld/EIqi4hmMVoIuhIvcAGsMggJ5MJuK2nNE.PbrUxHB2vO', 1, 1);
 INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('leon steinhuber', 'leon.steinhuber@test', 'CUSTOMER', '$2a$10$j6/dJGVxar/nl370BLSmLOpYtSgFEyAVkaUlLYxrDjQOaNEfeEucW', 2, 2);
 INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('michael leisch', 'michael.leisch@test', 'CUSTOMER', '$2a$10$ufluH.7UeSqY9xKIIx8OTObNcIE8pv8GR6EVWhMF1NofRm4uLzLUi', 2, 2);
-INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('yanik kendler', 'yanik.kendler@test', 'CUSTOMER', '$2a$10$F9R.Ol/vTxLmwIAivLum5.JcIxa81YAUtcqSnLaTPhXTaT3/OxZyS', 2, 2);
+INSERT INTO app_user (username, email, usertype, password, deputysupervisor_userid, supervisor_userid) VALUES ('yanik kendler', 'yanik.kendler@test', 'CUSTOMER', '$2a$10$F9R.Ol/vTxLmwIAivLum5.JcIxa81YAUtcqSnLaTPhXTaT3/OxZyS', 1, 2);
 
 INSERT INTO VideoFile(durationseconds, sizebytes, originalfileextension) values (32, 1000000, 'mp4');
 
@@ -124,12 +124,6 @@ INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (6, 3);
 INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (6, 4);
 INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (7, 4);
 
--- Insert demo data for Notification
-INSERT INTO Notification (text, user_userid, timestamp) VALUES ('Your video has been approved.', 1, '2023-10-01 10:00:00');
-INSERT INTO Notification (text, user_userid, timestamp) VALUES ('New comment on your video.', 2, '2023-10-02 11:30:00');
-INSERT INTO Notification (text, user_userid, timestamp) VALUES ('Your subscription is about to expire.', 3, '2023-10-03 14:45:00');
-INSERT INTO Notification (text, user_userid, timestamp) VALUES ('You have a new follower.', 4, '2023-10-04 09:20:00');
-
 -- Insert demo data for VideoAssignment
 INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (1, 1, 1, '2023-10-01');
 INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (2, 3, 2, '2023-10-02');
@@ -146,3 +140,10 @@ INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, i
 INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (5, 1, 1, '2023-10-02 11:30:00', false);
 INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (5, 2, 1, '2023-10-02 11:30:00', false);
 INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (6, 1, 1, '2023-10-02 11:30:00', false);
+
+-- Insert demo data for Notification
+INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, content_contentid, type) VALUES ('ContentNotification', 1, 2, false, '2023-10-01 10:00:00', 1, 'update');
+INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, content_contentid, type) VALUES ('ContentNotification', 1, 2, false, '2023-10-05 10:00:00', 1, 'assignment');
+INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, requestMessage) VALUES ('VideoRequestNotification', 1, 2, false, '2023-10-11 10:00:00', 'Please make a video about Java');
+INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, text) VALUES ('TextNotification', 1, 2, false, '2023-10-15 10:00:00', 'You have a new follower');
+INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, comment_commentid, video_contentid) VALUES ('CommentNotification', 1, 2, false, '2023-10-17 10:00:00', 1, 1);

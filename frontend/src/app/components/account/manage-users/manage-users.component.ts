@@ -16,14 +16,11 @@ import {Config} from "../../../config";
   styleUrl: './manage-users.component.scss'
 })
 export class ManageUsersComponent {
-  users : UserTreeDTO[] = [];
   rootUser : UserTreeDTO = {} as UserTreeDTO;
 
   constructor(private userService: UserService) {
-    this.userService.getManageableUsers().subscribe(users => {
-      this.users = users
-      this.rootUser = this.users.find(user => user.userId = Config.USER_ID) || {} as UserTreeDTO;
-      console.log(users);
+    this.userService.getManageableUsers().subscribe(user => {
+      this.rootUser = user
     });
   }
 }
