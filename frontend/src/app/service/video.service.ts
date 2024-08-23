@@ -81,6 +81,12 @@ export interface Question {
   text: string;
 }
 
+export interface ContentOverviewDTO{
+  contentId: number;
+  title: string;
+  type: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -144,5 +150,9 @@ export class VideoService {
 
   searchContent(elem: string, filterTags: Tag[]) {
     return this.http.post<ContentForUser>(`${Config.API_URL}/content/search?search=${elem}&userId=${Config.USER_ID}`, {tags: filterTags})
+  }
+
+  getFullContent() {
+    return this.http.get<ContentOverviewDTO[]>(`${Config.API_URL}/content`)
   }
 }

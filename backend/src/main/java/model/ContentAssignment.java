@@ -22,7 +22,7 @@ public class ContentAssignment {
     @Column
     private final LocalDateTime timestamp;
 
-    public ContentAssignment(User assignedTo, User assignedBy, Video content) {
+    public ContentAssignment(User assignedBy, User assignedTo, Content content) {
         this();
         this.assignedTo = assignedTo;
         this.assignedBy = assignedBy;

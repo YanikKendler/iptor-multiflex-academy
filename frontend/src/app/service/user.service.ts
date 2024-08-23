@@ -59,6 +59,13 @@ export interface UserAssignedContentDTO {
   progressPercent: number
 }
 
+export interface UserTreeDTO{
+  userId: number,
+  username: string,
+  level: number,
+  subordinates: UserTreeDTO[]
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -102,10 +109,18 @@ export class UserService {
   }
 
   getManageableUsers() {
-    return this.http.get<User[]>(`${Config.API_URL}/user/${Config.USER_ID}/getusers`)
+    return this.http.get<UserTreeDTO[]>(`${Config.API_URL}/user/${Config.USER_ID}/getusers`)
   }
 
   getAssignedUserContent(userId: number){
     return this.http.get<UserAssignedContentDTO[]>(`${Config.API_URL}/user/${userId}/assignedcontent`)
+  }
+
+  assignContent(userId: number, contentId: number) {
+    return this.http.post(`${Config.API_URL}/user/${Config.USER_ID}/assigncontent/${contentId}?assignTo=${userId}`, {}).subscribe()
+  }
+
+  unassignContent(userId: number, contentId: number) {
+    return this.http.delete(`${Config.API_URL}/user/${userId}/unassigncontent/${contentId}`).subscribe()
   }
 }

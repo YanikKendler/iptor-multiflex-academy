@@ -145,7 +145,7 @@ public class UserResource {
     @Path("{userId}/getusers")
     public Response manageUsers(@PathParam("userId") Long userId) {
         try {
-            return Response.ok(repository.getUsers(userId)).build();
+            return Response.ok(repository.getFullUserTree(userId)).build();
         } catch (Exception ex) {
             ex.printStackTrace();
             return Response.status(400).entity(ex).build();
@@ -158,6 +158,30 @@ public class UserResource {
     public Response getAssignedContent(@PathParam("userId") Long userId) {
         try {
             return Response.ok(repository.getUserAssignedContent(userId)).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+    }
+
+    @POST
+    @Path("{userId}/assigncontent/{contentId}")
+    public Response assignContent(@PathParam("userId") Long userId, @QueryParam("assignTo") Long assignToUserId, @PathParam("contentId") Long contentId) {
+        try {
+            repository.assignContent(userId, assignToUserId, contentId);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+    }
+
+    @DELETE
+    @Path("{userId}/unassigncontent/{contentId}")
+    public Response unassignContent(@PathParam("userId") Long userId, @PathParam("contentId") Long contentId) {
+        try {
+            repository.unassignContent(userId, contentId);
+            return Response.ok().build();
         } catch (Exception ex) {
             ex.printStackTrace();
             return Response.status(400).entity(ex).build();

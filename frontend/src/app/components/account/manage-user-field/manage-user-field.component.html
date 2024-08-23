@@ -1,5 +1,57 @@
-<p (click)="toggle()">{{user.username}}</p>
+<main>
+  @if(user.userId != Config.USER_ID){
+    <p class="username" (click)="toggle()">{{user.username}}</p>
+  }
 
-@if(isExpanded){
+  @if(isExpanded){
+    @for(content of assignedContent; track content.contentId){
+      <div>
+        @if(getTypeById(content.contentId) == "Video"){
+          <fa-icon [icon]='faCirclePlay'></fa-icon>
+        } @else{
+          <app-learning-path-icon></app-learning-path-icon>
+        }
 
-}
+        <p>{{content.title}}</p>
+        <p>{{content.progressPercent}}%</p>
+
+        <app-icon-button (click)="unassignContent(content.contentId)">
+          <fa-icon [icon]="faClose"></fa-icon>
+        </app-icon-button>
+      </div>
+    }
+
+    @if (assignedContent?.length == 0) {
+      <div>
+        <p class="no-results">No content yet</p>
+      </div>
+    }
+
+    <section class="videos">
+      <input
+        type="text"
+        placeholder="assign content"
+        #videoInput
+        [cdkMenuTriggerFor]="videoPopup"
+        (input)="generateContentOptions(videoInput.value)"
+        (focus)="generateContentOptions('')"
+      >
+      <ng-template #videoPopup>
+        <div class="videoOptions" cdkMenu>
+          @for(content of contentOptions; track content.contentId){
+            <p (click)="assignContent(content)">
+              {{content.title}} • {{content.type}}
+            </p>
+          }
+          @if(contentOptions.length == 0){
+            <p class="no-results">No content found</p>
+          }
+        </div>
+      </ng-template>
+    </section>
+  }
+
+  @for(subordinate of subordinates; track subordinate.userId){
+    <app-manage-user-field [user]="subordinate" [subordinates]="subordinate.subordinates" [level]="subordinate.level"></app-manage-user-field>
+  }
+</main>

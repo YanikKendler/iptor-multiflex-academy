@@ -406,54 +406,90 @@ public class UserRepository {
         }
     }
 
-    public List<User> getUsers(Long userId) {
-        try {
-            return em.createQuery("select u from User u where u.supervisor.userId = :userId or u.deputySupervisor.userId = :userId", User.class)
-                    .setParameter("userId", userId)
-                    .getResultList();
-        } catch(NoResultException e){
-            return null;
+    public List<UserTreeDTO> getFullUserTree(Long userId) {
+        User rootUser = em.find(User.class, userId);
+        if (rootUser == null) {
+            return Collections.emptyList();
         }
+        UserTreeDTO rootDto = buildUserTreeDTO(rootUser, 0);
+        return Collections.singletonList(rootDto);
+    }
+
+    private UserTreeDTO buildUserTreeDTO(User user, int level) {
+        System.out.println("Building tree for user " + user.getUsername() + " at level " + level);
+        List<User> directSubordinates = em.createQuery("select u from User u where u.supervisor.userId = :userId or u.deputySupervisor.userId = :userId", User.class)
+                .setParameter("userId", user.getUserId())
+                .getResultList();
+
+        List<UserTreeDTO> subordinateDtos = new ArrayList<>();
+        for (User subordinate : directSubordinates) {
+            subordinateDtos.add(buildUserTreeDTO(subordinate, level + 1));
+        }
+
+        return new UserTreeDTO(user.getUserId(), user.getUsername(), level, subordinateDtos);
     }
 
     public List<UserAssignedContentDTO> getUserAssignedContent(Long userId) {
-        try{
+        try {
             List<Content> contents = em.createQuery("select c from Content c " +
                             "join ContentAssignment ca on ca.content.contentId = c.contentId where ca.assignedTo.userId = :userId", Content.class)
                     .setParameter("userId", userId).getResultList();
 
             List<UserAssignedContentDTO> dtos = new LinkedList<>();
-            contents.forEach(content -> {
-                int progress;
-                try{
-                    progress = em.createQuery("select vp.progress from ViewProgress vp " +
-                                    "where vp.user.userId = :userId and vp.content.contentId = :contentId", Integer.class)
-                            .setParameter("userId", userId).setParameter("contentId", content.getContentId()).getSingleResult();
-                } catch(NoResultException e){
-                    progress = 0;
-                }
-
-
-                System.out.println(content.getTitle());
-                double progressPercentage = 0;
-                System.out.println(progress);
-                if(content instanceof Video && progress > 0){
-                    Video video = (Video) content;
-                    if(video.getVideoFile() != null){
-                        progressPercentage = (double) progress / video.getVideoFile().getDurationSeconds();
-                    }
-                } else if(progress > 0) {
-                    LearningPath learningPath = (LearningPath) content;
-                    progressPercentage = (double) progress / learningPath.getEntries().size() / progress;
-                }
-
-                System.out.println(progressPercentage);
-                dtos.add(new UserAssignedContentDTO(content.getContentId(), content.getTitle(), progressPercentage));
-            });
+            for (Content content : contents) {
+                dtos.add(convertContentToAssignDTO(content, userId));
+            }
 
             return dtos;
-        } catch(Exception e){
+        } catch (Exception e) {
             return null;
+        }
+    }
+
+    public UserAssignedContentDTO convertContentToAssignDTO(Content content, Long userId){
+        int progress;
+        try{
+            progress = em.createQuery("select vp.progress from ViewProgress vp " +
+                            "where vp.user.userId = :userId and vp.content.contentId = :contentId", Integer.class)
+                    .setParameter("userId", userId).setParameter("contentId", content.getContentId()).getSingleResult();
+        } catch(NoResultException e){
+            progress = 0;
+        }
+
+
+        double progressPercentage = 0;
+        if(content instanceof Video && progress > 0){
+            Video video = (Video) content;
+            if(video.getVideoFile() != null){
+                progressPercentage = (double) progress / video.getVideoFile().getDurationSeconds();
+            }
+        } else if(progress > 0) {
+            LearningPath learningPath = (LearningPath) content;
+            progressPercentage = (double) progress / learningPath.getEntries().size() / progress;
+        }
+
+        return new UserAssignedContentDTO(content.getContentId(), content.getTitle(), progressPercentage);
+    }
+
+    public void assignContent(Long userId, Long assignToUserId, Long contentId) {
+        User user = getById(userId);
+        User assignToUser = getById(assignToUserId);
+        Content content = em.find(Content.class, contentId);
+
+        ContentAssignment contentAssignment = new ContentAssignment(user, assignToUser, content);
+        em.persist(contentAssignment);
+    }
+
+    public void unassignContent(Long userId, Long contentId) {
+        try{
+            ContentAssignment contentAssignment = em.createQuery("select ca from ContentAssignment ca " +
+                            "where ca.assignedTo.userId = :userId and ca.content.contentId = :contentId", ContentAssignment.class)
+                    .setParameter("userId", userId)
+                    .setParameter("contentId", contentId)
+                    .getSingleResult();
+            em.remove(contentAssignment);
+        } catch(NoResultException e){
+            log.error("No content assignment found for user with id " + userId + " and content with id " + contentId);
         }
     }
 }
