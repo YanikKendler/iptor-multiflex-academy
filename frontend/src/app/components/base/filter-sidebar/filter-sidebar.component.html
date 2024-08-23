@@ -1,20 +1,21 @@
-@if(isOpenState){
-  <div class="search">
-    <input type="text" placeholder="Search for a Tag">
-    <app-icon-button (click)="isOpenState = false">
+<div class="top">
+  <input type="text" placeholder="Search for a Tag">
+  <div
+    class="flip-button"
+    (click)="isOpenState = !isOpenState"
+    matBadge="{{selectedTags.length}}"
+    matBadgeSize="large"
+    [matBadgeHidden]="isOpenState || selectedTags.length == 0"
+    matBadgeDescription="dislays how many tags are selected even with the sidebar closed"
+  >
+    <div class="ripples" mat-ripple>
       <fa-icon [icon]="faAnglesLeft"></fa-icon>
-    </app-icon-button>
+    </div>
   </div>
+</div>
 
-  <div class="tags">
-    @for(tag of tags; track tag.tagId){
-      <app-chip (click)="updateFilter(tag);" [ngClass]="isSelected(tag) ? 'selected' : ''">{{ tag.name }}</app-chip>
-    }
-  </div>
-} @else{
-  <div class="closed">
-    <app-icon-button (click)="isOpenState = true">
-      <fa-icon [icon]="faAnglesRight"></fa-icon>
-    </app-icon-button>
-  </div>
-}
+<div class="tags">
+  @for(tag of tags; track tag.tagId){
+    <app-chip (click)="updateFilter(tag);" [ngClass]="isSelected(tag) ? 'selected' : ''">{{ tag.name }}</app-chip>
+  }
+</div>

@@ -119,6 +119,11 @@ input[type="color"] {
 //endregion
 
 body {
+  .mat-badge-content{
+    outline: 2px solid white;
+  }
+
+
   .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background, .mdc-checkbox__ripple {
     background-color: $secondary-500 !important;
     border-color: $secondary-500 !important;
