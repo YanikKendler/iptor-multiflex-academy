@@ -483,7 +483,6 @@ public class UserRepository {
             progress = 0;
         }
 
-
         double progressPercentage = 0;
         if(content instanceof Video && progress > 0){
             Video video = (Video) content;
@@ -491,14 +490,30 @@ public class UserRepository {
                 progressPercentage = (double) progress / video.getVideoFile().getDurationSeconds();
             }
         } else if(progress > 0) {
-            LearningPath learningPath = (LearningPath) content;
-            progressPercentage = (double) progress / learningPath.getEntries().size() / progress;
+            progressPercentage = progress;
         }
 
-        return new UserAssignedContentDTO(content.getContentId(), content.getTitle(), progressPercentage);
+        int questionOrVideoCount = 0;
+        if(content instanceof LearningPath){
+            LearningPath learningPath = (LearningPath) content;
+            questionOrVideoCount = learningPath.getEntries().size();
+        } else if (content instanceof Video){
+            Video video = (Video) content;
+            questionOrVideoCount = video.getQuestions().size();
+        }
+
+
+        return new UserAssignedContentDTO(
+                content.getContentId(),
+                content.getTitle(),
+                content instanceof Video ? "Video" : "LearningPath",
+                progressPercentage,
+                questionOrVideoCount,
+                content.getColor()
+            );
     }
 
-    public void assignContent(Long userId, Long assignToUserId, Long contentId) {
+    public UserAssignedContentDTO assignContent(Long userId, Long assignToUserId, Long contentId) {
         User user = getById(userId);
         User assignToUser = getById(assignToUserId);
         Content content = em.find(Content.class, contentId);
@@ -507,6 +522,8 @@ public class UserRepository {
         em.persist(contentAssignment);
 
         em.persist(new ContentNotification(assignToUser, user, content, ContentNotificationEnum.assignment));
+
+        return convertContentToAssignDTO(content, userId);
     }
 
     public void unassignContent(Long userId, Long contentId) {

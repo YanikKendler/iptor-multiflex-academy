@@ -1,55 +1,139 @@
 @import "../../../variables";
 
-main{
+:host{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+app-manage-user-field{
+  width: calc(100% - 2rem);
   margin-left: 2rem;
 }
 
-p.username{
-  padding-block: .5rem;
-  padding-inline: .25rem;
-  cursor: pointer;
-  transition: all .2s ease;
+.user{
+  border-radius: .5rem;
+  border: 2px solid $gray-800;
+  overflow: hidden;
+  transition: border $transition-time-short;
 
-  &:hover{
-    background-color: $gray-800;
+  &:has(.top:hover){
+    border-color: $gray-600;
   }
-}
 
-div{
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
+  .top{
+    background-color: $gray-800;
+    padding: .5rem;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    transition: background-color $transition-time-short;
 
-div, input {
-  margin: .25rem 1rem;
-}
+    &:hover{
+      background-color: $gray-600;
+    }
 
-section.videos{
-  margin-bottom: 2rem;
+    fa-icon{
+      transition: rotate $transition-time-short;
+
+      &.rotate{
+        rotate: 180deg;
+      }
+    }
+  }
 
   input{
-    width: 100%;
+    margin: .2rem;
   }
+}
+
+.content{
+  display: flex;
+  flex-direction: column;
+  padding: .2rem;
 
   .no-results{
-    color: $gray-400;
     margin: .5rem;
+    color: $gray-400;
+  }
+}
+
+.content-entry{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  transition: background-color $transition-time-short;
+  padding-inline: .3rem;
+  border-radius: .3rem;
+
+  &:hover{
+    background-color: $gray-900;
+
+    .remove{
+      opacity: 1;
+    }
+  }
+
+  fa-icon.list-icon{
+    font-size: 1.5rem;
+    color: var(--color);
+  }
+
+  app-learning-path-icon{
+    height: 1.5rem;
+    color: var(--color);
+  }
+
+  .title{
+    font-weight: 500;
+    width: 25ch;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .progress{
+    font-weight: 500;
+    width: 15ch;
+    color: var(--color);
+    text-shadow: 0 .15rem .2rem rgba(0, 0, 0, 0.1), 0 -.15rem .2rem rgba(0, 0, 0, 0.1);
+  }
+
+  .type{
+    width: 15ch;
+  }
+
+  .remove{
+    cursor: pointer;
+    margin-left: auto;
+    opacity: 0;
+    /*
+    transition: opacity $transition-time-short;
+    */
+
+    fa-icon{
+      color: $gray-400;
+    }
   }
 }
 
 .videoOptions{
   @include floating-box;
   padding: .2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
-  p{
+  .option{
     padding: .3rem;
     border-radius: .3rem;
-    transition: background-color $transition-time-short;
+    width: 100%;
     cursor: pointer;
 
     &:hover{
-      background-color: $gray-900;
+      background-color: $gray-800;
     }
   }
 }

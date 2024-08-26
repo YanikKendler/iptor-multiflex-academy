@@ -1,33 +1,42 @@
-<main>
-  @if(user.userId != this.userService.currentUser.value.userId){
-    <p class="username" (click)="toggle()">{{user.username}}</p>
-  }
-
-  @if(isExpanded){
-    @for(content of assignedContent; track content.contentId){
-      <div>
-        @if(getTypeById(content.contentId) == "Video"){
-          <fa-icon [icon]='faCirclePlay'></fa-icon>
-        } @else{
-          <app-learning-path-icon></app-learning-path-icon>
-        }
-
-        <p>{{content.title}}</p>
-        <p>{{content.progressPercent}}%</p>
-
-        <app-icon-button (click)="unassignContent(content.contentId)">
-          <fa-icon [icon]="faClose"></fa-icon>
-        </app-icon-button>
-      </div>
+<div class="user" *ngIf="!root">
+  <div class="top" (click)="toggle()">
+    @if (user.userId != this.userService.currentUser.value.userId) {
+      <p class="username">{{ user.username }}</p>
     }
+    <fa-icon [icon]="faAngleDown" [ngClass]="isExpanded ? 'rotate' : ''"></fa-icon>
+  </div>
 
-    @if (assignedContent?.length == 0) {
-      <div>
-        <p class="no-results">No content yet</p>
-      </div>
-    }
+  @if (isExpanded) {
+    <div class="content">
+      @for (content of assignedContent; track content.contentId) {
+        <div class="content-entry" [style.--color]="content.color">
+          @if (content.type == "Video") {
+            <fa-icon class="list-icon" [icon]='faCirclePlay'></fa-icon>
+            <p class="title">{{ content.title }}</p>
+            <p class="progress" matTooltip="{{Utils.roundNumber(content.progress, 1)}}%" matTooltipShowDelay="500">{{ Utils.roundNumber(content.progress, 1) }}% watched</p>
+            <p class="type">video</p>
+            <p class="questions">{{content.questionOrVideoCount}} questions</p>
+          } @else {
+            <app-learning-path-icon></app-learning-path-icon>
+            <p class="title">{{ content.title }}</p>
+            <p class="progress" matTooltip="{{ content.progress }}/{{content.questionOrVideoCount}}" matTooltipShowDelay="500">{{ content.progress }}/{{content.questionOrVideoCount}} completed</p>
+            <p class="type">learning path</p>
+            <p class="questions">{{content.questionOrVideoCount}} videos</p>
+          }
 
-    <section class="videos">
+
+          <app-icon-button (click)="unassignContent(content.contentId)" class="remove">
+            <fa-icon [icon]="faTrash"></fa-icon>
+          </app-icon-button>
+        </div>
+      }
+
+      @if (assignedContent?.length == 0) {
+        <div>
+          <p class="no-results">No content yet</p>
+        </div>
+      }
+
       <input
         type="text"
         placeholder="assign content"
@@ -38,20 +47,20 @@
       >
       <ng-template #videoPopup>
         <div class="videoOptions" cdkMenu>
-          @for(content of contentOptions; track content.contentId){
-            <p (click)="assignContent(content)">
-              {{content.title}} • {{content.type}}
+          @for (content of contentOptions; track content.contentId) {
+            <p (click)="assignContent(content)" class="option">
+              {{ content.title }} • {{ content.type }}
             </p>
           }
-          @if(contentOptions.length == 0){
+          @if (contentOptions.length == 0) {
             <p class="no-results">No content found</p>
           }
         </div>
       </ng-template>
-    </section>
+    </div>
   }
+</div>
 
-  @for(subordinate of subordinates; track subordinate.userId){
-    <app-manage-user-field [user]="subordinate" [subordinates]="subordinate.subordinates" [level]="subordinate.level"></app-manage-user-field>
-  }
-</main>
+@for(subordinate of subordinates; track subordinate.userId){
+  <app-manage-user-field [user]="subordinate" [subordinates]="subordinate.subordinates" [level]="subordinate.level"></app-manage-user-field>
+}

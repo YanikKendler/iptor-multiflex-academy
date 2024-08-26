@@ -109,6 +109,7 @@ export class Utils{
   }
 
   static generateRandomColor(): string {
+    //TODO
     return "#ABCDEF"
   }
 
