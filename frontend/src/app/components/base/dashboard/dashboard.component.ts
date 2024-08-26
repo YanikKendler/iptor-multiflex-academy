@@ -97,7 +97,7 @@ export class DashboardComponent implements OnInit {
           event.video.saved = true;
           this.content?.current.videos.push(event.video)
         }
-      } else {
+      } else if(event.action === "remove") {
         if (this.content && this.content.current) {
           this.content.current.videos = this.content.current.videos.filter(video => video.contentId !== event.video.contentId);
 
@@ -111,6 +111,10 @@ export class DashboardComponent implements OnInit {
             return video;
           });
         }
+      } else{
+        if (this.content && this.content.current) {
+          this.content.assigned.videos = this.content.assigned.videos.filter(video => video.contentId !== event.video.contentId);
+        }
       }
     }
   }
@@ -122,7 +126,7 @@ export class DashboardComponent implements OnInit {
         if(!this.content?.current.learningPaths.includes(event.learningPath)){
           this.content?.current.learningPaths.push(event.learningPath)
         }
-      } else {
+      } else if(event.action === "remove") {
         if (this.content && this.content.current) {
           this.content.current.learningPaths = this.content.current.learningPaths.filter(video => video.contentId !== event.learningPath.contentId);
 
@@ -135,6 +139,10 @@ export class DashboardComponent implements OnInit {
             learningPath.saved = false;
             return learningPath;
           });
+        }
+      } else {
+        if (this.content && this.content.current) {
+          this.content.assigned.learningPaths = this.content.assigned.learningPaths.filter(learningPath => learningPath.contentId !== event.learningPath.contentId);
         }
       }
     }

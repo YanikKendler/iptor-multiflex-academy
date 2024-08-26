@@ -186,4 +186,17 @@ public class UserResource {
             return Response.status(400).entity(ex).build();
         }
     }
+
+    @PUT
+    @Path("{userId}/finishassignedcontent/{contentId}")
+    public Response finishAssignedContent(@PathParam("userId") Long userId, @PathParam("contentId") Long contentId) {
+        try {
+            repository.finishAssignedContent(userId, contentId);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+    }
+
 }

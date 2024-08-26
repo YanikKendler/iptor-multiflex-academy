@@ -18,7 +18,7 @@
 
 <div class="right">
   <app-icon-button [cdkMenuTriggerFor]="notifications"
-                   matBadge="{{getLengthOfNewNotifications()}}"
+                   matBadge="{{getLengthOfNewNotifications() == 0 ? '' : getLengthOfNewNotifications()}}"
                    matBadgeSize="large"
                    matBadgeDescription="dislays how many notifications the user got">
     <fa-icon [icon]="faBell"></fa-icon>

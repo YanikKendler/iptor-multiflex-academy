@@ -131,7 +131,7 @@ public class UserRepository {
         List<Video> assignedVideos = em.createQuery("select distinct v from Video v " +
                         "join ContentAssignment va on va.content.contentId = v.contentId " +
                         "join v.tags t " +
-                        "where va.assignedTo.userId = :userId " +
+                        "where va.assignedTo.userId = :userId and va.isFinished = false " +
                         "and not exists (" +
                         "    select t from Tag t " +
                         "    where t in :tags and t not in elements(v.tags)" +
@@ -146,7 +146,7 @@ public class UserRepository {
         List<LearningPath> assignedLearningPaths = em.createQuery("select distinct lp from LearningPath lp " +
                         "join ContentAssignment va on va.content.contentId = lp.contentId " +
                         "join lp.tags t " +
-                        "where va.assignedTo.userId = :userId " +
+                        "where va.assignedTo.userId = :userId and va.isFinished = false " +
                         "and not exists (" +
                         "    select t from Tag t " +
                         "    where t in :tags and t not in elements(lp.tags)" +
@@ -459,7 +459,7 @@ public class UserRepository {
     public List<UserAssignedContentDTO> getUserAssignedContent(Long userId) {
         try {
             List<Content> contents = em.createQuery("select c from Content c " +
-                            "join ContentAssignment ca on ca.content.contentId = c.contentId where ca.assignedTo.userId = :userId", Content.class)
+                            "join ContentAssignment ca on ca.content.contentId = c.contentId where ca.assignedTo.userId = :userId and ca.isFinished = false", Content.class)
                     .setParameter("userId", userId).getResultList();
 
             List<UserAssignedContentDTO> dtos = new LinkedList<>();
@@ -537,5 +537,17 @@ public class UserRepository {
         } catch(NoResultException e){
             log.error("No content assignment found for user with id " + userId + " and content with id " + contentId);
         }
+    }
+
+    public void finishAssignedContent(Long userId, Long contentId) {
+        try{
+            ContentAssignment contentAssignment = em.createQuery("select ca from ContentAssignment ca " +
+                            "where ca.assignedTo.userId = :userId and ca.content.contentId = :contentId", ContentAssignment.class)
+                    .setParameter("userId", userId)
+                    .setParameter("contentId", contentId)
+                    .getSingleResult();
+            contentAssignment.setFinished(true);
+            em.merge(contentAssignment);
+        } catch(NoResultException e){}
     }
 }

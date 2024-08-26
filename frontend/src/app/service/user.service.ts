@@ -137,4 +137,8 @@ export class UserService {
   unassignContent(userId: number, contentId: number) {
     return this.http.delete(`${Config.API_URL}/user/${userId}/unassigncontent/${contentId}`).subscribe()
   }
+
+  finishAssignedContent(contentId: number) {
+    return this.http.put(`${Config.API_URL}/user/${this.currentUser.value.userId}/finishassignedcontent/${contentId}`, {})
+  }
 }

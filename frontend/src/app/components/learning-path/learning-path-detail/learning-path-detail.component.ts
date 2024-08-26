@@ -181,6 +181,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
       } else {
         this.currentVideoPosition++
         this.isFinished = true
+        this.userService.finishAssignedContent(this.learningPath.contentId).subscribe()
       }
 
       if(this.learningPath.viewProgress.progress == this.learningPath.entries.length - 1){

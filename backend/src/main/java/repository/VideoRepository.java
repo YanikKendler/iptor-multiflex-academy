@@ -79,6 +79,14 @@ public class VideoRepository {
         videoToUpdate.setTitle(video.title());
         videoToUpdate.setDescription(video.description());
         videoToUpdate.setTags(video.tags());
+
+        if(!video.questions().equals(videoToUpdate.getQuestions())) {
+            System.out.println("questions changed");
+            em.createQuery("delete from QuizResult q where q.video.contentId = :videoId")
+                    .setParameter("videoId", video.contentId())
+                    .executeUpdate();
+        }
+
         videoToUpdate.setQuestions(video.questions());
         videoToUpdate.setVisibility(video.visibility());
         videoToUpdate.setColor(video.color());
@@ -108,7 +116,6 @@ public class VideoRepository {
                         "join ContentAssignment ca on ca.content.contentId = :contentId and ca.assignedTo.userId = u.userId", User.class)
                 .setParameter("contentId", video.getContentId())
                 .getResultList();
-
         Set<User> allUsers = new HashSet<>(savedUsers);
         allUsers.addAll(assignedUsers);
 
