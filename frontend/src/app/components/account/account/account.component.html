@@ -16,6 +16,11 @@
       <fa-icon [icon]="faUsersGear"></fa-icon>
       <p>Manage Users</p>
     </div>
+
+    <div [ngClass]="{'active': currentPage === 'video-requests'}" (click)="switchPage('video-requests')">
+      <fa-icon [icon]="faFileVideo"></fa-icon>
+      <p>Video Requests</p>
+    </div>
   </div>
 
   <section>
@@ -28,6 +33,9 @@
       }
       @case('manage-users'){
         <app-manage-users></app-manage-users>
+      }
+      @case ('video-requests'){
+        <app-video-requests></app-video-requests>
       }
     }
   </section>

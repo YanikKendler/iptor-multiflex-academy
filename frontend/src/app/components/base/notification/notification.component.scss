@@ -1,0 +1,10 @@
+:host{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.message{
+  display: flex;
+  flex-direction: column;
+}

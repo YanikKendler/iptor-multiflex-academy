@@ -87,6 +87,25 @@ export interface ContentOverviewDTO{
   type: string;
 }
 
+export enum VideoRequestEnum {
+  open="open", declined="declined", finished="finished"
+}
+
+export interface VideoRequestDetailDTO {
+  requestId: number;
+  title: string;
+  text: string;
+  videoId: number
+  user: User;
+  status: VideoRequestEnum;
+}
+
+export interface VideoRequestDTO {
+  title: string;
+  text: string;
+  userId: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -155,5 +174,21 @@ export class VideoService {
 
   getFullContent() {
     return this.http.get<ContentOverviewDTO[]>(`${Config.API_URL}/content`)
+  }
+
+  createVideoRequest(videoRequest: VideoRequestDTO){
+    return this.http.post<VideoRequestDTO>(`${Config.API_URL}/video/request`, videoRequest)
+  }
+
+  getVideoRequests(){
+    return this.http.get<VideoRequestDetailDTO[]>(`${Config.API_URL}/video/request`)
+  }
+
+  setVideoRequestStatus(requestId: number, status: VideoRequestEnum, videoId: number){
+    if(videoId){
+      this.http.put(`${Config.API_URL}/video/request/${requestId}/status/${status}?userId=${this.userService.currentUser.value.userId}&videoId=${videoId}`, {}).subscribe()
+    } else{
+      this.http.put(`${Config.API_URL}/video/request/${requestId}/status/${status}?userId=${this.userService.currentUser.value.userId}&videoId=0`, {}).subscribe()
+    }
   }
 }

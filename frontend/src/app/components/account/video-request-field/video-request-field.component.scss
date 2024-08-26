@@ -1,0 +1,43 @@
+@import "../../../variables";
+
+:host{
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  border-bottom: 1px solid black;
+  gap: 1rem;
+}
+
+header{
+  display: flex;
+  gap: 2rem;
+}
+
+section.videos{
+  margin-bottom: 2rem;
+
+  input{
+    width: 100%;
+  }
+
+  .no-results{
+    color: $gray-400;
+    margin: .5rem;
+  }
+}
+
+.videoOptions{
+  @include floating-box;
+  padding: .2rem;
+
+  p{
+    padding: .3rem;
+    border-radius: .3rem;
+    transition: background-color $transition-time-short;
+    cursor: pointer;
+
+    &:hover{
+      background-color: $gray-900;
+    }
+  }
+}

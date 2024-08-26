@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {RouterLink} from "@angular/router"
 import {
   faBell,
@@ -25,6 +25,8 @@ import {NgForOf} from "@angular/common";
 import {EditVideoComponent} from "../../account/edit-video/edit-video.component";
 import {MatDialog} from "@angular/material/dialog";
 import {RequestVideoComponent} from "../../account/request-video/request-video.component";
+import {MatBadge} from "@angular/material/badge";
+import {NotificationDialogComponent} from "../notification-dialog/notification-dialog.component";
 
 @Component({
   selector: 'app-navigation',
@@ -42,28 +44,56 @@ import {RequestVideoComponent} from "../../account/request-video/request-video.c
     LearningPathIconComponent,
     MatDivider,
     NotificationComponent,
-    NgForOf
+    NgForOf,
+    MatBadge
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
 })
 export class NavigationComponent implements OnInit{
+  protected readonly Notification = Notification;
+  protected readonly UserRoleEnum = UserRoleEnum
+
+  protected readonly faTrash = faTrash;
+  protected readonly faEllipsis = faEllipsis;
+  protected readonly faUser = faUser;
+  protected readonly faCircleUser = faCircleUser;
+  protected readonly faGear = faGear;
+  protected readonly faCirclePlay = faCirclePlay;
+  protected readonly faUsersGear = faUsersGear;
+  protected readonly faBell = faBell;
+  protected readonly faMagnifyingGlass = faMagnifyingGlass;
+  protected readonly faXmark = faXmark
+  protected readonly faRightFromBracket = faRightFromBracket;
+  protected readonly faUserPlus = faUserPlus;
+  protected readonly faListCheck = faListCheck;
+  protected readonly faFileVideo = faFileVideo;
+
   userService = inject(UserService)
   @Input() simple: boolean = false;
   @Output() search = new EventEmitter<string>();
   @ViewChild(CdkMenuTrigger) trigger!: CdkMenuTrigger;
 
+  readonly dialog = inject(MatDialog);
+
   notificationService = inject(NotificationService)
   notificationList : Notification [] = []
+  fullNotificationList : Notification [] = []
 
   ngOnInit(): void {
-    this.notificationService.getNotifications().subscribe(notifications => {
-      console.log(notifications)
-      this.notificationList = notifications
+    this.userService.currentUser.subscribe(user => {
+      if(user.userId <= 0) return
+      this.notificationService.getNotifications().subscribe(notifications => {
+        this.fullNotificationList = notifications
+        this.notificationList = this.fullNotificationList
+      })
     })
   }
 
-  readonly dialog = inject(MatDialog);
+  getLengthOfNewNotifications(){
+    return this.notificationList.filter(n => !n.done).length
+  }
+
   requestVideo(){
     this.openEditPopUp(-1)
   }
@@ -89,24 +119,6 @@ export class NavigationComponent implements OnInit{
     localStorage.removeItem("IMA_USER_PASSWORD")
     this.userService.currentUser.next({userId: -1} as User)
   }
-
-  protected readonly Notification = Notification;
-  protected readonly UserRoleEnum = UserRoleEnum
-
-  protected readonly faTrash = faTrash;
-  protected readonly faEllipsis = faEllipsis;
-  protected readonly faUser = faUser;
-  protected readonly faCircleUser = faCircleUser;
-  protected readonly faGear = faGear;
-  protected readonly faCirclePlay = faCirclePlay;
-  protected readonly faUsersGear = faUsersGear;
-  protected readonly faBell = faBell;
-  protected readonly faMagnifyingGlass = faMagnifyingGlass;
-  protected readonly faXmark = faXmark
-  protected readonly faRightFromBracket = faRightFromBracket;
-  protected readonly faUserPlus = faUserPlus;
-  protected readonly faListCheck = faListCheck;
-  protected readonly faFileVideo = faFileVideo;
 }
 
 

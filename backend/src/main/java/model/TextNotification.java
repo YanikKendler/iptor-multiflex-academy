@@ -16,6 +16,7 @@ public class TextNotification extends Notification{
     public TextNotification(User forUser, User triggeredByUser, String headerText, String text) {
         super(forUser, triggeredByUser);
         this.text = text;
+        this.headerText = headerText;
     }
 
     public String getText() {
@@ -24,5 +25,13 @@ public class TextNotification extends Notification{
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getHeaderText() {
+        return headerText;
+    }
+
+    public void setHeaderText(String headerText) {
+        this.headerText = headerText;
     }
 }

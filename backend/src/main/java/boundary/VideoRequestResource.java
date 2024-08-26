@@ -6,11 +6,10 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.VideoRequest;
 import repository.VideoRequestRepository;
 
-@Path("api/request")
-public class RequsetVideoResource {
+@Path("/video/request")
+public class VideoRequestResource {
     @Inject
     VideoRequestRepository repository;
 
@@ -37,7 +36,7 @@ public class RequsetVideoResource {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{requestId}/set/status/{status}?videoId={videoId}")
+    @Path("{requestId}/status/{status}")
     public Response setStatus(@PathParam("requestId") Long requestId, @PathParam("status") VideoRequestEnum status,
                               @QueryParam("userId") Long userId, @QueryParam("videoId") Long videoId){
         try{

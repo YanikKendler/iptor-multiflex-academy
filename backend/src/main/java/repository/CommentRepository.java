@@ -42,6 +42,10 @@ public class CommentRepository {
     public void delete(Long id, Long videoId, Long userId) {
         Comment comment = getById(id);
         if (comment != null) {
+            em.createQuery("delete from CommentNotification n where n.comment.commentId = :commentId")
+                    .setParameter("commentId", id)
+                    .executeUpdate();
+
             Video video = videoRepository.getById(videoId);
             if (video != null) {
                 video.getComments(userId).remove(comment);
