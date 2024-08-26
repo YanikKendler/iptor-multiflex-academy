@@ -29,7 +29,7 @@ public class NotificationRepository {
     }
 
     public List<Notification> getAll(Long userId) {
-        return em.createQuery("select n from Notification n where n.forUser.userId = :userId", Notification.class).setParameter("userId", userId).getResultList();
+        return em.createQuery("select n from Notification n where n.forUser.userId = :userId order by n.timestamp asc", Notification.class).setParameter("userId", userId).getResultList();
     }
 
     public Notification getById(Long id){

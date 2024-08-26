@@ -15,6 +15,7 @@ public class VideoRequest {
     @ManyToOne
     private Video video;
 
+    @Enumerated(EnumType.STRING)
     private VideoRequestEnum status;
 
     @ManyToOne

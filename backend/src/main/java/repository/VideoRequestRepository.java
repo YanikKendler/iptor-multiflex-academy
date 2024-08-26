@@ -1,6 +1,7 @@
 package repository;
 
 import dtos.VideoRequestDTO;
+import dtos.VideoRequestDetailDTO;
 import enums.ContentNotificationEnum;
 import enums.VideoRequestEnum;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -21,8 +22,13 @@ public class VideoRequestRepository {
     UserRepository userRepository;
 
 
-    public List<VideoRequest> getAll() {
-        return em.createQuery("select vr from VideoRequest vr where vr.status != 'finished'", VideoRequest.class).getResultList();
+    public List<VideoRequestDetailDTO> getAll() {
+        List<VideoRequest> requests = em.createQuery("select vr from VideoRequest vr where vr.status = 'open'", VideoRequest.class).getResultList();
+
+        return requests.stream().map(curr -> {
+            Long videoId = curr.getVideo() != null ? curr.getVideo().getContentId() : null;
+            return new VideoRequestDetailDTO(curr.getRequestId(), curr.getTitle(), curr.getText(), videoId, curr.getUser(), curr.getStatus());
+        }).toList();
     }
 
     public void createVideoRequest(VideoRequestDTO videoRequestDTO) {
@@ -48,7 +54,7 @@ public class VideoRequestRepository {
                 em.persist(new ContentNotification(videoRequest.getUser(), userRepository.getById(userId), videoRequest.getVideo(), ContentNotificationEnum.finishedRequest));
                 break;
             case declined:
-                em.persist(new TextNotification(videoRequest.getUser(), userRepository.getById(userId), "has declined your video request:", videoRequest.getTitle()));
+                em.persist(new TextNotification(videoRequest.getUser(), userRepository.getById(userId), "has declined your video request", videoRequest.getTitle()));
                 break;
         }
     }

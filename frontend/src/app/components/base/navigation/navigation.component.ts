@@ -57,10 +57,16 @@ export class NavigationComponent implements OnInit{
   notificationList : Notification [] = []
 
   ngOnInit(): void {
-    this.notificationService.getNotifications().subscribe(notifications => {
-      console.log(notifications)
-      this.notificationList = notifications
+    this.userService.currentUser.subscribe(user => {
+      if(user.userId <= 0) return
+
+      this.notificationService.getNotifications().subscribe(notifications => {
+        console.log(notifications)
+        this.notificationList = notifications
+      })
     })
+
+
   }
 
   readonly dialog = inject(MatDialog);

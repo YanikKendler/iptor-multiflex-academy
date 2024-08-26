@@ -8,6 +8,7 @@ import {
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
 import {faBox, faCheck} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
+import {faCircleCheck} from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: 'app-notification',
@@ -59,4 +60,5 @@ export class NotificationComponent implements OnInit{
   }
 
   protected readonly faBox = faBox;
+  protected readonly faCircleCheck = faCircleCheck;
 }
