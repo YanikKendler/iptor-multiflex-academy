@@ -5,19 +5,33 @@
   flex-direction: column;
   border-right: 1px solid $gray-500;
   width: 3rem;
-  transition: width $transition-time-default;
+  transition: width $transition-time-default, background-color $transition-time-default, border $transition-time-default;
+  background-color: transparent;
 }
 
 :host(.open){
   width: min(20vw, 300px);
+  background-color: white;
 }
 
 :host(.open div.top .flip-button fa-icon){
   transform: scaleX(1);
 }
 
+/*hide everything except for the flip button*/
 :host(:not(.open)) *:not(.flip-button *):not(.top):not(.flip-button) {
   display: none;
+}
+
+@media screen and (max-width: 900px) {
+  :host{
+    border-right: 1px solid transparent;
+  }
+
+  :host(.open){
+    width: 80vw;
+    border-right: 1px solid $gray-500;
+  }
 }
 
 div.top{
@@ -47,6 +61,13 @@ div.top{
     border: 1px solid $gray-300;
     border-radius: .3rem;
     flex-shrink: 0;
+    background-color: white;
+    transition: background-color $transition-time-default;
+
+    &:hover{
+      cursor: pointer;
+      background-color: $gray-900;
+    }
 
     fa-icon{
       display: block;

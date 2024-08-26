@@ -101,3 +101,36 @@ main{
     }
   }
 }
+
+@media screen and (max-width: 900px) {
+  main{
+    width: 90%;
+    gap: .5rem;
+  }
+
+  .top{
+    flex-direction: column;
+    margin-top: 1rem;
+
+    app-media-player{
+      width: 100%;
+      height: initial;
+      aspect-ratio: 16/9;
+    }
+
+    .right{
+      gap: .2rem;
+
+      .actions{
+        padding-left: .5rem;
+      }
+    }
+  }
+
+  .bottom{
+    app-video-comment-container{
+      height: 100%;
+      padding-bottom: 1rem;
+    }
+  }
+}

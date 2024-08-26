@@ -3,6 +3,10 @@
 :host{
   padding: 1rem;
   width: 100%;
+
+  @media screen and (max-width: 900px) {
+    padding: 0;
+  }
 }
 
 main{
@@ -136,12 +140,16 @@ main.checked .answer.correct, main.checked .answer.missing, main.checked .answer
 }
 
 .finished{
-  h2{
-    font-size: 1.2rem;
-  }
-
   display: grid;
   place-items: center;
   margin-left: 3rem;
   margin-top: 1rem;
+
+  @media screen and (max-width: 900px) {
+    margin-left: 0;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
 }

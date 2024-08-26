@@ -44,6 +44,8 @@ export class VideoRatingComponent{
   }
 
   setRating(rating: number) {
+    if(window.matchMedia("(pointer: coarse)").matches) return
+
     this.yourRating = rating;
     this.isRatingMode = true;
   }
@@ -71,6 +73,7 @@ export class VideoRatingComponent{
     let value = this.rating
     if(this.isRatingMode){
       value = this.yourRating
+      console.log("is rating mode")
     }
 
     if(value){
@@ -108,6 +111,10 @@ export class VideoRatingComponent{
   }
 
   enableRatingMode(){
+    if(this.isRatingMode) return
+
+    if(window.matchMedia("(pointer: coarse)").matches) return
+
     clearTimeout(this.hideTimeout)
     this.isRatingMode = true;
     this.overflow = 'visible';

@@ -10,6 +10,12 @@
   cursor: pointer;
 }
 
+@media screen and (max-width: 900px) {
+  :host{
+    width: 100%;
+  }
+}
+
 //when the host is hovered
 :host(:hover){
   border-color: $gray-300;
@@ -35,6 +41,10 @@
     display: flex;
     margin-left: auto;
     transition: opacity $transition-time-short;
+
+    @media screen and (max-width: 900px) {
+      display: none;
+    }
 
     app-icon-button *{
       color: $gray-300;

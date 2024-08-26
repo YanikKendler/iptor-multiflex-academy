@@ -59,7 +59,7 @@ export class VideoCommentComponent implements AfterViewInit {
   editComment() {
     this.editMode = true;
     this.trigger.close();
-    setTimeout(() => this.editInput.nativeElement.focus(), 0);
+    setTimeout(() => this.editInput?.nativeElement.focus(), 0);
   }
 
   updateComment() {

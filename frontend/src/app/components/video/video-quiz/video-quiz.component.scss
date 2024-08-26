@@ -13,6 +13,10 @@
   border-right: 1px solid $gray-600;
   gap: .25rem;
 
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
+
   .question{
     display: flex;
     flex-direction: row;

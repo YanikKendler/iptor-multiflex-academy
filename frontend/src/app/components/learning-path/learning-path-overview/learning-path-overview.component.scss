@@ -19,6 +19,12 @@
   }
 }
 
+@media screen and (max-width: 900px) {
+  :host{
+    width: 100%;
+  }
+}
+
 .header{
   display: flex;
   align-items: center;
@@ -46,6 +52,10 @@
     display: flex;
     margin-left: auto;
     transition: opacity $transition-time-short;
+
+    @media screen and (max-width: 900px) {
+      display: none;
+    }
 
     app-icon-button *{
       color: $gray-300;

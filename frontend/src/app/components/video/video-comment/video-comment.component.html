@@ -14,13 +14,13 @@
   } @else {
     <div class="editSection">
       <input #editInput (keydown)="keyDownFunction($event)" type="text" [(ngModel)]="comment.text">
-      <button (click)="editMode = false">Cancel</button>
-      <button (click)="updateComment()">Post</button>
+      <button mat-stroked-button color="secondary" (click)="editMode = false">Cancel</button>
+      <button mat-flat-button color="secondary"  (click)="updateComment()">Post</button>
     </div>
   }
 </div>
 
-@if(videoOwnerId === userId){
+@if(videoOwnerId === userId && !editMode){
   <div class="right">
     <app-icon-button [cdkMenuTriggerFor]="menu">
       <fa-icon [icon]="faEllipsis"></fa-icon>

@@ -6,19 +6,23 @@
   margin: -.5rem;
 }
 
-:host(:hover){
-  button{
-    opacity: 1;
-  }
+@media screen and (not (pointer: coarse)) {
+  :host(:hover){
+    button{
+      opacity: 1;
+    }
 
-  main{
-    @include floating-box;
-  }
+    main{
+      @include floating-box;
+    }
 
-  app-star-icon{
-    color: $secondary-500;
+    app-star-icon{
+      color: $secondary-500;
+    }
   }
 }
+
+
 
 main{
   border-radius: 0.4rem;
