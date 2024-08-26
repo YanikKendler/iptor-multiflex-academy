@@ -19,8 +19,10 @@ export class ManageUsersComponent {
   rootUser : UserTreeDTO = {} as UserTreeDTO;
 
   constructor(private userService: UserService) {
-    this.userService.getManageableUsers().subscribe(user => {
-      this.rootUser = user
-    });
+    userService.currentUser.subscribe(user => {
+      this.userService.getManageableUsers().subscribe(user => {
+        this.rootUser = user
+      });
+    })
   }
 }

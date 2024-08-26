@@ -125,11 +125,12 @@ INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (6, 4);
 INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (7, 4);
 
 -- Insert demo data for VideoAssignment
-INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (1, 1, 1, '2023-10-01');
-INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (2, 3, 2, '2023-10-02');
+INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (1, 1, 2, '2023-10-01');
+INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (2, 1, 2, '2023-10-02');
 INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (3, 4, 3, '2023-10-03');
 INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (4, 4, 4, '2023-10-04');
-INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (5, 3, 1, '2023-10-05');
+INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (5, 1, 2, '2023-10-05');
+INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp) VALUES (6, 1, 2, '2023-10-05');
 
 -- Insert demo data for ViewProgress
 INSERT INTO ViewProgress (content_contentid, user_userid, progress, timestamp, ignored) VALUES (1, 1, 8, '2023-10-01 10:00:00', false);

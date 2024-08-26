@@ -4,10 +4,12 @@ import {Utils} from "../../../utils";
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
 import {ContentOverviewDTO, VideoOverviewDTO, VideoService} from "../../../service/video.service";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faCirclePlay, faClose} from "@fortawesome/free-solid-svg-icons";
+import {faAngleDown, faCirclePlay, faClose, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
 import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning-path-icon.component";
 import {Config} from "../../../config";
+import {NgClass, NgIf} from "@angular/common"
+import {MatTooltip} from "@angular/material/tooltip"
 
 @Component({
   selector: 'app-manage-user-field',
@@ -17,7 +19,10 @@ import {Config} from "../../../config";
     CdkMenuTrigger,
     FaIconComponent,
     IconButtonComponent,
-    LearningPathIconComponent
+    LearningPathIconComponent,
+    NgClass,
+    NgIf,
+    MatTooltip
   ],
   templateUrl: './manage-user-field.component.html',
   styleUrl: './manage-user-field.component.scss'
@@ -26,6 +31,7 @@ export class ManageUserFieldComponent implements OnInit {
   @Input() user: UserTreeDTO = {} as UserTreeDTO;
   @Input() subordinates : UserTreeDTO[] = [];
   @Input() level : number = 0;
+  @Input() root : boolean = false;
   userService = inject(UserService)
   videoService = inject(VideoService)
 
@@ -36,15 +42,21 @@ export class ManageUserFieldComponent implements OnInit {
 
   isExpanded: boolean = false;
 
+  firstExpand: boolean = true;
+
   @ViewChild(CdkMenuTrigger) videoPopupTrigger!: CdkMenuTrigger
 
-  ngOnInit(): void {
-    this.videoService.getFullContent().subscribe(content => {
-      this.fullContent = content
-    })
-  }
+  ngOnInit(): void {}
 
   toggle() {
+    if(this.firstExpand){
+      this.videoService.getFullContent().subscribe(content => {
+        this.fullContent = content
+      })
+
+      this.firstExpand = false
+    }
+
     this.isExpanded = !this.isExpanded;
 
     if(!this.isExpanded) {
@@ -64,14 +76,11 @@ export class ManageUserFieldComponent implements OnInit {
   }
 
   assignContent(content: ContentOverviewDTO){
-    this.assignedContent.push({
-      contentId: content.contentId,
-      title: content.title,
-      progressPercent: 0
-    })
     this.videoPopupTrigger.close()
 
-    this.userService.assignContent(this.user.userId, content.contentId)
+    this.userService.assignContent(this.user.userId, content.contentId).subscribe(result => {
+      this.assignedContent.push(result)
+    })
   }
 
   unassignContent(contentId: number){
@@ -88,4 +97,6 @@ export class ManageUserFieldComponent implements OnInit {
 
   protected readonly Config = Config;
     protected readonly inject = inject
+  protected readonly faTrash = faTrash
+  protected readonly faAngleDown = faAngleDown
 }

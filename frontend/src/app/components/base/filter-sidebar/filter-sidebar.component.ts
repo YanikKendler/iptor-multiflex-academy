@@ -50,7 +50,7 @@ export class FilterSidebarComponent implements OnInit {
   }
 
   generateTagOptions(query: string) {
-    this.tagOptions = this.tagOptions.filter(tag => tag.name.toLowerCase().includes(query.toLowerCase()) || this.selectedTags.includes(tag))
+    this.tagOptions = this.allTags.filter(tag => tag.name.toLowerCase().includes(query.toLowerCase()) || this.selectedTags.includes(tag))
   }
 
   getLocalStorageTags(){

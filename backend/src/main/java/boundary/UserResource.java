@@ -1,9 +1,6 @@
 package boundary;
 
-import dtos.FilterDTO;
-import dtos.UserDTO;
-import dtos.UserLoginDTO;
-import dtos.UserTreeDTO;
+import dtos.*;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -170,8 +167,8 @@ public class UserResource {
     @Path("{userId}/assigncontent/{contentId}")
     public Response assignContent(@PathParam("userId") Long userId, @QueryParam("assignTo") Long assignToUserId, @PathParam("contentId") Long contentId) {
         try {
-            repository.assignContent(userId, assignToUserId, contentId);
-            return Response.ok().build();
+            UserAssignedContentDTO result = repository.assignContent(userId, assignToUserId, contentId);
+            return Response.ok(result).build();
         } catch (Exception ex) {
             ex.printStackTrace();
             return Response.status(400).entity(ex).build();

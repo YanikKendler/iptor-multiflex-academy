@@ -61,7 +61,10 @@ export interface UserLoginDTO{
 export interface UserAssignedContentDTO {
   contentId: number
   title: string
-  progressPercent: number
+  type: string
+  progress: number
+  questionOrVideoCount: number,
+  color: string
 }
 
 export interface UserTreeDTO{
@@ -128,7 +131,7 @@ export class UserService {
   }
 
   assignContent(userId: number, contentId: number) {
-    return this.http.post(`${Config.API_URL}/user/${this.currentUser.value.userId}/assigncontent/${contentId}?assignTo=${userId}`, {}).subscribe()
+    return this.http.post<UserAssignedContentDTO>(`${Config.API_URL}/user/${this.currentUser.value.userId}/assigncontent/${contentId}?assignTo=${userId}`, {})
   }
 
   unassignContent(userId: number, contentId: number) {
