@@ -17,14 +17,16 @@
 }
 
 <div class="right">
-  <app-icon-button [cdkMenuTriggerFor]="notifications">
+  <app-icon-button [cdkMenuTriggerFor]="notifications"
+                   matBadge="{{getLengthOfNewNotifications()}}"
+                   matBadgeSize="large"
+                   matBadgeDescription="dislays how many notifications the user got">
     <fa-icon [icon]="faBell"></fa-icon>
   </app-icon-button>
 
   <app-icon-button [cdkMenuTriggerFor]="menu">
     <fa-icon [icon]="faCircleUser" class="userIcon"></fa-icon>
   </app-icon-button>
-
 </div>
 
 <ng-template #notifications>

@@ -1,5 +1,3 @@
-<!--todo link to video-->
-
 <div class="message">
   @if(getType() === "update"){
     <h2>{{ notification.triggeredByUser.username }} has updated a content</h2>
@@ -34,7 +32,7 @@
 
 <app-icon-button (click)="toggleDoneNotification()">
   @if(this.notification.done){
-    <fa-icon [icon]="faCheck"></fa-icon>
+    <fa-icon [icon]="faCircleCheck2"></fa-icon>
   } @else{
     <fa-icon [icon]="faCircleCheck"></fa-icon>
   }
