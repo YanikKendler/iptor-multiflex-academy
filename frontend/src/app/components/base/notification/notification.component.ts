@@ -38,6 +38,7 @@ export class NotificationComponent implements OnInit{
   textNotification : TextNotification = {} as TextNotification
 
   ngOnInit(): void {
+    console.log(this.notification)
   }
 
   getType(){
