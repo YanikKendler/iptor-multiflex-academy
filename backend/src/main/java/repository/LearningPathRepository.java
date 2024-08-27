@@ -1,6 +1,7 @@
 package repository;
 
 import dtos.*;
+import enums.ContentEditType;
 import enums.ContentNotificationEnum;
 import enums.VisibilityEnum;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -15,12 +16,15 @@ import java.time.ZoneOffset;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Transactional
 public class LearningPathRepository {
     @Inject
     EntityManager em;
+    @Inject
+    UserRepository userRepository;
 
     public LearningPathDetailDTO getDetailDTO(Long pathId, Long userId){
         LearningPath learningPath = em.find(LearningPath.class, pathId);
@@ -106,14 +110,35 @@ public class LearningPathRepository {
         ).toList());
     }
 
-    public LearningPathDetailDTO update(EditLearningPathDTO data) {
+    public LearningPathDetailDTO update(EditLearningPathDTO data, Long userId) {
         LearningPath pathToUpdate = em.find(LearningPath.class, data.contentId());
 
-        pathToUpdate.setTitle(data.title());
-        pathToUpdate.setDescription(data.description());
-        pathToUpdate.setTags(data.tags());
-        pathToUpdate.setVisibility(data.visibility());
-        pathToUpdate.setColor(data.color());
+        if(!Objects.equals(data.title(), pathToUpdate.getTitle())){
+            pathToUpdate.setTitle(data.title());
+            em.persist(new ContentEditHistory(userRepository.getById(userId), pathToUpdate, ContentEditType.visibility));
+        }
+
+        if(!Objects.equals(data.description(), pathToUpdate.getDescription())){
+            pathToUpdate.setDescription(data.description());
+            em.persist(new ContentEditHistory(userRepository.getById(userId), pathToUpdate, ContentEditType.description));
+        }
+
+        if(data.visibility() != pathToUpdate.getVisibility()){
+            pathToUpdate.setVisibility(data.visibility());
+            em.persist(new ContentEditHistory(userRepository.getById(userId), pathToUpdate, ContentEditType.visibility));
+        }
+
+        Set<Long> tagOne = data.tags().stream().map(Tag::getTagId).collect(Collectors.toSet());
+        Set<Long> tagTwo = pathToUpdate.getTags().stream().map(Tag::getTagId).collect(Collectors.toSet());
+        if(!tagOne.equals(tagTwo)){
+            pathToUpdate.setTags(data.tags());
+            em.persist(new ContentEditHistory(userRepository.getById(userId), pathToUpdate, ContentEditType.tags));
+        }
+
+        if(!Objects.equals(data.color(), pathToUpdate.getColor())){
+            pathToUpdate.setColor(data.color());
+            em.persist(new ContentEditHistory(userRepository.getById(userId), pathToUpdate, ContentEditType.color));
+        }
 
         List<LearningPathEntry> entries = new LinkedList<>();
 
@@ -135,7 +160,12 @@ public class LearningPathRepository {
             entries.add(entryToUpdate);
         }
 
-        pathToUpdate.setEntries(entries);
+        Set<Long> entryOne = data.entries().stream().map(LearningPathEntryDTO::pathEntryId).collect(Collectors.toSet());
+        Set<Long> entryTwo = pathToUpdate.getEntries().stream().map(LearningPathEntry::getPathEntryId).collect(Collectors.toSet());
+        if(!entryOne.equals(entryTwo)){
+            pathToUpdate.setEntries(entries);
+            em.persist(new ContentEditHistory(userRepository.getById(userId), pathToUpdate, ContentEditType.entries));
+        }
 
         em.merge(pathToUpdate);
 
@@ -203,9 +233,10 @@ public class LearningPathRepository {
         }
     }
 
-    public void updatePathVisibility(Long pathId, VisibilityEnum v) {
+    public void updatePathVisibility(Long pathId, Long userId, VisibilityEnum v) {
         LearningPath learningPath = em.find(LearningPath.class, pathId);
         learningPath.setVisibility(v);
+        em.persist(new ContentEditHistory(userRepository.getById(userId), learningPath, ContentEditType.visibility));
     }
 
     public void delete(Long id) {
@@ -224,6 +255,10 @@ public class LearningPathRepository {
                 .executeUpdate();
 
         em.createQuery("delete from ContentNotification n where n.content.contentId = :contentId")
+                .setParameter("contentId", id)
+                .executeUpdate();
+
+        em.createQuery("delete from ContentEditHistory h where h.content.contentId = :contentId")
                 .setParameter("contentId", id)
                 .executeUpdate();
 

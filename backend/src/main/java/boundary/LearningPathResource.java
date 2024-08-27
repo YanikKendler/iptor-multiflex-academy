@@ -29,21 +29,9 @@ public class LearningPathResource {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateLearningpath(EditLearningPathDTO data){
+    public Response updateLearningpath(EditLearningPathDTO data, @QueryParam("userId") Long userId){
         try{
-            LearningPathDetailDTO result = repository.update(data);
-            return Response.ok(result).build();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return Response.status(400).entity(ex).build();
-        }
-    }
-
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateLearningpath(@QueryParam("userId") Long userId, EditLearningPathDTO data){
-        try{
-            LearningPath result = repository.create(data, userId);
+            LearningPathDetailDTO result = repository.update(data, userId);
             return Response.ok(result).build();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -77,10 +65,10 @@ public class LearningPathResource {
     @PUT
     @Path("{pathId: [0-9]+}/visibility")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateLearningpath(@PathParam("pathId") Long pathId, JsonObject data){
+    public Response updateLearningpath(@PathParam("pathId") Long pathId, JsonObject data, @QueryParam("userId") Long userId){
         try{
             System.out.println(data);
-            repository.updatePathVisibility(pathId, VisibilityEnum.valueOf(data.getString("visibility")));
+            repository.updatePathVisibility(pathId, userId, VisibilityEnum.valueOf(data.getString("visibility")));
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

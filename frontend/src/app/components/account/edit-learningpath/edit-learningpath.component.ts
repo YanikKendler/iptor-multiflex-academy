@@ -124,12 +124,14 @@ export class EditLearningpathComponent implements OnInit{
   saveChanges() {
     if(this.learningPath.contentId > 0) { //saving changes to existing path
       this.learningPathService.updateLearningPath(this.learningPath).subscribe(result => {
+        window.removeEventListener("beforeunload", this.beforeUnloadHandler);
         this.dialogRef.close();
       })
     }
     else { //creating new path
       this.learningPathService.createLearningPath(this.learningPath).subscribe(result => {
         console.log(result)
+        window.removeEventListener("beforeunload", this.beforeUnloadHandler);
         this.dialogRef.close();
       })
     }
@@ -142,6 +144,7 @@ export class EditLearningpathComponent implements OnInit{
       this.confirmClose()
     }
     else {
+      window.removeEventListener("beforeunload", this.beforeUnloadHandler);
       this.dialogRef.close();
     }
   }
@@ -155,6 +158,7 @@ export class EditLearningpathComponent implements OnInit{
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if(confirm) {
+        window.removeEventListener("beforeunload", this.beforeUnloadHandler);
         this.dialogRef.close();
       }
     })

@@ -1,6 +1,7 @@
 package repository;
 
 import dtos.*;
+import enums.ContentEditType;
 import enums.ContentNotificationEnum;
 import enums.VisibilityEnum;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -9,25 +10,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import model.Question;
-import model.Tag;
 import model.Video;
 import model.VideoFile;
 import model.*;
-import net.bramp.ffmpeg.FFmpeg;
-import net.bramp.ffmpeg.FFmpegExecutor;
-import net.bramp.ffmpeg.FFprobe;
-import net.bramp.ffmpeg.builder.FFmpegBuilder;
-import net.bramp.ffmpeg.probe.FFmpegProbeResult;
-import net.bramp.ffmpeg.probe.FFmpegStream;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.*;
-
-import org.apache.commons.io.FileUtils;
+import java.util.stream.Collectors;
 
 @Transactional
 @ApplicationScoped
@@ -37,6 +26,8 @@ public class VideoRepository {
 
     @Inject
     LearningPathRepository learningPathRepository;
+    @Inject
+    UserRepository userRepository;
 
     public Video create(CreateVideoDTO createVideoDTO, Long userId) {
         System.out.println(createVideoDTO.toString());
@@ -77,30 +68,52 @@ public class VideoRepository {
         return newVideo;
     }
 
-    public VideoDetailDTO update(EditVideoDTO video) {
+    public VideoDetailDTO update(EditVideoDTO video, Long userId) {
         Video videoToUpdate = em.find(Video.class, video.contentId());
 
-        videoToUpdate.setTitle(video.title());
-        videoToUpdate.setDescription(video.description());
-        videoToUpdate.setTags(video.tags());
+        if(!Objects.equals(videoToUpdate.getTitle(), video.title())){
+            videoToUpdate.setTitle(video.title());
+            em.persist(new ContentEditHistory(userRepository.getById(userId), videoToUpdate, ContentEditType.title));
+        }
 
-        if(!video.questions().equals(videoToUpdate.getQuestions())) {
-            System.out.println("questions changed");
+        if(!Objects.equals(videoToUpdate.getDescription(), video.description())){
+            videoToUpdate.setDescription(video.description());
+            em.persist(new ContentEditHistory(userRepository.getById(userId), videoToUpdate, ContentEditType.description));
+        }
+
+        if(!Objects.equals(videoToUpdate.getColor(), video.color())){
+            videoToUpdate.setColor(video.color());
+            em.persist(new ContentEditHistory(userRepository.getById(userId), videoToUpdate, ContentEditType.color));
+        }
+
+        Set<Long> tagOne = video.tags().stream().map(Tag::getTagId).collect(Collectors.toSet());
+        Set<Long> tagTwo = videoToUpdate.getTags().stream().map(Tag::getTagId).collect(Collectors.toSet());
+        if(!tagOne.equals(tagTwo)){
+            videoToUpdate.setTags(video.tags());
+            em.persist(new ContentEditHistory(userRepository.getById(userId), videoToUpdate, ContentEditType.tags));
+        }
+
+        Set<Long> questionOne = video.questions().stream().map(Question::getQuestionId).collect(Collectors.toSet());
+        Set<Long> questionTwo = videoToUpdate.getQuestions().stream().map(Question::getQuestionId).collect(Collectors.toSet());
+        if(!questionOne.equals(questionTwo)){
             em.createQuery("delete from QuizResult q where q.video.contentId = :videoId")
                     .setParameter("videoId", video.contentId())
                     .executeUpdate();
+            videoToUpdate.setQuestions(video.questions());
+
+            for (Question question : video.questions()) {
+                try{
+                    em.merge(question);
+                }catch (Exception e) {
+                    em.persist(new Question(question.getText()));
+                }
+            }
+            em.persist(new ContentEditHistory(userRepository.getById(userId), videoToUpdate, ContentEditType.questions));
         }
 
-        videoToUpdate.setQuestions(video.questions());
-        videoToUpdate.setVisibility(video.visibility());
-        videoToUpdate.setColor(video.color());
-
-        for (Question question : video.questions()) {
-            try{
-                em.merge(question);
-            }catch (Exception e) {
-                em.persist(new Question(question.getText()));
-            }
+        if(video.visibility() != videoToUpdate.getVisibility()){
+            videoToUpdate.setVisibility(video.visibility());
+            em.persist(new ContentEditHistory(userRepository.getById(userId), videoToUpdate, ContentEditType.visibility));
         }
 
         em.merge(videoToUpdate);
@@ -176,6 +189,10 @@ public class VideoRepository {
         });
 
         em.createQuery("delete from ContentNotification n where n.content.contentId = :contentId")
+                .setParameter("contentId", id)
+                .executeUpdate();
+
+        em.createQuery("delete from ContentEditHistory h where h.content.contentId = :contentId")
                 .setParameter("contentId", id)
                 .executeUpdate();
 
@@ -270,9 +287,10 @@ public class VideoRepository {
         video.setVideoFile(videoFile);
     }
 
-    public void updateVideoVisibility(Long videoId, VisibilityEnum v) {
+    public void updateVideoVisibility(Long videoId, Long userId, VisibilityEnum v) {
         Video video = em.find(Video.class, videoId);
         video.setVisibility(v);
+        em.persist(new ContentEditHistory(userRepository.getById(userId), video, ContentEditType.visibility));
     }
 
     @Transactional
