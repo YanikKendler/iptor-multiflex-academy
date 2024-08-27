@@ -39,16 +39,16 @@ export class NotificationComponent implements OnInit{
 
   ngOnInit(): void {
     console.log(this.notification)
-    console.log(this.getType())
   }
 
   getType(){
-    if(this.notification.hasOwnProperty("content")){
+    if(this.notification.hasOwnProperty("comment")) {
+      this.commentNotification = this.notification as CommentNotification
+      console.log(this.commentNotification)
+      return "comment"
+    } else if(this.notification.hasOwnProperty("content")){
       this.contentNotification = this.notification as ContentNotification
       return this.contentNotification.type
-    } else if(this.notification.hasOwnProperty("video")){
-      this.commentNotification = this.notification as CommentNotification
-      return "comment"
     } else if(this.notification.hasOwnProperty("requestMessage")){
       this.videoRequestNotification = this.notification as VideoRequestNotification
       return "request"
@@ -72,7 +72,11 @@ export class NotificationComponent implements OnInit{
     }
 
     if(this.getType() !== "request" && this.getType() !== "text" && this.getType() !== ""){
-      this.router.navigate(['video/' + this.contentNotification.content.contentId])
+      if(this.getType() === "comment"){
+        this.router.navigate(['video/' + this.commentNotification.content.contentId])
+      } else{
+        this.router.navigate(['video/' + this.contentNotification.content.contentId])
+      }
     } else if(this.getType() === "request"){
       this.router.navigate(['account/video-requests'])
     }
