@@ -12,16 +12,16 @@ public class CommentNotification extends Notification{
     private Comment comment;
 
     @ManyToOne
-    private Video video;
+    private Video content;
 
     public CommentNotification() {
         super();
     }
 
-    public CommentNotification(User forUser, User triggeredByUser, Comment comment, Video video) {
+    public CommentNotification(User forUser, User triggeredByUser, Comment comment, Video content) {
         super(forUser, triggeredByUser);
         this.comment = comment;
-        this.video = video;
+        this.content = content;
     }
 
     public Comment getComment() {
@@ -32,11 +32,11 @@ public class CommentNotification extends Notification{
         this.comment = comment;
     }
 
-    public Video getVideo() {
-        return video;
+    public Video getContent() {
+        return content;
     }
 
-    public void setVideo(Video video) {
-        this.video = video;
+    public void setContent(Video content) {
+        this.content = content;
     }
 }

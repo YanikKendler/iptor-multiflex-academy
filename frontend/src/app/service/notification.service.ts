@@ -18,7 +18,7 @@ export interface ContentNotification extends Notification {
 }
 
 export interface CommentNotification extends Notification {
-  video: VideoOverviewDTO;
+  content: VideoOverviewDTO;
   comment: Comment;
 }
 

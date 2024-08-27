@@ -147,5 +147,5 @@ INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, t
 INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, content_contentid, type) VALUES ('ContentNotification', 1, 2, false, '2023-10-05 10:00:00', 1, 'assignment');
 INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, requestMessage) VALUES ('VideoRequestNotification', 1, 2, false, '2023-10-11 10:00:00', 'Please make a video about Java');
 INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, headertext, text) VALUES ('TextNotification', 1, 2, false, '2023-10-15 10:00:00', 'Follower', 'You have a new follower');
-INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, comment_commentid, video_contentid) VALUES ('CommentNotification', 1, 2, false, '2023-10-17 10:00:00', 1, 1);
+INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, comment_commentid, content_contentid) VALUES ('CommentNotification', 1, 2, false, '2023-10-17 10:00:00', 1, 1);
 

@@ -25,7 +25,7 @@
   }
 
   @else if(getType() === "comment"){
-    <h2>{{ notification.triggeredByUser.username }} has posted a comment in {{ commentNotification.video.title }}</h2>
+    <h2>{{ notification.triggeredByUser.username }} has posted a comment in {{ commentNotification.content.title }}</h2>
     <p>{{ commentNotification.comment.text }}</p>
   }
 </div>
