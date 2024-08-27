@@ -4,6 +4,7 @@ import dtos.*;
 import dtos.ContentForUserDTO;
 import dtos.VideoOverviewDTO;
 import enums.ContentNotificationEnum;
+import enums.UserRoleEnum;
 import io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -131,7 +132,7 @@ public class UserRepository {
         List<Video> assignedVideos = em.createQuery("select distinct v from Video v " +
                         "join ContentAssignment va on va.content.contentId = v.contentId " +
                         "join v.tags t " +
-                        "where va.assignedTo.userId = :userId " +
+                        "where va.assignedTo.userId = :userId and va.isFinished = false " +
                         "and not exists (" +
                         "    select t from Tag t " +
                         "    where t in :tags and t not in elements(v.tags)" +
@@ -146,7 +147,7 @@ public class UserRepository {
         List<LearningPath> assignedLearningPaths = em.createQuery("select distinct lp from LearningPath lp " +
                         "join ContentAssignment va on va.content.contentId = lp.contentId " +
                         "join lp.tags t " +
-                        "where va.assignedTo.userId = :userId " +
+                        "where va.assignedTo.userId = :userId and va.isFinished = false " +
                         "and not exists (" +
                         "    select t from Tag t " +
                         "    where t in :tags and t not in elements(lp.tags)" +
@@ -340,8 +341,11 @@ public class UserRepository {
     }
 
     public List<MyVideoDTO> getUserVideos(Long userId) {
-        List<Video> videos = em.createQuery("select v from Video v where v.user.userId = :userId order by v.contentId", Video.class)
-                .setParameter("userId", userId)
+        if (getById(userId).getUserRole() == UserRoleEnum.CUSTOMER) {
+            return null;
+        }
+
+        List<Video> videos = em.createQuery("select v from Video v order by v.contentId", Video.class)
                 .getResultList();
 
         return videos.stream().map(video -> {
@@ -353,10 +357,13 @@ public class UserRepository {
     }
 
     public List<MyLearningpathDTO> getUserLearningpaths(Long userId) {
+        if (getById(userId).getUserRole() == UserRoleEnum.CUSTOMER) {
+            return null;
+        }
+
         TypedQuery<LearningPath> query = em.createQuery(
-                "SELECT l FROM LearningPath l WHERE l.user.userId = :userId ORDER BY l.contentId",
+                "SELECT l FROM LearningPath l ORDER BY l.contentId",
                 LearningPath.class);
-        query.setParameter("userId", userId);
         List<LearningPath> learningPaths = query.getResultList();
 
         return learningPaths.stream()
@@ -459,7 +466,8 @@ public class UserRepository {
     public List<UserAssignedContentDTO> getUserAssignedContent(Long userId) {
         try {
             List<Content> contents = em.createQuery("select c from Content c " +
-                            "join ContentAssignment ca on ca.content.contentId = c.contentId where ca.assignedTo.userId = :userId", Content.class)
+                            "join ContentAssignment ca on ca.content.contentId = c.contentId where ca.assignedTo.userId = :userId " +
+                            "order by ca.timestamp desc", Content.class)
                     .setParameter("userId", userId).getResultList();
 
             List<UserAssignedContentDTO> dtos = new LinkedList<>();
@@ -482,6 +490,10 @@ public class UserRepository {
         } catch(NoResultException e){
             progress = 0;
         }
+
+        boolean isFinished = em.createQuery("select ca.isFinished from ContentAssignment ca " +
+                        "where ca.assignedTo.userId = :userId and ca.content.contentId = :contentId", Boolean.class)
+                .setParameter("userId", userId).setParameter("contentId", content.getContentId()).getSingleResult();
 
         double progressPercentage = 0;
         if(content instanceof Video && progress > 0){
@@ -509,7 +521,8 @@ public class UserRepository {
                 content instanceof Video ? "Video" : "LearningPath",
                 progressPercentage,
                 questionOrVideoCount,
-                content.getColor()
+                content.getColor(),
+                isFinished
             );
     }
 
@@ -537,5 +550,17 @@ public class UserRepository {
         } catch(NoResultException e){
             log.error("No content assignment found for user with id " + userId + " and content with id " + contentId);
         }
+    }
+
+    public void finishAssignedContent(Long userId, Long contentId) {
+        try{
+            ContentAssignment contentAssignment = em.createQuery("select ca from ContentAssignment ca " +
+                            "where ca.assignedTo.userId = :userId and ca.content.contentId = :contentId", ContentAssignment.class)
+                    .setParameter("userId", userId)
+                    .setParameter("contentId", contentId)
+                    .getSingleResult();
+            contentAssignment.setFinished(true);
+            em.merge(contentAssignment);
+        } catch(NoResultException e){}
     }
 }

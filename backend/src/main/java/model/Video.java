@@ -6,6 +6,7 @@ import enums.VisibilityEnum;
 import jakarta.annotation.Nullable;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 import repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -17,12 +18,15 @@ import java.util.Set;
 @Entity
 public class Video extends Content {
     @OneToMany(fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Comment> comments = new LinkedList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Question> questions = new LinkedList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<StarRating> starRatings = new LinkedList<>();
 
     @OneToOne
@@ -99,6 +103,10 @@ public class Video extends Content {
                 return c2.getTimestamp().compareTo(c1.getTimestamp());
             }
         });
+        return comments;
+    }
+
+    public List<Comment> getAllComments(){
         return comments;
     }
 

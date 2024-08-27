@@ -26,6 +26,7 @@ import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
 import {DropdownComponent, DropdownOption} from "../../basic/dropdown/dropdown.component"
 import {Utils} from "../../../utils"
 import {MatTooltip} from "@angular/material/tooltip"
+import {ExtremeConfirmComponent} from "../../dialogue/extreme-confirm/extreme-confirm.component";
 
 @Component({
   selector: 'app-my-videos',
@@ -115,7 +116,23 @@ export class MyVideosComponent implements OnInit{
   }
 
   deleteVideo(videoId: number){
+    let dialogRef = this.dialog.open(ExtremeConfirmComponent, {
+      maxWidth: "80vw",
+      width: "800px",
+      disableClose: true,
+      data: {
+        title: "Delete Video",
+        message: "Are you sure you want to delete this video?"
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.videoService.deleteVideo(videoId).subscribe(() => {
+          this.userContent = this.userContent.filter(video => video.contentId != videoId);
+        });
+      }
+    })
   }
 
   protected readonly faArrowRightToBracket = faArrowRightToBracket;

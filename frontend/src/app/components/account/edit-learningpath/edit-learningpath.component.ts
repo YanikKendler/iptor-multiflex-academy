@@ -107,7 +107,19 @@ export class EditLearningpathComponent implements OnInit{
     this.videoService.getAll().subscribe(videos => {
       this.allVideos = videos
     })
+
+    window.addEventListener("beforeunload", this.beforeUnloadHandler);
   }
+
+  beforeUnloadHandler = (event: Event) => {
+    if(JSON.stringify(this.learningPath) !== JSON.stringify(this.oldLearningPath)){
+      // Recommended
+      event.preventDefault();
+
+      // Included for legacy support, e.g. Chrome/Edge < 119
+      event.returnValue = true;
+    }
+  };
 
   saveChanges() {
     if(this.learningPath.contentId > 0) { //saving changes to existing path

@@ -51,6 +51,18 @@ public class LearningPathResource {
         }
     }
 
+    @DELETE
+    @Path("{pathId: [0-9]+}")
+    public Response deleteLearningpath(@PathParam("pathId") Long pathId){
+        try{
+            repository.delete(pathId);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().build();
+    }
+
     @GET
     @Path("{pathId: [0-9]}/next")
     public Response getNext(@PathParam("pathId") Long pathId, @QueryParam("userId") Long userId) {

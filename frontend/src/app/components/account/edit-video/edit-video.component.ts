@@ -101,7 +101,20 @@ export class EditVideoComponent implements OnInit{
         this.close()
       }
     })
+
+    window.addEventListener("beforeunload", this.beforeUnloadHandler);
   }
+
+  beforeUnloadHandler = (event: Event) => {
+
+    if(JSON.stringify(this.video) !== JSON.stringify(this.oldVideo)){
+      // Recommended
+      event.preventDefault();
+
+      // Included for legacy support, e.g. Chrome/Edge < 119
+      event.returnValue = true;
+    }
+  };
 
   saveChanges() {
     if(this.video.contentId > 0) { //saving changes to existing video

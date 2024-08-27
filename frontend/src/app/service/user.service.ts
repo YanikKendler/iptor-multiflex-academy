@@ -64,7 +64,8 @@ export interface UserAssignedContentDTO {
   type: string
   progress: number
   questionOrVideoCount: number,
-  color: string
+  color: string,
+  isFinished: boolean
 }
 
 export interface UserTreeDTO{
@@ -136,5 +137,9 @@ export class UserService {
 
   unassignContent(userId: number, contentId: number) {
     return this.http.delete(`${Config.API_URL}/user/${userId}/unassigncontent/${contentId}`).subscribe()
+  }
+
+  finishAssignedContent(contentId: number) {
+    return this.http.put(`${Config.API_URL}/user/${this.currentUser.value.userId}/finishassignedcontent/${contentId}`, {})
   }
 }

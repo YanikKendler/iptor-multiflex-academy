@@ -30,6 +30,7 @@ import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning
 import {LearningPathService} from "../../../service/learning-path.service"
 import {EditLearningpathComponent} from "../edit-learningpath/edit-learningpath.component"
 import {MatDivider} from "@angular/material/divider"
+import {ExtremeConfirmComponent} from "../../dialogue/extreme-confirm/extreme-confirm.component";
 
 @Component({
   selector: 'app-my-learningpaths',
@@ -112,7 +113,23 @@ export class MyLearningpathsComponent implements OnInit{
   }
 
   deleteLearningPath(learningPathId: number) {
+    let dialogRef = this.dialog.open(ExtremeConfirmComponent, {
+      maxWidth: "80vw",
+      width: "800px",
+      disableClose: true,
+      data: {
+        title: "Delete Video",
+        message: "Are you sure you want to delete this video?"
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.learningpathService.deletePath(learningPathId).subscribe(() => {
+          this.userLearningpaths = this.userLearningpaths.filter(learningpath => learningpath.contentId != learningPathId);
+        });
+      }
+    })
   }
 
   protected readonly faTrash = faTrash;

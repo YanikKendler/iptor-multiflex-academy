@@ -121,6 +121,10 @@ export class VideoService {
     return this.http.get<VideoDetailDTO>(`${Config.API_URL}/video/${videoId}?userId=${this.userService.currentUser.value.userId}`)
   }
 
+  deleteVideo(videoId: number){
+    return this.http.delete(`${Config.API_URL}/video/${videoId}`)
+  }
+
   setStarRating(videoId: number, userId: number, rating: number) {
     return this.http.put(`${Config.API_URL}/video/${videoId}/starrating?userId=${userId}`, rating)
   }
@@ -141,10 +145,8 @@ export class VideoService {
     return this.http.put<VideoDetailDTO>(`${Config.API_URL}/video/`, video)
   }
 
-  uploadVideoFile(file: File) {
+  uploadVideoFile(file: File, formData: FormData){
     const fileName = file.name;
-    const formData = new FormData();
-    formData.append('file', file);
     return this.http.post<VideoFile>(`${Config.API_URL}/video/videofile?filename=${fileName}`, formData);
   }
 

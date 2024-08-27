@@ -17,9 +17,9 @@ export class ViewProgressService {
   }
 
   updateViewProgress(videoId: number, progress: number) {
-    return this.http.put(`${Config.API_URL}/video/${videoId}/progress/${this.userService.currentUser.value.userId}`, {
+    return this.http.put<ViewProgress>(`${Config.API_URL}/video/${videoId}/progress/${this.userService.currentUser.value.userId}`, {
       durationSeconds: progress
-    }).subscribe()
+    })
   }
 
   ignoreViewProgress(videoId: number) {

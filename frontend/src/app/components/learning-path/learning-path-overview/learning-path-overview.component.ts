@@ -25,10 +25,11 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faPlay} from "@fortawesome/free-solid-svg-icons";
 import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
 import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning-path-icon.component";
+import {faCircleCheck} from "@fortawesome/free-regular-svg-icons";
 
 export interface UpdateLearningPathDashboardEvent {
   learningPath: LearningPathOverviewDTO;
-  action: "add" | "remove";
+  action: "add" | "remove" | "finish";
 }
 
 @Component({
@@ -53,6 +54,7 @@ export interface UpdateLearningPathDashboardEvent {
 export class LearningPathOverviewComponent implements OnInit{
   @Input() learningPath: LearningPathOverviewDTO = {} as LearningPathOverviewDTO
   @Input() removable: boolean = false
+  @Input() checkable: boolean = false;
   @Output() updateDashboard: EventEmitter<UpdateLearningPathDashboardEvent> = new EventEmitter<UpdateLearningPathDashboardEvent>();
 
   videoProgress: number[] = []
@@ -111,6 +113,15 @@ export class LearningPathOverviewComponent implements OnInit{
     this.updateDashboard.emit({learningPath: this.learningPath, action: "remove"})
   }
 
+  finishLearningPath(event: MouseEvent) {
+    event.stopPropagation();
+
+    this.userService.finishAssignedContent(this.learningPath.contentId).subscribe(() => {
+      this.updateDashboard.emit({learningPath: this.learningPath, action: "finish"})
+    })
+  }
+
   protected readonly Utils = Utils;
   protected readonly faPlay = faPlay;
+  protected readonly faCircleCheck = faCircleCheck;
 }

@@ -38,10 +38,10 @@
       <div class="video-row">
         @if(content && content.assigned){
           @for(video of content.assigned.videos; track video.contentId){
-            <app-video-overview [video]="video" (updateDashboard)="updateVideoDashboard($event)"></app-video-overview>
+            <app-video-overview [checkable]="true" [video]="video" (updateDashboard)="updateVideoDashboard($event)"></app-video-overview>
           }
           @for(learningPath of content.assigned.learningPaths; track learningPath.contentId){
-            <app-learning-path-overview [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)"></app-learning-path-overview>
+            <app-learning-path-overview [checkable]="true" [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)"></app-learning-path-overview>
           }
         }
         @if(content?.assigned?.videos?.length == 0){

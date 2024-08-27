@@ -15,6 +15,9 @@ import {PlayIconComponent} from "../../icons/playicon/play.icon.component"
 import {faCircleCheck, faFaceLaughBeam} from "@fortawesome/free-regular-svg-icons"
 import {UserService} from "../../../service/user.service"
 import {Utils} from "../../../utils"
+import {faCircleCheck} from "@fortawesome/free-regular-svg-icons"
+import {User, UserService} from "../../../service/user.service"
+import {ViewProgressService} from "../../../service/view-progress.service";
 
 @Component({
   selector: 'app-learning-path-detail',
@@ -66,6 +69,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
 
   videoService = inject(VideoService)
   userService = inject(UserService)
+  viewProgressService = inject(ViewProgressService)
 
   //wheter or not the full learning path description is shown in the sidebar
   fullDescription: boolean = false
@@ -83,6 +87,10 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
 
             if(this.learningPath.viewProgress){
               this.progressPercent = this.learningPath.viewProgress.progress / this.learningPath.entries.length * 100
+            } else {
+              this.viewProgressService.updateViewProgress(this.learningPath!.contentId, 0).subscribe(value => {
+                this.learningPath.viewProgress = value
+              })
             }
 
             for (let i = 1; i <= this.learningPath.entries.length; i++) {
@@ -127,7 +135,6 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
     }
 
     let marker = this.tabSelector?.querySelector('.marker') as HTMLElement
-    console.log(this.tabSelector, tabElement, marker)
     if(marker == null || tabElement == null) return
     marker.style.width = tabElement.clientWidth - 16 + "px"
     marker.style.left = tabElement.offsetLeft + 8 + "px"
@@ -174,6 +181,9 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
       this.currentVideoPosition = this.learningPath.entries.length; return
     }
 
+    console.log(this.learningPath.viewProgress)
+    console.log("currentId: " + currentId)
+
     if(this.learningPath.viewProgress && currentId == this.learningPath.entries[this.learningPath.viewProgress.progress].videoId){
       this.learningPath.viewProgress.progress++
       this.progressPercent = this.learningPath.viewProgress.progress / this.learningPath.entries.length * 100
@@ -183,6 +193,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
       } else {
         this.currentVideoPosition++
         this.isFinished = true
+        this.userService.finishAssignedContent(this.learningPath.contentId).subscribe()
       }
 
       if(this.learningPath.viewProgress.progress == this.learningPath.entries.length - 1){

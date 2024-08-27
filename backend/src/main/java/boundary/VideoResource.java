@@ -106,6 +106,7 @@ public class VideoResource {
         try{
             videoRepository.delete(id);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().build();

@@ -1,10 +1,12 @@
 package repository;
 
 import dtos.*;
+import enums.ContentNotificationEnum;
 import enums.VisibilityEnum;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import model.*;
 
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.*;
 
 @ApplicationScoped
 @Transactional
@@ -136,7 +139,23 @@ public class LearningPathRepository {
 
         em.merge(pathToUpdate);
 
+        alertRelevantUsers(pathToUpdate);
+
         return null;
+    }
+
+    public void alertRelevantUsers(LearningPath learningPath){
+        List<User> savedUsers = em.createQuery("select distinct u from User u " +
+                        "join u.savedContent us on us.contentId = :contentId", User.class)
+                .setParameter("contentId", learningPath.getContentId())
+                .getResultList();
+
+        savedUsers.forEach(user -> {
+            if(Objects.equals(learningPath.getUser().getUserId(), user.getUserId())){
+                return;
+            }
+            em.persist(new ContentNotification(user, learningPath.getUser(), learningPath, ContentNotificationEnum.update));
+        });
     }
 
     public LearningPath create(EditLearningPathDTO data, Long userId) {
@@ -187,5 +206,29 @@ public class LearningPathRepository {
     public void updatePathVisibility(Long pathId, VisibilityEnum v) {
         LearningPath learningPath = em.find(LearningPath.class, pathId);
         learningPath.setVisibility(v);
+    }
+
+    public void delete(Long id) {
+        try{
+            List<ContentAssignment> ca = em.createQuery("select ca from ContentAssignment ca where ca.content.contentId = :contentId", ContentAssignment.class)
+                    .setParameter("contentId", id).getResultList();
+
+            ca.forEach(c -> {
+                c.setContent(null);
+                em.remove(c);
+            });
+        } catch(NoResultException e){}
+
+        em.createQuery("delete from ViewProgress vp where vp.content.contentId = :videoId")
+                .setParameter("videoId", id)
+                .executeUpdate();
+
+        em.createQuery("delete from ContentNotification n where n.content.contentId = :contentId")
+                .setParameter("contentId", id)
+                .executeUpdate();
+
+        LearningPath learningPath = em.find(LearningPath.class, id);
+        learningPath.setEntries(null);
+        em.remove(learningPath);
     }
 }

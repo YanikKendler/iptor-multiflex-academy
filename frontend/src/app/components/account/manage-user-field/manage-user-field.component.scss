@@ -117,6 +117,19 @@ app-manage-user-field{
       color: $gray-400;
     }
   }
+
+  &.finished{
+    fa-icon{
+      color: $gray-400;
+    }
+    p{
+      color: $gray-250;
+    }
+    .title, .progress{
+      color: $gray-300;
+      font-weight: 500;
+    }
+  }
 }
 
 .videoOptions{

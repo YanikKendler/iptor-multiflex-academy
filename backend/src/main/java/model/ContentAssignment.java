@@ -1,6 +1,7 @@
 package model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDateTime;
 
@@ -22,8 +23,11 @@ public class ContentAssignment {
     @Column
     private final LocalDateTime timestamp;
 
+    private boolean isFinished;
+
     public ContentAssignment(User assignedBy, User assignedTo, Content content) {
         this();
+        this.isFinished = false;
         this.assignedTo = assignedTo;
         this.assignedBy = assignedBy;
         this.content = content;
@@ -34,6 +38,12 @@ public class ContentAssignment {
     }
 
     //<editor-fold desc="Getter und Setter">
+    public boolean isFinished() {
+        return isFinished;
+    }
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
     public Long getAssignmentId() {
         return assignmentId;
     }

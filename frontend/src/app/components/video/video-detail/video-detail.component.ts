@@ -114,4 +114,8 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   }
 
   protected readonly faShare = faShare;
+
+  finishVideo() {
+    this.userService.finishAssignedContent(this.video.contentId).subscribe()
+  }
 }
