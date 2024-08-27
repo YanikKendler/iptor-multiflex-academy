@@ -13,7 +13,8 @@ import {NavigationComponent} from "../../base/navigation/navigation.component";
 import {NgClass, NgStyle} from "@angular/common";
 import {PlayIconComponent} from "../../icons/playicon/play.icon.component"
 import {faCircleCheck} from "@fortawesome/free-regular-svg-icons"
-import {UserService} from "../../../service/user.service"
+import {User, UserService} from "../../../service/user.service"
+import {ViewProgressService} from "../../../service/view-progress.service";
 
 @Component({
   selector: 'app-learning-path-detail',
@@ -64,6 +65,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
 
   videoService = inject(VideoService)
   userService = inject(UserService)
+  viewProgressService = inject(ViewProgressService)
 
   //wheter or not the full learning path description is shown in the sidebar
   fullDescription: boolean = false
@@ -81,6 +83,12 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
 
             if(this.learningPath.viewProgress){
               this.progressPercent = this.learningPath.viewProgress.progress / this.learningPath.entries.length * 100
+            } else {
+              console.log(this.learningPath)
+              this.viewProgressService.updateViewProgress(this.learningPath!.contentId, 0).subscribe(value => {
+                this.learningPath.viewProgress = value
+                console.log(value)
+              })
             }
 
             for (let i = 1; i <= this.learningPath.entries.length; i++) {
@@ -125,7 +133,6 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
     }
 
     let marker = this.tabSelector?.querySelector('.marker') as HTMLElement
-    console.log(this.tabSelector, tabElement, marker)
     if(marker == null || tabElement == null) return
     marker.style.width = tabElement.clientWidth - 16 + "px"
     marker.style.left = tabElement.offsetLeft + 8 + "px"
@@ -171,6 +178,9 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
     if(this.isFinished){
       this.currentVideoPosition = this.learningPath.entries.length; return
     }
+
+    console.log(this.learningPath.viewProgress)
+    console.log("currentId: " + currentId)
 
     if(this.learningPath.viewProgress && currentId == this.learningPath.entries[this.learningPath.viewProgress.progress].videoId){
       this.learningPath.viewProgress.progress++

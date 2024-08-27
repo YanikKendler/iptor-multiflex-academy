@@ -71,7 +71,7 @@ export class MediaPlayerComponent implements OnChanges {
     if(time == this.lastProgress) return
     this.lastProgress = time
 
-    this.viewProgressService.updateViewProgress(this.video!.contentId, time)
+    this.viewProgressService.updateViewProgress(this.video!.contentId, time).subscribe()
 
     if(time >= this.video?.videoFile?.durationSeconds! * 0.90){
       this.isFinished.emit()
