@@ -183,6 +183,13 @@ body {
         background-color: hsla(31, 100%, 47%, 0.2);
         border-color: $secondary-500;
       }
+
+      &[disabled] {
+        pointer-events: initial;
+        cursor: not-allowed;
+        color: #ffffff;
+        background-color: #ad8d61;
+      }
     }
 
     &[color="error"] {

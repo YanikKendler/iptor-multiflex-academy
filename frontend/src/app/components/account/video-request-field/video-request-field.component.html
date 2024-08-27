@@ -5,31 +5,37 @@
 
 <p>{{videoRequest.text}}</p>
 
-<footer>
-  <section class="videos">
-    <input
-      type="text"
-      placeholder="assign content"
-      #videoInput
-      [cdkMenuTriggerFor]="videoPopup"
-      (input)="resetSelection(); generateContentOptions(videoInput.value)"
-      (focus)="generateContentOptions('')"
-      [value]="selectedVideo.title != undefined ? selectedVideo.title + ' • Video' : ''"
-    >
-    <ng-template #videoPopup>
-      <div class="videoOptions" cdkMenu>
-        @for(video of videoOptions; track video.contentId){
-          <p (click)="setVideo(video);generateContentOptions(videoInput.value)">
-            {{video.title}} • Video
-          </p>
-        }
-        @if(videoOptions.length == 0){
-          <p class="no-results">No content found</p>
-        }
-      </div>
-    </ng-template>
-  </section>
+<div class="bottom">
+  <input
+    type="text"
+    placeholder="assign content"
+    #videoInput
+    [cdkMenuTriggerFor]="videoPopup"
+    (input)="resetSelection(); generateContentOptions(videoInput.value)"
+    (focus)="generateContentOptions('')"
+    [value]="selectedVideo.title != undefined ? selectedVideo.title + ' • Video' : ''"
+  >
+  <ng-template #videoPopup>
+    <div class="videoOptions" cdkMenu>
+      @for(video of videoOptions; track video.contentId){
+        <p (click)="setVideo(video);generateContentOptions(videoInput.value)">
+          {{video.title}} • Video
+        </p>
+      }
+      @if(videoOptions.length == 0){
+        <p class="no-results">No content found</p>
+      }
+    </div>
+  </ng-template>
 
-  <button mat-flat-button color="secondary" [disabled]="videoRequest.videoId == null" (click)="confirmClose(videoRequest, VideoRequestEnum.finished)">Mark as completed</button>
+  <button
+    mat-flat-button
+    color="secondary"
+    [disabled]="videoRequest.videoId == null"
+    (click)="confirmClose(videoRequest, VideoRequestEnum.finished)"
+    [matTooltip]="videoRequest.videoId == null ? 'select a video to complete the request' : ''"
+  >
+    Mark as completed
+  </button>
   <button mat-stroked-button color="secondary" (click)="confirmClose(videoRequest, VideoRequestEnum.declined)">Decline</button>
-</footer>
+</div>
