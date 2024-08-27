@@ -121,6 +121,10 @@ export class VideoService {
     return this.http.get<VideoDetailDTO>(`${Config.API_URL}/video/${videoId}?userId=${this.userService.currentUser.value.userId}`)
   }
 
+  deleteVideo(videoId: number){
+    return this.http.delete(`${Config.API_URL}/video/${videoId}`)
+  }
+
   setStarRating(videoId: number, userId: number, rating: number) {
     return this.http.put(`${Config.API_URL}/video/${videoId}/starrating?userId=${userId}`, rating)
   }

@@ -34,6 +34,9 @@ public class VideoRepository {
     @Inject
     EntityManager em;
 
+    @Inject
+    LearningPathRepository learningPathRepository;
+
     public Video create(CreateVideoDTO createVideoDTO, Long userId) {
         System.out.println(createVideoDTO.toString());
 
@@ -128,7 +131,59 @@ public class VideoRepository {
     }
 
     public void delete(Long id) {
+        try{
+            List<ContentAssignment> ca = em.createQuery("select ca from ContentAssignment ca where ca.content.contentId = :contentId", ContentAssignment.class)
+                    .setParameter("contentId", id).getResultList();
+
+            ca.forEach(c -> {
+                c.setContent(null);
+                em.remove(c);
+            });
+        } catch(NoResultException e){}
+
+        try{
+            List<LearningPath> lp = em.createQuery("select lp from LearningPath lp join lp.entries e where e.video.contentId = :videoId", LearningPath.class)
+                    .setParameter("videoId", id).getResultList();
+
+            lp.forEach(l -> {
+                System.out.println("remove from learning path");
+                System.out.println(l.getEntries().size());
+                l.setEntries(l.getEntries().stream().filter(e -> !Objects.equals(e.getVideo().getContentId(), id)).toList());
+                System.out.println(l.getEntries().size());
+                learningPathRepository.alertRelevantUsers(l);
+            });
+        } catch(NoResultException e){}
+
+        em.createQuery("delete from LearningPathEntry e where e.video.contentId = :videoId")
+                .setParameter("videoId", id)
+                .executeUpdate();
+
+        em.createQuery("delete from ViewProgress vp where vp.content.contentId = :videoId")
+                .setParameter("videoId", id)
+                .executeUpdate();
+
+        em.createQuery("delete from QuizResult q where q.video.contentId = :videoId")
+                .setParameter("videoId", id)
+                .executeUpdate();
+
+        getById(id).getAllComments().forEach(comment -> {
+            em.createQuery("delete from CommentNotification n where n.comment.commentId = :commentId or n.video.contentId = :contentId")
+                    .setParameter("commentId", comment.getCommentId())
+                    .setParameter("contentId", id)
+                    .executeUpdate();
+            em.remove(comment);
+        });
+
+        em.createQuery("delete from ContentNotification n where n.content.contentId = :contentId")
+                .setParameter("contentId", id)
+                .executeUpdate();
+
+        VideoFile file = getById(id).getVideoFile();
         em.remove(getById(id));
+
+        if(file != null){
+            em.remove(file);
+        }
     }
 
     public Video getById(Long id){

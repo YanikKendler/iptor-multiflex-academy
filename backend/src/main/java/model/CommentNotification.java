@@ -3,6 +3,7 @@ package model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.ManyToOne;
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Inheritance
