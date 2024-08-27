@@ -3,6 +3,7 @@ package model;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,16 +23,17 @@ public class QuizResult {
 
     private int score;
 
-    private Timestamp timestamp;
+    private LocalDateTime timestamp;
 
     public QuizResult(Video video, User user, int score) {
+        this();
         this.video = video;
         this.user = user;
         this.score = score;
-        timestamp = new Timestamp(System.currentTimeMillis());
     }
 
     public QuizResult() {
+        this.timestamp = LocalDateTime.now();
     }
 
     public static List<AnswerOption> getSelectedAnswers() {
@@ -59,12 +61,12 @@ public class QuizResult {
         return video;
     }
 
-    public Timestamp getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = new Timestamp(System.currentTimeMillis());
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void setVideo(Video video) {

@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import org.apache.commons.io.FileUtils;
@@ -224,7 +225,7 @@ public class VideoRepository {
                 System.out.println("better score");
                 quizResult.setScore(score);
                 quizResult.setQuestionResults(questionResults);
-                quizResult.setTimestamp(System.currentTimeMillis());
+                quizResult.setTimestamp(LocalDateTime.now());
                 em.merge(quizResult);
             }
 

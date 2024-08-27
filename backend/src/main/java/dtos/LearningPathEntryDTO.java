@@ -1,5 +1,7 @@
 package dtos;
 
+import java.time.LocalDateTime;
+
 public record LearningPathEntryDTO(
         Long pathEntryId,
         Long videoId,
@@ -7,6 +9,8 @@ public record LearningPathEntryDTO(
         Long durationSeconds,
         int questionCount,
         int entryPosition,
-        Long userId
+        LocalDateTime startTime,
+        LocalDateTime endTime,
+        double progress
 ) {
 }

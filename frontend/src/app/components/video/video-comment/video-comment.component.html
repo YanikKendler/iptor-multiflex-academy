@@ -2,7 +2,7 @@
   <div class="header">
     <h2>{{ comment.user.username }}</h2>
     <p class="time"
-       matTooltip="{{Utils.toFullTimeString(comment.timestamp)}}"
+       matTooltip="{{Utils.toFullDateTimeString(comment.timestamp)}}"
        matTooltipShowDelay="300"
     >
       {{Utils.toRelativeTimeString(comment.timestamp)}}

@@ -36,7 +36,7 @@
       • {{ Utils.roundNumber(videoFile.sizeBytes/1000/1000, 2) }}mb
     }
     @if(videoFile.timestamp){
-      • {{ Utils.toFullTimeString(videoFile.timestamp) }}
+      • {{ Utils.toFullDateTimeString(videoFile.timestamp) }}
     }
   </p>
 }

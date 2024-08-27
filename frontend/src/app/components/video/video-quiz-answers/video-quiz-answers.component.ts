@@ -54,7 +54,7 @@ export class VideoQuizAnswersComponent implements OnChanges{
     return this.questionNumber < 10 ? `0${this.questionNumber + 1}` : `${this.questionNumber + 1}`;
   }
 
-  noneSelectedButTrueAnswers : AnswerOption[] = []
+  notSelectedButCorrectAnswers : AnswerOption[] = []
   correctAnswers : AnswerOption[] = []
   wrongAnswers : AnswerOption[] = []
   missedAnswers : AnswerOption[] = []
@@ -77,7 +77,7 @@ export class VideoQuizAnswersComponent implements OnChanges{
       if(this.selectedAnswers.includes(answer) && answer.isCorrect){
         this.correctAnswers.push(answer)
       } else if(!this.selectedAnswers.includes(answer) && !answer.isCorrect){
-        this.noneSelectedButTrueAnswers.push(answer)
+        this.notSelectedButCorrectAnswers.push(answer)
       } else if (this.selectedAnswers.includes(answer) && !answer.isCorrect){
         this.wrongAnswers.push(answer)
       } else if (!this.selectedAnswers.includes(answer) && answer.isCorrect){
@@ -90,7 +90,7 @@ export class VideoQuizAnswersComponent implements OnChanges{
 
   videoService = inject(VideoService)
   finishQuiz(videoId: number) {
-    this.videoService.finishQuiz(videoId, this.correctAnswers.length, this.selectedAnswers)
+    this.videoService.finishQuiz(videoId, this.correctAnswers.length + this.notSelectedButCorrectAnswers.length, this.selectedAnswers)
   }
 
   restartQuiz() {
@@ -104,15 +104,29 @@ export class VideoQuizAnswersComponent implements OnChanges{
 
     this.answerIsSubmitted = false
     this.selectedAnswers = []
-    this.noneSelectedButTrueAnswers = []
+
+    /**
+     * answer was not selected and was not correct, so the user did the right thing
+     */
+    this.notSelectedButCorrectAnswers = []
+    /**
+     * answer was selected and was correct
+     */
     this.correctAnswers = []
+    /**
+     * answer was selected and was not correct
+     */
     this.wrongAnswers = []
+    /**
+     * answer was not selected and was correct, so the user did the wrong thing
+     */
     this.missedAnswers = []
   }
 
-  calculateScoreInPercent() {
-    if(this.noneSelectedButTrueAnswers.length + this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length === 0) return -1
-    return this.correctAnswers.length + this.noneSelectedButTrueAnswers.length / (this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length + this.noneSelectedButTrueAnswers.length)
+  calculateScoreInDecimal() {
+    if(this.notSelectedButCorrectAnswers.length + this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length === 0) return -1
+    let totalQuestionCount = (this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length + this.notSelectedButCorrectAnswers.length)
+    return (this.correctAnswers.length + this.notSelectedButCorrectAnswers.length) / totalQuestionCount
   }
 
   tryToGetPreviousResult(videoId: number, callback: (result: boolean) => void) {
@@ -135,6 +149,6 @@ export class VideoQuizAnswersComponent implements OnChanges{
   }
 
   showNextVideoButton(): boolean {
-    return this.inLearningPath && this.isQuizFinished && this.calculateScoreInPercent() > 0.8;
+    return this.inLearningPath && this.isQuizFinished && this.calculateScoreInDecimal() > 0.8;
   }
 }

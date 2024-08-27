@@ -8,6 +8,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import model.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,6 +45,49 @@ public class LearningPathRepository {
                         duration = entry.getVideo().getVideoFile().getDurationSeconds();
                 }catch (NullPointerException ignored){ }
 
+                QuizResult quizResult;
+                LocalDateTime endTime;
+                double progress = 0.0;
+                try{
+                    quizResult = em.createQuery(
+                            "select qr from QuizResult qr " +
+                            "where qr.video.contentId = :contentId " +
+                            "and qr.user.userId = :userId"
+                    , QuizResult.class)
+                        .setParameter("contentId", entry.getVideo().getContentId())
+                        .setParameter("userId", userId)
+                        .setMaxResults(1)
+                        .getSingleResult();
+
+                    endTime = quizResult.getTimestamp();
+                    int totalAnswerOptions = entry.getVideo().getQuestions().stream()
+                            .mapToInt(question -> question.getAnswerOptions().size())
+                            .sum();
+
+                    progress = (double) quizResult.getScore() / totalAnswerOptions;
+                }catch (Exception e){
+                    quizResult = null;
+                    endTime = LocalDateTime.ofEpochSecond(0, 0, ZoneOffset.UTC);
+                }
+
+                ViewProgress videoViewProgress;
+                LocalDateTime startTime;
+                try {
+                    videoViewProgress = em.createQuery(
+                            "select vp from ViewProgress vp " +
+                            "where vp.content.contentId = :videoId " +
+                            "and vp.user.userId = :userId"
+                    , ViewProgress.class)
+                        .setParameter("videoId", entry.getVideo().getContentId())
+                        .setParameter("userId", userId)
+                        .setMaxResults(1)
+                        .getSingleResult();
+                    startTime = videoViewProgress.getTimestamp();
+                }catch (Exception e){
+                    videoViewProgress = null;
+                    startTime = LocalDateTime.ofEpochSecond(0, 0, ZoneOffset.UTC);
+                }
+
                 return new LearningPathEntryDTO(
                     entry.getPathEntryId(),
                     entry.getVideo().getContentId(),
@@ -50,7 +95,9 @@ public class LearningPathRepository {
                     duration,
                     entry.getVideo().getComments(null).size(),
                     entry.getEntryPosition(),
-                    learningPath.getUser().getUserId()
+                    startTime,
+                    endTime,
+                    progress
                 );
             }
         ).toList());

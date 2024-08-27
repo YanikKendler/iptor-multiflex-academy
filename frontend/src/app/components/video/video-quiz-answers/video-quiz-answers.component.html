@@ -1,11 +1,13 @@
 @if(!this.answers){
   <div class="finished">
     <h2>Finished quiz</h2>
-    <p>Score {{ correctAnswers.length + noneSelectedButTrueAnswers.length }} /
-      {{ noneSelectedButTrueAnswers.length + correctAnswers.length + wrongAnswers.length + missedAnswers.length }}</p>
+    <p>Score {{ correctAnswers.length + notSelectedButCorrectAnswers.length }} /
+      {{ notSelectedButCorrectAnswers.length + correctAnswers.length + wrongAnswers.length + missedAnswers.length }}</p>
+
+    <p>Score: {{ calculateScoreInDecimal()*100}}%</p>
 
     <div class="buttons">
-      @if (inLearningPath && isQuizFinished && calculateScoreInPercent() > 0.8 || calculateScoreInPercent() < 0) {
+      @if (inLearningPath && isQuizFinished && calculateScoreInDecimal() > 0.8 || calculateScoreInDecimal() < 0) {
         <button mat-stroked-button (click)="restartQuiz()" color="secondary">Restart Quiz</button>
 
         <button mat-flat-button color="secondary"
@@ -37,7 +39,7 @@
   </main>
 
   <div class="buttons" [style.justify-content]="isQuizFinished ? 'center' : 'flex-start'">
-    @if(inLearningPath && isQuizFinished && calculateScoreInPercent() > 0.8){
+    @if(inLearningPath && isQuizFinished && calculateScoreInDecimal() > 0.8){
       <button mat-stroked-button color="secondary" (click)="checkAnswer()">
         {{ isQuizFinished ? 'Restart Quiz' : answerIsSubmitted ? 'Next Question' : 'Submit' }}</button>
 

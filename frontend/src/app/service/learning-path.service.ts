@@ -35,6 +35,9 @@ export interface LearningPathEntryDTO {
   durationSeconds: number
   questionCount: number
   entryPosition: number
+  startTime: string
+  endTime: string
+  progress: number
 }
 
 @Injectable({

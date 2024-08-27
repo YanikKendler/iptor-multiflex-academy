@@ -67,7 +67,7 @@ export class Utils{
     }*/
   }
 
-  static toFullTimeString(timestamp: Date | string | number){
+  static toFullDateTimeString(timestamp: Date | string | number){
     timestamp = this.anyToDate(timestamp);
 
     return Utils.padNumber(timestamp.getDate()) + '/' +
@@ -78,7 +78,16 @@ export class Utils{
            Utils.padNumber(timestamp.getMinutes())
   }
 
+  static toFullDateString(timestamp: Date | string | number, options: {seperator: string} = {seperator: '/'}) {
+    timestamp = this.anyToDate(timestamp);
+
+    return Utils.padNumber(timestamp.getDate()) + options.seperator +
+           Utils.padNumber(timestamp.getMonth() + 1) + options.seperator +
+           timestamp.getFullYear().toString().substring(2,4)
+  }
+
   static anyToDate(timestamp: Date | string | number){
+    if(timestamp == null) return new Date(0);
     if(typeof timestamp == "string") {
       return new Date(timestamp);
     }

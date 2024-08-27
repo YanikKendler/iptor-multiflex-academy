@@ -32,6 +32,7 @@
       }
       @if(isFinished){
         <div class="entry finished" [ngClass]="getClassAvailability(undefined)" (click)="selectVideo(undefined)">
+          <fa-icon [icon]="faFaceLaughBeam" [style.color]="learningPath.color" class="finished"></fa-icon>
           <p>Finished</p>
         </div>
       }
@@ -71,6 +72,35 @@
       </div>
     </div>
   } @else{
-    <h2>Finished learning path</h2>
+    <div class="finished-page">
+      <div class="content">
+        <h1 [style.color]="learningPath.color">Congratulations!</h1>
+        <p>You finished the learningpath “Learn Finanges”</p>
+
+        <table>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>first watched</th>
+            <th>completed</th>
+            <th>questions</th>
+            <th>correct</th>
+          </tr>
+          @for(video of learningPath.entries; track video.pathEntryId){
+            <tr>
+              <td>{{$index+1}}.</td>
+              <td class="title">{{video.videoTitle}}</td>
+              <td>{{ Utils.toFullDateString(video.startTime, {seperator: "."}) }}</td>
+              <td>{{ Utils.toFullDateString(video.endTime, {seperator: "."}) }}</td>
+              <td>{{video.questionCount}}</td>
+              <td>{{video.progress * 100}}%</td>
+          }
+        </table>
+
+        <a routerLink="/">back to the dashboard</a>
+      </div>
+
+      <canvas id="canvas"></canvas>
+    </div>
   }
 </main>

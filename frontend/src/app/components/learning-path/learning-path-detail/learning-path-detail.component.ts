@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {LearningPathDetailDTO, LearningPathEntryDTO, LearningPathService} from "../../../service/learning-path.service";
-import {ActivatedRoute, Params} from "@angular/router";
+import {ActivatedRoute, Params, RouterLink} from "@angular/router";
 import {MediaPlayerComponent} from "../../basic/media-player/media-player.component";
 import {VideoDetailDTO, VideoService} from "../../../service/video.service";
 import {BookmarkIconComponent} from "../../icons/bookmark/bookmark.icon.component";
@@ -12,8 +12,9 @@ import {VideoQuizComponent} from "../../video/video-quiz/video-quiz.component";
 import {NavigationComponent} from "../../base/navigation/navigation.component";
 import {NgClass, NgStyle} from "@angular/common";
 import {PlayIconComponent} from "../../icons/playicon/play.icon.component"
-import {faCircleCheck} from "@fortawesome/free-regular-svg-icons"
+import {faCircleCheck, faFaceLaughBeam} from "@fortawesome/free-regular-svg-icons"
 import {UserService} from "../../../service/user.service"
+import {Utils} from "../../../utils"
 
 @Component({
   selector: 'app-learning-path-detail',
@@ -29,7 +30,8 @@ import {UserService} from "../../../service/user.service"
     NavigationComponent,
     NgClass,
     NgStyle,
-    PlayIconComponent
+    PlayIconComponent,
+    RouterLink
   ],
   templateUrl: './learning-path-detail.component.html',
   styleUrl: './learning-path-detail.component.scss'
@@ -194,4 +196,6 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   }
 
   protected readonly faCircleCheck = faCircleCheck
+  protected readonly Utils = Utils
+  protected readonly faFaceLaughBeam = faFaceLaughBeam
 }

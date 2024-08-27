@@ -7,7 +7,9 @@
 }
 
 main{
-  display: flex;
+  display: grid;
+  grid-template-columns: min-content auto;
+  height: 100%;
 }
 
 .sidebar{
@@ -96,6 +98,10 @@ main{
       height: 1.5rem;
     }
 
+    fa-icon{
+      font-size: 1.5rem;
+    }
+
     &.active{
       background-color: $gray-800;
     }
@@ -103,7 +109,7 @@ main{
     &.available {
       color: $gray-250;
 
-      fa-icon{
+      fa-icon:not(.finished){
         font-size: 1.5rem;
         height: 1.5rem;
         opacity: 60%;
@@ -128,6 +134,10 @@ main{
       app-play-icon{
         color: $gray-500;
       }
+    }
+
+    &.finished{
+      margin-top: 2rem;
     }
   }
 }
@@ -237,5 +247,73 @@ main{
       line-height: 120%;
     }
   }
+}
 
+div.finished-page{
+  display: grid;
+  place-content: center;
+  position: relative;
+
+  canvas{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  .content{
+    background-color: $gray-900;
+    border-radius: 1rem;
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1{
+      font-size: 2rem;
+      margin-bottom: .5rem;
+    }
+
+    p{
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    table{
+      margin-top: 2rem;
+
+      th{
+        color: $gray-400;
+        padding-bottom: .4rem;
+      }
+
+      td{
+        padding-block: .2rem;
+      }
+
+      th, td{
+        padding-inline: .5rem;
+        text-align: center;
+      }
+
+      td.title{
+        text-align: left;
+        font-weight: 500;
+      }
+    }
+
+    a{
+      text-decoration: underline;
+      color: $gray-300;
+      margin-left: auto;
+      margin-top: 1.5rem;
+      font-size: 0.875rem;
+
+      &:hover{
+        color: black;
+      }
+    }
+  }
 }

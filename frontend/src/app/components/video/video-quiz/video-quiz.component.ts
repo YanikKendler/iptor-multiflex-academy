@@ -84,7 +84,7 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
             if (answerOption.isCorrect && selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId)) {
               this.videoQuizAnswersComponent?.correctAnswers.push(answerOption);
             } else if(!answerOption.isCorrect && !selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId)){
-              this.videoQuizAnswersComponent?.noneSelectedButTrueAnswers.push(answerOption);
+              this.videoQuizAnswersComponent?.notSelectedButCorrectAnswers.push(answerOption);
             }else if (!answerOption.isCorrect && selectedAnswers.some(selected => selected.answerOptionId === answerOption.answerOptionId)) {
               this.videoQuizAnswersComponent?.wrongAnswers.push(answerOption);
             } else {

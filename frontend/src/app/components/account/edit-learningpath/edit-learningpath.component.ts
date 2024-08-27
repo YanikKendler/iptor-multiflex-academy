@@ -186,7 +186,10 @@ export class EditLearningpathComponent implements OnInit{
       videoTitle: video.title,
       durationSeconds: video.durationSeconds,
       questionCount: video.questionCount,
-      entryPosition: this.learningPath.entries.length + 1
+      entryPosition: this.learningPath.entries.length + 1,
+      startTime: "00:00:00",
+      endTime: "00:00:00",
+      progress: 0
     })
     this.videoPopupTrigger.close()
   }
