@@ -9,18 +9,16 @@ import model.User;
 import model.Video;
 import model.ViewProgress;
 
-import java.util.List;
-
 @Transactional
 @ApplicationScoped
 public class ViewProgressRepository {
     @Inject
     EntityManager em;
 
-    public void update(Long userId, Long videoId, int durationSeconds) {
+    public ViewProgress update(Long videoId, Long userId, int durationSeconds) {
         ViewProgress viewProgress = null;
 
-        try{
+        try {
             viewProgress = em.createQuery(
                             "select vp from ViewProgress vp " +
                                     "where vp.user.userId = :userId " +
@@ -30,9 +28,9 @@ public class ViewProgressRepository {
                     .setParameter("videoId", videoId)
                     .setMaxResults(1)
                     .getSingleResult();
-        }catch (NoResultException ignored){ }
-
-        if(viewProgress == null) {
+            viewProgress.setProgress(durationSeconds);
+            viewProgress.setIgnored(false);
+        } catch (NoResultException ignored) {
             viewProgress = new ViewProgress(
                     em.find(Video.class, videoId),
                     em.find(User.class, userId),
@@ -40,22 +38,21 @@ public class ViewProgressRepository {
 
             em.persist(viewProgress);
         }
-        else{
-            viewProgress.setDurationSeconds(durationSeconds);
-            viewProgress.setIgnored(false);
-        }
+
+        System.out.println("Updated progress for video " + videoId + " and user " + userId + " to " + durationSeconds);
+        return viewProgress;
     }
 
     public void ignore(Long videoId, Long userId) {
         ViewProgress vp = getLatest(videoId, userId);
-        if(vp != null) {
+        if (vp != null) {
             vp.setIgnored(true);
         }
     }
 
     public void delete(Long videoId, Long userId) {
         ViewProgress vp = getLatest(videoId, userId);
-        if(vp != null) {
+        if (vp != null) {
             em.remove(vp);
         }
     }
@@ -71,12 +68,4 @@ public class ViewProgressRepository {
             return null;
         }
     }
-
-    /*public List<ViewProgress> getAll() {
-        return em.createQuery("select p from ViewProgress p", ViewProgress.class).getResultList();
-    }*/
-
-    /*public ViewProgress getById(Long id){
-        return em.find(ViewProgress.class, id);
-    }*/
 }
