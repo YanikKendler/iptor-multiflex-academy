@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostListener, inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostBinding, HostListener, inject, Input, OnInit, Output} from '@angular/core';
 import {
   CommentNotification,
   ContentNotification,
@@ -6,9 +6,9 @@ import {
   VideoRequestNotification
 } from "../../../service/notification.service";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
-import {faBox, faCheck} from "@fortawesome/free-solid-svg-icons";
+import {faBox, faCheck, faRepeat} from "@fortawesome/free-solid-svg-icons";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faCircleCheck} from "@fortawesome/free-regular-svg-icons";
+import {faCalendar, faCalendarCheck, faCircleCheck, faSquare, faSquareCheck} from "@fortawesome/free-regular-svg-icons";
 import {faCircleCheck as faCircleCheck2} from "@fortawesome/free-solid-svg-icons";
 import {Router} from "@angular/router";
 
@@ -25,6 +25,10 @@ import {Router} from "@angular/router";
 export class NotificationComponent implements OnInit{
   @Input() notification: Notification = {} as Notification;
   @Input() mode : 'all' | 'unread' = 'all'
+
+  @HostBinding('class.current') get isDone(): boolean {
+    return this.notification?.done == false;
+  }
 
   notificationService = inject(NotificationService)
 
@@ -86,4 +90,9 @@ export class NotificationComponent implements OnInit{
   protected readonly faCheck = faCheck;
   protected readonly faCircleCheck = faCircleCheck;
   protected readonly faCircleCheck2 = faCircleCheck2;
+  protected readonly faCalendar = faCalendar
+  protected readonly faCalendarCheck = faCalendarCheck
+  protected readonly faSquare = faSquare
+  protected readonly faSquareCheck = faSquareCheck
+  protected readonly faRepeat = faRepeat
 }

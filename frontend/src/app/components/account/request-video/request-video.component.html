@@ -1,3 +1,6 @@
-<app-textfield (valueChange)="updateTitle($event)" [label]="'Title'" [placeholder]="'What is your video request?'"></app-textfield>
+<app-textfield (valueChange)="updateTitle($event)" [label]="'Title'" [placeholder]="'What is the Video about?'"></app-textfield>
 <app-textfield (valueChange)="updateDescription($event)" [label]="'Description'" [placeholder]="'Please provide a detailed description of your request.'" [rows]="5"></app-textfield>
-<button (click)="sendRequest()">Send request</button>
+<div class="buttons">
+  <button mat-stroked-button (click)="cancel()">cancel</button>
+  <button mat-flat-button (click)="sendRequest()">Send request</button>
+</div>
