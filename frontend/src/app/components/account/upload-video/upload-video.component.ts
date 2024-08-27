@@ -8,6 +8,8 @@ import {EditVideoComponent} from "../edit-video/edit-video.component"
 import {MatDialog} from "@angular/material/dialog"
 import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {Utils} from "../../../utils"
+import {MatProgressBar} from "@angular/material/progress-bar";
+import {Config} from "../../../config";
 
 @Component({
   selector: 'app-upload-video',
@@ -16,6 +18,7 @@ import {Utils} from "../../../utils"
     FaIconComponent,
     MatProgressSpinner,
     MatButton,
+    MatProgressBar,
   ],
   templateUrl: './upload-video.component.html',
   styleUrl: './upload-video.component.scss'
@@ -26,6 +29,8 @@ export class UploadVideoComponent {
 
   readonly videoService = inject(VideoService);
   readonly dialog = inject(MatDialog);
+
+  uploadProgress: number = 0;
 
   @ViewChild("fileInput") fileInput!: ElementRef<HTMLInputElement>;
 
@@ -65,13 +70,37 @@ export class UploadVideoComponent {
     }
   }
 
-  uploadFile(file: File){
-    this.videoFile.videoFileId = 0
-    this.videoService.uploadVideoFile(file).subscribe(result => {
-      console.log('File uploaded successfully:', result);
-      this.videoFile = result
-      this.uploadFinished.emit(this.videoFile)
-    });
+// In `src/app/components/account/upload-video/upload-video.component.ts`
+  uploadFile(file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${Config.API_URL}/video/videofile?filename=${file.name}`, true);
+
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        this.uploadProgress = Math.round((100 * event.loaded) / event.total);
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const result = JSON.parse(xhr.responseText);
+        this.videoFile = result;
+        this.uploadFinished.emit(this.videoFile);
+        this.uploadProgress = 0;
+      } else {
+        console.error('Upload failed:', xhr.statusText);
+      }
+    };
+
+    xhr.onerror = () => {
+      console.error('Upload error:', xhr.statusText);
+    };
+
+    this.videoFile.videoFileId = 0;
+    xhr.send(formData);
   }
 
   confirmReplacement(continuationFunction: () => void){

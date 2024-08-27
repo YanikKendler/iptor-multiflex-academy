@@ -145,10 +145,8 @@ export class VideoService {
     return this.http.put<VideoDetailDTO>(`${Config.API_URL}/video/`, video)
   }
 
-  uploadVideoFile(file: File) {
+  uploadVideoFile(file: File, formData: FormData){
     const fileName = file.name;
-    const formData = new FormData();
-    formData.append('file', file);
     return this.http.post<VideoFile>(`${Config.API_URL}/video/videofile?filename=${fileName}`, formData);
   }
 

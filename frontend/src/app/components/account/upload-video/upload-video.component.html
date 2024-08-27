@@ -14,6 +14,7 @@
   <div class="upload-video">
     <mat-spinner color="gray" diameter="72" strokeWidth="4"></mat-spinner>
     <p>uploading video..</p>
+    <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
     <!--<button mat-button>cancel upload</button>-->
   </div>
 } @else if (videoFile.videoFileId > 0){

@@ -4,6 +4,7 @@ import dtos.*;
 import dtos.ContentForUserDTO;
 import dtos.VideoOverviewDTO;
 import enums.ContentNotificationEnum;
+import enums.UserRoleEnum;
 import io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -340,8 +341,11 @@ public class UserRepository {
     }
 
     public List<MyVideoDTO> getUserVideos(Long userId) {
-        List<Video> videos = em.createQuery("select v from Video v where v.user.userId = :userId order by v.contentId", Video.class)
-                .setParameter("userId", userId)
+        if (getById(userId).getUserRole() == UserRoleEnum.CUSTOMER) {
+            return null;
+        }
+
+        List<Video> videos = em.createQuery("select v from Video v order by v.contentId", Video.class)
                 .getResultList();
 
         return videos.stream().map(video -> {
@@ -353,10 +357,13 @@ public class UserRepository {
     }
 
     public List<MyLearningpathDTO> getUserLearningpaths(Long userId) {
+        if (getById(userId).getUserRole() == UserRoleEnum.CUSTOMER) {
+            return null;
+        }
+
         TypedQuery<LearningPath> query = em.createQuery(
-                "SELECT l FROM LearningPath l WHERE l.user.userId = :userId ORDER BY l.contentId",
+                "SELECT l FROM LearningPath l ORDER BY l.contentId",
                 LearningPath.class);
-        query.setParameter("userId", userId);
         List<LearningPath> learningPaths = query.getResultList();
 
         return learningPaths.stream()
