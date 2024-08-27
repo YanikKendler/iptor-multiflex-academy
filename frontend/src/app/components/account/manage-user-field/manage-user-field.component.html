@@ -9,24 +9,44 @@
   @if (isExpanded) {
     <div class="content">
       @for (content of assignedContent; track content.contentId) {
-        <div class="content-entry" [style.--color]="content.color">
+        <div class="content-entry" [style.--color]="content.color" [ngClass]="content.isFinished ? 'finished' : ''">
           @if (content.type == "Video") {
-            <fa-icon class="list-icon" [icon]='faCirclePlay'></fa-icon>
+            @if(content.isFinished){
+              <fa-icon class="list-icon" [icon]='faCircleCheck'></fa-icon>
+            } @else {
+              <fa-icon class="list-icon" [icon]='faCirclePlay'></fa-icon>
+            }
             <p class="title">{{ content.title }}</p>
-            <p class="progress" matTooltip="{{Utils.roundNumber(content.progress, 1)}}%" matTooltipShowDelay="500">{{ Utils.roundNumber(content.progress, 1) }}% watched</p>
+            @if(content.isFinished){
+              <p class="progress">completed</p>
+            } @else{
+              <p class="progress" matTooltip="{{Utils.roundNumber(content.progress, 1)}}%" matTooltipShowDelay="500">{{ Utils.roundNumber(content.progress, 1) }}% watched</p>
+            }
             <p class="type">video</p>
             <p class="questions">{{content.questionOrVideoCount}} questions</p>
           } @else {
-            <app-learning-path-icon></app-learning-path-icon>
+            @if(content.isFinished){
+              <fa-icon class="list-icon" [icon]='faSquareCheck'></fa-icon>
+            } @else {
+              <app-learning-path-icon></app-learning-path-icon>
+            }
             <p class="title">{{ content.title }}</p>
-            <p class="progress" matTooltip="{{ content.progress }}/{{content.questionOrVideoCount}}" matTooltipShowDelay="500">{{ content.progress }}/{{content.questionOrVideoCount}} completed</p>
+            @if(content.isFinished){
+              <p class="progress">completed</p>
+            } @else{
+              <p class="progress" matTooltip="{{ content.progress }}/{{content.questionOrVideoCount}}" matTooltipShowDelay="500">{{ content.progress }}/{{content.questionOrVideoCount}} completed</p>
+            }
             <p class="type">learning path</p>
             <p class="questions">{{content.questionOrVideoCount}} videos</p>
           }
 
 
           <app-icon-button (click)="unassignContent(content.contentId)" class="remove">
-            <fa-icon [icon]="faTrash"></fa-icon>
+            @if(content.isFinished){
+              <fa-icon [icon]="faX"></fa-icon>
+            }@else {
+              <fa-icon [icon]="faTrash"></fa-icon>
+            }
           </app-icon-button>
         </div>
       }

@@ -4,12 +4,13 @@ import {Utils} from "../../../utils";
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
 import {ContentOverviewDTO, VideoOverviewDTO, VideoService} from "../../../service/video.service";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faAngleDown, faCirclePlay, faClose, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faAngleDown, faCirclePlay, faClose, faTrash, faX, faXmark} from "@fortawesome/free-solid-svg-icons";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
 import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning-path-icon.component";
 import {Config} from "../../../config";
 import {NgClass, NgIf} from "@angular/common"
 import {MatTooltip} from "@angular/material/tooltip"
+import {faCircleCheck, faSquareCheck} from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: 'app-manage-user-field',
@@ -99,4 +100,8 @@ export class ManageUserFieldComponent implements OnInit {
     protected readonly inject = inject
   protected readonly faTrash = faTrash
   protected readonly faAngleDown = faAngleDown
+  protected readonly faCircleCheck = faCircleCheck;
+  protected readonly faSquareCheck = faSquareCheck;
+  protected readonly faX = faX;
+  protected readonly faXmark = faXmark;
 }

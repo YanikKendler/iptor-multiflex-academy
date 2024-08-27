@@ -459,7 +459,8 @@ public class UserRepository {
     public List<UserAssignedContentDTO> getUserAssignedContent(Long userId) {
         try {
             List<Content> contents = em.createQuery("select c from Content c " +
-                            "join ContentAssignment ca on ca.content.contentId = c.contentId where ca.assignedTo.userId = :userId and ca.isFinished = false", Content.class)
+                            "join ContentAssignment ca on ca.content.contentId = c.contentId where ca.assignedTo.userId = :userId " +
+                            "order by ca.timestamp desc", Content.class)
                     .setParameter("userId", userId).getResultList();
 
             List<UserAssignedContentDTO> dtos = new LinkedList<>();
@@ -482,6 +483,10 @@ public class UserRepository {
         } catch(NoResultException e){
             progress = 0;
         }
+
+        boolean isFinished = em.createQuery("select ca.isFinished from ContentAssignment ca " +
+                        "where ca.assignedTo.userId = :userId and ca.content.contentId = :contentId", Boolean.class)
+                .setParameter("userId", userId).setParameter("contentId", content.getContentId()).getSingleResult();
 
         double progressPercentage = 0;
         if(content instanceof Video && progress > 0){
@@ -509,7 +514,8 @@ public class UserRepository {
                 content instanceof Video ? "Video" : "LearningPath",
                 progressPercentage,
                 questionOrVideoCount,
-                content.getColor()
+                content.getColor(),
+                isFinished
             );
     }
 

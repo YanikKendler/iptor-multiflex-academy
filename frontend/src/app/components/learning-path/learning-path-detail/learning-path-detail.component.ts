@@ -84,10 +84,8 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
             if(this.learningPath.viewProgress){
               this.progressPercent = this.learningPath.viewProgress.progress / this.learningPath.entries.length * 100
             } else {
-              console.log(this.learningPath)
               this.viewProgressService.updateViewProgress(this.learningPath!.contentId, 0).subscribe(value => {
                 this.learningPath.viewProgress = value
-                console.log(value)
               })
             }
 

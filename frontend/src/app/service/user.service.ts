@@ -64,7 +64,8 @@ export interface UserAssignedContentDTO {
   type: string
   progress: number
   questionOrVideoCount: number,
-  color: string
+  color: string,
+  isFinished: boolean
 }
 
 export interface UserTreeDTO{

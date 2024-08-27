@@ -6,5 +6,6 @@ public record UserAssignedContentDTO(
         String type,
         double progress,
         int questionOrVideoCount,
-        String color
+        String color,
+        boolean isFinished
 ) { }
