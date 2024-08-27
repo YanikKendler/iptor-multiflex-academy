@@ -15,8 +15,6 @@ import {PlayIconComponent} from "../../icons/playicon/play.icon.component"
 import {faCircleCheck, faFaceLaughBeam} from "@fortawesome/free-regular-svg-icons"
 import {UserService} from "../../../service/user.service"
 import {Utils} from "../../../utils"
-import {faCircleCheck} from "@fortawesome/free-regular-svg-icons"
-import {User, UserService} from "../../../service/user.service"
 import {ViewProgressService} from "../../../service/view-progress.service";
 
 @Component({
