@@ -43,14 +43,14 @@
 <ng-template #menu>
   <div class="menu" cdkMenu>
     @if(userService.currentUser.value.userRole == UserRoleEnum.ADMIN || userService.currentUser.value.userRole == UserRoleEnum.EMPLOYEE){
-      <div routerLink="/account/my-videos" (click)="closeMenu()">
+      <div routerLink="/account/videos" (click)="closeMenu()">
         <div class="icon-container">
           <fa-icon [icon]="faCirclePlay"></fa-icon>
         </div>
         <p>My Videos</p>
       </div>
 
-      <div routerLink="/account/my-learningpaths" (click)="closeMenu()">
+      <div routerLink="/account/learningpaths" (click)="closeMenu()">
         <div class="icon-container">
           <app-learning-path-icon></app-learning-path-icon>
         </div>
@@ -64,7 +64,7 @@
         <p>Manage Users</p>
       </div>
 
-    <div routerLink="/account/video-requests">
+    <div routerLink="/account/video-requests" (click)="closeMenu()">
       <div class="icon-container">
         <fa-icon [icon]="faFileVideo" class="fileIcon"></fa-icon>
       </div>
@@ -74,7 +74,7 @@
     <mat-divider></mat-divider>
   }
 
-    <div (click)="requestVideo()">
+    <div (click)="requestVideo(); closeMenu()">
       <div class="icon-container">
         <fa-icon [icon]="faUserPlus"></fa-icon>
       </div>

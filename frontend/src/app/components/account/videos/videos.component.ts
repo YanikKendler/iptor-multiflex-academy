@@ -26,14 +26,10 @@ import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
 import {DropdownComponent, DropdownOption} from "../../basic/dropdown/dropdown.component"
 import {Utils} from "../../../utils"
 import {MatTooltip} from "@angular/material/tooltip"
-import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning-path-icon.component"
-import {LearningPathService} from "../../../service/learning-path.service"
-import {EditLearningpathComponent} from "../edit-learningpath/edit-learningpath.component"
-import {MatDivider} from "@angular/material/divider"
 import {ExtremeConfirmComponent} from "../../dialogue/extreme-confirm/extreme-confirm.component";
 
 @Component({
-  selector: 'app-my-learningpaths',
+  selector: 'app-videos',
   standalone: true,
   imports: [
     FaIconComponent,
@@ -46,29 +42,21 @@ import {ExtremeConfirmComponent} from "../../dialogue/extreme-confirm/extreme-co
     CdkMenuTrigger,
     PlayIconComponent,
     DropdownComponent,
-    MatTooltip,
-    LearningPathIconComponent,
-    MatDivider
+    MatTooltip
   ],
-  templateUrl: './my-learningpaths.component.html',
-  styleUrl: './my-learningpaths.component.scss'
+  templateUrl: './videos.component.html',
+  styleUrl: './videos.component.scss'
 })
-export class MyLearningpathsComponent implements OnInit{
+export class VideosComponent implements OnInit{
   protected readonly faPlayCircle = faPlayCircle;
   protected readonly faEye = faEye;
   protected readonly faStar = faStar;
   protected readonly faPen = faPen;
 
   userService = inject(UserService);
-  learningpathService = inject(LearningPathService);
+  videoService = inject(VideoService);
 
-  userLearningpaths : MyLearningpathDTO[] = [];
-
-  getUserContent() {
-    this.userService.getUserLearningpaths().subscribe((data) => {
-      this.userLearningpaths = data;
-    });
-  }
+  userContent : MyLearningpathDTO[] = [];
 
   ngOnInit(): void {
     this.userService.currentUser.subscribe(user => {
@@ -76,14 +64,21 @@ export class MyLearningpathsComponent implements OnInit{
     })
   }
 
+  getUserContent() {
+    this.userService.getUserVideos().subscribe((data) => {
+      this.userContent = data;
+      console.log(this.userContent)
+    });
+  }
+
   readonly dialog = inject(MatDialog);
 
-  openEditPopUp(pathId: number) {
-    let dialogRef = this.dialog.open(EditLearningpathComponent, {
+  openEditPopUp(videoId: number) {
+    let dialogRef = this.dialog.open(EditVideoComponent, {
       maxWidth: "80vw",
       width: "800px",
       disableClose: true,
-      data: pathId
+      data: videoId
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -95,24 +90,32 @@ export class MyLearningpathsComponent implements OnInit{
     this.openEditPopUp(-1)
   }
 
-  videoCountToString(questionCount:number){
+  getQuestionCountToString(questionCount:number){
     if(questionCount == 0){
-      return "no videos"
+      return "no questions"
     } else {
-      return questionCount + " videos"
+      return questionCount + " questions"
     }
   }
 
   getTags(tags: Tag[]) {
+    //lol was n crazy code
+    /*let text = ""
+    tags.forEach(tag => {
+      text += tag.name + ", ";
+    })
+
+    return text.substring(0, 24) + (text.length > 24 ? "..." : "");*/
+
     return tags.map(tag => tag.name).join(", ");
   }
 
   updateVisibility(videoId: number, selectedOption: DropdownOption) {
     const visibilityEnumValue = VisibilityEnum[selectedOption.id as keyof typeof VisibilityEnum];
-    this.learningpathService.updatePathVisibility(videoId, visibilityEnumValue);
+    this.videoService.updateVideoVisibility(videoId, visibilityEnumValue);
   }
 
-  deleteLearningPath(learningPathId: number) {
+  deleteVideo(videoId: number){
     let dialogRef = this.dialog.open(ExtremeConfirmComponent, {
       maxWidth: "80vw",
       width: "800px",
@@ -125,14 +128,16 @@ export class MyLearningpathsComponent implements OnInit{
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.learningpathService.deletePath(learningPathId).subscribe(() => {
-          this.userLearningpaths = this.userLearningpaths.filter(learningpath => learningpath.contentId != learningPathId);
+        this.videoService.deleteVideo(videoId).subscribe(() => {
+          this.userContent = this.userContent.filter(video => video.contentId != videoId);
         });
       }
     })
   }
 
+  protected readonly faArrowRightToBracket = faArrowRightToBracket;
   protected readonly faTrash = faTrash;
+  protected readonly faSortDown = faSortDown;
   protected readonly Utils = Utils
   protected readonly faShareFromSquare = faShareFromSquare
 }
