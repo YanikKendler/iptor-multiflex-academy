@@ -254,14 +254,6 @@ div.finished-page{
   place-content: center;
   position: relative;
 
-  canvas{
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-  }
-
   .content{
     background-color: $gray-900;
     border-radius: 1rem;

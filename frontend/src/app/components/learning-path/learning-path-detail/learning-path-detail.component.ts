@@ -228,18 +228,10 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
     console.log("getConfetti")
     if(!this.canvas) return
 
-    window.addEventListener("resize", () => {
-      this.W = window.innerWidth;
-      this.H = window.innerHeight;
-      this.canvas.width = window.innerWidth;
-      this.canvas.height = window.innerHeight;
-    });
-
     for (let i = 0; i < this.maxConfettis; i++) {
       this.particles.push(this.confettiParticle());
     }
-
-    this.Draw();
+    this.Draw()
   }
 
   randomFromTo(from: number, to: number): number {
@@ -279,18 +271,14 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
       return;
     }
 
-    const results = [];
     requestAnimationFrame(() => this.Draw());
     this.context.clearRect(0, 0, this.W, window.innerHeight);
-
-    for (let i = 0; i < this.maxConfettis; i++) {
-      results.push(this.particles[i].draw());
-    }
 
     let particle: any;
     let remainingFlakes = 0;
     for (let i = 0; i < this.maxConfettis; i++) {
       particle = this.particles[i];
+      particle.draw()
       particle.tiltAngle += particle.tiltAngleIncremental;
       particle.y += (Math.cos(particle.d) + 3 + particle.r / 2) / 2;
       particle.tilt = Math.sin(particle.tiltAngle - i / 3) * 15;
@@ -303,8 +291,6 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
         particle.tilt = Math.floor(Math.random() * 10) - 20;
       }
     }
-
-    return results;
   }
 
 
