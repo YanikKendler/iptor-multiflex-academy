@@ -38,7 +38,7 @@
       </td>
 
       <td class="actions">
-        @if(!learningpath.approved){
+        @if(!learningpath.approved && userService.currentUser.value.userRole == 'ADMIN'){
           <button mat-flat-button (click)="approvePath(learningpath.contentId)">approve</button>
         }
         <app-icon-button (click)="deleteLearningPath(learningpath.contentId)">

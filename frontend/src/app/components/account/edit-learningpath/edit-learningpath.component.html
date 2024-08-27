@@ -27,7 +27,11 @@
 
   <div>
     <p>visibility:</p>
-    <app-dropdown [selectedId]="learningPath.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+    @if(learningPath.approved){
+      <app-dropdown [selectedId]="learningPath.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+    } @else{
+      {{learningPath.visibility}}
+    }
   </div>
 
   <mat-divider [vertical]="true"></mat-divider>

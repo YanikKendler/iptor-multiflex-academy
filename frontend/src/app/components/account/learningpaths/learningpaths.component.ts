@@ -136,9 +136,9 @@ export class LearningpathsComponent implements OnInit{
   protected readonly Utils = Utils
   protected readonly faShareFromSquare = faShareFromSquare
 
-    approvePath(contentId: number) {
-        this.userService.approveContent(contentId).subscribe(response => {
-            this.userLearningpaths.find(learningpath => learningpath.contentId == contentId)!.approved = true;
-        })
-    }
+  approvePath(contentId: number) {
+      this.userService.approveContent(contentId).subscribe(response => {
+          this.userLearningpaths.find(learningpath => learningpath.contentId == contentId)!.approved = true;
+      })
+  }
 }

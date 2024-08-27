@@ -6,6 +6,11 @@
     <p class="description" [style.--show-lines]="fullDescription ? 50 : 5">{{ this.learningPath.description }}</p>
     <span (click)="fullDescription = !fullDescription" class="toggleDescription">{{ fullDescription ? 'minimize description' : 'show full description' }}</span>
 
+    @if(userService.currentUser.value.userRole == "ADMIN" && !learningPath.approved){
+      <!--<button mat-stroked-button (click)="rejectVideo()">reject</button>-->
+      <button mat-flat-button (click)="approvePath()">approve</button>
+    }
+
     <div class="progress-bar">
       <p>{{progressPercent.toFixed(0)}}%</p>
       <div class="bar">

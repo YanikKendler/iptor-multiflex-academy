@@ -17,5 +17,6 @@ public record VideoDetailDTO(
         VideoFile videoFile,
         int viewProgress,
         VisibilityEnum visibility,
-        Long userId
+        Long userId,
+        boolean approved
 ) { }

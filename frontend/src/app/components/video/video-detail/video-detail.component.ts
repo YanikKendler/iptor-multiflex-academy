@@ -16,6 +16,7 @@ import {Config} from "../../../config";
 import {NgIf} from "@angular/common";
 import {MatSnackBar} from "@angular/material/snack-bar"
 import {MatTooltip} from "@angular/material/tooltip"
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-video-detail',
@@ -31,7 +32,8 @@ import {MatTooltip} from "@angular/material/tooltip"
     VideoCommentContainerComponent,
     FaIconComponent,
     NgIf,
-    MatTooltip
+    MatTooltip,
+    MatButton
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss'
@@ -117,5 +119,11 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
 
   finishVideo() {
     this.userService.finishAssignedContent(this.video.contentId).subscribe()
+  }
+
+  approveVideo() {
+    this.userService.approveContent(this.video.contentId).subscribe(response => {
+      this.video.approved = true
+    })
   }
 }

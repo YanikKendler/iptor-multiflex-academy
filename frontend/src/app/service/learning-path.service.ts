@@ -26,6 +26,7 @@ export interface LearningPathDetailDTO {
   color?: string
   entries: LearningPathEntryDTO[]
   userId: number
+  approved: boolean
 }
 
 export interface LearningPathEntryDTO {

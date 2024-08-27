@@ -43,7 +43,7 @@
       </td>
 
       <td class="actions">
-        @if(!video.approved){
+        @if(!video.approved && userService.currentUser.value.userRole == 'ADMIN'){
           <button mat-flat-button (click)="approveVideo(video.contentId)">approve</button>
         }
         <app-icon-button (click)="deleteVideo(video.contentId)">

@@ -107,7 +107,8 @@ public class LearningPathRepository {
                     progress
                 );
             }
-        ).toList());
+        ).toList(),
+                learningPath.isApproved());
     }
 
     public LearningPathDetailDTO update(EditLearningPathDTO data, Long userId) {

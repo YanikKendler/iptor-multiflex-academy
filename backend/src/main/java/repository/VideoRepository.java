@@ -269,7 +269,8 @@ public class VideoRepository {
             video.getVideoFile(),
             viewProgressDuration,
             video.getVisibility(),
-            video.getUser().getUserId()
+            video.getUser().getUserId(),
+            video.isApproved()
         );
     }
 
