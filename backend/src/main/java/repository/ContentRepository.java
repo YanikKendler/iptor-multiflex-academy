@@ -1,6 +1,7 @@
 package repository;
 
 import dtos.*;
+import enums.ContentNotificationEnum;
 import enums.VisibilityEnum;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -57,5 +58,12 @@ public class ContentRepository {
                 return new ContentOverviewDTO(content.getContentId(), content.getTitle(), "Learning Path");
             }
         }).toList();
+    }
+
+    public void approveContent(Long contentId, Long userId) {
+        Content c = em.find(Content.class, contentId);
+        c.setApproved(true);
+
+        em.persist(new ContentNotification(c.getUser(), userRepository.getById(userId), c, ContentNotificationEnum.approved));
     }
 }

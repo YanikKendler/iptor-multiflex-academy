@@ -32,4 +32,15 @@ public class ContentResource {
             return Response.status(400).entity(ex).build();
         }
     }
+
+    @PUT
+    @Path("{contentId: [0-9]+}/approve")
+    public Response approveContent(@PathParam("contentId") Long contentId, @QueryParam("userId") Long userId){
+        try{
+            repository.approveContent(contentId, userId);
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().build();
+    }
 }

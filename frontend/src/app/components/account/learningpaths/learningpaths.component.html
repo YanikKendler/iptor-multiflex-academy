@@ -23,7 +23,11 @@
         {{ learningpath.views }}
       </td>
       <td>
-        <app-dropdown [selectedId]="learningpath.visibility.toString()" (optionSelected)="updateVisibility(learningpath.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+        @if(learningpath.approved){
+          <app-dropdown [selectedId]="learningpath.visibility.toString()" (optionSelected)="updateVisibility(learningpath.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+        } @else{
+          self
+        }
       </td>
 
       <td>{{ videoCountToString(learningpath.videoCount) }}</td>
@@ -34,6 +38,9 @@
       </td>
 
       <td class="actions">
+        @if(!learningpath.approved){
+          <button mat-flat-button (click)="approvePath(learningpath.contentId)">approve</button>
+        }
         <app-icon-button (click)="deleteLearningPath(learningpath.contentId)">
           <fa-icon [icon]="faTrash" class="small"></fa-icon>
         </app-icon-button>

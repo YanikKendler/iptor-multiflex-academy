@@ -27,6 +27,7 @@ public abstract class Content {
     @Enumerated(EnumType.STRING)
     private VisibilityEnum visibility;
     private final LocalDateTime creationTime;
+    private boolean approved;
 
     public Content(String title, String description, VisibilityEnum visibility) {
         this();
@@ -36,8 +37,17 @@ public abstract class Content {
     }
 
     public Content() {
+        this.approved = false;
         this.creationTime = LocalDateTime.now();
         this.tags = new HashSet<>();
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 
     public User getUser() {
@@ -97,7 +107,9 @@ public abstract class Content {
     }
 
     public void setVisibility(VisibilityEnum visibility) {
-        this.visibility = visibility;
+        if(isApproved()){
+            this.visibility = visibility;
+        }
     }
 
     public LocalDateTime getCreationTime() {

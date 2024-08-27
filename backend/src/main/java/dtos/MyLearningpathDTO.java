@@ -13,9 +13,10 @@ public record MyLearningpathDTO(
         VisibilityEnum visibility,
         int videoCount,
         Set<Tag> tags,
-        String color
+        String color,
+        boolean approved
 ) {
-    public MyLearningpathDTO(Long contentId, String title, Long views, VisibilityEnum visibility, Integer videoCount, Set<Tag> tags, String color) {
-        this(contentId, title, views.intValue(), visibility, videoCount, tags, color);
+    public MyLearningpathDTO(Long contentId, String title, Long views, VisibilityEnum visibility, Integer videoCount, Set<Tag> tags, String color, boolean approved) {
+        this(contentId, title, views.intValue(), visibility, videoCount, tags, color, approved);
     }
 }

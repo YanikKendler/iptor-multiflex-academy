@@ -345,19 +345,23 @@ public class UserRepository {
             return null;
         }
 
-        List<Video> videos = em.createQuery("select v from Video v order by v.contentId", Video.class)
+        List<Video> videos = em.createQuery("select v from Video v" +
+                        " where v.visibility = 'self' and v.contentId = :userId or :isAdmin = true or v.visibility != 'self'" +
+                        " order by v.contentId", Video.class)
+                .setParameter("userId", userId)
+                .setParameter("isAdmin", getById(userId).getUserRole() == UserRoleEnum.ADMIN)
                 .getResultList();
 
         return videos.stream().map(video -> {
             long views = em.createQuery("select count(vp) from ViewProgress vp where vp.content.contentId = :contentId", Long.class)
                     .setParameter("contentId", video.getContentId())
                     .getSingleResult();
-            return new MyVideoDTO(video.getContentId(), video.getTitle(), (int) views, starRatingRepository.getAverage(video.getContentId()), video.getVisibility(), video.getQuestions().size(), video.getTags(), video.getColor());
+            return new MyVideoDTO(video.getContentId(), video.getTitle(), (int) views, starRatingRepository.getAverage(video.getContentId()), video.getVisibility(), video.getQuestions().size(), video.getTags(), video.getColor(), video.isApproved());
         }).toList();
     }
 
     public List<MyLearningpathDTO> getUserLearningpaths(Long userId) {
-        if (getById(userId).getUserRole() == UserRoleEnum.CUSTOMER) {
+        if (getById(userId) != null && getById(userId).getUserRole() == UserRoleEnum.CUSTOMER) {
             return null;
         }
 
@@ -378,7 +382,8 @@ public class UserRepository {
                             lp.getVisibility(),
                             lp.getEntries().size(),
                             lp.getTags(),
-                            lp.getColor());
+                            lp.getColor(),
+                            lp.isApproved());
                 }).toList();
     }
 
