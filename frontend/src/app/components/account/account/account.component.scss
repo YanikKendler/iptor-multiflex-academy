@@ -6,6 +6,12 @@ main{
   margin-block: 2.5rem;
 }
 
+.sidebar{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
 .sidebar div{
   display: flex;
   justify-content: left;
