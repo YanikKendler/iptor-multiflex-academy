@@ -58,12 +58,12 @@ export class LearningPathService {
   }
 
   updatePathVisibility(contentId: number, visibility: VisibilityEnum){
-    this.http.put(`${Config.API_URL}/learningpath/${contentId}/visibility`, {visibility: visibility}).subscribe()
+    this.http.put(`${Config.API_URL}/learningpath/${contentId}/visibility?userId=${this.userService.currentUser.value.userId}`, {visibility: visibility}).subscribe()
   }
 
   updateLearningPath(learningPath: LearningPathDetailDTO){
     console.log("updating learningpath", learningPath)
-    return this.http.put<LearningPathDetailDTO>(`${Config.API_URL}/learningpath`, learningPath)
+    return this.http.put<LearningPathDetailDTO>(`${Config.API_URL}/learningpath?userId=${this.userService.currentUser.value.userId}`, learningPath)
   }
 
   createLearningPath(learningPath: LearningPathDetailDTO){

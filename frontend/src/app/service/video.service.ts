@@ -142,7 +142,7 @@ export class VideoService {
   }
 
   updateVideo(video: VideoDetailDTO){
-    return this.http.put<VideoDetailDTO>(`${Config.API_URL}/video/`, video)
+    return this.http.put<VideoDetailDTO>(`${Config.API_URL}/video?userId=${this.userService.currentUser.value.userId}`, video)
   }
 
   uploadVideoFile(file: File, formData: FormData){
@@ -159,7 +159,7 @@ export class VideoService {
   }
 
   updateVideoVisibility(contentId: number, visibility: VisibilityEnum){
-    this.http.put(`${Config.API_URL}/video/${contentId}/visibility`, {visibility: visibility}).subscribe()
+    this.http.put(`${Config.API_URL}/video/${contentId}/visibility?userId=${this.userService.currentUser.value.userId}`, {visibility: visibility}).subscribe()
   }
 
   finishQuiz(videoId: number, score: number, selectedAnswers: AnswerOption[]){

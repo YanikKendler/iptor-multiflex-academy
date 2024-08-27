@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, inject, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {LearningPathDetailDTO, LearningPathEntryDTO, LearningPathService} from "../../../service/learning-path.service";
 import {ActivatedRoute, Params, RouterLink} from "@angular/router";
 import {MediaPlayerComponent} from "../../basic/media-player/media-player.component";
@@ -47,8 +47,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   }
   tabSelector: HTMLElement | undefined
 
-  @ViewChild('descriptionTab') descriptionTab: ElementRef | undefined
-  @ViewChild('commentsTab') commentsTab: ElementRef | undefined
+  @ViewChild('canvas') canvasRef: ElementRef | undefined;
 
   currentTab : "description" | "comments" = "description"
   markerPos = {width: 0, left: 0}
@@ -143,6 +142,18 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   ngAfterViewInit(): void {
     setTimeout(() => {
     })
+
+    console.log(this.canvasRef)
+    if(!this.canvasRef) return
+
+    this.W = window.innerWidth;
+    this.H = window.innerHeight;
+    this.canvas = this.canvasRef.nativeElement;
+    this.context = this.canvas.getContext("2d")!;
+    this.canvas.width = this.W;
+    this.canvas.height = this.H;
+
+    this.getConfetti();
   }
 
   generateDescriptionWithLinebreaks(){
@@ -179,9 +190,6 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
       this.currentVideoPosition = this.learningPath.entries.length; return
     }
 
-    console.log(this.learningPath.viewProgress)
-    console.log("currentId: " + currentId)
-
     if(this.learningPath.viewProgress && currentId == this.learningPath.entries[this.learningPath.viewProgress.progress].videoId){
       this.learningPath.viewProgress.progress++
       this.progressPercent = this.learningPath.viewProgress.progress / this.learningPath.entries.length * 100
@@ -191,6 +199,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
       } else {
         this.currentVideoPosition++
         this.isFinished = true
+        this.getConfetti();
         this.userService.finishAssignedContent(this.learningPath.contentId).subscribe()
       }
 
@@ -203,6 +212,87 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
       this.getVideoDetails(++this.currentVideoPosition)
     }
   }
+
+  W!: number;
+  H!: number;
+  canvas!: HTMLCanvasElement;
+  context!: CanvasRenderingContext2D;
+  maxConfettis = 150;
+  particles: any[] = [];
+  possibleColors = [
+    "DodgerBlue", "OliveDrab", "Gold", "Pink", "SlateBlue", "LightBlue", "Gold", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"
+  ];
+
+  getConfetti() {
+    console.log(this.canvas)
+    console.log("getConfetti")
+    if(!this.canvas) return
+
+    for (let i = 0; i < this.maxConfettis; i++) {
+      this.particles.push(this.confettiParticle());
+    }
+    this.Draw()
+  }
+
+  randomFromTo(from: number, to: number): number {
+    return Math.floor(Math.random() * (to - from + 1) + from);
+  }
+
+  confettiParticle() {
+    const x = Math.random() * this.W;
+    const y = Math.random() * this.H - this.H;
+    const r = this.randomFromTo(11, 33);
+    const d = Math.random() * this.maxConfettis + 11;
+    const color = this.possibleColors[Math.floor(Math.random() * this.possibleColors.length)];
+    const tilt = Math.floor(Math.random() * 33) - 11;
+    const tiltAngleIncremental = Math.random() * 0.07 + 0.05;
+    const tiltAngle = 0;
+
+    return {
+      x,y,r,d,
+      color,
+      tilt,
+      tiltAngleIncremental,
+      tiltAngle,
+      draw: () => {
+        this.context.beginPath();
+        this.context.lineWidth = r / 2;
+        this.context.strokeStyle = color;
+        this.context.moveTo(x + tilt + r / 3, y);
+        this.context.lineTo(x + tilt, y + tilt + r / 5);
+        return this.context.stroke();
+      }
+    };
+  }
+
+  Draw() {
+    if (!this.context) {
+      console.error('Canvas context is not initialized.');
+      return;
+    }
+
+    requestAnimationFrame(() => this.Draw());
+    this.context.clearRect(0, 0, this.W, window.innerHeight);
+
+    let particle: any;
+    let remainingFlakes = 0;
+    for (let i = 0; i < this.maxConfettis; i++) {
+      particle = this.particles[i];
+      particle.draw()
+      particle.tiltAngle += particle.tiltAngleIncremental;
+      particle.y += (Math.cos(particle.d) + 3 + particle.r / 2) / 2;
+      particle.tilt = Math.sin(particle.tiltAngle - i / 3) * 15;
+
+      if (particle.y <= this.H) remainingFlakes++;
+
+      if (particle.x > this.W + 30 || particle.x < -30 || particle.y > this.H) {
+        particle.x = Math.random() * this.W;
+        particle.y = -30;
+        particle.tilt = Math.floor(Math.random() * 10) - 20;
+      }
+    }
+  }
+
 
   protected readonly faCircleCheck = faCircleCheck
   protected readonly Utils = Utils

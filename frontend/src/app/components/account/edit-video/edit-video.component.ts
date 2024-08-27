@@ -1,4 +1,4 @@
-import {Component, ElementRef, inject, model, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, model, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {
   AnswerOption,
@@ -121,6 +121,7 @@ export class EditVideoComponent implements OnInit{
     if(this.video.contentId > 0) { //saving changes to existing video
       this.videoService.updateVideo(this.video).subscribe(result => {
         this.dialogRef.close();
+        window.removeEventListener("beforeunload", this.beforeUnloadHandler);
         this.snackBar.open("Changes to video were saved", "", {duration: 2000})
         //code for saving and keeping the popup open and same question selected
         /*let selectedQuestionPos = this.video.questions.indexOf(this.selectedQuestion)
@@ -135,6 +136,7 @@ export class EditVideoComponent implements OnInit{
       this.videoService.createVideo(this.video).subscribe(result => {
         console.log(result)
         this.dialogRef.close();
+        window.removeEventListener("beforeunload", this.beforeUnloadHandler);
       })
     }
   }
@@ -146,6 +148,7 @@ export class EditVideoComponent implements OnInit{
       this.confirmClose()
     }
     else {
+      window.removeEventListener("beforeunload", this.beforeUnloadHandler);
       this.dialogRef.close();
     }
   }
@@ -159,6 +162,7 @@ export class EditVideoComponent implements OnInit{
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if(confirm) {
+        window.removeEventListener("beforeunload", this.beforeUnloadHandler);
         this.dialogRef.close();
       }
     })
