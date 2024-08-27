@@ -5,12 +5,8 @@ import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import model.Tag;
 import model.ViewProgress;
-import repository.TagRepository;
 import repository.ViewProgressRepository;
-
-import java.util.List;
 
 @Path("/video/{videoId: [0-9]+}/progress/{userId: [0-9]+}")
 public class ViewProgressResource {
@@ -19,11 +15,11 @@ public class ViewProgressResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId){
+    public Response getProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId) {
         ViewProgress vp;
-        try{
+        try {
             vp = repository.getLatest(videoId, userId);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
@@ -31,8 +27,8 @@ public class ViewProgressResource {
     }
 
     @DELETE
-    public Response deleteProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId){
-        try{
+    public Response deleteProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId) {
+        try {
             repository.delete(videoId, userId);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
@@ -42,19 +38,20 @@ public class ViewProgressResource {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateViewProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId, JsonObject data){
-        try{
-            repository.update(videoId, userId, data.getInt("durationSeconds"));
+    public Response updateViewProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId, JsonObject data) {
+        try {
+            return Response.ok(repository.update(videoId, userId, data.getInt("durationSeconds"))).build();
         } catch (Exception ex) {
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok().build();
+
     }
 
     @PUT
     @Path("/ignore")
-    public Response ignoreProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId){
-        try{
+    public Response ignoreProgress(@PathParam("videoId") Long videoId, @PathParam("userId") Long userId) {
+        try {
             repository.ignore(videoId, userId);
         } catch (Exception ex) {
             ex.printStackTrace();
