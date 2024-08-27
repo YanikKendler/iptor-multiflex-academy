@@ -13,17 +13,13 @@ header{
   gap: 2rem;
 }
 
-section.videos{
-  margin-bottom: 2rem;
+.bottom{
+  gap: 1rem;
+}
 
-  input{
-    width: 100%;
-  }
-
-  .no-results{
-    color: $gray-400;
-    margin: .5rem;
-  }
+input{
+  width: 30ch;
+  padding-block: .2rem;
 }
 
 .videoOptions{
@@ -40,4 +36,8 @@ section.videos{
       background-color: $gray-900;
     }
   }
+}
+
+div.bottom{
+  display: flex;
 }

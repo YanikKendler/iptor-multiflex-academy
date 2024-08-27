@@ -1,7 +1,11 @@
 @if(videoRequests.length === 0){
-  <p class="no-requests">No video requests yet</p>
+  <p class="no-results">No video requests yet</p>
 }
 
 @for (videoRequest of videoRequests; track videoRequest.requestId) {
-  <app-video-request-field [videoRequest]="videoRequest" [allVideos]="allVideos" (isDone)="updateVideoRequests(videoRequest)"></app-video-request-field>
+  <app-video-request-field
+    [videoRequest]="videoRequest"
+    [allVideos]="allVideos"
+    (isDone)="updateVideoRequests(videoRequest)"
+  ></app-video-request-field>
 }

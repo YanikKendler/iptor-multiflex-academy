@@ -4,6 +4,8 @@ import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
 import {MatButton} from "@angular/material/button";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {ConfirmComponent} from "../../dialogue/confirm/confirm.component";
+import {NgClass, NgIf} from "@angular/common"
+import {MatTooltip} from "@angular/material/tooltip"
 
 @Component({
   selector: 'app-video-request-field',
@@ -11,7 +13,10 @@ import {ConfirmComponent} from "../../dialogue/confirm/confirm.component";
   imports: [
     CdkMenuTrigger,
     MatButton,
-    CdkMenu
+    CdkMenu,
+    NgIf,
+    NgClass,
+    MatTooltip
   ],
   templateUrl: './video-request-field.component.html',
   styleUrl: './video-request-field.component.scss'
@@ -32,7 +37,6 @@ export class VideoRequestFieldComponent {
 
   confirmClose(videoRequest: VideoRequestDetailDTO, status: VideoRequestEnum) {
     this.dialog.open(ConfirmComponent, {
-      height: "200px",
       width: "400px",
       data: {
         message: `Do you want to ${status == VideoRequestEnum.finished ? "finish" : "decline"} this video request?`
