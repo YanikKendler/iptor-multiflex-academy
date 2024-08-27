@@ -21,6 +21,7 @@ public abstract class Content {
     private User user;
 
     private String title;
+    @Column(length = 2000)
     private String description;
     private String color;
     @Enumerated(EnumType.STRING)

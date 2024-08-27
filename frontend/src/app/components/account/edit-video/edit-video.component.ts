@@ -29,6 +29,7 @@ import {MatTooltip} from "@angular/material/tooltip"
 import {TagSelectorComponent} from "../../basic/tag-selector/tag-selector.component"
 import {Config} from "../../../config";
 import {UserService} from "../../../service/user.service"
+import {MatSnackBar} from "@angular/material/snack-bar"
 @Component({
   selector: 'app-edit-video',
   standalone: true,
@@ -56,7 +57,7 @@ import {UserService} from "../../../service/user.service"
 export class EditVideoComponent implements OnInit{
   readonly videoService = inject(VideoService);
   readonly userService = inject(UserService)
-
+  readonly snackBar = inject(MatSnackBar)
 
   readonly dialogRef = inject(MatDialogRef<EditVideoComponent>);
   readonly data = inject<number>(MAT_DIALOG_DATA);
@@ -120,11 +121,14 @@ export class EditVideoComponent implements OnInit{
     if(this.video.contentId > 0) { //saving changes to existing video
       this.videoService.updateVideo(this.video).subscribe(result => {
         this.dialogRef.close();
+        this.snackBar.open("Changes to video were saved", "", {duration: 2000})
         //code for saving and keeping the popup open and same question selected
         /*let selectedQuestionPos = this.video.questions.indexOf(this.selectedQuestion)
         this.video = result;
         this.oldVideo = JSON.parse(JSON.stringify(this.video))
         this.selectedQuestion = this.video.questions[selectedQuestionPos] || this.video.questions[0]*/
+      }, error => {
+        this.snackBar.open("Sorry, your changes could not be saved. Please copy them to another place and try again later.", "", {duration: 5000})
       })
     }
     else { //creating new video

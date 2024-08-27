@@ -1,39 +1,33 @@
 <div class="message">
   @if(getType() === "update"){
-    <h2>{{ notification.triggeredByUser.username }} has updated a content</h2>
-    <p>{{ contentNotification.content.title }}</p>
+    <p>{{ notification.triggeredByUser.username }} has updated a relevant video/learningpath • {{ contentNotification.content.title }}</p>
   }
 
   @else if(getType() === "assignment"){
-    <h2>{{ notification.triggeredByUser.username }} has assigned you to a content</h2>
-    <p>{{ contentNotification.content.title }}</p>
+    <p>New content assignment from {{ notification.triggeredByUser.username }} • {{ contentNotification.content.title }}</p>
   }
 
   @else if(getType() === "finishedRequest"){
-    <h2>{{ notification.triggeredByUser.username }} has finished your video request</h2>
-    <p>{{ contentNotification.content.title }}</p>
+    <p>{{ notification.triggeredByUser.username }} has marked your video request as Completed • {{ contentNotification.content.title }}</p>
   }
 
   @else if(getType() === "request"){
-    <h2>{{ notification.triggeredByUser.username }} has requested a video</h2>
-    <p></p>
+    <p>{{ notification.triggeredByUser.username }} has requested a video</p>
   }
 
   @else if(getType() === "text"){
-    <h2>{{ notification.triggeredByUser.username }} {{ textNotification.headerText }}</h2>
-    <p>{{ textNotification.text }}</p>
+    <p>{{ notification.triggeredByUser.username }} {{ textNotification.headerText }} • {{ contentNotification.content.title }}</p>
   }
 
   @else if(getType() === "comment"){
-    <h2>{{ notification.triggeredByUser.username }} has posted a comment in {{ commentNotification.video.title }}</h2>
-    <p>{{ commentNotification.comment.text }}</p>
+    <p>{{ notification.triggeredByUser.username }} has posted a comment in {{ commentNotification.video.title }} • "</p><span class="truncate">{{ commentNotification.comment.text }}</span><p>"</p>
   }
 </div>
 
 <app-icon-button (click)="toggleDoneNotification()">
   @if(this.notification.done){
-    <fa-icon [icon]="faCircleCheck2"></fa-icon>
+    <fa-icon [icon]="faRepeat"></fa-icon>
   } @else{
-    <fa-icon [icon]="faCircleCheck"></fa-icon>
+    <fa-icon [icon]="faCheck"></fa-icon>
   }
 </app-icon-button>

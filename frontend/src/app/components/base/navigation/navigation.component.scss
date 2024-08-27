@@ -26,6 +26,10 @@ fa-icon{
 
 .right{
   display: flex;
+
+  ::ng-deep .mat-badge-content{
+    --badge-border-color: #{primary-500};
+  }
 }
 
 div.search{
@@ -50,7 +54,9 @@ div.search{
 
     &::placeholder {
       color: $gray-900;
+      /*
       font-weight: lighter;
+      */
       font-size: .9rem;
     }
   }
@@ -110,6 +116,7 @@ div.search{
 
 .notifications{
   @include floating-box;
+  margin-top: .5rem;
 }
 .switch{
   display: flex;
@@ -118,16 +125,6 @@ div.search{
 
   p{
     cursor: pointer;
-  }
-}
-
-app-notification{
-  cursor: pointer;
-  padding: .5rem;
-  transition: all .2s ease;
-
-  &:hover{
-    background-color: $gray-800;
   }
 }
 

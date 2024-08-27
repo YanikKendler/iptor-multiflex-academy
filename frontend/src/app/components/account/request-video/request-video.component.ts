@@ -5,12 +5,14 @@ import {VideoRequestDTO, VideoService} from "../../../service/video.service";
 import {Config} from "../../../config";
 import {UserService} from "../../../service/user.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatButton} from "@angular/material/button"
 
 @Component({
   selector: 'app-request-video',
   standalone: true,
   imports: [
-    TextfieldComponent
+    TextfieldComponent,
+    MatButton
   ],
   templateUrl: './request-video.component.html',
   styleUrl: './request-video.component.scss'
@@ -47,6 +49,9 @@ export class RequestVideoComponent implements OnInit{
       this.videoService.createVideoRequest(this.videoRequest).subscribe(() => {
         this.close()
         this.snackBar.open("Video request has been sent successfully", "", {duration: 2000})
+      },
+      error => {
+        this.snackBar.open("Error while sending request", "", {duration: 2000})
       })
     }
   }
@@ -57,5 +62,9 @@ export class RequestVideoComponent implements OnInit{
 
   updateDescription($event: string) {
     this.videoRequest.text = $event
+  }
+
+  cancel() {
+    this.dialogRef.close()
   }
 }

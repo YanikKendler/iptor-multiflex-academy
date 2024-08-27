@@ -26,7 +26,6 @@ import {EditVideoComponent} from "../../account/edit-video/edit-video.component"
 import {MatDialog} from "@angular/material/dialog";
 import {RequestVideoComponent} from "../../account/request-video/request-video.component";
 import {MatBadge} from "@angular/material/badge";
-import {NotificationDialogComponent} from "../notification-dialog/notification-dialog.component";
 
 @Component({
   selector: 'app-navigation',

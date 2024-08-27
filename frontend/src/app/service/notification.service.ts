@@ -46,7 +46,6 @@ export class NotificationService {
   userService = inject(UserService)
 
   getNotifications() {
-    console.log(`${Config.API_URL}/notification?userId=${this.userService.currentUser.value.userId}`)
     return this.http.get<Notification[]>(`${Config.API_URL}/notification?userId=${this.userService.currentUser.value.userId}`)
   }
 
