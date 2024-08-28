@@ -26,12 +26,19 @@
         >
           <fa-icon [icon]="faShare"></fa-icon>
         </app-icon-button>
-      </div>
 
-      @if(userService.currentUser.value.userRole == "ADMIN" && video.approved == false){
-        <!--<button mat-stroked-button (click)="rejectVideo()">reject</button>-->
-        <button mat-flat-button (click)="approveVideo()">approve</button>
-      }
+        @if(!video.approved && userService.currentUser.value.userRole == 'ADMIN'){
+          <app-icon-button
+            matTooltip="This learning path is not approved yet, only you and the user who created it can see it. - After approval, the visibility can be changed"
+            (click)="approveVideo()"
+          >
+            <fa-icon
+              [icon]="faCheckCircle"
+              class="approve"
+            ></fa-icon>
+          </app-icon-button>
+        }
+      </div>
     </div>
   </div>
 

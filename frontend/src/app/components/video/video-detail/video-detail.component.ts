@@ -11,7 +11,7 @@ import {IconButtonComponent} from "../../basic/icon-button/icon-button.component
 import {UserService} from "../../../service/user.service";
 import {VideoCommentContainerComponent} from "../video-comment-container/video-comment-container.component"
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faShare} from "@fortawesome/free-solid-svg-icons";
+import {faCheckCircle, faShare} from "@fortawesome/free-solid-svg-icons";
 import {Config} from "../../../config";
 import {NgIf} from "@angular/common";
 import {MatSnackBar} from "@angular/material/snack-bar"
@@ -125,4 +125,6 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
       this.video.approved = true
     })
   }
+
+  protected readonly faCheckCircle = faCheckCircle;
 }
