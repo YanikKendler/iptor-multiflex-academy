@@ -12,7 +12,7 @@
 form{
   display: flex;
   flex-direction: column;
-  width: 20vw;
+  width: clamp(20vw, 300px, 90%);
   background-color: $primary-600;
   border-radius: .5rem;
   padding: 1rem;

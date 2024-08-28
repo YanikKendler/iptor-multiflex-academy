@@ -1,7 +1,15 @@
 <app-navigation [simple]="true"></app-navigation>
 
 <main>
-  <div class="sidebar">
+  @if(Config.SMALL_SCREEN){
+    <app-icon-button (click)="sidebarOpen = !sidebarOpen" class="sidebar-toggle">
+      <fa-icon [icon]="faBars"></fa-icon>
+    </app-icon-button>
+  }
+  <div class="sidebar" [ngClass]="{closed: !sidebarOpen, drawer: Config.SMALL_SCREEN}">
+    <app-icon-button (click)="sidebarOpen = !sidebarOpen" class="sidebar-toggle">
+      <fa-icon [icon]="faArrowLeft"></fa-icon>
+    </app-icon-button>
     <h1>{{ this.learningPath.title }}</h1>
     <p class="description" [style.--show-lines]="fullDescription ? 50 : 5">{{ this.learningPath.description }}</p>
     <span (click)="fullDescription = !fullDescription" class="toggleDescription">{{ fullDescription ? 'minimize description' : 'show full description' }}</span>

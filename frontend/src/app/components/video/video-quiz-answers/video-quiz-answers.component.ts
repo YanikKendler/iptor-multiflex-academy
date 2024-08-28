@@ -3,6 +3,7 @@ import {NgClass} from "@angular/common";
 import {MatRipple} from "@angular/material/core"
 import {AnswerOption, VideoService} from "../../../service/video.service";
 import {MatButton} from "@angular/material/button";
+import {Utils} from "../../../utils"
 
 @Component({
   selector: 'app-video-quiz-answers',
@@ -151,4 +152,6 @@ export class VideoQuizAnswersComponent implements OnChanges{
   showNextVideoButton(): boolean {
     return this.inLearningPath && this.isQuizFinished && this.calculateScoreInDecimal() > 0.8;
   }
+
+    protected readonly Utils = Utils
 }

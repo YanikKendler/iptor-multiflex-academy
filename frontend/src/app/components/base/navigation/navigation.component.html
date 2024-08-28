@@ -43,38 +43,41 @@
 <ng-template #menu>
   <div class="menu" cdkMenu>
     @if(userService.currentUser.value.userRole == UserRoleEnum.ADMIN || userService.currentUser.value.userRole == UserRoleEnum.EMPLOYEE){
-      <div routerLink="/account/videos" (click)="closeMenu()">
+
+    <div class="top" [ngClass]="Config.SMALL_SCREEN ? 'disabled' : ''">
+      <div routerLink="/account/videos" (click)="closeMenu()" class="menuItem">
         <div class="icon-container">
           <fa-icon [icon]="faCirclePlay"></fa-icon>
         </div>
         <p>My Videos</p>
       </div>
 
-      <div routerLink="/account/learningpaths" (click)="closeMenu()">
+      <div routerLink="/account/learningpaths" (click)="closeMenu()" class="menuItem">
         <div class="icon-container">
-          <app-learning-path-icon></app-learning-path-icon>
+          <app-learning-path-icon class="icon"></app-learning-path-icon>
         </div>
         <p>My Learningpaths</p>
       </div>
 
-      <div routerLink="/account/manage-users" (click)="closeMenu()">
+      <div routerLink="/account/manage-users" (click)="closeMenu()" class="menuItem">
         <div class="icon-container">
           <fa-icon [icon]="faUsersGear"></fa-icon>
         </div>
         <p>Manage Users</p>
       </div>
 
-    <div routerLink="/account/video-requests" (click)="closeMenu()">
-      <div class="icon-container">
-        <fa-icon [icon]="faFileVideo" class="fileIcon"></fa-icon>
+      <div routerLink="/account/video-requests" (click)="closeMenu()" class="menuItem">
+        <div class="icon-container">
+          <fa-icon [icon]="faFileVideo" class="fileIcon"></fa-icon>
+        </div>
+        <p>Video Requests</p>
       </div>
-      <p>Video Requests</p>
     </div>
 
     <mat-divider></mat-divider>
   }
 
-    <div (click)="requestVideo(); closeMenu()">
+    <div (click)="requestVideo(); closeMenu()" class="menuItem">
       <div class="icon-container">
         <fa-icon [icon]="faUserPlus"></fa-icon>
       </div>
@@ -83,11 +86,13 @@
 
     <mat-divider></mat-divider>
 
-    <div routerLink="/login" (click)="closeMenu(); logout()">
+    <div routerLink="/login" (click)="closeMenu(); logout()" class="menuItem">
       <div class="icon-container">
         <fa-icon [icon]="faRightFromBracket"></fa-icon>
       </div>
       <p>Logout</p>
     </div>
+
+    <p class="info">{{userService.currentUser.value.username}} • {{userService.currentUser.value.userRole}} • {{userService.currentUser.value.userId}}</p>
   </div>
 </ng-template>

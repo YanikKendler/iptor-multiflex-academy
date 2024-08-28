@@ -16,6 +16,9 @@ import {faCircleCheck, faFaceLaughBeam} from "@fortawesome/free-regular-svg-icon
 import {UserService} from "../../../service/user.service"
 import {Utils} from "../../../utils"
 import {ViewProgressService} from "../../../service/view-progress.service";
+import {Config} from "../../../config"
+import {MatButton} from "@angular/material/button"
+import {faArrowLeft, faBars} from "@fortawesome/free-solid-svg-icons"
 
 @Component({
   selector: 'app-learning-path-detail',
@@ -32,7 +35,8 @@ import {ViewProgressService} from "../../../service/view-progress.service";
     NgClass,
     NgStyle,
     PlayIconComponent,
-    RouterLink
+    RouterLink,
+    MatButton
   ],
   templateUrl: './learning-path-detail.component.html',
   styleUrl: './learning-path-detail.component.scss'
@@ -54,6 +58,10 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
 
   videoProgress: number[] = []
 
+  protected videoService = inject(VideoService)
+  protected userService = inject(UserService)
+  protected viewProgressService = inject(ViewProgressService)
+
   service = inject(LearningPathService)
   learningPath : LearningPathDetailDTO = {} as LearningPathDetailDTO
 
@@ -64,12 +72,11 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   isLastVideo: boolean = false
   isFinished: boolean = false
 
-  videoService = inject(VideoService)
-  userService = inject(UserService)
-  viewProgressService = inject(ViewProgressService)
-
   //wheter or not the full learning path description is shown in the sidebar
   fullDescription: boolean = false
+
+  //sidebar should only be closable on small screens: if screen is small(true) sidebar is closed(open = false)
+  sidebarOpen: boolean = !Config.SMALL_SCREEN
 
   constructor(private route: ActivatedRoute) {  }
 
@@ -297,4 +304,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   protected readonly faCircleCheck = faCircleCheck
   protected readonly Utils = Utils
   protected readonly faFaceLaughBeam = faFaceLaughBeam
+  protected readonly Config = Config
+  protected readonly faBars = faBars
+  protected readonly faArrowLeft = faArrowLeft
 }
