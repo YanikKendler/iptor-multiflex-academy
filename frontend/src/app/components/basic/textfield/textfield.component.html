@@ -1,4 +1,6 @@
 <label for="input">{{ label }}</label>
+
+
 @if(rows == 1){
   <input
     id="input"
@@ -6,7 +8,9 @@
     placeholder="{{placeholder}}"
     (input)="valueChange.emit(input.value)"
     #input
-    value="{{value}}"
+    (keydown)="logInput()"
+    [(ngModel)]="value"
+    [maxLength]="maxLength"
   >
 } @else {
   <textarea
@@ -16,5 +20,15 @@
     placeholder="{{placeholder}}"
     (input)="valueChange.emit(input.value)"
     #input
+    (keydown)="logInput()"
+    [maxLength]="maxLength"
   >{{value}}</textarea>
+}
+
+@if(maxLength){
+  @if(value.length >= maxLength){
+    <span class="error">Maximum of characters reached: {{value.length}}/{{maxLength}}</span>
+  } @else if(value.length >= maxLength-5){
+    <span class="warning">Maximum of characters almost reached: {{value.length}}/{{maxLength}}</span>
+  }
 }
