@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, Input, OnInit, ViewChild, ViewChildren} from '@angular/core';
 import {User, UserAssignedContentDTO, UserService, UserStatisticsDTO, UserTreeDTO} from "../../../service/user.service";
 import {Utils} from "../../../utils";
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
@@ -61,17 +61,16 @@ export class ManageUserFieldComponent implements OnInit {
 
   userStatistics : UserStatisticsDTO = {} as UserStatisticsDTO;
 
-  @ViewChild(CdkMenuTrigger) videoPopupTrigger!: CdkMenuTrigger
+  // i tried so hard and got so far
+  @ViewChildren(CdkMenuTrigger) videoPopupTrigger!: CdkMenuTrigger[];
 
   ngOnInit(): void {
     this.userService.currentUser.subscribe(user => {
-      if(!user || user.userId <= 0) return
-
-      if(!this.userTree || !this.userTree.userId ||this.userTree.userId <= 0) return
-
-      this.userService.getUserStatistics(this.userTree.userId).subscribe(stats => {
-        this.userStatistics = stats
-      })
+      if(this.userTree.userId > 0){
+        this.userService.getUserStatistics(this.userTree.userId).subscribe(stats => {
+          this.userStatistics = stats
+        })
+      }
     })
   }
 
@@ -107,11 +106,12 @@ export class ManageUserFieldComponent implements OnInit {
   }
 
   assignContent(content: ContentOverviewDTO){
-    this.videoPopupTrigger.close()
-
     this.userService.assignContent(this.userTree.userId, content.contentId).subscribe(result => {
       this.assignedContent.push(result)
+      this.contentOptions = this.contentOptions.filter(t => t.contentId !== content.contentId)
     })
+
+    this.videoPopupTrigger.forEach(t => t.close())
   }
 
   unassignContent(contentId: number){

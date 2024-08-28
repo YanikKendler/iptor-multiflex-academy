@@ -77,7 +77,9 @@ export class LearningpathsComponent implements OnInit{
 
   ngOnInit(): void {
     this.userService.currentUser.subscribe(user => {
-      this.getUserContent();
+      if(user.userId > 0){
+        this.getUserContent();
+      }
     })
   }
 

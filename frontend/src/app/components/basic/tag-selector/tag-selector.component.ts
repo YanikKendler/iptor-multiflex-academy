@@ -3,6 +3,8 @@ import {Tag, TagService} from "../../../service/tag.service"
 import {ChipComponent} from "../chip/chip.component"
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu"
 import {MatButton} from "@angular/material/button"
+import {ConfirmComponent} from "../../dialogue/confirm/confirm.component";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-tag-selector',
@@ -25,6 +27,10 @@ export class TagSelectorComponent implements OnInit{
   @ViewChild(CdkMenuTrigger) tagPopupTrigger!: CdkMenuTrigger
   @ViewChild(CdkMenu) tagPopup!: CdkMenu
   @ViewChild("tagInput") tagInput!: ElementRef
+
+  readonly dialogRef = inject(MatDialogRef<TagSelectorComponent>);
+  readonly data = inject<number>(MAT_DIALOG_DATA);
+  readonly dialog = inject(MatDialog);
 
   allTags: Tag[] = []
   tagOptions: Tag[] = []
@@ -64,8 +70,24 @@ export class TagSelectorComponent implements OnInit{
   }
 
   deleteTag(tag: Tag) {
-    this.tagService.deleteTag(tag.tagId).subscribe(() => {
-      this.allTags = this.allTags.filter(t => t.tagId !== tag.tagId)
+    this.dialog.open(ConfirmComponent, {
+      height: "200px",
+      width: "400px",
+      data: {
+        message: "Do really you want to delete this tag?"
+      }
+    }).afterClosed().subscribe((confirm: boolean) => {
+      if(confirm) {
+        this.tagService.deleteTag(tag.tagId).subscribe(() => {
+          this.allTags = this.allTags.filter(t => t.tagId !== tag.tagId)
+          this.tagOptions = this.tagOptions.filter(t => t.tagId !== tag.tagId)
+        })
+      }
+
+      let value = this.tagInput.nativeElement.value
+      this.tagInput.nativeElement.focus();
+      this.generateTagOptions(value)
+      this.openTagPopup()
     })
   }
 }

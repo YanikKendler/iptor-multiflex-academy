@@ -64,6 +64,7 @@ export class VideosComponent implements OnInit{
   ngOnInit(): void {
     this.userService.currentUser.subscribe(user => {
       if(user.userId <= 0) return
+
       this.getUserContent();
     })
   }
