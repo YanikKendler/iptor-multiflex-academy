@@ -21,6 +21,11 @@
       <fa-icon [icon]="faFileVideo"></fa-icon>
       <p>Video Requests</p>
     </div>
+
+    <div [ngClass]="{'active': currentPage === 'user-statistics'}" (click)="switchPage('user-statistics')">
+      <fa-icon [icon]="faChartSimple"></fa-icon>
+      <p>Show Statistics</p>
+    </div>
   </div>
 
   <section>
@@ -36,6 +41,9 @@
       }
       @case ('video-requests'){
         <app-video-requests></app-video-requests>
+      }
+      @case ('user-statistics'){
+        <app-user-statistics></app-user-statistics>
       }
     }
   </section>

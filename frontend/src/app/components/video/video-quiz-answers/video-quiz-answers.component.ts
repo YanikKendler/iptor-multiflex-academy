@@ -125,7 +125,7 @@ export class VideoQuizAnswersComponent implements OnChanges{
   }
 
   calculateScoreInDecimal() {
-    if(this.notSelectedButCorrectAnswers.length + this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length === 0) return -1
+    if(this.notSelectedButCorrectAnswers.length + this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length === 0) return 0
     let totalQuestionCount = (this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length + this.notSelectedButCorrectAnswers.length)
     return (this.correctAnswers.length + this.notSelectedButCorrectAnswers.length) / totalQuestionCount
   }

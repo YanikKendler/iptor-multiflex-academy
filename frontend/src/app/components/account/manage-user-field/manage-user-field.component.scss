@@ -27,6 +27,7 @@ app-manage-user-field{
     cursor: pointer;
     user-select: none;
     display: flex;
+    align-items: center;
     justify-content: space-between;
     transition: background-color $transition-time-short;
 
@@ -34,11 +35,16 @@ app-manage-user-field{
       background-color: $gray-600;
     }
 
-    fa-icon{
-      transition: rotate $transition-time-short;
+    div{
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      fa-icon{
+        transition: rotate $transition-time-short;
 
-      &.rotate{
-        rotate: 180deg;
+        &.rotate{
+          rotate: 180deg;
+        }
       }
     }
   }
@@ -149,4 +155,10 @@ app-manage-user-field{
       background-color: $gray-800;
     }
   }
+}
+
+.stats{
+  @include floating-box;
+  font-size: .8rem;
+  padding: .5rem;
 }

@@ -88,6 +88,19 @@ export interface ContentEditHistoryDTO{
   timestamp: string
 }
 
+export interface UserStatisticsDTO{
+  user: User
+  totalCommentsLeft: number
+  totalVideosRated: number
+  averageStarRatingGiven: number
+  quizzesCompleted: number
+  totalVideosWatched: number
+  totalLearningPathsCompleted: number
+  totalContentSaved: number
+  totalVideosUploaded: number
+  totalLearningPathsUploaded: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -165,5 +178,9 @@ export class UserService {
 
   getContentHistory(contentId: number){
     return this.http.get<ContentEditHistoryDTO[]>(`${Config.API_URL}/content/${contentId}/history`)
+  }
+
+  getUserStatistics(userId: number){
+    return this.http.get<UserStatisticsDTO>(`${Config.API_URL}/user/${userId}/statistics`)
   }
 }

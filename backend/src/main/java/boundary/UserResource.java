@@ -209,4 +209,15 @@ public class UserResource {
             return Response.status(400).entity(ex).build();
         }
     }
+
+    @GET
+    @Path("{userId}/statistics")
+    public Response getStatistics(@PathParam("userId") Long userId) {
+        try {
+            return Response.ok(repository.getStatistics(userId)).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+    }
 }

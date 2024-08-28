@@ -1,0 +1,15 @@
+<h2>User Statistics of {{userStatistics.user.username}}</h2>
+
+<div class="stats">
+  <p>Videos watched: {{userStatistics.totalVideosWatched}}</p>
+  <p>Learning Paths completed: {{userStatistics.totalLearningPathsCompleted}}</p>
+  <p>Quizzes completed: {{userStatistics.quizzesCompleted}}</p>
+  <p>Content saved: {{userStatistics.totalContentSaved}}</p>
+
+  <p>Videos uploaded: {{userStatistics.totalVideosUploaded}}</p>
+  <p>Learning Paths uploaded: {{userStatistics.totalLearningPathsUploaded}}</p>
+
+  <p>Total Comments left: {{userStatistics.totalCommentsLeft}}</p>
+  <p>Average Star Rating given: {{userStatistics.averageStarRatingGiven < 0 ? 'none' : userStatistics.averageStarRatingGiven.toFixed(1)}}</p>
+
+</div>
