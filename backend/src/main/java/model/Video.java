@@ -61,7 +61,8 @@ public class Video extends Content {
                 this.getVideoFile(),
                 0,
                 this.getVisibility(),
-                this.getUser().getUserId()
+                this.getUser().getUserId(),
+                this.isApproved()
         );
     }
 

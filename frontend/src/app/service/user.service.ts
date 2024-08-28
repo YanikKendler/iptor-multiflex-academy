@@ -25,7 +25,7 @@ export interface ContentForUser {
   suggested: VideoAndLearningPathOverviewCollection
 }
 
-export interface MyLearningpathDTO {
+export interface MyVideoDTO {
   contentId: number,
   title: String,
   views: number,
@@ -33,7 +33,8 @@ export interface MyLearningpathDTO {
   visibility: VisibilityEnum,
   questionCount: number,
   tags: Tag[],
-  color: String
+  color: String,
+  approved: boolean
 }
 
 export interface MyLearningpathDTO {
@@ -43,7 +44,8 @@ export interface MyLearningpathDTO {
   visibility: VisibilityEnum
   videoCount: number
   tags: Tag[]
-  color: String
+  color: String,
+  approved: boolean
 }
 
 export interface UserDTO{
@@ -103,7 +105,7 @@ export class UserService {
   }
 
   getUserVideos(){
-    return this.http.get<MyLearningpathDTO[]>(`${Config.API_URL}/user/${this.currentUser.value.userId}/videos`)
+    return this.http.get<MyVideoDTO[]>(`${Config.API_URL}/user/${this.currentUser.value.userId}/videos`)
   }
 
   getUserLearningpaths(){
@@ -141,5 +143,13 @@ export class UserService {
 
   finishAssignedContent(contentId: number) {
     return this.http.put(`${Config.API_URL}/user/${this.currentUser.value.userId}/finishassignedcontent/${contentId}`, {})
+  }
+
+  approveContent(contentId: number){
+    return this.http.put(`${Config.API_URL}/content/${contentId}/approve?userId=${this.currentUser.value.userId}`, {})
+  }
+
+  isUserAllowedToSeeContent(contentId: number) {
+    return this.http.get(`${Config.API_URL}/user/${this.currentUser.value.userId}/isallowed/${contentId}`)
   }
 }

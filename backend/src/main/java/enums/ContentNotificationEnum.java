@@ -1,5 +1,5 @@
 package enums;
 
 public enum ContentNotificationEnum {
-    update, assignment, finishedRequest
+    update, assignment, finishedRequest, approved, videoCreateRequest
 }

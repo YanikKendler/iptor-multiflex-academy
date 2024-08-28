@@ -44,6 +44,7 @@ export interface VideoDetailDTO {
   viewProgress?: number
   visibility: VisibilityEnum
   userId: number
+  approved: boolean
 }
 
 export interface VideoOverviewDTO {

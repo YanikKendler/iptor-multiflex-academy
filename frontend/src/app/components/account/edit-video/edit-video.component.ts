@@ -88,7 +88,8 @@ export class EditVideoComponent implements OnInit{
         tags: [],
         questions: [],
         rating: 0,
-        userId: this.userService.currentUser.value.userId
+        userId: this.userService.currentUser.value.userId,
+        approved: false
       } as VideoDetailDTO
       this.oldVideo= JSON.parse(JSON.stringify(this.video)) //actual nested deep copy
     }

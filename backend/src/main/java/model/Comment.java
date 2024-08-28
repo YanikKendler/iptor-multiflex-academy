@@ -11,6 +11,7 @@ public class Comment {
     private Long commentId;
     @ManyToOne
     private User user;
+    @Column(length = 2000)
     private String text;
     private LocalDateTime timestamp;
 

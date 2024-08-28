@@ -31,7 +31,11 @@
 
   <div>
     <p>visibility:</p>
-    <app-dropdown [selectedId]="video.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+    @if(video.approved){
+      <app-dropdown [selectedId]="video.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+    } @else{
+      {{video.visibility}}
+    }
   </div>
 
   <mat-divider [vertical]="true"></mat-divider>

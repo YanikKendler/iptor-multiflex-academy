@@ -10,6 +10,7 @@ import {NgIf} from "@angular/common";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component"
 import {MatButton} from "@angular/material/button"
 import {VideoCommentComponent} from "../video-comment/video-comment.component"
+import {TextfieldComponent} from "../../basic/textfield/textfield.component";
 
 
 @Component({
@@ -23,6 +24,7 @@ import {VideoCommentComponent} from "../video-comment/video-comment.component"
     IconButtonComponent,
     MatButton,
     VideoCommentComponent,
+    TextfieldComponent,
   ],
   templateUrl: './video-comment-container.component.html',
   styleUrl: './video-comment-container.component.scss'

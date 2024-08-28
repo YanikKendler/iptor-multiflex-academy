@@ -9,6 +9,7 @@
 </div>
 
 <div class="post-bar">
-  <input (keydown)="keyDownFunction($event)" type="text" placeholder="Your comment ..." [(ngModel)]="commentInputText">
+  <app-textfield [maxLength]="2000" [label]="''" placeholder="Your comment ..." (keydown)="keyDownFunction($event)" (valueChange)="commentInputText = $event"></app-textfield>
+  <!--<input (keydown)="keyDownFunction($event)" type="text" placeholder="Your comment ..." [(ngModel)]="commentInputText">-->
   <button (click)="postComment()">Post</button>
 </div>

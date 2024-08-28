@@ -17,7 +17,7 @@ import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {FormsModule} from "@angular/forms";
 import {NgForOf} from "@angular/common";
 import {VideoAndLearningPathOverviewCollection, VideoService, VisibilityEnum} from "../../../service/video.service";
-import {MyLearningpathDTO, UserService} from "../../../service/user.service";
+import {MyLearningpathDTO, MyVideoDTO, UserService} from "../../../service/user.service";
 import {Tag} from "../../../service/tag.service";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
@@ -56,7 +56,7 @@ export class VideosComponent implements OnInit{
   userService = inject(UserService);
   videoService = inject(VideoService);
 
-  userContent : MyLearningpathDTO[] = [];
+  userContent : MyVideoDTO[] = [];
 
   ngOnInit(): void {
     this.userService.currentUser.subscribe(user => {
@@ -132,6 +132,12 @@ export class VideosComponent implements OnInit{
           this.userContent = this.userContent.filter(video => video.contentId != videoId);
         });
       }
+    })
+  }
+
+  approveVideo(contentId: number) {
+    this.userService.approveContent(contentId).subscribe(response => {
+      this.userContent.find(video => video.contentId == contentId)!.approved = true;
     })
   }
 

@@ -32,7 +32,7 @@ export interface TextNotification extends Notification{
 }
 
 export enum ContentNotificationEnum {
-  update="update", assignment="assignment", finishedRequest="finishedRequest"
+  update="update", assignment="assignment", finishedRequest="finishedRequest", approved="approved", videoCreateRequest="videoCreateRequest"
 }
 
 @Injectable({

@@ -6,6 +6,7 @@
     <div class="right">
       <h1>{{video.title}}</h1>
       <p class="description" [innerHTML]="generateDescriptionWithLinebreaks()"></p>
+
       <div class="actions">
         <app-video-rating [videoId]="video.contentId" [rating]="video.rating"></app-video-rating>
 
@@ -26,6 +27,11 @@
           <fa-icon [icon]="faShare"></fa-icon>
         </app-icon-button>
       </div>
+
+      @if(userService.currentUser.value.userRole == "ADMIN" && video.approved == false){
+        <!--<button mat-stroked-button (click)="rejectVideo()">reject</button>-->
+        <button mat-flat-button (click)="approveVideo()">approve</button>
+      }
     </div>
   </div>
 

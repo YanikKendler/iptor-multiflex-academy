@@ -11,6 +11,14 @@
     <p>{{ notification.triggeredByUser.username }} has marked your video request as Completed • {{ contentNotification.content.title }}</p>
   }
 
+  @else if(getType() === "approved"){
+    <p>{{ notification.triggeredByUser.username }} has approved your video • {{ contentNotification.content.title }}</p>
+  }
+
+  @else if(getType() === "videoCreateRequest"){
+    <p>{{ notification.triggeredByUser.username }} has create a new content you should approve • {{ contentNotification.content.title }}</p>
+  }
+
   @else if(getType() === "request"){
     <p>{{ notification.triggeredByUser.username }} has requested a video</p>
   }

@@ -39,6 +39,18 @@ public class LearningPathResource {
         }
     }
 
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createLearningpath(EditLearningPathDTO data, @QueryParam("userId") Long userId){
+        try{
+            LearningPath result = repository.create(data, userId);
+            return Response.ok(result).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+    }
+
     @DELETE
     @Path("{pathId: [0-9]+}")
     public Response deleteLearningpath(@PathParam("pathId") Long pathId){

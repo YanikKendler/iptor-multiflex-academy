@@ -5,6 +5,7 @@ import dtos.ContentForUserDTO;
 import dtos.VideoOverviewDTO;
 import enums.ContentNotificationEnum;
 import enums.UserRoleEnum;
+import enums.VisibilityEnum;
 import io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -345,19 +346,24 @@ public class UserRepository {
             return null;
         }
 
-        List<Video> videos = em.createQuery("select v from Video v order by v.contentId", Video.class)
+        System.out.println(userId);
+        List<Video> videos = em.createQuery("select v from Video v" +
+                        " where (v.visibility = 'self' and v.user.userId = :userId) or :isAdmin = true or v.visibility != 'self'" +
+                        " order by v.contentId", Video.class)
+                .setParameter("userId", userId)
+                .setParameter("isAdmin", getById(userId).getUserRole() == UserRoleEnum.ADMIN)
                 .getResultList();
 
         return videos.stream().map(video -> {
             long views = em.createQuery("select count(vp) from ViewProgress vp where vp.content.contentId = :contentId", Long.class)
                     .setParameter("contentId", video.getContentId())
                     .getSingleResult();
-            return new MyVideoDTO(video.getContentId(), video.getTitle(), (int) views, starRatingRepository.getAverage(video.getContentId()), video.getVisibility(), video.getQuestions().size(), video.getTags(), video.getColor());
+            return new MyVideoDTO(video.getContentId(), video.getTitle(), (int) views, starRatingRepository.getAverage(video.getContentId()), video.getVisibility(), video.getQuestions().size(), video.getTags(), video.getColor(), video.isApproved());
         }).toList();
     }
 
     public List<MyLearningpathDTO> getUserLearningpaths(Long userId) {
-        if (getById(userId).getUserRole() == UserRoleEnum.CUSTOMER) {
+        if (getById(userId) != null && getById(userId).getUserRole() == UserRoleEnum.CUSTOMER) {
             return null;
         }
 
@@ -378,7 +384,8 @@ public class UserRepository {
                             lp.getVisibility(),
                             lp.getEntries().size(),
                             lp.getTags(),
-                            lp.getColor());
+                            lp.getColor(),
+                            lp.isApproved());
                 }).toList();
     }
 
@@ -562,5 +569,16 @@ public class UserRepository {
             contentAssignment.setFinished(true);
             em.merge(contentAssignment);
         } catch(NoResultException e){}
+    }
+
+    public boolean isAllowed(Long userId, Long contentId) {
+        try{
+            Content content = em.createQuery("select c from Content c where c.contentId = :contentId", Content.class)
+                    .setParameter("contentId", contentId).getSingleResult();
+
+            return content.isVisibleForUser(getById(userId));
+        } catch(NoResultException e){
+            return false;
+        }
     }
 }

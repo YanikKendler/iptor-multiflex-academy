@@ -89,7 +89,8 @@ export class EditLearningpathComponent implements OnInit{
         tags: [],
         entries: [],
         rating: 0,
-        userId: 0
+        userId: 0,
+        approved: false
       } as LearningPathDetailDTO
       this.oldLearningPath= JSON.parse(JSON.stringify(this.learningPath)) //actual nested deep copy
     }

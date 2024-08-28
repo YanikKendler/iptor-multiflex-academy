@@ -16,6 +16,7 @@ import {faCircleCheck, faFaceLaughBeam} from "@fortawesome/free-regular-svg-icon
 import {UserService} from "../../../service/user.service"
 import {Utils} from "../../../utils"
 import {ViewProgressService} from "../../../service/view-progress.service";
+import {MatButton} from "@angular/material/button";
 import {Config} from "../../../config"
 import {MatButton} from "@angular/material/button"
 import {faArrowLeft, faBars} from "@fortawesome/free-solid-svg-icons"
@@ -300,6 +301,11 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
     }
   }
 
+  approvePath() {
+    this.userService.approveContent(this.learningPath.contentId).subscribe(response =>{
+      this.learningPath.approved = true
+    })
+  }
 
   protected readonly faCircleCheck = faCircleCheck
   protected readonly Utils = Utils

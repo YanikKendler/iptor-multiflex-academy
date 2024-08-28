@@ -9,10 +9,21 @@ import {LoginComponent} from "./components/base/login/login.component";
 import {UnauthorizedComponent} from "./components/base/unauthorized/unauthorized.component"
 import {hasRoleGuard} from "./has-role.guard"
 import {UserRoleEnum} from "./service/user.service"
+import {canViewGuard} from "./can-view.guard";
 
 export const routes: Routes = [
-  {path: "video/:id", component: VideoDetailComponent},
-  {path: "learningpath/:id", component: LearningPathDetailComponent},
+  {
+    path: "video/:id",
+    component: VideoDetailComponent,
+    canActivate: [canViewGuard],
+    data: {}
+  },
+  {
+    path: "learningpath/:id",
+    component: LearningPathDetailComponent,
+    canActivate: [canViewGuard],
+    data: {}
+  },
   {
     path: "account/:page",
     component: AccountComponent,

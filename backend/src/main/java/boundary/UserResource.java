@@ -199,4 +199,14 @@ public class UserResource {
         }
     }
 
+    @GET
+    @Path("{userId}/isallowed/{contentId}")
+    public Response isAllowed(@PathParam("userId") Long userId, @PathParam("contentId") Long contentId) {
+        try {
+            return Response.ok(repository.isAllowed(userId, contentId)).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+    }
 }

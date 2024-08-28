@@ -28,7 +28,11 @@
         {{ video.rating.toFixed(1) }}
       </td>
       <td>
-        <app-dropdown [selectedId]="video.visibility.toString()" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+        @if(video.approved){
+          <app-dropdown [selectedId]="video.visibility.toString()" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+        } @else{
+          self
+        }
       </td>
 
       <td>{{ getQuestionCountToString(video.questionCount) }}</td>
@@ -39,6 +43,9 @@
       </td>
 
       <td class="actions">
+        @if(!video.approved && userService.currentUser.value.userRole == 'ADMIN'){
+          <button mat-flat-button (click)="approveVideo(video.contentId)">approve</button>
+        }
         <app-icon-button (click)="deleteVideo(video.contentId)">
           <fa-icon [icon]="faTrash"></fa-icon>
         </app-icon-button>
