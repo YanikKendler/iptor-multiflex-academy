@@ -108,7 +108,7 @@
               <td>{{ Utils.toFullDateString(video.startTime, {seperator: "."}) }}</td>
               <td>{{ Utils.toFullDateString(video.endTime, {seperator: "."}) }}</td>
               <td>{{video.questionCount}}</td>
-              <td>{{video.progress * 100}}%</td>
+              <td>{{(video.progress * 100).toFixed(1)}}%</td>
           }
         </table>
 

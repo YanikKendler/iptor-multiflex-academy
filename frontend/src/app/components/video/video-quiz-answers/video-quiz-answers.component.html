@@ -1,10 +1,17 @@
 @if(!this.answers){
   <div class="finished">
-    <h2>Finished quiz</h2>
+    @if(inLearningPath && isQuizFinished && calculateScoreInDecimal() < 0.8){
+      <h2>Your score is not high enough</h2>
+    } @else{
+      <h2>Finished quiz</h2>
+    }
     <p>Score {{ correctAnswers.length + notSelectedButCorrectAnswers.length }} /
-      {{ notSelectedButCorrectAnswers.length + correctAnswers.length + wrongAnswers.length + missedAnswers.length }}</p>
+      {{ notSelectedButCorrectAnswers.length + correctAnswers.length + wrongAnswers.length + missedAnswers.length }} ---
+      {{ Utils.roundNumber(calculateScoreInDecimal() < 0 ? 0 : calculateScoreInDecimal() *100, 1) }}%</p>
 
-    <p>Score: {{ Utils.roundNumber(calculateScoreInDecimal()*100, 1) }}%</p>
+    @if(inLearningPath && isQuizFinished && calculateScoreInDecimal() < 0.8){
+      <p class="failed">You need at least 80%</p>
+    }
 
     <div class="buttons">
       @if (inLearningPath && isQuizFinished && calculateScoreInDecimal() > 0.8 || calculateScoreInDecimal() < 0) {

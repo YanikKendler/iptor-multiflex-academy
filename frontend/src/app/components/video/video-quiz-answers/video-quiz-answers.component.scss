@@ -154,3 +154,8 @@ main.checked .answer.correct, main.checked .answer.missing, main.checked .answer
     font-size: 1.2rem;
   }
 }
+
+.failed{
+  margin-top: .5rem;
+  color: darkred;
+}
