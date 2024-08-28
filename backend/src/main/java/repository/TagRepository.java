@@ -9,6 +9,7 @@ import model.Tag;
 import model.Video;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TagRepository {
@@ -35,7 +36,9 @@ public class TagRepository {
             content.removeTag(tag);
         }
 
-        em.remove(tag);
+        em.createQuery("delete from Tag t where t.tagId = :id")
+                .setParameter("id", id)
+                .executeUpdate();
     }
 
     @Transactional
