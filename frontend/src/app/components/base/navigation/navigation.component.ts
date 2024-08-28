@@ -21,7 +21,7 @@ import {MatDivider} from "@angular/material/divider"
 import {User, UserRoleEnum, UserService} from "../../../service/user.service"
 import {Notification, NotificationService} from "../../../service/notification.service";
 import {NotificationComponent} from "../notification/notification.component";
-import {NgForOf} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
 import {EditVideoComponent} from "../../account/edit-video/edit-video.component";
 import {MatDialog} from "@angular/material/dialog";
 import {RequestVideoComponent} from "../../account/request-video/request-video.component";
@@ -44,7 +44,8 @@ import {MatBadge} from "@angular/material/badge";
     MatDivider,
     NotificationComponent,
     NgForOf,
-    MatBadge
+    MatBadge,
+    NgClass
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
@@ -119,6 +120,9 @@ export class NavigationComponent implements OnInit{
     localStorage.removeItem("IMA_USER_PASSWORD")
     this.userService.currentUser.next({userId: -1} as User)
   }
+
+  protected readonly Config = Config
+  protected readonly UserService = UserService
 }
 
 

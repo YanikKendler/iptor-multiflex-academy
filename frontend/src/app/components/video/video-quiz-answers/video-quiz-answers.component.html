@@ -4,7 +4,7 @@
     <p>Score {{ correctAnswers.length + notSelectedButCorrectAnswers.length }} /
       {{ notSelectedButCorrectAnswers.length + correctAnswers.length + wrongAnswers.length + missedAnswers.length }}</p>
 
-    <p>Score: {{ calculateScoreInDecimal()*100}}%</p>
+    <p>Score: {{ Utils.roundNumber(calculateScoreInDecimal()*100, 1) }}%</p>
 
     <div class="buttons">
       @if (inLearningPath && isQuizFinished && calculateScoreInDecimal() > 0.8 || calculateScoreInDecimal() < 0) {
