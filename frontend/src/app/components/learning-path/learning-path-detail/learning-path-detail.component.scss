@@ -116,16 +116,17 @@ main{
       margin-left: auto;
       translate: .5rem .2rem;
     }
+
+    &.closed{
+      width: 0;
+      padding: 0;
+    }
+
+    &:not(.closed){
+      @include floating-box;
+    }
   }
 
-  &.closed{
-    width: 0;
-    padding: 0;
-  }
-
-  &:not(.closed){
-    @include floating-box;
-  }
 }
 
 .steps{

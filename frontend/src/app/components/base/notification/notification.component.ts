@@ -62,7 +62,6 @@ export class NotificationComponent implements OnInit{
 
   @HostListener('click', ['$event'])
   linkToNotification(event: MouseEvent) {
-    console.log((event.composedPath().at(0) as HTMLElement).tagName)
     if((event.composedPath().at(0) as HTMLElement).tagName === "BUTTON" ||
       (event.composedPath().at(0) as HTMLElement).tagName === "svg" ||
       (event.composedPath().at(0) as HTMLElement).tagName === "path"){

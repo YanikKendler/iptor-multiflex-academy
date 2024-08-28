@@ -23,4 +23,8 @@ export class TagService {
   createTag(name: string) {
     return this.http.post<Tag>(`${Config.API_URL}/tag`, {name: name})
   }
+
+  deleteTag(tagId: number){
+    return this.http.delete(`${Config.API_URL}/tag/${tagId}`)
+  }
 }

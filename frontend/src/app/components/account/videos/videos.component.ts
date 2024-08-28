@@ -7,7 +7,8 @@ import {
   faPen,
   faSortDown,
   faStar,
-  faTrash
+  faTrash,
+  faCheckCircle
 } from "@fortawesome/free-solid-svg-icons";
 import {faPlayCircle} from "@fortawesome/free-regular-svg-icons";
 import {RouterLink} from "@angular/router";
@@ -15,7 +16,7 @@ import {MatDialog, matDialogAnimations, MatDialogModule, MatDialogRef} from '@an
 import {EditVideoComponent} from "../edit-video/edit-video.component"
 import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {FormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
 import {VideoAndLearningPathOverviewCollection, VideoService, VisibilityEnum} from "../../../service/video.service";
 import {MyLearningpathDTO, MyVideoDTO, UserService} from "../../../service/user.service";
 import {Tag} from "../../../service/tag.service";
@@ -42,7 +43,8 @@ import {ExtremeConfirmComponent} from "../../dialogue/extreme-confirm/extreme-co
     CdkMenuTrigger,
     PlayIconComponent,
     DropdownComponent,
-    MatTooltip
+    MatTooltip,
+    NgClass
   ],
   templateUrl: './videos.component.html',
   styleUrl: './videos.component.scss'
@@ -146,4 +148,5 @@ export class VideosComponent implements OnInit{
   protected readonly faSortDown = faSortDown;
   protected readonly Utils = Utils
   protected readonly faShareFromSquare = faShareFromSquare
+  protected readonly faCheckCircle = faCheckCircle
 }

@@ -10,7 +10,7 @@
     </th>
   </tr>
   @for (learningpath of userLearningpaths; track learningpath.contentId){
-    <tr>
+    <tr [ngClass]="{toApprove: !learningpath.approved}">
       <td class="mid">
         <app-learning-path-icon [style.color]="learningpath.color" [style.font-size]="'2rem'"></app-learning-path-icon>
         <div class="title">
@@ -39,7 +39,15 @@
 
       <td class="actions">
         @if(!learningpath.approved && userService.currentUser.value.userRole == 'ADMIN'){
-          <button mat-flat-button (click)="approvePath(learningpath.contentId)">approve</button>
+          <app-icon-button
+            matTooltip="This learning path is not approved yet, only you and the user who created it can see it. - After approval, the visibility can be changed"
+            (click)="approvePath(learningpath.contentId)"
+          >
+            <fa-icon
+              [icon]="faCheckCircle"
+              class="approve"
+            ></fa-icon>
+          </app-icon-button>
         }
         <app-icon-button (click)="deleteLearningPath(learningpath.contentId)">
           <fa-icon [icon]="faTrash" class="small"></fa-icon>

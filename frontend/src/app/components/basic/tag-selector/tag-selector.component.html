@@ -16,7 +16,7 @@
 <ng-template #tagPopup>
   <div class="tagOptions" cdkMenu>
     @for(tag of tagOptions; track tag.tagId){
-      <app-chip (click)="addTag(tag)">{{tag.name}}</app-chip>
+      <app-chip (click)="addTag(tag)" [deletable]="true" (onDelete)="deleteTag(tag)">{{tag.name}}</app-chip>
     }
     @if(tagInput.value.length >= 2){
       <button mat-flat-button color="secondary" (click)="createTag(tagInput.value)">Create tag {{tagInput.value}}</button>

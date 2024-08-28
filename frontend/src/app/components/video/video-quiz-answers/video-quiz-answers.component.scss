@@ -137,6 +137,7 @@ main.checked .answer.correct, main.checked .answer.missing, main.checked .answer
   margin-top: 1rem;
   gap: 1rem;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .finished{

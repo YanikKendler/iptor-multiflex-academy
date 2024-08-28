@@ -62,4 +62,10 @@ export class TagSelectorComponent implements OnInit{
     this.generateTagOptions("")
     this.selectedTagsChange.emit(this.selectedTags)
   }
+
+  deleteTag(tag: Tag) {
+    this.tagService.deleteTag(tag.tagId).subscribe(() => {
+
+    })
+  }
 }

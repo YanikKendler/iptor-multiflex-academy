@@ -11,7 +11,7 @@
     </th>
   </tr>
   @for (video of userContent; track video.contentId){
-    <tr>
+    <tr [ngClass]="{toApprove: !video.approved}">
       <td class="mid">
         <app-play-icon [style.color]="video.color" [style.font-size]="'2rem'"></app-play-icon>
         <div class="title">
@@ -44,7 +44,15 @@
 
       <td class="actions">
         @if(!video.approved && userService.currentUser.value.userRole == 'ADMIN'){
-          <button mat-flat-button (click)="approveVideo(video.contentId)">approve</button>
+          <app-icon-button
+            matTooltip="This learning path is not approved yet, only you and the user who created it can see it. - After approval, the visibility can be changed"
+            (click)="approveVideo(video.contentId)"
+          >
+            <fa-icon
+              [icon]="faCheckCircle"
+              class="approve"
+            ></fa-icon>
+          </app-icon-button>
         }
         <app-icon-button (click)="deleteVideo(video.contentId)">
           <fa-icon [icon]="faTrash"></fa-icon>

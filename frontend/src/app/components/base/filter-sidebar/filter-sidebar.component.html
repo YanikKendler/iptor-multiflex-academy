@@ -23,7 +23,12 @@
 
 <div class="tags">
   @for(tag of tagOptions; track tag.tagId){
-    <app-chip (click)="updateFilter(tag);" [ngClass]="isSelected(tag) ? 'selected' : ''">{{ tag.name }}</app-chip>
+    <app-chip
+      (click)="updateFilter(tag);"
+      [ngClass]="isSelected(tag) ? 'selected' : ''"
+    >
+      {{ tag.name }}
+    </app-chip>
   }
   @if(tagOptions.length == 0){
     <p class="no-results">No tags found</p>

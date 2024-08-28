@@ -28,7 +28,8 @@ fa-icon{
   display: flex;
 
   ::ng-deep .mat-badge-content{
-    --badge-border-color: #{primary-500};
+    --badge-border-color: #{$primary-500};
+    translate: -.4rem .4rem;
   }
 }
 

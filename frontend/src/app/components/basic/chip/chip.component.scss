@@ -18,4 +18,16 @@ p {
 app-icon-button{
   font-size: 1rem;
   margin-left: -.5rem;
+
+  &.delete {
+    fa-icon {
+      color: $gray-400;
+    }
+
+    &:hover fa-icon {
+      color: indianred;
+    }
+  }
 }
+
+

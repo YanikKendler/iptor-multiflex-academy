@@ -7,7 +7,8 @@ import {
   faPen,
   faSortDown,
   faStar,
-  faTrash
+  faTrash,
+  faCheckCircle
 } from "@fortawesome/free-solid-svg-icons";
 import {faPlayCircle} from "@fortawesome/free-regular-svg-icons";
 import {RouterLink} from "@angular/router";
@@ -15,7 +16,7 @@ import {MatDialog, matDialogAnimations, MatDialogModule, MatDialogRef} from '@an
 import {EditVideoComponent} from "../edit-video/edit-video.component"
 import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {FormsModule} from "@angular/forms";
-import {NgForOf} from "@angular/common";
+import {NgClass, NgForOf} from "@angular/common";
 import {VideoAndLearningPathOverviewCollection, VideoService, VisibilityEnum} from "../../../service/video.service";
 import {MyLearningpathDTO, UserService} from "../../../service/user.service";
 import {Tag} from "../../../service/tag.service";
@@ -31,6 +32,7 @@ import {LearningPathService} from "../../../service/learning-path.service"
 import {EditLearningpathComponent} from "../edit-learningpath/edit-learningpath.component"
 import {MatDivider} from "@angular/material/divider"
 import {ExtremeConfirmComponent} from "../../dialogue/extreme-confirm/extreme-confirm.component";
+import {MatSnackBar} from "@angular/material/snack-bar"
 
 @Component({
   selector: 'app-learningpaths',
@@ -48,7 +50,8 @@ import {ExtremeConfirmComponent} from "../../dialogue/extreme-confirm/extreme-co
     DropdownComponent,
     MatTooltip,
     LearningPathIconComponent,
-    MatDivider
+    MatDivider,
+    NgClass
   ],
   templateUrl: './learningpaths.component.html',
   styleUrl: './learningpaths.component.scss'
@@ -59,8 +62,9 @@ export class LearningpathsComponent implements OnInit{
   protected readonly faStar = faStar;
   protected readonly faPen = faPen;
 
-  userService = inject(UserService);
-  learningpathService = inject(LearningPathService);
+  protected userService = inject(UserService);
+  protected learningpathService = inject(LearningPathService);
+  protected snackBar = inject(MatSnackBar)
 
   userLearningpaths : MyLearningpathDTO[] = [];
 
@@ -132,13 +136,16 @@ export class LearningpathsComponent implements OnInit{
     })
   }
 
+  approvePath(contentId: number) {
+      this.userService.approveContent(contentId).subscribe(response => {
+          let learningPath = this.userLearningpaths.find(learningpath => learningpath.contentId == contentId)
+          learningPath!.approved = true;
+          this.snackBar.open(`Learning path "${learningPath!.title}" approved`, "", {duration: 2000})
+      })
+  }
+
   protected readonly faTrash = faTrash;
   protected readonly Utils = Utils
   protected readonly faShareFromSquare = faShareFromSquare
-
-  approvePath(contentId: number) {
-      this.userService.approveContent(contentId).subscribe(response => {
-          this.userLearningpaths.find(learningpath => learningpath.contentId == contentId)!.approved = true;
-      })
-  }
+  protected readonly faCheckCircle = faCheckCircle
 }
