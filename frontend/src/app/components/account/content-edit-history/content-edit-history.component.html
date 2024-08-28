@@ -1,0 +1,11 @@
+<h2>History of {{data.videoTitle}}</h2>
+
+<div class="history">
+  @for (historyEntry of contentEditHistory; track historyEntry.timestamp){
+    <p>
+      <span>{{ historyEntry.user.username }}</span>
+      has updated
+      <span>{{ historyEntry.type }}</span>
+      at {{ Utils.toFullDateTimeString(historyEntry.timestamp) }}</p>
+  }
+</div>

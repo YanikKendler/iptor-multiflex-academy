@@ -39,8 +39,6 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
 
   isQuizFinished: boolean = false
 
-  //todo when the user swaps to another page, the quiz should keep the progress
-
   ngOnChanges() {
     this.resetQuiz()
     this.tryToGetPreviousResult()

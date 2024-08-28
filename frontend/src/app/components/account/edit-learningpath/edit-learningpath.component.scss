@@ -10,6 +10,11 @@
   gap: .5rem;
 }
 
+.header{
+  display: flex;
+  justify-content: space-between;
+}
+
 h2{
   font-weight: 500;
   margin-block: .5rem;

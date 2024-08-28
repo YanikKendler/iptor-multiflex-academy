@@ -99,7 +99,6 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
     this.bookmark?.toggleMarked()
     console.log("Added to bookmarks")
 
-    // todo user not hard coded
     this.userService.toggleSavedContent(this.video.contentId)
   }
 

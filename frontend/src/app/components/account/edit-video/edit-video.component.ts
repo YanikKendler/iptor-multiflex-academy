@@ -12,7 +12,7 @@ import {NgClass, NgForOf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {TextfieldComponent} from "../../basic/textfield/textfield.component"
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faClockRotateLeft, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {UploadVideoComponent} from "../upload-video/upload-video.component"
 import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {MatButton} from "@angular/material/button"
@@ -30,6 +30,7 @@ import {TagSelectorComponent} from "../../basic/tag-selector/tag-selector.compon
 import {Config} from "../../../config";
 import {UserService} from "../../../service/user.service"
 import {MatSnackBar} from "@angular/material/snack-bar"
+import {ContentEditHistoryComponent} from "../content-edit-history/content-edit-history.component";
 @Component({
   selector: 'app-edit-video',
   standalone: true,
@@ -169,6 +170,17 @@ export class EditVideoComponent implements OnInit{
     })
   }
 
+  openHistory() {
+    this.dialog.open(ContentEditHistoryComponent, {
+      width: "800px",
+      data: {
+        contentId: this.video.contentId,
+        videoTitle: this.video.title
+      }
+    }).afterClosed().subscribe((confirm: boolean) => {
+    })
+  }
+
   addQuestion() {
     if(!this.video.questions) return
 
@@ -229,4 +241,5 @@ export class EditVideoComponent implements OnInit{
   protected readonly Utils = Utils
   protected readonly faPlus = faPlus
   protected readonly faTrash = faTrash
+  protected readonly faClockRotateLeft = faClockRotateLeft;
 }

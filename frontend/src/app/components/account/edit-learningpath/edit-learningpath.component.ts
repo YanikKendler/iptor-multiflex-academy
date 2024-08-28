@@ -12,7 +12,7 @@ import {NgClass, NgForOf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {TextfieldComponent} from "../../basic/textfield/textfield.component"
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faClockRotateLeft, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {UploadVideoComponent} from "../upload-video/upload-video.component"
 import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {MatButton} from "@angular/material/button"
@@ -29,6 +29,7 @@ import {MatTooltip} from "@angular/material/tooltip"
 import {LearningPathDetailDTO, LearningPathEntryDTO, LearningPathService} from "../../../service/learning-path.service"
 import {TagSelectorComponent} from "../../basic/tag-selector/tag-selector.component"
 import {VideoEntryComponent} from "../video-entry/video-entry.component"
+import {ContentEditHistoryComponent} from "../content-edit-history/content-edit-history.component";
 @Component({
   selector: 'app-edit-learningpath',
   standalone: true,
@@ -165,6 +166,17 @@ export class EditLearningpathComponent implements OnInit{
     })
   }
 
+  openHistory() {
+    this.dialog.open(ContentEditHistoryComponent, {
+      width: "800px",
+      data: {
+        contentId: this.learningPath.contentId,
+        videoTitle: this.learningPath.title
+      }
+    }).afterClosed().subscribe((confirm: boolean) => {
+    })
+  }
+
   generateVideoOptions(input: string) {
     this.videoOptions = this.allVideos.filter(video => !this.learningPath.entries.filter(t => t.videoId === video.contentId).length)
     this.videoOptions = this.videoOptions.filter(video => video.title.toLowerCase().includes(input.toLowerCase()))
@@ -216,4 +228,5 @@ export class EditLearningpathComponent implements OnInit{
   protected readonly Utils = Utils
   protected readonly faPlus = faPlus
   protected readonly faTrash = faTrash
+  protected readonly faClockRotateLeft = faClockRotateLeft;
 }

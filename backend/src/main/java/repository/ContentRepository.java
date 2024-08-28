@@ -66,4 +66,11 @@ public class ContentRepository {
 
         em.persist(new ContentNotification(c.getUser(), userRepository.getById(userId), c, ContentNotificationEnum.approved));
     }
+
+    public List<ContentEditHistoryDTO> getContentEditHistory(Long contentId) {
+        List<ContentEditHistory> history = em.createQuery("SELECT h FROM ContentEditHistory h WHERE h.content.contentId = :contentId", ContentEditHistory.class)
+                .setParameter("contentId", contentId).getResultList();
+
+        return history.stream().map(h -> new ContentEditHistoryDTO(h.getUser(), h.getType(), h.getTimestamp())).toList();
+    }
 }

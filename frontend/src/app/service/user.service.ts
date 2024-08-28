@@ -77,6 +77,16 @@ export interface UserTreeDTO{
   subordinates: UserTreeDTO[]
 }
 
+export enum ContentEditType{
+  tags="tags", title="title", description="description", color="color",
+  visibility="visibility", entries="entries", questions="questions", videoFile="videoFile"
+}
+
+export interface ContentEditHistoryDTO{
+  user: User
+  type: ContentEditType
+  timestamp: string
+}
 
 @Injectable({
   providedIn: 'root'
@@ -151,5 +161,9 @@ export class UserService {
 
   isUserAllowedToSeeContent(contentId: number) {
     return this.http.get(`${Config.API_URL}/user/${this.currentUser.value.userId}/isallowed/${contentId}`)
+  }
+
+  getContentHistory(contentId: number){
+    return this.http.get<ContentEditHistoryDTO[]>(`${Config.API_URL}/content/${contentId}/history`)
   }
 }

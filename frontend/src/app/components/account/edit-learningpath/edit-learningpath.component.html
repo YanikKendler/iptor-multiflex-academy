@@ -1,4 +1,13 @@
-<h2>Description</h2>
+<div class="header">
+  <h2>Description</h2>
+
+  @if(data > 0){
+    <app-icon-button (click)="openHistory()">
+      <fa-icon [icon]="faClockRotateLeft"></fa-icon>
+    </app-icon-button>
+  }
+</div>
+
 <section class="basics">
   <div class="left">
     <app-textfield
