@@ -98,3 +98,18 @@ app-chip{
   color: $gray-400;
   font-size: .9rem;
 }
+
+.edit{
+  font-size: .85rem;
+  color: $gray-400;
+  text-decoration: underline;
+  margin:{
+    top: auto;
+    left: auto;
+  };
+  cursor: pointer;
+
+  &:hover{
+    color: black;
+  }
+}

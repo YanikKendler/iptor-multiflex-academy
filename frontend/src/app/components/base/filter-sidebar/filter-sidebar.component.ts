@@ -5,9 +5,10 @@ import {faAnglesLeft, faAnglesRight, faSearch} from "@fortawesome/free-solid-svg
 import {Tag, TagService} from "../../../service/tag.service";
 import {ChipComponent} from "../../basic/chip/chip.component";
 import {VisibilityEnum} from "../../../service/video.service";
-import {NgClass} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {MatRipple} from "@angular/material/core"
 import {MatBadge} from "@angular/material/badge"
+import {UserService} from "../../../service/user.service"
 
 @Component({
   selector: 'app-filter-sidebar',
@@ -18,7 +19,8 @@ import {MatBadge} from "@angular/material/badge"
     ChipComponent,
     NgClass,
     MatRipple,
-    MatBadge
+    MatBadge,
+    NgIf
   ],
   templateUrl: './filter-sidebar.component.html',
   styleUrl: './filter-sidebar.component.scss'
@@ -33,6 +35,7 @@ export class FilterSidebarComponent implements OnInit {
   sideBarOpen: boolean = true;
 
   tagService = inject(TagService);
+  userService = inject(UserService);
 
   allTags : Tag[] = []
   selectedTags: Tag[] = []

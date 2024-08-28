@@ -7,3 +7,9 @@
     <fa-icon [icon]="faXmark"></fa-icon>
   </app-icon-button>
 }
+
+@if(deletable){
+  <app-icon-button size="2rem" (click)="delete($event)" class="delete">
+    <fa-icon [icon]="faTrash"></fa-icon>
+  </app-icon-button>
+}
