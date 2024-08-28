@@ -345,8 +345,9 @@ public class UserRepository {
             return null;
         }
 
+        System.out.println(userId);
         List<Video> videos = em.createQuery("select v from Video v" +
-                        " where v.visibility = 'self' and v.contentId = :userId or :isAdmin = true or v.visibility != 'self'" +
+                        " where (v.visibility = 'self' and v.user.userId = :userId) or :isAdmin = true or v.visibility != 'self'" +
                         " order by v.contentId", Video.class)
                 .setParameter("userId", userId)
                 .setParameter("isAdmin", getById(userId).getUserRole() == UserRoleEnum.ADMIN)

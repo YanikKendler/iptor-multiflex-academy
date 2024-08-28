@@ -3,6 +3,7 @@ package repository;
 import dtos.*;
 import enums.ContentEditType;
 import enums.ContentNotificationEnum;
+import enums.UserRoleEnum;
 import enums.VisibilityEnum;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -216,7 +217,15 @@ public class LearningPathRepository {
                 data.color(),
                 em.find(User.class, userId)
         );
+
+        boolean isUserAdmin = userRepository.getById(userId).getUserRole().equals(UserRoleEnum.ADMIN);
+        newLearningPath.setApproved(isUserAdmin);
         em.persist(newLearningPath);
+
+        if(!isUserAdmin){
+            User admin = em.createQuery("select u from User u where u.userRole = 'ADMIN'", User.class).getSingleResult();
+            em.persist(new ContentNotification(admin, newLearningPath.getUser(), newLearningPath, ContentNotificationEnum.videoCreateRequest));
+        }
 
         return newLearningPath;
     }

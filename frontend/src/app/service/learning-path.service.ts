@@ -68,7 +68,7 @@ export class LearningPathService {
   }
 
   createLearningPath(learningPath: LearningPathDetailDTO){
-    return this.http.post<LearningPathDetailDTO>(`${Config.API_URL}/learningpath/?userId=${this.userService.currentUser.value.userId}`, learningPath)
+    return this.http.post<LearningPathDetailDTO>(`${Config.API_URL}/learningpath?userId=${this.userService.currentUser.value.userId}`, learningPath)
   }
 
   deletePath(learningPathId: number) {

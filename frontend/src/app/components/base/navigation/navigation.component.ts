@@ -83,6 +83,7 @@ export class NavigationComponent implements OnInit{
     this.userService.currentUser.subscribe(user => {
       if(user.userId <= 0) return
       this.notificationService.getNotifications().subscribe(notifications => {
+        console.log(notifications)
         this.fullNotificationList = notifications
         this.notificationList = this.fullNotificationList
       })

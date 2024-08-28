@@ -3,6 +3,7 @@ package repository;
 import dtos.*;
 import enums.ContentEditType;
 import enums.ContentNotificationEnum;
+import enums.UserRoleEnum;
 import enums.VisibilityEnum;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -63,7 +64,15 @@ public class VideoRepository {
                 createVideoDTO.videoFile(),
                 em.find(User.class, userId)
         );
+
+        boolean isUserAdmin = userRepository.getById(userId).getUserRole().equals(UserRoleEnum.ADMIN);
+        newVideo.setApproved(isUserAdmin);
         em.persist(newVideo);
+
+        if(!isUserAdmin){
+            User admin = em.createQuery("select u from User u where u.userRole = 'ADMIN'", User.class).getSingleResult();
+            em.persist(new ContentNotification(admin, newVideo.getUser(), newVideo, ContentNotificationEnum.videoCreateRequest));
+        }
 
         return newVideo;
     }
