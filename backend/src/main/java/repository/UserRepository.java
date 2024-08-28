@@ -5,6 +5,7 @@ import dtos.ContentForUserDTO;
 import dtos.VideoOverviewDTO;
 import enums.ContentNotificationEnum;
 import enums.UserRoleEnum;
+import enums.VisibilityEnum;
 import io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -568,5 +569,16 @@ public class UserRepository {
             contentAssignment.setFinished(true);
             em.merge(contentAssignment);
         } catch(NoResultException e){}
+    }
+
+    public boolean isAllowed(Long userId, Long contentId) {
+        try{
+            Content content = em.createQuery("select c from Content c where c.contentId = :contentId", Content.class)
+                    .setParameter("contentId", contentId).getSingleResult();
+
+            return content.isVisibleForUser(getById(userId));
+        } catch(NoResultException e){
+            return false;
+        }
     }
 }

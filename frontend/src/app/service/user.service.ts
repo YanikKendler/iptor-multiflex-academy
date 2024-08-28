@@ -148,4 +148,8 @@ export class UserService {
   approveContent(contentId: number){
     return this.http.put(`${Config.API_URL}/content/${contentId}/approve?userId=${this.currentUser.value.userId}`, {})
   }
+
+  isUserAllowedToSeeContent(contentId: number) {
+    return this.http.get(`${Config.API_URL}/user/${this.currentUser.value.userId}/isallowed/${contentId}`)
+  }
 }
