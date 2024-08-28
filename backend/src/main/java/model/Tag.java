@@ -1,11 +1,10 @@
 package model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+
+import java.util.Set;
 
 @Entity
 public class Tag {
@@ -14,6 +13,10 @@ public class Tag {
     private Long tagId;
 
     private String name;
+
+    @ManyToMany(mappedBy = "tags", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private Set<Content> usageList;
 
     public Tag (String name){
         this.name = name;
@@ -32,5 +35,13 @@ public class Tag {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Content> getUsageList() {
+        return usageList;
+    }
+
+    public void setUsageList(Set<Content> usageList) {
+        this.usageList = usageList;
     }
 }

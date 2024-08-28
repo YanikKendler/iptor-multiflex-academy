@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import model.Content;
 import model.Tag;
 import model.Video;
 
@@ -28,7 +29,13 @@ public class TagRepository {
 
     @Transactional
     public void delete(Long id) {
-        em.remove(getById(id));
+        Tag tag = getById(id);
+
+        for (Content content : tag.getUsageList()) {
+            content.removeTag(tag);
+        }
+
+        em.remove(tag);
     }
 
     @Transactional

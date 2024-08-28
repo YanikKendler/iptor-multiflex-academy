@@ -65,7 +65,7 @@ export class TagSelectorComponent implements OnInit{
 
   deleteTag(tag: Tag) {
     this.tagService.deleteTag(tag.tagId).subscribe(() => {
-
+      this.allTags = this.allTags.filter(t => t.tagId !== tag.tagId)
     })
   }
 }

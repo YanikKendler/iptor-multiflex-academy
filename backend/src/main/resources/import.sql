@@ -83,12 +83,12 @@ INSERT INTO content_question (video_contentid, questions_questionid) VALUES (1, 
 INSERT INTO content_question (video_contentid, questions_questionid) VALUES (1, 4);
 
 -- Insert demo data for video_tag
-INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (1, 1);
-INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (4, 2);
-INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (2, 3);
-INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (3, 4);
-INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (3, 2);
-INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (3, 1);
+INSERT INTO content_tag (usagelist_contentid, tags_tagid) VALUES (1, 1);
+INSERT INTO content_tag (usagelist_contentid, tags_tagid) VALUES (4, 2);
+INSERT INTO content_tag (usagelist_contentid, tags_tagid) VALUES (2, 3);
+INSERT INTO content_tag (usagelist_contentid, tags_tagid) VALUES (3, 4);
+INSERT INTO content_tag (usagelist_contentid, tags_tagid) VALUES (3, 2);
+INSERT INTO content_tag (usagelist_contentid, tags_tagid) VALUES (3, 1);
 
 -- Insert demo data for video_star_rating
 INSERT INTO content_starrating (video_contentid, starratings_ratingid) VALUES (1, 1);
@@ -118,11 +118,11 @@ INSERT INTO content_learningpathentry (learningpath_contentid, entries_pathentry
 INSERT INTO content_learningpathentry (learningpath_contentid, entries_pathentryid) VALUES (7, 6);
 
 -- Insert demo data for Learning Path Tags
-INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (5, 1);
-INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (5, 3);
-INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (6, 3);
-INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (6, 4);
-INSERT INTO content_tag (content_contentid, tags_tagid) VALUES (7, 4);
+INSERT INTO content_tag (usagelist_contentid, tags_tagid) VALUES (5, 1);
+INSERT INTO content_tag (usagelist_contentid, tags_tagid) VALUES (5, 3);
+INSERT INTO content_tag (usagelist_contentid, tags_tagid) VALUES (6, 3);
+INSERT INTO content_tag (usagelist_contentid, tags_tagid) VALUES (6, 4);
+INSERT INTO content_tag (usagelist_contentid, tags_tagid) VALUES (7, 4);
 
 -- Insert demo data for VideoAssignment
 INSERT INTO contentassignment (content_contentid, assignedby_userid, assignedto_userid, timestamp, isfinished) VALUES (1, 1, 2, '2023-10-01', true);
