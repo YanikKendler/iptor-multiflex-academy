@@ -81,15 +81,15 @@
       <input
         type="text"
         placeholder="assign content"
-        #videoInput
         [cdkMenuTriggerFor]="videoPopup"
         (input)="generateContentOptions(videoInput.value)"
         (focus)="generateContentOptions('')"
+        #videoInput
       >
       <ng-template #videoPopup>
         <div class="videoOptions" cdkMenu>
           @for (content of contentOptions; track content.contentId) {
-            <p (click)="assignContent(content)" class="option">
+            <p (click)="assignContent(content);" class="option">
               {{ content.title }} • {{ content.type }}
             </p>
           }

@@ -498,9 +498,15 @@ public class UserRepository {
             progress = 0;
         }
 
-        boolean isFinished = em.createQuery("select ca.isFinished from ContentAssignment ca " +
-                        "where ca.assignedTo.userId = :userId and ca.content.contentId = :contentId", Boolean.class)
-                .setParameter("userId", userId).setParameter("contentId", content.getContentId()).getSingleResult();
+        boolean isFinished;
+
+        try{
+            isFinished = em.createQuery("select ca.isFinished from ContentAssignment ca " +
+                            "where ca.assignedTo.userId = :userId and ca.content.contentId = :contentId", Boolean.class)
+                    .setParameter("userId", userId).setParameter("contentId", content.getContentId()).getSingleResult();
+        } catch(NoResultException e){
+            isFinished = false;
+        }
 
         double progressPercentage = 0;
         if(content instanceof Video && progress > 0){
