@@ -18,7 +18,6 @@ import {Utils} from "../../../utils"
 import {ViewProgressService} from "../../../service/view-progress.service";
 import {MatButton} from "@angular/material/button";
 import {Config} from "../../../config"
-import {MatButton} from "@angular/material/button"
 import {faArrowLeft, faBars} from "@fortawesome/free-solid-svg-icons"
 
 @Component({
