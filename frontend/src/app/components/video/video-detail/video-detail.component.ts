@@ -128,8 +128,6 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   }
 
   protected readonly faCheckCircle = faCheckCircle;
-
   protected readonly Config = Config
-  protected readonly faCheckCircle = faCheckCircle
   protected readonly faPen = faPen
 }
