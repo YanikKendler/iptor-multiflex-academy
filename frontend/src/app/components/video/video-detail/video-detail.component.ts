@@ -11,9 +11,9 @@ import {IconButtonComponent} from "../../basic/icon-button/icon-button.component
 import {UserService} from "../../../service/user.service";
 import {VideoCommentContainerComponent} from "../video-comment-container/video-comment-container.component"
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faShare} from "@fortawesome/free-solid-svg-icons";
+import {faCheckCircle, faPen, faShare} from "@fortawesome/free-solid-svg-icons";
 import {Config} from "../../../config";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {MatSnackBar} from "@angular/material/snack-bar"
 import {MatTooltip} from "@angular/material/tooltip"
 import {MatButton} from "@angular/material/button";
@@ -33,7 +33,8 @@ import {MatButton} from "@angular/material/button";
     FaIconComponent,
     NgIf,
     MatTooltip,
-    MatButton
+    MatButton,
+    NgClass
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss'
@@ -125,4 +126,8 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
       this.video.approved = true
     })
   }
+
+  protected readonly Config = Config
+  protected readonly faCheckCircle = faCheckCircle
+  protected readonly faPen = faPen
 }

@@ -1,6 +1,6 @@
 <app-navigation [simple]="true"></app-navigation>
 
-<main>
+<main [ngClass]="{notApproved: userService.currentUser.value.userRole == 'ADMIN' && video.approved == false}">
   <div class="top">
     <app-media-player [video]="video" (isFinished)="finishVideo()"></app-media-player>
     <div class="right">
@@ -26,12 +26,20 @@
         >
           <fa-icon [icon]="faShare"></fa-icon>
         </app-icon-button>
-      </div>
 
-      @if(userService.currentUser.value.userRole == "ADMIN" && video.approved == false){
-        <!--<button mat-stroked-button (click)="rejectVideo()">reject</button>-->
-        <button mat-flat-button (click)="approveVideo()">approve</button>
-      }
+        @if(userService.currentUser.value.userRole == "ADMIN" && video.approved == false){
+          <app-icon-button
+            [matTooltip]="Config.generateAproveContentTooltipText('video')"
+            (click)="approveVideo()"
+            class="approveVideo"
+          >
+            <fa-icon
+              [icon]="faCheckCircle"
+              class="approve"
+            ></fa-icon>
+          </app-icon-button>
+        }
+      </div>
     </div>
   </div>
 

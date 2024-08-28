@@ -24,7 +24,7 @@ import {NotificationComponent} from "../notification/notification.component";
 import {NgClass, NgForOf} from "@angular/common";
 import {EditVideoComponent} from "../../account/edit-video/edit-video.component";
 import {MatDialog} from "@angular/material/dialog";
-import {RequestVideoComponent} from "../../account/request-video/request-video.component";
+import {RequestVideoComponent} from "../../dialogue/request-video/request-video.component";
 import {MatBadge} from "@angular/material/badge";
 
 @Component({

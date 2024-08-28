@@ -33,6 +33,7 @@ import {EditLearningpathComponent} from "../edit-learningpath/edit-learningpath.
 import {MatDivider} from "@angular/material/divider"
 import {ExtremeConfirmComponent} from "../../dialogue/extreme-confirm/extreme-confirm.component";
 import {MatSnackBar} from "@angular/material/snack-bar"
+import {Config} from "../../../config"
 
 @Component({
   selector: 'app-learningpaths',
@@ -148,4 +149,5 @@ export class LearningpathsComponent implements OnInit{
   protected readonly Utils = Utils
   protected readonly faShareFromSquare = faShareFromSquare
   protected readonly faCheckCircle = faCheckCircle
+    protected readonly Config = Config
 }

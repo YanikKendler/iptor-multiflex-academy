@@ -10,6 +10,7 @@ import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {Utils} from "../../../utils"
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {Config} from "../../../config";
+import {MatSnackBar} from "@angular/material/snack-bar"
 
 @Component({
   selector: 'app-upload-video',
@@ -27,8 +28,10 @@ export class UploadVideoComponent {
   @Input() videoFile: VideoFile = {} as VideoFile
   @Output() uploadFinished = new EventEmitter<VideoFile>()
 
-  readonly videoService = inject(VideoService);
-  readonly dialog = inject(MatDialog);
+  readonly videoService = inject(VideoService)
+  readonly dialog = inject(MatDialog)
+
+  readonly snackbar = inject(MatSnackBar)
 
   uploadProgress: number = 0;
 
@@ -70,7 +73,6 @@ export class UploadVideoComponent {
     }
   }
 
-// In `src/app/components/account/upload-video/upload-video.component.ts`
   uploadFile(file: File) {
     const formData = new FormData();
     formData.append('file', file);
@@ -91,16 +93,24 @@ export class UploadVideoComponent {
         this.uploadFinished.emit(this.videoFile);
         this.uploadProgress = 0;
       } else {
-        console.error('Upload failed:', xhr.statusText);
+        this.fileUploadError(xhr.response)
       }
     };
 
     xhr.onerror = () => {
-      console.error('Upload error:', xhr.statusText);
+      this.fileUploadError(xhr.statusText)
     };
 
     this.videoFile.videoFileId = 0;
     xhr.send(formData);
+  }
+
+  fileUploadError(text: string){
+    console.error(`Video upload Failed - please try again or contact an administrator - ERROR: ${text}`)
+    this.snackbar.open(`Video upload Failed - please try again or contact an administrator - ERROR: ${text}`, "dismiss", {panelClass: 'error'} )
+    this.videoFile.videoFileId = -1
+    this.uploadProgress = 0
+    this.fileInput.nativeElement.value = ""
   }
 
   confirmReplacement(continuationFunction: () => void){
@@ -120,7 +130,10 @@ export class UploadVideoComponent {
       this.deleteVideo()
 
       continuationFunction()
-    });
+    },
+    ()=>{
+      this.snackbar.open("Failed to delete the old video", "Dismiss", {duration: 5000})
+    })
   }
 
   confirmDropReplacement(e:any){

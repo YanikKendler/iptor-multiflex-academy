@@ -14,7 +14,7 @@ public abstract class Content {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contentId;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Set<Tag> tags;
 
     @ManyToOne

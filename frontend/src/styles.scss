@@ -66,6 +66,8 @@ a{
 
   --mat-badge-background-color: #{$secondary-400};
 
+  --mdc-linear-progress-active-indicator-color: #{$secondary-500};
+
  /* --mdc-checkbox-selected-icon-color: #{$secondary-500};
 
   --mat-minimal-pseudo-checkbox-selected-checkmark-color: #{$secondary-500};
@@ -119,6 +121,12 @@ input[type="color"] {
 //endregion
 
 body {
+  .mdc-snackbar{
+    &.error{
+      --mdc-snackbar-container-color: indianred;
+    }
+  }
+
   .mat-badge-content{
     outline: 2px solid var(--badge-border-color, white);
   }
@@ -156,6 +164,8 @@ body {
     white-space: nowrap;
 
     &:not([color="secondary"]):not([color="error"]) {
+      --mat-text-button-state-layer-color: #{$primary-500};
+
       &[mat-button] {
         color: $primary-500;
       }
@@ -176,23 +186,42 @@ body {
     }
 
     &[color="secondary"] {
-      background-color: $secondary-500;
+      --mat-text-button-state-layer-color: #{$secondary-500};
+      --mat-outlined-button-state-layer-color: #{$secondary-500};
+      --mat-filled-button-state-layer-color: #{$secondary-500};
+
+      &[mat-button] {
+        color: $secondary-400;
+      }
+
+      &[mat-flat-button] {
+        color: white;
+        background-color: $secondary-500;
+
+        &.cdk-focused {
+          background-color: $secondary-700;
+        }
+      }
 
       &[mat-stroked-button] {
         color: $secondary-100;
         background-color: hsla(31, 100%, 47%, 0.2);
         border-color: $secondary-500;
+
+        &.cdk-focused {
+          background-color: $secondary-800;
+        }
       }
 
       &[disabled] {
         pointer-events: initial;
         cursor: not-allowed;
-        color: #ffffff;
-        background-color: #ad8d61;
+        opacity: 0.5;
       }
     }
 
     &[color="error"] {
+      --mat-text-button-state-layer-color: red;
       color: white;
 
       &.cdk-focused{

@@ -22,10 +22,7 @@
       <p>Video Requests</p>
     </div>
 
-    <div [ngClass]="{'active': currentPage === 'user-statistics'}" (click)="switchPage('user-statistics')">
-      <fa-icon [icon]="faChartSimple"></fa-icon>
-      <p>Show Statistics</p>
-    </div>
+    <p (click)="switchPage('user-statistics')" class="show-statistics">Show User Statistics</p>
   </div>
 
   <section>

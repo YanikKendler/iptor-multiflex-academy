@@ -40,7 +40,7 @@
       <td class="actions">
         @if(!learningpath.approved && userService.currentUser.value.userRole == 'ADMIN'){
           <app-icon-button
-            matTooltip="This learning path is not approved yet, only you and the user who created it can see it. - After approval, the visibility can be changed"
+            [matTooltip]="Config.generateAproveContentTooltipText('learningpath')"
             (click)="approvePath(learningpath.contentId)"
           >
             <fa-icon

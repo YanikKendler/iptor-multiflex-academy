@@ -8,7 +8,6 @@
     placeholder="{{placeholder}}"
     (input)="valueChange.emit(input.value)"
     #input
-    (keydown)="logInput()"
     [(ngModel)]="value"
     [maxLength]="maxLength"
   >
@@ -20,15 +19,15 @@
     placeholder="{{placeholder}}"
     (input)="valueChange.emit(input.value)"
     #input
-    (keydown)="logInput()"
+    [(ngModel)]="value"
     [maxLength]="maxLength"
-  >{{value}}</textarea>
+  ></textarea>
 }
 
-@if(maxLength && value && value.length){
+@if(maxLength && value){
   @if(value.length >= maxLength){
     <span class="error">Maximum of characters reached: {{value.length}}/{{maxLength}}</span>
-  } @else if(value.length >= maxLength-5){
+  } @else if(value.length >= maxLength-maxLength/10){
     <span class="warning">Maximum of characters almost reached: {{value.length}}/{{maxLength}}</span>
   }
 }

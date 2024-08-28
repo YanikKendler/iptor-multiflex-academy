@@ -1,23 +1,42 @@
 @import "../../../variables";
 
+:host{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 main{
   display: flex;
   margin-left: 10rem;
   margin-block: 2.5rem;
+  height: 100%;
 }
 
 .sidebar{
   display: flex;
   flex-direction: column;
   gap: .5rem;
+
+  p.show-statistics{
+    margin-top: auto;
+    text-decoration: underline;
+    color: $gray-400;
+    cursor: pointer;
+
+    &:hover{
+      color: black;
+    }
+  }
 }
 
 .sidebar div{
-  display: flex;
-  justify-content: left;
+  display: grid;
+  grid-template-columns: 2rem auto;
   padding: .25rem;
   align-items: center;
-  gap: .2rem;
+  align-content: center;
+  gap: .3rem;
   cursor: pointer;
   border-radius: 0.3125rem;
   width: 15vw;
@@ -25,8 +44,11 @@ main{
 
   fa-icon, .icon{
     font-size: 1.5rem;
+    justify-self: center;
+  }
+
+  .icon{
     height: 1.5rem;
-    width: 2rem;
   }
 
   &.active{

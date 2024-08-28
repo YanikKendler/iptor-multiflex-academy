@@ -9,6 +9,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 import repository.VideoFileRepository;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 @Path("video/videofile")
@@ -24,9 +25,10 @@ public class VideoFileResource {
             VideoFile videoFile = repository.uploadVideo(uploadedInputStream, filename);
 
             return Response.ok().entity(videoFile).build();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
-            return Response.status(500).entity(e).build();
+            return Response.status(500).entity(e.getMessage()).build();
         }
     }
 
@@ -38,7 +40,7 @@ public class VideoFileResource {
             return Response.ok().entity("{\"message\":\"File deleted successfully\"}").build();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(500).entity(e).build();
+            return Response.status(500).entity(e.getMessage()).build();
         }
     }
 

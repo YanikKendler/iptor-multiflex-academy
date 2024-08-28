@@ -21,6 +21,7 @@ import {MatTooltip} from "@angular/material/tooltip"
 import {faCircleCheck, faSquareCheck} from "@fortawesome/free-regular-svg-icons";
 import {NotificationComponent} from "../../base/notification/notification.component";
 import {UserStatisticsComponent} from "../user-statistics/user-statistics.component";
+import {MatDivider} from "@angular/material/divider"
 
 @Component({
   selector: 'app-manage-user-field',
@@ -35,13 +36,14 @@ import {UserStatisticsComponent} from "../user-statistics/user-statistics.compon
     NgIf,
     MatTooltip,
     NotificationComponent,
-    UserStatisticsComponent
+    UserStatisticsComponent,
+    MatDivider
   ],
   templateUrl: './manage-user-field.component.html',
   styleUrl: './manage-user-field.component.scss'
 })
 export class ManageUserFieldComponent implements OnInit {
-  @Input() user: UserTreeDTO = {} as UserTreeDTO;
+  @Input() userTree: UserTreeDTO = {} as UserTreeDTO;
   @Input() subordinates : UserTreeDTO[] = [];
   @Input() level : number = 0;
   @Input() root : boolean = false;
@@ -62,8 +64,14 @@ export class ManageUserFieldComponent implements OnInit {
   @ViewChild(CdkMenuTrigger) videoPopupTrigger!: CdkMenuTrigger
 
   ngOnInit(): void {
-    this.userService.getUserStatistics(this.user.userId).subscribe(stats => {
-      this.userStatistics = stats
+    this.userService.currentUser.subscribe(user => {
+      if(!user || user.userId <= 0) return
+
+      if(!this.userTree || !this.userTree.userId ||this.userTree.userId <= 0) return
+
+      this.userService.getUserStatistics(this.userTree.userId).subscribe(stats => {
+        this.userStatistics = stats
+      })
     })
   }
 
@@ -86,7 +94,7 @@ export class ManageUserFieldComponent implements OnInit {
       return
     }
 
-    this.userService.getAssignedUserContent(this.user.userId).subscribe(content => {
+    this.userService.getAssignedUserContent(this.userTree.userId).subscribe(content => {
       this.assignedContent = content;
     })
   }
@@ -101,14 +109,14 @@ export class ManageUserFieldComponent implements OnInit {
   assignContent(content: ContentOverviewDTO){
     this.videoPopupTrigger.close()
 
-    this.userService.assignContent(this.user.userId, content.contentId).subscribe(result => {
+    this.userService.assignContent(this.userTree.userId, content.contentId).subscribe(result => {
       this.assignedContent.push(result)
     })
   }
 
   unassignContent(contentId: number){
     this.assignedContent = this.assignedContent.filter(t => t.contentId !== contentId)
-    this.userService.unassignContent(this.user.userId, contentId)
+    this.userService.unassignContent(this.userTree.userId, contentId)
   }
 
   protected readonly faClose = faClose;

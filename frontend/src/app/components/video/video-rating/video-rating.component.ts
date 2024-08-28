@@ -73,7 +73,6 @@ export class VideoRatingComponent{
     let value = this.rating
     if(this.isRatingMode){
       value = this.yourRating
-      console.log("is rating mode")
     }
 
     if(value){

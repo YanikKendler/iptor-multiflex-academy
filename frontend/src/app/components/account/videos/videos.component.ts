@@ -28,6 +28,7 @@ import {DropdownComponent, DropdownOption} from "../../basic/dropdown/dropdown.c
 import {Utils} from "../../../utils"
 import {MatTooltip} from "@angular/material/tooltip"
 import {ExtremeConfirmComponent} from "../../dialogue/extreme-confirm/extreme-confirm.component";
+import {Config} from "../../../config"
 
 @Component({
   selector: 'app-videos',
@@ -62,6 +63,7 @@ export class VideosComponent implements OnInit{
 
   ngOnInit(): void {
     this.userService.currentUser.subscribe(user => {
+      if(user.userId <= 0) return
       this.getUserContent();
     })
   }
@@ -149,4 +151,5 @@ export class VideosComponent implements OnInit{
   protected readonly Utils = Utils
   protected readonly faShareFromSquare = faShareFromSquare
   protected readonly faCheckCircle = faCheckCircle
+  protected readonly Config = Config
 }

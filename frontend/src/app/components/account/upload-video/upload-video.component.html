@@ -12,8 +12,8 @@
   </div>
 } @else if (videoFile.videoFileId == 0){
   <div class="upload-video">
-    <mat-spinner color="gray" diameter="72" strokeWidth="4"></mat-spinner>
-    <p>uploading video..</p>
+    <p class="progressPercent">{{uploadProgress}}%</p>
+    <p>{{uploadProgress < 100 ? 'uploading video..' : 'processing Video'}}</p>
     <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
     <!--<button mat-button>cancel upload</button>-->
   </div>

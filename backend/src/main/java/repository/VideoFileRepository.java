@@ -64,7 +64,7 @@ public class VideoFileRepository {
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new IOException("Could not tempsave video file " + videoFile.getVideoFileId() + " - " + e.getMessage(), e);
         }
     }
 
@@ -86,9 +86,13 @@ public class VideoFileRepository {
      *
      * @param videoFile contains id and file extension of the uploaded video
      */
-    public void processVideo(VideoFile videoFile) {
+    public void processVideo(VideoFile videoFile) throws IOException {
 
         String filePath = "uploads" + File.separator + "upload-" + videoFile.getVideoFileId() + "." + videoFile.getOriginalFileExtension();
+
+        File tempDirectory = new File("processed" + File.separator + "video-" + videoFile.getVideoFileId());
+        if(tempDirectory.exists())
+            throw new IOException("Directory already exists for video file " + videoFile.getVideoFileId());
 
         try {
             FFmpeg ffmpeg = new FFmpeg("tools" + File.separator + "ffmpeg.exe");
@@ -110,7 +114,7 @@ public class VideoFileRepository {
                     .setInput(filePath)
                     .overrideOutputFiles(false)
 
-                    .addOutput("processed/" + "video-" + videoFile.getVideoFileId() +"/manifest.mpd")
+                    .addOutput("processed/" + "video-" + videoFile.getVideoFileId() + "/manifest.mpd")
                     .setFormat("dash")
 
                     .setAudioCodec("copy")
@@ -126,8 +130,9 @@ public class VideoFileRepository {
 
             FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
             executor.createJob(builder).run();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch (IOException e) {
+            throw new IOException("could not process video file " + videoFile.getVideoFileId() + " - " + e.getMessage(), e);
         }
     }
 
