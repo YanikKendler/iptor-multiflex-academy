@@ -117,7 +117,7 @@ public class LearningPathRepository {
 
         if(!Objects.equals(data.title(), pathToUpdate.getTitle())){
             pathToUpdate.setTitle(data.title());
-            em.persist(new ContentEditHistory(userRepository.getById(userId), pathToUpdate, ContentEditType.visibility));
+            em.persist(new ContentEditHistory(userRepository.getById(userId), pathToUpdate, ContentEditType.title));
         }
 
         if(!Objects.equals(data.description(), pathToUpdate.getDescription())){

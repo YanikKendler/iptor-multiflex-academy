@@ -118,8 +118,31 @@ export class Utils{
   }
 
   static generateRandomColor(): string {
-    //TODO
-    return "#ABCDEF"
+    // Generate a random hue value between 0 and 360
+    const hue = Math.floor(Math.random() * 360);
+    // Set saturation to 100% for vibrant colors
+    const saturation = 100;
+    // Set lightness to a value between 40% and 80% for a wider spectrum
+    const lightness = Math.floor(Math.random() * 41) + 40;
+
+    // Convert HSL to RGB
+    const hslToRgb = (h: number, s: number, l: number) => {
+      s /= 100;
+      l /= 100;
+      const k = (n: number) => (n + h / 30) % 12;
+      const a = s * Math.min(l, 1 - l);
+      const f = (n: number) =>
+        l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+      return [Math.round(f(0) * 255), Math.round(f(8) * 255), Math.round(f(4) * 255)];
+    };
+
+    const [r, g, b] = hslToRgb(hue, saturation, lightness);
+
+    // Convert RGB to Hex
+    const rgbToHex = (r: number, g: number, b: number) =>
+      `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
+
+    return rgbToHex(r, g, b);
   }
 
   static numberToLetter(number: number, lowercase: boolean = false): string {

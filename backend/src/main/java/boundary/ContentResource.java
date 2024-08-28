@@ -43,4 +43,15 @@ public class ContentResource {
         }
         return Response.ok().build();
     }
+
+    @GET
+    @Path("{contentId: [0-9]+}/history")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getContentHistory(@PathParam("contentId") Long contentId){
+        try{
+            return Response.ok(repository.getContentEditHistory(contentId)).build();
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
+    }
 }
