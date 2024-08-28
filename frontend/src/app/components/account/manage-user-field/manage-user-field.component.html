@@ -1,9 +1,30 @@
 <div class="user" *ngIf="!root">
-  <div class="top" (click)="toggle()">
+  <div class="top" (click)="toggle($event)">
     @if (user.userId != this.userService.currentUser.value.userId) {
       <p class="username">{{ user.username }}</p>
     }
-    <fa-icon [icon]="faAngleDown" [ngClass]="isExpanded ? 'rotate' : ''"></fa-icon>
+
+    <div>
+      <fa-icon [icon]="faAngleDown" [ngClass]="isExpanded ? 'rotate' : ''"></fa-icon>
+      <app-icon-button [size]="'1.5rem'" [cdkMenuTriggerFor]="statistics" (click)="$event.stopPropagation()">
+        <fa-icon [icon]="faChartSimple"></fa-icon>
+      </app-icon-button>
+    </div>
+
+    <ng-template #statistics>
+      <div class="stats" cdkMenu>
+        <p>Videos watched: {{userStatistics.totalVideosWatched}}</p>
+        <p>Learning Paths completed: {{userStatistics.totalLearningPathsCompleted}}</p>
+        <p>Quizzes completed: {{userStatistics.quizzesCompleted}}</p>
+        <p>Content saved: {{userStatistics.totalContentSaved}}</p>
+
+        <p>Videos uploaded: {{userStatistics.totalVideosUploaded}}</p>
+        <p>Learning Paths uploaded: {{userStatistics.totalLearningPathsUploaded}}</p>
+
+        <p>Total Comments left: {{userStatistics.totalCommentsLeft}}</p>
+        <p>Average Star Rating given: {{userStatistics.averageStarRatingGiven < 0 ? 'none' : userStatistics.averageStarRatingGiven.toFixed(1)}}</p>
+      </div>
+    </ng-template>
   </div>
 
   @if (isExpanded) {

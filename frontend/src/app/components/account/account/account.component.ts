@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {NavigationComponent} from "../../base/navigation/navigation.component";
-import {faCirclePlay, faFileVideo, faGear, faUsersGear} from "@fortawesome/free-solid-svg-icons";
+import {faChartSimple, faCirclePlay, faFileVideo, faGear, faUsersGear} from "@fortawesome/free-solid-svg-icons";
 import {SettingsComponent} from "../settings/settings.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ManageUsersComponent} from "../manage-users/manage-users.component";
@@ -10,6 +10,7 @@ import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning
 import {VideoRequestsComponent} from "../video-requests/video-requests.component";
 import {LearningpathsComponent} from "../learningpaths/learningpaths.component"
 import {VideosComponent} from "../videos/videos.component"
+import {UserStatisticsComponent} from "../user-statistics/user-statistics.component";
 
 @Component({
   selector: 'app-account',
@@ -23,7 +24,8 @@ import {VideosComponent} from "../videos/videos.component"
     LearningPathIconComponent,
     VideoRequestsComponent,
     LearningpathsComponent,
-    VideosComponent
+    VideosComponent,
+    UserStatisticsComponent
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
@@ -44,9 +46,10 @@ export class AccountComponent implements OnInit{
     })
   }
 
-  switchPage(page: "videos" | "learningpaths" | "manage-users" | "video-requests"){
+  switchPage(page: "videos" | "learningpaths" | "manage-users" | "video-requests" | "user-statistics"){
     this.router.navigate(['/account/' + page])
   }
 
   protected readonly faFileVideo = faFileVideo;
+  protected readonly faChartSimple = faChartSimple;
 }

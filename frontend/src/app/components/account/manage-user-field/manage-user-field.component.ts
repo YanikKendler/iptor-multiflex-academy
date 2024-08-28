@@ -1,16 +1,26 @@
 import {Component, inject, Input, OnInit, ViewChild} from '@angular/core';
-import {User, UserAssignedContentDTO, UserService, UserTreeDTO} from "../../../service/user.service";
+import {User, UserAssignedContentDTO, UserService, UserStatisticsDTO, UserTreeDTO} from "../../../service/user.service";
 import {Utils} from "../../../utils";
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
 import {ContentOverviewDTO, VideoOverviewDTO, VideoService} from "../../../service/video.service";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faAngleDown, faCirclePlay, faClose, faTrash, faX, faXmark} from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleDown,
+  faChartSimple,
+  faCirclePlay,
+  faClose,
+  faTrash,
+  faX,
+  faXmark
+} from "@fortawesome/free-solid-svg-icons";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component";
 import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning-path-icon.component";
 import {Config} from "../../../config";
 import {NgClass, NgIf} from "@angular/common"
 import {MatTooltip} from "@angular/material/tooltip"
 import {faCircleCheck, faSquareCheck} from "@fortawesome/free-regular-svg-icons";
+import {NotificationComponent} from "../../base/notification/notification.component";
+import {UserStatisticsComponent} from "../user-statistics/user-statistics.component";
 
 @Component({
   selector: 'app-manage-user-field',
@@ -23,7 +33,9 @@ import {faCircleCheck, faSquareCheck} from "@fortawesome/free-regular-svg-icons"
     LearningPathIconComponent,
     NgClass,
     NgIf,
-    MatTooltip
+    MatTooltip,
+    NotificationComponent,
+    UserStatisticsComponent
   ],
   templateUrl: './manage-user-field.component.html',
   styleUrl: './manage-user-field.component.scss'
@@ -45,11 +57,21 @@ export class ManageUserFieldComponent implements OnInit {
 
   firstExpand: boolean = true;
 
+  userStatistics : UserStatisticsDTO = {} as UserStatisticsDTO;
+
   @ViewChild(CdkMenuTrigger) videoPopupTrigger!: CdkMenuTrigger
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userService.getUserStatistics(this.user.userId).subscribe(stats => {
+      this.userStatistics = stats
+    })
+  }
 
-  toggle() {
+  toggle(event: Event) {
+    if ((event.target as HTMLElement).closest('app-icon-button')) {
+      return;
+    }
+
     if(this.firstExpand){
       this.videoService.getFullContent().subscribe(content => {
         this.fullContent = content
@@ -104,4 +126,5 @@ export class ManageUserFieldComponent implements OnInit {
   protected readonly faSquareCheck = faSquareCheck;
   protected readonly faX = faX;
   protected readonly faXmark = faXmark;
+  protected readonly faChartSimple = faChartSimple;
 }

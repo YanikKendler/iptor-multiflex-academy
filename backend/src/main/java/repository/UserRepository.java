@@ -581,4 +581,89 @@ public class UserRepository {
             return false;
         }
     }
+
+    public UserStatisticsDTO getStatistics(Long userId) {
+        User user = getById(userId);
+
+        long totalComments;
+        try {
+            totalComments = em.createQuery("select count(c) from Comment c where c.user.userId = :userId", Long.class)
+                    .setParameter("userId", userId).getSingleResult();
+        } catch (NoResultException e) {
+            totalComments = 0;
+        }
+
+        long totalRatings;
+        try {
+            totalRatings = em.createQuery("select count(sr) from StarRating sr where sr.user.userId = :userId", Long.class)
+                    .setParameter("userId", userId).getSingleResult();
+        } catch (NoResultException e) {
+            totalRatings = 0;
+        }
+
+        double avgRating;
+        try {
+            avgRating = em.createQuery("select avg(sr.rating) from StarRating sr where sr.user.userId = :userId", Double.class)
+                    .setParameter("userId", userId).getSingleResult();
+        } catch (Exception e) {
+            avgRating = -1;
+        }
+
+        long totalQuizzes;
+        try {
+            totalQuizzes = em.createQuery("select count(q) from QuizResult q where q.user.userId = :userId", Long.class)
+                    .setParameter("userId", userId).getSingleResult();
+        } catch (NoResultException e) {
+            totalQuizzes = 0;
+        }
+
+        long totalVideosWatched;
+        try {
+            totalVideosWatched = em.createQuery("select count(distinct vp) from ViewProgress vp" +
+                            " join Video c on vp.content.contentId = c.contentId" +
+                            " join VideoFile v on c.videoFile.videoFileId = v.videoFileId" +
+                            " where vp.user.userId = :userId and vp.progress > 0", Long.class)
+                    .setParameter("userId", userId).getSingleResult();
+        } catch (NoResultException e) {
+            totalVideosWatched = 0;
+        }
+
+        long totalLearningPathsCompleted;
+        try {
+            totalLearningPathsCompleted = em.createQuery("select count(distinct vp) from ViewProgress vp " +
+                            "join LearningPath lp on lp.contentId = vp.content.contentId " +
+                            "where vp.user.userId = :userId and " +
+                            "vp.progress = (select count(e) from LearningPath p join p.entries e where p.contentId = lp.contentId)", Long.class)
+                    .setParameter("userId", userId).getSingleResult();
+        } catch (NoResultException e) {
+            totalLearningPathsCompleted = 0;
+        }
+
+        long totalContentSaved;
+        try {
+            totalContentSaved = em.createQuery("select count(c) from User u join u.savedContent c where u.userId = :userId", Long.class)
+                    .setParameter("userId", userId).getSingleResult();
+        } catch (NoResultException e) {
+            totalContentSaved = 0;
+        }
+
+        long totalVideosUploaded;
+        try {
+            totalVideosUploaded = em.createQuery("select count(v) from Video v where v.user.userId = :userId", Long.class)
+                    .setParameter("userId", userId).getSingleResult();
+        } catch (NoResultException e) {
+            totalVideosUploaded = 0;
+        }
+
+        long totalLearningPathsUploaded;
+        try {
+            totalLearningPathsUploaded = em.createQuery("select count(lp) from LearningPath lp where lp.user.userId = :userId", Long.class)
+                    .setParameter("userId", userId).getSingleResult();
+        } catch (NoResultException e) {
+            totalLearningPathsUploaded = 0;
+        }
+
+        return new UserStatisticsDTO(user, (int) totalComments, (int) totalRatings, avgRating, (int) totalQuizzes, (int) totalVideosWatched,
+                (int) totalLearningPathsCompleted, (int) totalContentSaved, (int) totalVideosUploaded, (int) totalLearningPathsUploaded);
+    }
 }
