@@ -1,4 +1,14 @@
-import {Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  inject,
+  Input, NgZone,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {NgClass} from "@angular/common";
 import {MatRipple} from "@angular/material/core"
 import {AnswerOption, VideoService} from "../../../service/video.service";
@@ -16,7 +26,7 @@ import {Utils} from "../../../utils"
   templateUrl: './video-quiz-answers.component.html',
   styleUrl: './video-quiz-answers.component.scss'
 })
-export class VideoQuizAnswersComponent implements OnChanges{
+export class VideoQuizAnswersComponent implements OnChanges {
   @Input() answers: AnswerOption[] | undefined;
   @Input() questionText: string | undefined;
   @Input() questionNumber!: number;
@@ -27,10 +37,18 @@ export class VideoQuizAnswersComponent implements OnChanges{
   @Output() nextVideo: EventEmitter<any> = new EventEmitter()
   @Output() giveSelectedAnswers: EventEmitter<AnswerOption[]> = new EventEmitter<AnswerOption[]>()
 
+  constructor(private cdr: ChangeDetectorRef) {
+  }
+
   answerIsSubmitted : boolean = false
 
   checkedQuestions: number[] = []
   selectedAnswers: AnswerOption[] = [];
+
+  notSelectedButCorrectAnswers : AnswerOption[] = []
+  correctAnswers : AnswerOption[] = []
+  wrongAnswers : AnswerOption[] = []
+  missedAnswers : AnswerOption[] = []
 
   ngOnChanges(changes: SimpleChanges) {
     // check if the question is already checked, that way i can highlight the correct answers
@@ -55,17 +73,13 @@ export class VideoQuizAnswersComponent implements OnChanges{
     return this.questionNumber < 10 ? `0${this.questionNumber + 1}` : `${this.questionNumber + 1}`;
   }
 
-  notSelectedButCorrectAnswers : AnswerOption[] = []
-  correctAnswers : AnswerOption[] = []
-  wrongAnswers : AnswerOption[] = []
-  missedAnswers : AnswerOption[] = []
-
   checkAnswer() {
     if(this.isQuizFinished) this.restartQuiz()
 
     // if answer got already submitted the function should request the next question
     if(this.answerIsSubmitted){
       this.answerIsSubmitted = false
+      sessionStorage.setItem("itm_answer_is_submitted", this.answerIsSubmitted.toString())
       this.nextQuestion.emit()
       return
     }
@@ -86,7 +100,13 @@ export class VideoQuizAnswersComponent implements OnChanges{
       }
     })
 
-    this.giveSelectedAnswers.emit(this.selectedAnswers)
+    sessionStorage.setItem("itm_correct_answers", JSON.stringify(this.correctAnswers))
+    sessionStorage.setItem("itm_not_selected_but_correct_answers", JSON.stringify(this.notSelectedButCorrectAnswers))
+    sessionStorage.setItem("itm_wrong_answers", JSON.stringify(this.wrongAnswers))
+    sessionStorage.setItem("itm_missed_answers", JSON.stringify(this.missedAnswers))
+    sessionStorage.setItem("itm_selected_answers", JSON.stringify(this.selectedAnswers))
+    sessionStorage.setItem("itm_answer_is_submitted", this.answerIsSubmitted.toString())
+    sessionStorage.setItem("itm_checked_questions", JSON.stringify(this.checkedQuestions))
   }
 
   videoService = inject(VideoService)
@@ -130,6 +150,17 @@ export class VideoQuizAnswersComponent implements OnChanges{
     return (this.correctAnswers.length + this.notSelectedButCorrectAnswers.length) / totalQuestionCount
   }
 
+  tryToGetSessionStorage() {
+    if(sessionStorage.getItem("itm_correct_answers")) {
+      this.correctAnswers = JSON.parse(sessionStorage.getItem("itm_correct_answers") || "[]")
+      this.notSelectedButCorrectAnswers = JSON.parse(sessionStorage.getItem("itm_not_selected_but_correct_answers") || "[]")
+      this.wrongAnswers = JSON.parse(sessionStorage.getItem("itm_wrong_answers") || "[]")
+      this.missedAnswers = JSON.parse(sessionStorage.getItem("itm_missed_answers") || "[]")
+      this.selectedAnswers = JSON.parse(sessionStorage.getItem("itm_selected_answers") || "[]")
+      this.answerIsSubmitted = JSON.parse(sessionStorage.getItem("itm_answer_is_submitted") || "false")
+    }
+  }
+
   tryToGetPreviousResult(videoId: number, callback: (result: boolean) => void) {
     this.videoService.getQuizResults(videoId).subscribe(result => {
       if (result && result.selectedAnswers) {
@@ -145,13 +176,21 @@ export class VideoQuizAnswersComponent implements OnChanges{
     });
   }
 
-  getButtonLabel(): string {
-    return this.isQuizFinished ? 'Restart Quiz' : this.answerIsSubmitted ? 'Next Question' : 'Submit';
-  }
+  protected readonly Utils = Utils
 
-  showNextVideoButton(): boolean {
-    return this.inLearningPath && this.isQuizFinished && this.calculateScoreInDecimal() > 0.8;
-  }
+  getClassForAnswer(answer: AnswerOption) {
+    if (this.correctAnswers.some(correctAnswer => correctAnswer.answerOptionId === answer.answerOptionId)) {
+      return 'correct';
+    } else if (this.wrongAnswers.some(wrongAnswer => wrongAnswer.answerOptionId === answer.answerOptionId)) {
+      return 'wrong';
+    } else if (this.missedAnswers.some(missedAnswer => missedAnswer.answerOptionId === answer.answerOptionId)) {
+      return 'missing';
+    }
 
-    protected readonly Utils = Utils
+    if (this.selectedAnswers.some(selectedAnswer => selectedAnswer.answerOptionId === answer.answerOptionId)) {
+      return 'selected';
+    }
+
+    return '';
+  }
 }
