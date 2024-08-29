@@ -40,7 +40,7 @@
 
   <div>
     <p>visibility:</p>
-    @if(video.approved){
+    @if(video.approved || userService.currentUser.value.userRole == 'ADMIN'){
       <app-dropdown [selectedId]="video.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
     } @else{
       {{video.visibility}}

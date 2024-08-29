@@ -30,6 +30,7 @@ import {LearningPathDetailDTO, LearningPathEntryDTO, LearningPathService} from "
 import {TagSelectorComponent} from "../../basic/tag-selector/tag-selector.component"
 import {VideoEntryComponent} from "../video-entry/video-entry.component"
 import {ContentEditHistoryComponent} from "../content-edit-history/content-edit-history.component";
+import {UserService} from "../../../service/user.service";
 @Component({
   selector: 'app-edit-learningpath',
   standalone: true,
@@ -58,6 +59,7 @@ import {ContentEditHistoryComponent} from "../content-edit-history/content-edit-
 export class EditLearningpathComponent implements OnInit{
   readonly learningPathService = inject(LearningPathService);
   readonly videoService = inject(VideoService);
+  readonly userService = inject(UserService);
 
   readonly dialogRef = inject(MatDialogRef<EditLearningpathComponent>);
   readonly data = inject<number>(MAT_DIALOG_DATA);

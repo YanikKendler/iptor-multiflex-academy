@@ -4,58 +4,62 @@
 
 @if(mode == "login") {
   <form [formGroup]="regForm">
-    <h1>sign in</h1>
-    <div class="form-group">
-      <input type="email" id="email" formControlName="email" placeholder="email">
-      <div class="error">
-        <span *ngIf="!regForm.get('email')?.valid && !regForm.get('email')?.untouched">Valid email required!</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <input type="password" id="password" formControlName="password" placeholder="password">
-      <div class="error">
-        <span *ngIf="!regForm.get('password')?.valid && !regForm.get('password')?.untouched">Valid password required!</span>
-      </div>
-    </div>
+  <h1>sign in</h1>
+  <div class="form-group">
+  <input type="email" id="email" formControlName="email" placeholder="email">
+  <div class="error">
+  <span *ngIf="!regForm.get('email')?.valid && !regForm.get('email')?.untouched">Valid email required!</span>
+  </div>
+  </div>
+  <div class="form-group">
+  <input type="password" id="password" formControlName="password" placeholder="password">
+  <div class="error">
+  <span *ngIf="!regForm.get('password')?.valid && !regForm.get('password')?.untouched">Valid password required!</span>
+  </div>
+  </div>
 
-    <button type="submit" (click)="onSubmit()" mat-ripple>Submit</button>
+  <button type="submit" (click)="onSubmit(false)" mat-ripple>Submit</button>
 
-    <div class="error">
-      <p *ngIf="error">{{ error }}</p>
-    </div>
+  <div class="error">
+  <p *ngIf="error">{{ error }}</p>
+  </div>
 
-    <div class="bottom">
-      <a (click)="changeMode('create')" routerLinkActive="active">create an account</a>
-    </div>
+  <div class="bottom">
+  <a (click)="changeMode('create')" routerLinkActive="active">create an account</a>
+  </div>
   </form>
 }
 @else {
   <form [formGroup]="regForm">
-    <h1>create account</h1>
-    <div class="form-group">
-      <input type="text" class="form-control" formControlName="username" placeholder="username">
-      <div class="error">
-        <span *ngIf="!regForm.get('username')?.valid && !regForm.get('username')?.untouched">Valid username required!</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <input type="email" class="form-control" formControlName="email" placeholder="email">
-      <div class="error">
-        <span *ngIf="!regForm.get('email')?.valid && !regForm.get('email')?.untouched">Valid email required!</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <input type="password" class="form-control" formControlName="password" placeholder="password">
-      <div class="error">
-        <span *ngIf="!regForm.get('password')?.valid && !regForm.get('password')?.untouched">Valid password required!</span>
-      </div>
-    </div>
+  <h1>create account</h1>
+  <div class="form-group">
+  <input type="text" class="form-control" formControlName="username" placeholder="username">
+  <div class="error">
+  <span *ngIf="!regForm.get('username')?.valid && !regForm.get('username')?.untouched">Valid username required!</span>
+  </div>
+  </div>
+  <div class="form-group">
+  <input type="email" class="form-control" formControlName="email" placeholder="email">
+  <div class="error">
+  <span *ngIf="!regForm.get('email')?.valid && !regForm.get('email')?.untouched">Valid email required!</span>
+  </div>
+  </div>
+  <div class="form-group">
+  <input type="password" class="form-control" formControlName="password" placeholder="password">
+  <div class="error">
+  <span *ngIf="!regForm.get('password')?.valid && !regForm.get('password')?.untouched">Valid password required!</span>
+  </div>
+  </div>
 
-    <button class="btn btn-primary" type="submit" (click)="onSubmit()">Submit</button>
+  <button class="btn btn-primary" type="submit" (click)="onSubmit(true)">Submit</button>
 
-    <div class="bottom">
-      <a (click)="changeMode('login')" routerLinkActive="active">sign in</a>
-    </div>
+  <div class="error">
+    <p *ngIf="error">{{ error }}</p>
+  </div>
+
+  <div class="bottom">
+  <a (click)="changeMode('login')" routerLinkActive="active">sign in</a>
+  </div>
   </form>
 }
 

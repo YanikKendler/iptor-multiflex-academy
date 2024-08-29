@@ -136,7 +136,7 @@ export class UserService {
   }
 
   createUser(userDTO: UserDTO){
-    return this.http.post<number>(`${Config.API_URL}/user`, userDTO)
+    return this.http.post<User>(`${Config.API_URL}/user`, userDTO)
   }
 
   login(userDTO: UserDTO) {

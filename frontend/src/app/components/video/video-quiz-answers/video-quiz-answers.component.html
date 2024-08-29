@@ -14,7 +14,7 @@
     }
 
     <div class="buttons">
-      @if (inLearningPath && isQuizFinished && calculateScoreInDecimal() > 0.8 || calculateScoreInDecimal() < 0) {
+      @if (inLearningPath && isQuizFinished && (calculateScoreInDecimal() > 0.8 || calculateScoreInDecimal() < 0)) {
         <button mat-stroked-button (click)="restartQuiz()" color="secondary">Restart Quiz</button>
 
         <button mat-flat-button color="secondary"

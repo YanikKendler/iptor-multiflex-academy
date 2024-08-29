@@ -37,7 +37,7 @@
 
   <div>
     <p>visibility:</p>
-    @if(learningPath.approved){
+    @if(learningPath.approved || userService.currentUser.value.userRole == 'ADMIN'){
       <app-dropdown [selectedId]="learningPath.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
     } @else{
       {{learningPath.visibility}}

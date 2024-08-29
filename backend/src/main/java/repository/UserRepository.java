@@ -388,10 +388,14 @@ public class UserRepository {
                 }).toList();
     }
 
-    public Long create(UserDTO user) {
-        User createdUser = new User(user.username(), user.email(), user.password(), user.userRole());
-        em.persist(createdUser);
-        return createdUser.getUserId();
+    public User create(UserDTO user) {
+        try{
+            User createdUser = new User(user.username(), user.email(), user.password(), user.userRole());
+            em.persist(createdUser);
+            return createdUser;
+        } catch(Exception e){
+            return null;
+        }
     }
 
     public User login(UserDTO userDTO) {

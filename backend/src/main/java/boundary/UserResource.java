@@ -22,14 +22,12 @@ public class UserResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createUser(UserDTO user){
-        Long userId;
         try{
-            userId = repository.create(user);
+            return Response.ok(repository.create(user)).build();
         }catch (Exception ex){
             ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
-        return Response.ok(userId).build();
     }
 
     @POST

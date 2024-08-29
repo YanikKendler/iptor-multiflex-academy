@@ -51,6 +51,8 @@ export class VideoQuizAnswersComponent implements OnChanges {
   missedAnswers : AnswerOption[] = []
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(this)
+
     // check if the question is already checked, that way i can highlight the correct answers
     if(this.checkedQuestions.includes(this.questionNumber)) {
       this.answerIsSubmitted = true
