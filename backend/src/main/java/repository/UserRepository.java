@@ -117,8 +117,8 @@ public class UserRepository {
                         "select distinct lp from ViewProgress vp " +
                                 "join LearningPath lp on lp.contentId = vp.content.contentId " +
                                 "join lp.tags t " +
-                                "where vp.user.userId = :userId and vp.ignored = false and vp.progress < " +
-                                "(select count(e) from lp.entries e) " +
+                                "where vp.user.userId = :userId and vp.ignored = false " +
+                                "and vp.progress < (select count(e) from lp.entries e) " +
                                 "and ((t is null and :areTagsEmpty = true) or not exists (" +
                                 "    select t from Tag t " +
                                 "    where t in :tags and t not in elements(lp.tags)" +

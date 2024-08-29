@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
+import model.Content;
 import model.User;
 import model.Video;
 import model.ViewProgress;
@@ -31,16 +32,19 @@ public class ViewProgressRepository {
             viewProgress.setProgress(durationSeconds);
             viewProgress.setIgnored(false);
         } catch (NoResultException ignored) {
-            viewProgress = new ViewProgress(
-                    em.find(Video.class, videoId),
-                    em.find(User.class, userId),
-                    durationSeconds);
-
-            em.persist(viewProgress);
+            Content content = em.find(Content.class, videoId);
+            User user = em.find(User.class, userId);
+            if (content != null && user != null) {
+                viewProgress = new ViewProgress(content, user, durationSeconds);
+                em.persist(viewProgress);
+            } else {
+                throw new IllegalArgumentException("Video or User not found");
+            }
         }
 
         return viewProgress;
     }
+
 
     public void ignore(Long videoId, Long userId) {
         ViewProgress vp = getLatest(videoId, userId);

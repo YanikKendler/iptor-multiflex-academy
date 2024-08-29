@@ -46,6 +46,12 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
     }
   }
 
+  constructor() {
+    if(!this.tryToGetSessionStorage()){
+      this.tryToGetPreviousResult()
+    }
+  }
+
   resetQuiz() {
     this.questionNr = 0
     this.checkedQuestions = []
@@ -57,13 +63,10 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
   ngAfterViewInit() {
     if (!this.questions || this.questions.length === 0) {
       this.nextQuestion(true);
+      this.isQuizFinished = true;
       return;
     } else {
       this.selectedQuestion = this.questions[0];
-    }
-
-    if(!this.tryToGetSessionStorage()){
-      this.tryToGetPreviousResult()
     }
   }
 
