@@ -4,7 +4,7 @@
   <app-filter-sidebar (updateFilterEmitter)="filterTags = $event; loadContent();"></app-filter-sidebar>
 
   <div class="content">
-    @if(isSearchContent){
+    @if(isSearchContent){ <!--SEARCH RESULTS-->
       <div class="video-row">
         @if(content && content.current){
           @for(video of content.current.videos; track video.contentId){
@@ -18,36 +18,36 @@
           <p class="no-results">no results found</p>
         }
       </div>
-    } @else {
-      <p>Continue Watching</p>
-      <div class="video-row">
-        @if(content && content.current){
-          @for(video of content.current.videos; track video.contentId){
-            <app-video-overview [video]="video" (updateDashboard)="updateVideoDashboard($event)" [removable]="true"></app-video-overview>
-          }
-          @for(learningPath of content.current.learningPaths; track learningPath.contentId){
-            <app-learning-path-overview [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)" [removable]="true"></app-learning-path-overview>
-          }
-        }
-        @if(content?.current?.videos?.length == 0 && content?.current?.learningPaths?.length == 0){
-          <p class="no-results">no results found</p>
-        }
-      </div>
+    }
 
-      <p>Assigned Content</p>
-      <div class="video-row">
-        @if(content && content.assigned){
-          @for(video of content.assigned.videos; track video.contentId){
-            <app-video-overview [checkable]="true" [video]="video" (updateDashboard)="updateVideoDashboard($event)"></app-video-overview>
-          }
-          @for(learningPath of content.assigned.learningPaths; track learningPath.contentId){
-            <app-learning-path-overview [checkable]="true" [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)"></app-learning-path-overview>
-          }
+    @else { <!--USER CONTENT-->
+      @if(content && content.current){
+        @if(content.current.videos.length > 0 || content.current.learningPaths.length > 0){
+          <p>Continue Watching</p>
+          <div class="video-row">
+            @for(video of content.current.videos; track video.contentId){
+              <app-video-overview [video]="video" (updateDashboard)="updateVideoDashboard($event)" [removable]="true"></app-video-overview>
+            }
+            @for(learningPath of content.current.learningPaths; track learningPath.contentId){
+              <app-learning-path-overview [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)" [removable]="true"></app-learning-path-overview>
+            }
+          </div>
         }
-        @if(content?.assigned?.videos?.length == 0){
-          <p class="no-results">no results found</p>
+      }
+
+      @if(content && content.assigned){
+        @if(content.assigned.videos.length > 0){
+          <p>Assigned Content</p>
+          <div class="video-row">
+            @for(video of content.assigned.videos; track video.contentId){
+              <app-video-overview [checkable]="true" [video]="video" (updateDashboard)="updateVideoDashboard($event)"></app-video-overview>
+            }
+            @for(learningPath of content.assigned.learningPaths; track learningPath.contentId){
+              <app-learning-path-overview [checkable]="true" [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)"></app-learning-path-overview>
+            }
+          </div>
         }
-      </div>
+      }
 
       <p>Suggested Videos</p>
       <div class="video-row">

@@ -45,20 +45,11 @@
   }
 
   .message{
-    display: flex;
     font-size: .9rem;
     width: 50ch;
+    text-wrap: wrap;
+    word-break: break-all;
   }
-}
-
-
-.truncate{
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 15ch;
-  display: inline-block;
-  vertical-align: center;
 }
 
 fa-icon{

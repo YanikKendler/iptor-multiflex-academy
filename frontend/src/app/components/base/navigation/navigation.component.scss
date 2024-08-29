@@ -79,6 +79,7 @@ div.search{
   flex-direction: column;
   border-top-left-radius: .5rem;
   border-bottom-left-radius: .5rem;
+  overflow: hidden;
 
   .menuItem{
     display: flex;

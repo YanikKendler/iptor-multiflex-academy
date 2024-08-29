@@ -3,27 +3,21 @@
 
   <div class="message">
     @if (getType() === "update") {
-      <p>{{ notification.triggeredByUser.username }} has updated a relevant video/learningpath
-        • {{ contentNotification.content.title }}</p>
+      {{ notification.triggeredByUser.username }} has updated a relevant video/learningpath • {{ contentNotification.content.title }}
     } @else if (getType() === "assignment") {
-      <p>New content assignment from {{ notification.triggeredByUser.username }}
-        • {{ contentNotification.content.title }}</p>
+      New content assignment from {{ notification.triggeredByUser.username }} • {{ contentNotification.content.title }}
     } @else if (getType() === "finishedRequest") {
-      <p>{{ notification.triggeredByUser.username }} has marked your video request as Completed
-        • {{ contentNotification.content.title }}</p>
+      {{ notification.triggeredByUser.username }} has marked your video request as Completed • {{ contentNotification.content.title }}
     } @else if (getType() === "approved") {
-      <p>{{ notification.triggeredByUser.username }} has approved your video/learningpath
-        • {{ contentNotification.content.title }}</p>
+      {{ notification.triggeredByUser.username }} has approved your video/learningpath • {{ contentNotification.content.title }}
     } @else if (getType() === "videoCreateRequest") {
-      <p>{{ notification.triggeredByUser.username }} has create a new video/learningpath waiting for approval
-        • {{ contentNotification.content.title }}</p>
+      {{ notification.triggeredByUser.username }} has create a new video/learningpath waiting for approval • {{ contentNotification.content.title }}
     } @else if (getType() === "request") {
-      <p>{{ notification.triggeredByUser.username }} has requested a video</p>
+      {{ notification.triggeredByUser.username }} has requested a video
     } @else if (getType() === "text") {
-      <p>{{ notification.triggeredByUser.username }} {{ textNotification.headerText }}</p>
+      {{ notification.triggeredByUser.username }} {{ textNotification.headerText }}
     } @else if (getType() === "comment") {
-      <p>{{ notification.triggeredByUser.username }} has posted a comment in {{ commentNotification.content.title }} •
-        "</p><span class="truncate">{{ commentNotification.comment.text }}</span><p>"</p>
+      {{ notification.triggeredByUser.username }} has posted a comment in {{ commentNotification.content.title }} • "{{ Utils.truncateText(commentNotification.comment.text) }}"
     }
   </div>
 </div>

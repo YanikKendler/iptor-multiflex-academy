@@ -117,6 +117,10 @@ export class Utils{
     return options;
   }
 
+  static truncateText(text: string, maxLength: number = 15, suffix: string = '...'): string {
+    return text.length > maxLength ? text.substring(0, maxLength) + suffix : text;
+  }
+
   static generateRandomColor(): string {
     // Generate a random hue value between 0 and 360
     const hue = Math.floor(Math.random() * 360);
