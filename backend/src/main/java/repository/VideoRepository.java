@@ -165,14 +165,14 @@ public class VideoRepository {
         } catch(NoResultException e){}
 
         try{
-            List<LearningPath> lp = em.createQuery("select lp from LearningPath lp join lp.entries e where e.video.contentId = :videoId", LearningPath.class)
+            List<LearningPath> learningPathList = em.createQuery("select lp from LearningPath lp join lp.entries e where e.video.contentId = :videoId", LearningPath.class)
                     .setParameter("videoId", id).getResultList();
 
-            lp.forEach(l -> {
-                l.setEntries(l.getEntries().stream().filter(e -> !Objects.equals(e.getVideo().getContentId(), id)).toList());
-                learningPathRepository.alertRelevantUsers(l);
+            learningPathList.forEach(learningPath -> {
+                learningPath.setEntries(learningPath.getEntries().stream().filter(e -> !Objects.equals(e.getVideo().getContentId(), id)).toList());
+                learningPathRepository.notifyRelevantUsers(learningPath);
             });
-        } catch(NoResultException e){}
+        } catch(NoResultException ignored){ }
 
         em.createQuery("delete from LearningPathEntry e where e.video.contentId = :videoId")
                 .setParameter("videoId", id)
