@@ -7,7 +7,7 @@ INSERT INTO app_user (username, email, userRole, password, deputysupervisor_user
 INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('leon steinhuber', 'leon.steinhuber@test', 'CUSTOMER', '$2a$10$j6/dJGVxar/nl370BLSmLOpYtSgFEyAVkaUlLYxrDjQOaNEfeEucW', 2, 2);
 INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('michael leisch', 'michael.leisch@test', 'CUSTOMER', '$2a$10$ufluH.7UeSqY9xKIIx8OTObNcIE8pv8GR6EVWhMF1NofRm4uLzLUi', 2, 2);
 INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('yanik kendler', 'yanik.kendler@test', 'CUSTOMER', '$2a$10$F9R.Ol/vTxLmwIAivLum5.JcIxa81YAUtcqSnLaTPhXTaT3/OxZyS', 2, 2);
-/*
+
 INSERT INTO VideoFile(durationseconds, sizebytes, originalfileextension) values (32, 1000000, 'mp4');
 
 -- Insert demo data for Video
@@ -149,4 +149,3 @@ INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, t
 INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, headertext, text) VALUES ('TextNotification', 1, 2, false, '2023-10-15 10:00:00', 'Follower', 'You have a new follower');
 INSERT INTO Notification (dtype, foruser_userid, triggeredbyuser_userid, done, timestamp, comment_commentid, content_contentid) VALUES ('CommentNotification', 1, 2, false, '2023-10-17 10:00:00', 1, 1);
 
-*/
