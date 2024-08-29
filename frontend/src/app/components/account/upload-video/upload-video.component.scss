@@ -16,6 +16,11 @@
   padding: .5rem;
   cursor: pointer;
   transition: background-color $transition-time-default;
+  border: .2rem solid transparent;
+
+  *{
+    pointer-events: none;
+  }
 
   .icon{
     background-color: rgba(56, 56, 56, 0.30);
@@ -50,6 +55,15 @@
 
     p{
       color: white;
+    }
+  }
+
+  &.dragOver{
+    border: .2rem solid $secondary-500;
+    background-color: $secondary-700;
+
+    .icon{
+      animation: bounce 400ms ease-in-out infinite;
     }
   }
 }
