@@ -47,6 +47,10 @@ app-manage-user-field{
         }
       }
     }
+
+    app-icon-button.statistics{
+      margin: -.5rem;
+    }
   }
 
   input{
@@ -159,6 +163,25 @@ app-manage-user-field{
 
 .stats{
   @include floating-box;
-  font-size: .8rem;
+  font-size: .9rem;
   padding: .5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+
+  h2{
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  p{
+    width: 100%;
+    display: flex;
+    gap: .5rem;
+  }
+
+  span.stat{
+    margin-left: auto;
+    font-weight: 500;
+  };
 }

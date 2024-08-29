@@ -1,0 +1,18 @@
+<h1>Request for a new Video to be made</h1>
+<app-textfield
+  (valueChange)="updateTitle($event)"
+  [label]="'Title'"
+  [placeholder]="'What should the Video be about?'"
+></app-textfield>
+
+<app-textfield
+  (valueChange)="updateDescription($event)"
+  [label]="'Description'"
+  [placeholder]="'Provide a detailed description of your request.'"
+  [rows]="5"
+  [maxLength]="1000"
+></app-textfield>
+<div class="buttons">
+  <button mat-stroked-button (click)="cancel()">cancel</button>
+  <button mat-flat-button (click)="sendRequest()">Send request</button>
+</div>

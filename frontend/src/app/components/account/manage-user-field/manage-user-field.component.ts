@@ -21,6 +21,7 @@ import {MatTooltip} from "@angular/material/tooltip"
 import {faCircleCheck, faSquareCheck} from "@fortawesome/free-regular-svg-icons";
 import {NotificationComponent} from "../../base/notification/notification.component";
 import {UserStatisticsComponent} from "../user-statistics/user-statistics.component";
+import {MatDivider} from "@angular/material/divider"
 
 @Component({
   selector: 'app-manage-user-field',
@@ -35,13 +36,14 @@ import {UserStatisticsComponent} from "../user-statistics/user-statistics.compon
     NgIf,
     MatTooltip,
     NotificationComponent,
-    UserStatisticsComponent
+    UserStatisticsComponent,
+    MatDivider
   ],
   templateUrl: './manage-user-field.component.html',
   styleUrl: './manage-user-field.component.scss'
 })
 export class ManageUserFieldComponent implements OnInit {
-  @Input() user: UserTreeDTO = {} as UserTreeDTO;
+  @Input() userTree: UserTreeDTO = {} as UserTreeDTO;
   @Input() subordinates : UserTreeDTO[] = [];
   @Input() level : number = 0;
   @Input() root : boolean = false;
@@ -64,8 +66,8 @@ export class ManageUserFieldComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.currentUser.subscribe(user => {
-      if(this.user.userId > 0){
-        this.userService.getUserStatistics(this.user.userId).subscribe(stats => {
+      if(this.userTree.userId > 0){
+        this.userService.getUserStatistics(this.userTree.userId).subscribe(stats => {
           this.userStatistics = stats
         })
       }
@@ -91,7 +93,7 @@ export class ManageUserFieldComponent implements OnInit {
       return
     }
 
-    this.userService.getAssignedUserContent(this.user.userId).subscribe(content => {
+    this.userService.getAssignedUserContent(this.userTree.userId).subscribe(content => {
       this.assignedContent = content;
     })
   }
@@ -104,7 +106,7 @@ export class ManageUserFieldComponent implements OnInit {
   }
 
   assignContent(content: ContentOverviewDTO){
-    this.userService.assignContent(this.user.userId, content.contentId).subscribe(result => {
+    this.userService.assignContent(this.userTree.userId, content.contentId).subscribe(result => {
       this.assignedContent.push(result)
       this.contentOptions = this.contentOptions.filter(t => t.contentId !== content.contentId)
     })
@@ -114,7 +116,7 @@ export class ManageUserFieldComponent implements OnInit {
 
   unassignContent(contentId: number){
     this.assignedContent = this.assignedContent.filter(t => t.contentId !== contentId)
-    this.userService.unassignContent(this.user.userId, contentId)
+    this.userService.unassignContent(this.userTree.userId, contentId)
   }
 
   protected readonly faClose = faClose;

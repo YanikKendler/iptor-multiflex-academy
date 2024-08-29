@@ -29,9 +29,9 @@
     <ng-template #menu>
       <div class="actionMenu" cdkMenu>
         @if(comment.user.userId === userId){
-          <button (click)="editComment();" mat-button><fa-icon [icon]="faPen"></fa-icon>Edit</button>
+          <button (click)="editComment();" mat-button color="secondary"><fa-icon [icon]="faPen"></fa-icon>Edit</button>
         }
-        <button (click)="deleteComment(comment)" mat-button><fa-icon [icon]="faTrash"></fa-icon> Delete</button>
+        <button (click)="deleteComment(comment)" mat-button color="secondary"><fa-icon [icon]="faTrash"></fa-icon> Delete</button>
       </div>
     </ng-template>
   </div>

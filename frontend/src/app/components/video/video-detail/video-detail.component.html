@@ -1,6 +1,6 @@
 <app-navigation [simple]="true"></app-navigation>
 
-<main>
+<main [ngClass]="{notApproved: userService.currentUser.value.userRole == 'ADMIN' && video.approved == false}">
   <div class="top">
     <app-media-player [video]="video" (isFinished)="finishVideo()"></app-media-player>
     <div class="right">
@@ -27,10 +27,11 @@
           <fa-icon [icon]="faShare"></fa-icon>
         </app-icon-button>
 
-        @if(!video.approved && userService.currentUser.value.userRole == 'ADMIN'){
+        @if(userService.currentUser.value.userRole == "ADMIN" && video.approved == false){
           <app-icon-button
-            matTooltip="This learning path is not approved yet, only you and the user who created it can see it. - After approval, the visibility can be changed"
+            [matTooltip]="Config.generateAproveContentTooltipText('video')"
             (click)="approveVideo()"
+            class="approveVideo"
           >
             <fa-icon
               [icon]="faCheckCircle"

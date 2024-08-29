@@ -1,15 +1,44 @@
-<h2>User Statistics of {{userStatistics.user.username}}</h2>
 
-<div class="stats">
-  <p>Videos watched: {{userStatistics.totalVideosWatched}}</p>
-  <p>Learning Paths completed: {{userStatistics.totalLearningPathsCompleted}}</p>
-  <p>Quizzes completed: {{userStatistics.quizzesCompleted}}</p>
-  <p>Content saved: {{userStatistics.totalContentSaved}}</p>
+@if(userStatistics.user) {
+  <h2>user statistics of "{{ userStatistics.user.username }}"</h2>
 
-  <p>Videos uploaded: {{userStatistics.totalVideosUploaded}}</p>
-  <p>Learning Paths uploaded: {{userStatistics.totalLearningPathsUploaded}}</p>
+  <div class="stats">
+    <p>
+      <span class="title">Videos watched</span> <span class="stat">{{ userStatistics.totalVideosWatched }}</span>
+    </p>
+    <p>
+      <span class="title">Learning Paths completed</span> <span
+      class="stat">{{ userStatistics.totalLearningPathsCompleted }}</span>
+    </p>
+    <p>
+      <span class="title">Quizzes completed</span> <span class="stat">{{ userStatistics.quizzesCompleted }}</span>
+    </p>
+    <p>
+      <span class="title">Content saved</span> <span class="stat">{{ userStatistics.totalContentSaved }}</span>
+    </p>
 
-  <p>Total Comments left: {{userStatistics.totalCommentsLeft}}</p>
-  <p>Average Star Rating given: {{userStatistics.averageStarRatingGiven < 0 ? 'none' : userStatistics.averageStarRatingGiven.toFixed(1)}}</p>
+    <mat-divider></mat-divider>
 
-</div>
+    <p>
+      <span class="title">Videos uploaded</span> <span class="stat">{{ userStatistics.totalVideosUploaded }}</span>
+    </p>
+    <p>
+      <span class="title">Learning Paths uploaded</span> <span
+      class="stat">{{ userStatistics.totalLearningPathsUploaded }}</span>
+    </p>
+
+    <mat-divider></mat-divider>
+
+    <p>
+      <span class="title">Total Comments left</span> <span class="stat">{{ userStatistics.totalCommentsLeft }}</span>
+    </p>
+    <p>
+      <span class="title">Average Star Rating given</span> <span
+      class="stat">{{ userStatistics.averageStarRatingGiven < 0 ? 'none' : userStatistics.averageStarRatingGiven.toFixed(1) }}</span>
+    </p>
+
+  </div>
+}
+@else{
+  <p class="loading">loading statistics..</p>
+}

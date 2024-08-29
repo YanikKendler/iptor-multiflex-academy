@@ -17,7 +17,7 @@ export class TextfieldComponent {
   @Input() label: string = "Label";
   @Input() placeholder: string = "";
   @Input() value: string = "";
-  @Input() maxLength : number = 255;
+  @Input() maxLength : number = 255
   @Output() valueChange = new EventEmitter<string>();
   @Input() rows: number = 1;
   @Input() small: boolean = false;

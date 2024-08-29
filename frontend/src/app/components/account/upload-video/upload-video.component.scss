@@ -37,6 +37,9 @@
     transition: color $transition-time-default;
   }
 
+  p.progressPercent{
+    font-size: 1.5rem;
+  }
 
   &.replace{
     background-color: $secondary-500;

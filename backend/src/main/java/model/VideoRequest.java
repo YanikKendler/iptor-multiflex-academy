@@ -10,6 +10,8 @@ public class VideoRequest {
     private Long requestId;
 
     private String title;
+
+    @Column(length = 1000)
     private String text;
 
     @ManyToOne

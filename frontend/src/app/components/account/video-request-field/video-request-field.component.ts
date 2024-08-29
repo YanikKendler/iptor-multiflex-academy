@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, Output, ViewChild} from '@angular/core';
 import {VideoOverviewDTO, VideoRequestDetailDTO, VideoRequestEnum, VideoService} from "../../../service/video.service";
 import {CdkMenu, CdkMenuTrigger} from "@angular/cdk/menu";
 import {MatButton} from "@angular/material/button";
@@ -31,6 +31,8 @@ export class VideoRequestFieldComponent {
   videoOptions: VideoOverviewDTO[] = []
   selectedVideo = {} as VideoOverviewDTO
 
+  @ViewChild(CdkMenuTrigger) trigger!: CdkMenuTrigger
+
   constructor() {
 
   }
@@ -39,7 +41,7 @@ export class VideoRequestFieldComponent {
     this.dialog.open(ConfirmComponent, {
       width: "400px",
       data: {
-        message: `Do you want to ${status == VideoRequestEnum.finished ? "finish" : "decline"} this video request?`
+        message: `Do you want to ${status == VideoRequestEnum.finished ? "finish" : "decline"} the video request ""${videoRequest.title}"?`
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if(confirm) {
@@ -67,5 +69,10 @@ export class VideoRequestFieldComponent {
 
   resetSelection() {
     this.selectedVideo = {} as VideoOverviewDTO
+    this.trigger.open()
+
+    setTimeout(() => {
+        this.generateContentOptions("")
+    },)
   }
 }

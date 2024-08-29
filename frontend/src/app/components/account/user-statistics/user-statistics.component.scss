@@ -3,12 +3,30 @@
 h2{
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid black;
 }
 
 div.stats{
   display: flex;
   flex-direction: column;
   gap: .5rem;
+  width: fit-content;
+  min-width: 20vw;
+}
+
+p{
+  display: flex;
+  gap: .5rem;
+  margin-inline: .5rem;
+
+  .stat{
+    margin-left: auto;
+  }
+}
+
+mat-divider{
+  border-color: $gray-600;
+}
+
+.loading{
+  color: $gray-400;
 }

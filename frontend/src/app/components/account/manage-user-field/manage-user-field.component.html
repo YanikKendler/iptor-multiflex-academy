@@ -1,28 +1,50 @@
 <div class="user" *ngIf="!root">
   <div class="top" (click)="toggle($event)">
-    @if (user.userId != this.userService.currentUser.value.userId) {
-      <p class="username">{{ user.username }}</p>
+    @if (userTree.userId != this.userService.currentUser.value.userId) {
+      <p class="username">{{ userTree.username }}</p>
     }
 
     <div>
-      <fa-icon [icon]="faAngleDown" [ngClass]="isExpanded ? 'rotate' : ''"></fa-icon>
-      <app-icon-button [size]="'1.5rem'" [cdkMenuTriggerFor]="statistics" (click)="$event.stopPropagation()">
+      <app-icon-button class="statistics" [cdkMenuTriggerFor]="statistics" (click)="$event.stopPropagation()">
         <fa-icon [icon]="faChartSimple"></fa-icon>
       </app-icon-button>
+      <fa-icon [icon]="faAngleDown" [ngClass]="isExpanded ? 'rotate' : ''"></fa-icon>
     </div>
 
     <ng-template #statistics>
       <div class="stats" cdkMenu>
-        <p>Videos watched: {{userStatistics.totalVideosWatched}}</p>
-        <p>Learning Paths completed: {{userStatistics.totalLearningPathsCompleted}}</p>
-        <p>Quizzes completed: {{userStatistics.quizzesCompleted}}</p>
-        <p>Content saved: {{userStatistics.totalContentSaved}}</p>
+        <h2>{{userTree.username}}</h2>
 
-        <p>Videos uploaded: {{userStatistics.totalVideosUploaded}}</p>
-        <p>Learning Paths uploaded: {{userStatistics.totalLearningPathsUploaded}}</p>
+        <p>
+          <span class="title">Videos watched</span> <span class="stat">{{ userStatistics.totalVideosWatched }}</span>
+        </p>
+        <p>
+          <span class="title">Learning Paths completed</span> <span class="stat">{{ userStatistics.totalLearningPathsCompleted }}</span>
+        </p>
+        <p>
+          <span class="title">Quizzes completed</span> <span class="stat">{{ userStatistics.quizzesCompleted }}</span>
+        </p>
+        <p>
+          <span class="title">Content saved</span> <span class="stat">{{ userStatistics.totalContentSaved }}</span>
+        </p>
 
-        <p>Total Comments left: {{userStatistics.totalCommentsLeft}}</p>
-        <p>Average Star Rating given: {{userStatistics.averageStarRatingGiven < 0 ? 'none' : userStatistics.averageStarRatingGiven.toFixed(1)}}</p>
+        <mat-divider></mat-divider>
+
+        <p>
+          <span class="title">Videos uploaded</span> <span class="stat">{{ userStatistics.totalVideosUploaded }}</span>
+        </p>
+        <p>
+          <span class="title">Learning Paths uploaded</span> <span class="stat">{{ userStatistics.totalLearningPathsUploaded }}</span>
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <p>
+          <span class="title">Total Comments left</span> <span class="stat">{{ userStatistics.totalCommentsLeft }}</span>
+        </p>
+        <p>
+          <span class="title">Average Star Rating given</span> <span class="stat">{{ userStatistics.averageStarRatingGiven < 0 ? 'none' : userStatistics.averageStarRatingGiven.toFixed(1) }}</span>
+        </p>
       </div>
     </ng-template>
   </div>
@@ -103,5 +125,5 @@
 </div>
 
 @for(subordinate of subordinates; track subordinate.userId){
-  <app-manage-user-field [user]="subordinate" [subordinates]="subordinate.subordinates" [level]="subordinate.level"></app-manage-user-field>
+  <app-manage-user-field [userTree]="subordinate" [subordinates]="subordinate.subordinates" [level]="subordinate.level"></app-manage-user-field>
 }

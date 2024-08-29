@@ -1,9 +1,9 @@
-<header>
-  <p>{{videoRequest.user.username}}</p>
-  <p>{{videoRequest.title}}</p>
-</header>
+<div class="top">
+  <p class="username">{{videoRequest.user.username}}</p>
+  <h2 class="title">{{videoRequest.title}}</h2>
+</div>
 
-<p>{{videoRequest.text}}</p>
+<p class="text">{{videoRequest.text}}</p>
 
 <div class="bottom">
   <input
@@ -11,14 +11,15 @@
     placeholder="assign content"
     #videoInput
     [cdkMenuTriggerFor]="videoPopup"
-    (input)="resetSelection(); generateContentOptions(videoInput.value)"
+    (keydown.backspace)="resetSelection()"
+    (input)="generateContentOptions(videoInput.value)"
     (focus)="generateContentOptions('')"
     [value]="selectedVideo.title != undefined ? selectedVideo.title + ' • Video' : ''"
   >
   <ng-template #videoPopup>
     <div class="videoOptions" cdkMenu>
       @for(video of videoOptions; track video.contentId){
-        <p (click)="setVideo(video);generateContentOptions(videoInput.value)">
+        <p (click)="setVideo(video); generateContentOptions(videoInput.value)">
           {{video.title}} • Video
         </p>
       }
@@ -31,11 +32,19 @@
   <button
     mat-flat-button
     color="secondary"
-    [disabled]="videoRequest.videoId == null"
+    [disabled]="selectedVideo.contentId == null"
     (click)="confirmClose(videoRequest, VideoRequestEnum.finished)"
-    [matTooltip]="videoRequest.videoId == null ? 'select a video to complete the request' : ''"
+    [matTooltip]="selectedVideo.contentId == null ? 'select a video to complete the request' : ''"
   >
     Mark as completed
   </button>
-  <button mat-stroked-button color="secondary" (click)="confirmClose(videoRequest, VideoRequestEnum.declined)">Decline</button>
+
+  <button
+    mat-stroked-button
+    color="secondary"
+    (click)="confirmClose(videoRequest, VideoRequestEnum.declined)"
+    class="decline"
+  >
+    Decline
+  </button>
 </div>

@@ -1,10 +1,13 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {UserService, UserStatisticsDTO} from "../../../service/user.service";
+import {MatDivider} from "@angular/material/divider"
 
 @Component({
   selector: 'app-user-statistics',
   standalone: true,
-  imports: [],
+    imports: [
+        MatDivider
+    ],
   templateUrl: './user-statistics.component.html',
   styleUrl: './user-statistics.component.scss'
 })

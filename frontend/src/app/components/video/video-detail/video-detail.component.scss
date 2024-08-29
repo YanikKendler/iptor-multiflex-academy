@@ -7,12 +7,15 @@
 }
 
 main{
-  width: 80%;
-  margin-inline: auto;
+  padding-inline: 10%;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   height: 100%;
+
+  &.notApproved{
+    box-shadow: 0 0 .5rem .5rem $secondary-800 inset;
+  }
 }
 
 .top{
@@ -138,5 +141,12 @@ main{
       height: 100%;
       padding-bottom: 1rem;
     }
+  }
+}
+
+app-icon-button.approveVideo{
+  fa-icon{
+    font-size: 1.3rem;
+    color: $secondary-500;
   }
 }
