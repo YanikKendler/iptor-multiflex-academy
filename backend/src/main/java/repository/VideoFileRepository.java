@@ -36,11 +36,20 @@ public class VideoFileRepository {
         VideoFile videoFile = new VideoFile(filename);
         em.persist(videoFile);
 
+        File tempDirectory = new File("processed" + File.separator + "video-" + videoFile.getVideoFileId());
+        if(tempDirectory.exists())
+            throw new IOException("Directory already exists for video file " + videoFile.getVideoFileId());
+
         //temporarily stores the uploaded video in the "uploads" folder so that the ffmpeg tool can process it
         tempSaveVideo(file, videoFile);
 
-        //transform the stored video into smaller chunks that can be streamed one by one
-        processVideo(videoFile);
+        try{
+            //transform the stored video into smaller chunks that can be streamed one by one
+            processVideo(videoFile);
+        }catch (IOException e){
+            removeTempSavedVideo(videoFile);
+            throw e;
+        }
 
         //remove the now unneeded temporary video file
         removeTempSavedVideo(videoFile);
@@ -89,10 +98,6 @@ public class VideoFileRepository {
     public void processVideo(VideoFile videoFile) throws IOException {
 
         String filePath = "uploads" + File.separator + "upload-" + videoFile.getVideoFileId() + "." + videoFile.getOriginalFileExtension();
-
-        File tempDirectory = new File("processed" + File.separator + "video-" + videoFile.getVideoFileId());
-        if(tempDirectory.exists())
-            throw new IOException("Directory already exists for video file " + videoFile.getVideoFileId());
 
         try {
             FFmpeg ffmpeg = new FFmpeg("tools" + File.separator + "ffmpeg.exe");

@@ -31,6 +31,7 @@ import {Config} from "../../../config";
 import {UserService} from "../../../service/user.service"
 import {MatSnackBar} from "@angular/material/snack-bar"
 import {ContentEditHistoryComponent} from "../content-edit-history/content-edit-history.component";
+import {DotLoaderComponent} from "../../basic/dot-loader/dot-loader.component"
 @Component({
   selector: 'app-edit-video',
   standalone: true,
@@ -50,7 +51,8 @@ import {ContentEditHistoryComponent} from "../content-edit-history/content-edit-
     CdkMenuTrigger,
     IconButtonComponent,
     MatTooltip,
-    TagSelectorComponent
+    TagSelectorComponent,
+    DotLoaderComponent
   ],
   templateUrl: './edit-video.component.html',
   styleUrl: './edit-video.component.scss'
@@ -68,6 +70,8 @@ export class EditVideoComponent implements OnInit{
   oldVideo: VideoDetailDTO = {} as VideoDetailDTO; //used for checking for changes
 
   selectedQuestion: Question | undefined;
+
+  videoUploadRunning: boolean = false;
 
   ngOnInit(): void {
     console.log(this.data)
@@ -146,7 +150,7 @@ export class EditVideoComponent implements OnInit{
   close(){
     console.log(this.video, this.oldVideo)
     //compare the actual data currently in the video vs the data when the dialog was opened to see if there are any changes
-    if(JSON.stringify(this.video) !== JSON.stringify(this.oldVideo)){
+    if(JSON.stringify(this.video) !== JSON.stringify(this.oldVideo) || this.videoUploadRunning){
       this.confirmClose()
     }
     else {
@@ -207,12 +211,27 @@ export class EditVideoComponent implements OnInit{
   //region UPDATE functions
 
   videoFileUpdated(videoFile: VideoFile) {
-    if(this.video.contentId > 0)
-      this.videoService.linkVideoFile(this.video.contentId, videoFile.videoFileId).subscribe(result => {
-        console.log("linked videos")
-      })
-    else {
-       this.video.videoFile = videoFile
+    if(videoFile.videoFileId < 0) { //the videofile was deleted
+      this.videoUploadRunning = false
+      return
+    }
+    else if(videoFile.videoFileId == 0) { //the videofile is being uploaded
+      this.videoUploadRunning = true
+      return
+    }
+    else if (videoFile.videoFileId > 0) { //a new videofile was created
+      this.videoUploadRunning = false
+
+      if(this.video.contentId > 0) { //we are editing an existing video
+        this.videoService.linkVideoFile(this.video.contentId, videoFile.videoFileId).subscribe(result => {
+          console.log("linked videos")
+        }, () => {
+          this.snackBar.open("ERROR - Failed to link the video file. Please contact an Administrator", "Dismiss", {duration: 5000})
+        })
+      }
+      else { //we are creating a new video
+         this.video.videoFile = videoFile
+      }
     }
   }
 

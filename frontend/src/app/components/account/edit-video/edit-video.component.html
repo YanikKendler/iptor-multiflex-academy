@@ -25,7 +25,7 @@
   </div>
   <app-upload-video
     [videoFile]="video.videoFile ? video.videoFile : {videoFileId: -1}"
-    (uploadFinished)="videoFileUpdated($event)"
+    (uploadStatus)="videoFileUpdated($event)"
   ></app-upload-video>
 </section>
 
