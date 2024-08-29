@@ -103,7 +103,7 @@ public class UserRepository {
 
         List<Video> visibleVideos = new ArrayList<>();
         combinedVideos.forEach(video -> {
-            if(!video.isVisibleForUser(getById(userId))){
+            if(video.isVisibleForUser(getById(userId))){
                 visibleVideos.add(video);
             }
         });
@@ -134,7 +134,7 @@ public class UserRepository {
 
         List<LearningPath> visiblePaths = new ArrayList<>();
         combinedLearningPaths.forEach(learningPath -> {
-            if(!learningPath.isVisibleForUser(getById(userId))){
+            if(learningPath.isVisibleForUser(getById(userId))){
                 visiblePaths.add(learningPath);
             }
         });
@@ -159,6 +159,8 @@ public class UserRepository {
                 .setParameter("tags", tags)
                 .setParameter("areTagsEmpty", tags.isEmpty())
                 .getResultList();
+
+        System.out.println("Assigned videos:" + assignedVideos.size());
 
         List<Video> visibleVideos = new ArrayList<>();
         assignedVideos.forEach(video -> {
@@ -186,7 +188,7 @@ public class UserRepository {
 
         List<LearningPath> visiblePaths = new ArrayList<>();
         assignedLearningPaths.forEach(learningPath -> {
-            if(!learningPath.isVisibleForUser(getById(userId))){
+            if(learningPath.isVisibleForUser(getById(userId))){
                 visiblePaths.add(learningPath);
             }
         });

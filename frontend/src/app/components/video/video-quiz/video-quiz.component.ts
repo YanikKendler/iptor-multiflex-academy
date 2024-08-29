@@ -68,6 +68,10 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
     } else {
       this.selectedQuestion = this.questions[0];
     }
+
+    if(!this.tryToGetSessionStorage()){
+      this.tryToGetPreviousResult()
+    }
   }
 
   tryToGetSessionStorage() {

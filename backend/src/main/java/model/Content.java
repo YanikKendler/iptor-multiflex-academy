@@ -117,12 +117,10 @@ public abstract class Content {
     }
 
     public boolean isVisibleForUser(User user) {
-        if(UserRoleEnum.ADMIN == user.getUserRole()) {
-            return true;
-        }
-
         if (visibility == VisibilityEnum.self) {
             return false;
+        } else if(UserRoleEnum.ADMIN == user.getUserRole()) {
+            return true;
         } else if (visibility == VisibilityEnum.everyone) {
             return true;
         } else if (visibility == VisibilityEnum.customers) {

@@ -36,7 +36,7 @@
       }
 
       @if(content && content.assigned){
-        @if(content.assigned.videos.length > 0){
+        @if(content.assigned.videos.length > 0 || content.assigned.learningPaths.length > 0){
           <p>Assigned Content</p>
           <div class="video-row">
             @for(video of content.assigned.videos; track video.contentId){
