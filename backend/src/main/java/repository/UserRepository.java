@@ -61,15 +61,16 @@ public class UserRepository {
         List<Video> unfinishedVideos = em.createQuery(
                         "select distinct v from ViewProgress vp " +
                                 "join Video v on v.contentId = vp.content.contentId " +
-                                "join v.tags vt " +
+                                "left join v.tags vt " +
                                 "where vp.user.userId = :userId and vp.ignored = false " +
                                 "and vp.progress < v.videoFile.durationSeconds * 0.90 " +
-                                "and not exists (" +
+                                "and ((vt is null and :areTagsEmpty = true) or not exists (" +
                                 "    select t from Tag t " +
                                 "    where t in :tags and t not in elements(v.tags)" +
-                                ")", Video.class)
+                                "))", Video.class)
                 .setParameter("userId", userId)
                 .setParameter("tags", tags)
+                .setParameter("areTagsEmpty", tags.isEmpty())
                 .getResultList();
 
         // Fetch saved content
@@ -78,12 +79,13 @@ public class UserRepository {
                                 "join u.savedContent sv " +
                                 "join sv.tags vt " +
                                 "where u.userId = :userId " +
-                                "and not exists (" +
+                                "and ((vt is null and :areTagsEmpty = true) or not exists (" +
                                 "    select t from Tag t " +
                                 "    where t in :tags and t not in elements(sv.tags)" +
-                                ")", Content.class)
+                                "))", Content.class)
                 .setParameter("userId", userId)
                 .setParameter("tags", tags)
+                .setParameter("areTagsEmpty", tags.isEmpty())
                 .getResultList();
 
         // Separate saved videos and learning paths
@@ -99,8 +101,15 @@ public class UserRepository {
         Set<Video> combinedVideos = new HashSet<>(unfinishedVideos);
         combinedVideos.addAll(savedVideos);
 
+        List<Video> visibleVideos = new ArrayList<>();
+        combinedVideos.forEach(video -> {
+            if(!video.isVisibleForUser(getById(userId))){
+                visibleVideos.add(video);
+            }
+        });
+
         // Convert to VideoOverviewDTO
-        List<VideoOverviewDTO> currentVideos = combinedVideos.stream()
+        List<VideoOverviewDTO> currentVideos = visibleVideos.stream()
                 .map(video -> convertVideoToOverviewDTO(video, userId)).toList();
 
         // Fetch unfinished learning paths
@@ -110,20 +119,28 @@ public class UserRepository {
                                 "join lp.tags t " +
                                 "where vp.user.userId = :userId and vp.ignored = false and vp.progress < " +
                                 "(select count(e) from lp.entries e) " +
-                                "and not exists (" +
+                                "and ((t is null and :areTagsEmpty = true) or not exists (" +
                                 "    select t from Tag t " +
                                 "    where t in :tags and t not in elements(lp.tags)" +
-                                ")", LearningPath.class)
+                                "))", LearningPath.class)
                 .setParameter("userId", userId)
                 .setParameter("tags", tags)
+                .setParameter("areTagsEmpty", tags.isEmpty())
                 .getResultList();
 
         // Combine unfinished and saved learning paths
         Set<LearningPath> combinedLearningPaths = new HashSet<>(unfinishedLearningPaths);
         combinedLearningPaths.addAll(savedLearningPaths);
 
+        List<LearningPath> visiblePaths = new ArrayList<>();
+        combinedLearningPaths.forEach(learningPath -> {
+            if(!learningPath.isVisibleForUser(getById(userId))){
+                visiblePaths.add(learningPath);
+            }
+        });
+
         // Convert to LearningPathOverviewDTO
-        List<LearningPathOverviewDTO> currentLearningPaths = combinedLearningPaths.stream()
+        List<LearningPathOverviewDTO> currentLearningPaths = visiblePaths.stream()
                 .map(learningPath -> convertLearningPathToOverviewDTO(learningPath, userId)).toList();
 
         return new VideoAndLearningPathOverviewCollection(currentVideos, currentLearningPaths);
@@ -132,32 +149,49 @@ public class UserRepository {
     public VideoAndLearningPathOverviewCollection getAssignedContent(Long userId, List<Tag> tags) {
         List<Video> assignedVideos = em.createQuery("select distinct v from Video v " +
                         "join ContentAssignment va on va.content.contentId = v.contentId " +
-                        "join v.tags t " +
+                        "left outer join v.tags t " +
                         "where va.assignedTo.userId = :userId and va.isFinished = false " +
-                        "and not exists (" +
+                        "and ((t is null and :areTagsEmpty = true) or not exists (" +
                         "    select t from Tag t " +
                         "    where t in :tags and t not in elements(v.tags)" +
-                        ")", Video.class)
+                        "))", Video.class)
                 .setParameter("userId", userId)
                 .setParameter("tags", tags)
+                .setParameter("areTagsEmpty", tags.isEmpty())
                 .getResultList();
 
-        List<VideoOverviewDTO> assignedVideosDTO = assignedVideos.stream()
+        List<Video> visibleVideos = new ArrayList<>();
+        assignedVideos.forEach(video -> {
+            System.out.println(video);
+            if (video.isVisibleForUser(getById(userId))) {
+                visibleVideos.add(video);
+            }
+        });
+
+        List<VideoOverviewDTO> assignedVideosDTO = visibleVideos.stream()
                 .map(video -> convertVideoToOverviewDTO(video, userId)).toList();
 
         List<LearningPath> assignedLearningPaths = em.createQuery("select distinct lp from LearningPath lp " +
                         "join ContentAssignment va on va.content.contentId = lp.contentId " +
-                        "join lp.tags t " +
+                        "left outer join lp.tags t " +
                         "where va.assignedTo.userId = :userId and va.isFinished = false " +
-                        "and not exists (" +
+                        "and ((t is null and :areTagsEmpty = true) or not exists (" +
                         "    select t from Tag t " +
                         "    where t in :tags and t not in elements(lp.tags)" +
-                        ")", LearningPath.class)
+                        "))", LearningPath.class)
                 .setParameter("userId", userId)
                 .setParameter("tags", tags)
+                .setParameter("areTagsEmpty", tags.isEmpty())
                 .getResultList();
 
-        List<LearningPathOverviewDTO> assignedLearningPathsDTO = assignedLearningPaths.stream()
+        List<LearningPath> visiblePaths = new ArrayList<>();
+        assignedLearningPaths.forEach(learningPath -> {
+            if(!learningPath.isVisibleForUser(getById(userId))){
+                visiblePaths.add(learningPath);
+            }
+        });
+
+        List<LearningPathOverviewDTO> assignedLearningPathsDTO = visiblePaths.stream()
                 .map(learningPath -> convertLearningPathToOverviewDTO(learningPath, userId)).toList();
 
         return new VideoAndLearningPathOverviewCollection(assignedVideosDTO, assignedLearningPathsDTO);
@@ -182,58 +216,62 @@ public class UserRepository {
         if (savedContent.isEmpty()) {
             videos = em.createQuery(
                             "select v from Video v " +
-                                    "join v.tags t " +
+                                    "left outer join v.tags t " +
                                     "where v.contentId not in " +
                                     "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId and ignored = false) " +
-                                    "and not exists(" +
+                                    "and ((t is null and :areTagsEmpty = true) or not exists (" +
                                     "    select t from Tag t " +
                                     "    where t in :tags and t not in elements(v.tags)" +
-                                    ")", Video.class)
+                                    "))", Video.class)
                     .setParameter("userId", userId)
                     .setParameter("tags", filterTags)
+                    .setParameter("areTagsEmpty", filterTags.isEmpty())
                     .getResultList();
 
             learningPaths = em.createQuery(
                             "select lp from LearningPath lp " +
-                                    "join lp.tags t " +
+                                    "left outer join lp.tags t " +
                                     "where lp.contentId not in " +
                                     "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId and ignored = false) " +
-                                    "and not exists(" +
+                                    "and ((t is null and :areTagsEmpty = true) or not exists (" +
                                     "    select t from Tag t " +
                                     "    where t in :tags and t not in elements(lp.tags)" +
-                                    ")", LearningPath.class)
+                                    "))", LearningPath.class)
                     .setParameter("userId", userId)
                     .setParameter("tags", filterTags)
+                    .setParameter("areTagsEmpty", filterTags.isEmpty())
                     .getResultList();
         } else {
             videos = em.createQuery(
                             "select v from Video v " +
-                                    "join v.tags t " +
+                                    "left outer join v.tags t " +
                                     "where v.contentId not in " +
                                     "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId) and " +
                                     "v.contentId not in :savedContent " +
-                                    "and not exists(" +
+                                    "and ((t is null and :areTagsEmpty = true) or not exists (" +
                                     "    select t from Tag t " +
                                     "    where t in :tags and t not in elements(v.tags)" +
-                                    ")", Video.class)
+                                    "))", Video.class)
                     .setParameter("userId", userId)
                     .setParameter("tags", filterTags)
                     .setParameter("savedContent", savedContent)
+                    .setParameter("areTagsEmpty", filterTags.isEmpty())
                     .getResultList();
 
             learningPaths = em.createQuery(
                             "select lp from LearningPath lp " +
-                                    "join lp.tags t " +
+                                    "left outer join lp.tags t " +
                                     "where lp.contentId not in " +
                                     "(select vp.content.contentId from ViewProgress vp where vp.user.userId = :userId) and " +
-                                    "lp.contentId not in :savedVideos " +
-                                    "and not exists(" +
+                                    "lp.contentId not in :savedContent " +
+                                    "and ((t is null and :areTagsEmpty = true) or not exists (" +
                                     "    select t from Tag t " +
                                     "    where t in :tags and t not in elements(lp.tags)" +
-                                    ")", LearningPath.class)
+                                    "))", LearningPath.class)
                     .setParameter("userId", userId)
                     .setParameter("tags", filterTags)
-                    .setParameter("savedVideos", savedContent)
+                    .setParameter("savedContent", savedContent)
+                    .setParameter("areTagsEmpty", filterTags.isEmpty())
                     .getResultList();
         }
 

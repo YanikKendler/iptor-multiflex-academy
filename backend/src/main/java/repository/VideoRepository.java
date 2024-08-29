@@ -136,7 +136,8 @@ public class VideoRepository {
                 .getResultList();
 
         List<User> assignedUsers = em.createQuery("select distinct u from User u " +
-                        "join ContentAssignment ca on ca.content.contentId = :contentId and ca.assignedTo.userId = u.userId", User.class)
+                        "join ContentAssignment ca on ca.content.contentId = :contentId and ca.assignedTo.userId = u.userId" +
+                        " where ca.isFinished = false", User.class)
                 .setParameter("contentId", video.getContentId())
                 .getResultList();
         Set<User> allUsers = new HashSet<>(savedUsers);
@@ -200,6 +201,9 @@ public class VideoRepository {
                 .executeUpdate();
 
         VideoFile file = getById(id).getVideoFile();
+
+        userRepository.getById(getById(id).getUser().getUserId()).getSavedContent().remove(getById(id));
+
         em.remove(getById(id));
 
         if(file != null){

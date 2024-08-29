@@ -176,7 +176,7 @@ export class VideoService {
   }
 
   getFullContent() {
-    return this.http.get<ContentOverviewDTO[]>(`${Config.API_URL}/content`)
+    return this.http.get<ContentOverviewDTO[]>(`${Config.API_URL}/content?userId=${this.userService.currentUser.value.userId}`)
   }
 
   createVideoRequest(videoRequest: VideoRequestDTO){

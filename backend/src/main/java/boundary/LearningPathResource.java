@@ -11,7 +11,7 @@ import jakarta.ws.rs.core.Response;
 import model.LearningPath;
 import repository.LearningPathRepository;
 
-@Path("learningpath/")
+@Path("learningpath")
 public class LearningPathResource {
     @Inject
     LearningPathRepository repository;

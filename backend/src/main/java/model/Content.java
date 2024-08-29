@@ -117,6 +117,8 @@ public abstract class Content {
     }
 
     public boolean isVisibleForUser(User user) {
+        System.out.println(user.getUsername());
+        System.out.println(getVisibility());
         if(UserRoleEnum.ADMIN == user.getUserRole()) {
             return true;
         }

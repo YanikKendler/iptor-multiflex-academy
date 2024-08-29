@@ -67,6 +67,7 @@ export class LearningPathService {
   }
 
   createLearningPath(learningPath: LearningPathDetailDTO){
+    console.log(learningPath)
     return this.http.post<LearningPathDetailDTO>(`${Config.API_URL}/learningpath?userId=${this.userService.currentUser.value.userId}`, learningPath)
   }
 
