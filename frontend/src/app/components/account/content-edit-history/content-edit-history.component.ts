@@ -20,7 +20,6 @@ export class ContentEditHistoryComponent implements OnInit{
 
   ngOnInit(): void {
     this.userService.getContentHistory(this.data.contentId).subscribe(contentEditHistory => {
-      console.log(contentEditHistory)
       this.contentEditHistory = contentEditHistory;
     });
   }

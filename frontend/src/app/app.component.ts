@@ -21,7 +21,6 @@ export class AppComponent implements OnInit {
       password: localStorage.getItem('IMA_USER_PASSWORD')!
     }
 
-    console.log(userLoginDTO)
     this.userService.isLoggedIn(userLoginDTO).subscribe(response => {
       if (response == null) {
         this.router.navigate(['login'])

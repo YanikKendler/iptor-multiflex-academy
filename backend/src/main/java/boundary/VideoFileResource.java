@@ -50,8 +50,6 @@ public class VideoFileResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/upload")
     public Response upload(@FormDataParam("file") FormDataBodyPart file) {
-        System.out.println("upload " + file.getName());
-
         try {
             repository.uploadVideo(file.getValueAs(InputStream.class));
 

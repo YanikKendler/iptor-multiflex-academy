@@ -117,8 +117,6 @@ public class VideoResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateVideo(EditVideoDTO video, @QueryParam("userId") Long userId){
         try{
-            System.out.println(video.toString());
-
             VideoDetailDTO videoDetailDTO = videoRepository.update(video, userId);
 
             return Response.ok(videoDetailDTO).build();
@@ -133,7 +131,6 @@ public class VideoResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateVisibility(@PathParam("videoId") Long videoId, @QueryParam("userId") Long userId, JsonObject v){
         try{
-            System.out.println(v);
             videoRepository.updateVideoVisibility(videoId, userId, VisibilityEnum.valueOf(v.getString("visibility")));
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();

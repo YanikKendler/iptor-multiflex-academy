@@ -11,7 +11,7 @@ import jakarta.ws.rs.core.Response;
 import model.LearningPath;
 import repository.LearningPathRepository;
 
-@Path("learningpath/")
+@Path("learningpath")
 public class LearningPathResource {
     @Inject
     LearningPathRepository repository;
@@ -79,7 +79,6 @@ public class LearningPathResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateLearningpath(@PathParam("pathId") Long pathId, JsonObject data, @QueryParam("userId") Long userId){
         try{
-            System.out.println(data);
             repository.updatePathVisibility(pathId, userId, VisibilityEnum.valueOf(data.getString("visibility")));
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();

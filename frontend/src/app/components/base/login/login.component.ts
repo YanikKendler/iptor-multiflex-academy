@@ -60,25 +60,38 @@ export class LoginComponent implements OnInit{
   }
 
   changeMode(mode: "create" | "login") {
+    this.error = ""
     this.mode = mode
     this.router.navigate(['login'], {queryParams: {mode: mode}})
   }
 
-  onSubmit() {
+  onSubmit(isRegister: boolean) {
     if (this.regForm.valid) {
 
       let userDTO: UserDTO = {
-        username: "",
+        username: this.regForm.get('username')?.value,
         email: this.regForm.get('email')?.value,
         password: this.regForm.get('password')?.value,
         userRole: "CUSTOMER"
       }
+
+      if(isRegister) {
+        this.userService.createUser(userDTO).subscribe(response => {
+          if(response != null){
+            this.userService.currentUser.next(response)
+            localStorage.setItem('IMA_USER_ID', response.userId.toString());
+            localStorage.setItem('IMA_USER_PASSWORD', userDTO.password);
+            this.router.navigate([''])
+          } else {
+            this.error = "Email or username already in use"
+          }
+        })
+        return
+      }
+
       this.userService.login(userDTO).subscribe(response => {
-        console.log(response)
         if(response != null){
           this.userService.currentUser.next(response)
-
-          console.log(response)
 
           localStorage.setItem('IMA_USER_ID', response.userId.toString());
           localStorage.setItem('IMA_USER_PASSWORD', userDTO.password);

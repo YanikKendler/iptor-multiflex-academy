@@ -13,7 +13,6 @@ export const canViewGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state
     //TODO forward to 404 if content doesnt exist
 
     userService.isUserAllowedToSeeContent(contentId).subscribe(isAllowed => {
-      console.log(isAllowed);
       if (!isAllowed) {
         router.navigate(['unauthorized'], {queryParams: {rerouteType: 'can-view.guard reroute'}});
       }

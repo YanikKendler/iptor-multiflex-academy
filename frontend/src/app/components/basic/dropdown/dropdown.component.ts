@@ -38,10 +38,6 @@ export class DropdownComponent {
   @Output()
   selectedIdChange = new EventEmitter<number | string>()
 
-  log(){
-    console.log("log")
-  }
-
   selectOption(option: DropdownOption){
     this.selectedId = option.id
     this.optionSelected.emit(option)

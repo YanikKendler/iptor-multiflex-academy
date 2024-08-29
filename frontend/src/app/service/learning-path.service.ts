@@ -83,7 +83,6 @@ export class LearningPathService {
       visibility: learningPath.visibility
     }
 
-    console.log(data)
     return this.http.put<LearningPathDetailDTO>(`${Config.API_URL}/learningpath?userId=${this.userService.currentUser.value.userId}`, data)
   }
 

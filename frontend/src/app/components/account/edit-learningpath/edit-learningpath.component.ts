@@ -32,6 +32,7 @@ import {VideoEntryComponent} from "../video-entry/video-entry.component"
 import {ContentEditHistoryComponent} from "../content-edit-history/content-edit-history.component";
 import {UserService} from "../../../service/user.service"
 import {faCircleQuestion} from "@fortawesome/free-regular-svg-icons"
+
 @Component({
   selector: 'app-edit-learningpath',
   standalone: true,
@@ -75,11 +76,9 @@ export class EditLearningpathComponent implements OnInit{
   @ViewChild(CdkMenuTrigger) videoPopupTrigger!: CdkMenuTrigger
 
   ngOnInit(): void {
-    console.log(this.data)
     if(this.data > 0){ //editing existing learningpath
       this.learningPathService.getLearningPathDetails(this.data).subscribe(path => {
         this.learningPath = path;
-        console.log(path)
         this.oldLearningPath= JSON.parse(JSON.stringify(this.learningPath)) //actual nested deep copy
       })
     }
@@ -127,17 +126,14 @@ export class EditLearningpathComponent implements OnInit{
   };
 
   saveChanges() {
-    console.log(this.learningPath)
     if(this.learningPath.contentId > 0) { //saving changes to existing path
       this.learningPathService.updateLearningPath(this.learningPath).subscribe(result => {
-        console.log(result)
         window.removeEventListener("beforeunload", this.beforeUnloadHandler);
         this.dialogRef.close();
       })
     }
     else { //creating new path
       this.learningPathService.createLearningPath(this.learningPath).subscribe(result => {
-        console.log(result)
         window.removeEventListener("beforeunload", this.beforeUnloadHandler);
         this.dialogRef.close();
       })
@@ -145,7 +141,6 @@ export class EditLearningpathComponent implements OnInit{
   }
 
   close(){
-    console.log(this.learningPath, this.oldLearningPath)
     //compare the actual data currently in the video vs the data when the dialog was opened to see if there are any changes
     if(JSON.stringify(this.learningPath) !== JSON.stringify(this.oldLearningPath)){
       this.confirmClose()

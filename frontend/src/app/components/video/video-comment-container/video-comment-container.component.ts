@@ -61,7 +61,6 @@ export class VideoCommentContainerComponent implements OnInit {
   updateComments(){
     if(this.videoId){
       this.commentService.getCommentList(this.videoId).subscribe(commentList => {
-        console.log(commentList)
         this.comments = commentList
       })
     }

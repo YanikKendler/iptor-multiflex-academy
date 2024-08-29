@@ -25,9 +25,9 @@ public class ContentResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFullContent(){
+    public Response getFullContent(@QueryParam("userId") Long userId){
         try{
-            return Response.ok(repository.getFullContent()).build();
+            return Response.ok(repository.getFullContent(userId)).build();
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }

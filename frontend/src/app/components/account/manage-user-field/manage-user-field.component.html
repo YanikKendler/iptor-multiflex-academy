@@ -63,7 +63,7 @@
             @if(content.isFinished){
               <p class="progress">completed</p>
             } @else{
-              <p class="progress" matTooltip="{{Utils.roundNumber(content.progress, 1)}}%" matTooltipShowDelay="500">{{ Utils.roundNumber(content.progress, 1) }}% watched</p>
+              <p class="progress" matTooltip="{{Utils.roundNumber(content.progress*100, 1)}}%" matTooltipShowDelay="500">{{ Utils.roundNumber(content.progress*100, 1) }}% watched</p>
             }
             <p class="type">video</p>
             <p class="questions">{{content.questionOrVideoCount}} questions</p>
@@ -94,7 +94,7 @@
         </div>
       }
 
-      @if (assignedContent?.length == 0) {
+      @if (!assignedContent || assignedContent.length == 0) {
         <div>
           <p class="no-results">No content yet</p>
         </div>

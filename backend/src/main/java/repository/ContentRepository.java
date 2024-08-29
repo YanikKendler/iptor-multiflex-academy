@@ -26,16 +26,15 @@ public class ContentRepository {
     public ContentForUserDTO searchContent(String search, Long userId, List<Tag> tags) {
         try {
             List<Content> content = em.createQuery("SELECT distinct c FROM Content c " +
-                            "join c.tags t " +
-                            "WHERE not exists(" +
+                            "left join c.tags t " +
+                            "WHERE ((t is null and :areTagsEmpty = true) or not exists(" +
                             "    select t from Tag t " +
                             "    where t in :tags and t not in elements(c.tags)" +
-                            ") and LOWER(c.title) LIKE LOWER (:search) or LOWER(c.description) LIKE LOWER(:search) " +
-                            "and not exists(" +
-                            "    select t from Tag t " +
-                            "    where t in :tags and t not in elements(c.tags)" +
-                            ")", Content.class)
-                    .setParameter("search", "%" + search + "%").setParameter("tags", tags).getResultList();
+                            ")) and (LOWER(c.title) LIKE LOWER(:search) or LOWER(c.description) LIKE LOWER(:search))", Content.class)
+                    .setParameter("search", "%" + search + "%")
+                    .setParameter("tags", tags)
+                    .setParameter("areTagsEmpty", tags.isEmpty())
+                    .getResultList();
 
             List<VideoOverviewDTO> videos = content.stream()
                     .filter(c -> c instanceof Video).map(c -> userRepository.convertVideoToOverviewDTO((Video) c, userId)).toList();
@@ -48,8 +47,10 @@ public class ContentRepository {
         }
     }
 
-    public List<ContentOverviewDTO> getFullContent() {
-        List<Content> c =  em.createQuery("SELECT c FROM Content c", Content.class).getResultList();
+    public List<ContentOverviewDTO> getFullContent(Long userId) {
+        List<Content> c =  em.createQuery("SELECT c FROM Content c where c.visibility != 'self' or c.user.userId = :userId or c.user.userRole = 'admin'", Content.class)
+                .setParameter("userId", userId)
+                .getResultList();
 
         return c.stream().map(content -> {
             if(content instanceof Video) {

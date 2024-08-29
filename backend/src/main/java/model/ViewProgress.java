@@ -14,11 +14,13 @@ public class ViewProgress {
 
     @JsonIgnore
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Content content;
 
     @JsonIgnore
     @ManyToOne
     @Unique
+    @JoinColumn(nullable = false)
     private User user;
 
     /** Duration of the video in seconds or progress for learning paths */

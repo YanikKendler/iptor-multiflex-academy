@@ -30,14 +30,14 @@
 <section class="details">
   <div>
     <p>path-color:</p>
-    <input type="color" [value]="learningPath?.color" (input)="colorUpdated(color.value)" #color>
+    <input type="color" [value]="learningPath.color" (input)="colorUpdated(color.value)" #color>
   </div>
 
   <mat-divider [vertical]="true"></mat-divider>
 
   <div class="visibility">
     <p>visibility:</p>
-    @if(learningPath.approved || userService.currentUser.value.userRole == "ADMIN"){
+    @if(learningPath.approved || userService.currentUser.value.userRole == 'ADMIN'){
       <app-dropdown [selectedId]="learningPath.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
     } @else{
       <p>
@@ -65,7 +65,7 @@
       (onDelete)="deleteVideoEntry(videoEntry)"
     ></app-video-entry>
   }
-  @if (learningPath.entries?.length == 0) {
+  @if (!learningPath.entries || learningPath.entries.length == 0) {
     <p class="no-results">No videos yet</p>
   }
 

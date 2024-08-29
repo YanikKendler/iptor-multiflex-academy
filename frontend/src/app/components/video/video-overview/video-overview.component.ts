@@ -81,8 +81,6 @@ export class VideoOverviewComponent implements OnInit{
     }
 
     this.bookmark?.toggleMarked()
-    console.log("Added to bookmarks")
-
     this.userService.toggleSavedContent(this.video.contentId)
   }
 

@@ -33,14 +33,14 @@
 <section class="details">
   <div>
     <p>video-color:</p>
-    <input type="color" [value]="video?.color" (input)="colorUpdated(color.value)" #color>
+    <input type="color" [value]="video.color" (input)="colorUpdated(color.value)" #color>
   </div>
 
   <mat-divider [vertical]="true"></mat-divider>
 
   <div class="visibility">
     <p>visibility:</p>
-    @if(video.approved || userService.currentUser.value.userRole == "ADMIN"){
+    @if(video.approved || userService.currentUser.value.userRole == 'ADMIN'){
       <app-dropdown [selectedId]="video.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
     } @else{
       <p>
@@ -70,7 +70,7 @@
         <span>{{ question.text }}</span>
       </p>
     }
-    @if(video?.questions?.length == 0){
+    @if(!video || !video.questions || video.questions.length == 0){
       <p class="no-results">Start by creating a Question</p>
     }
     <button (click)="addQuestion()" matTooltip="Create a new question" matTooltipShowDelay="300">
