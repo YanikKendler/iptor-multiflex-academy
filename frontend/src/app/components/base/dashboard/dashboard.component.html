@@ -44,7 +44,7 @@
             <app-learning-path-overview [checkable]="true" [learningPath]="learningPath" (updateDashboard)="updateLearningPathDashboard($event)"></app-learning-path-overview>
           }
         }
-        @if(content?.assigned?.videos?.length == 0){
+        @if(content?.assigned?.videos?.length == 0 && content?.assigned?.learningPaths?.length == 0){
           <p class="no-results">no results found</p>
         }
       </div>
