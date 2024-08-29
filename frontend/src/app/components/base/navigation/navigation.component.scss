@@ -163,6 +163,13 @@ div.search{
 .notifications{
   @include floating-box;
   margin-top: .5rem;
+  max-height: 50vh;
+  overflow-y: auto;
+
+  .no-results{
+    padding: 1rem;
+    color: $gray-300;
+  }
 }
 .switch{
   display: flex;
@@ -181,6 +188,8 @@ div.search{
   max-width: 100%;
   overflow-x: hidden;
   text-align: center;
+  padding-inline: .2rem;
+  white-space: wrap;
 }
 
 @media screen and (max-width: 900px) {

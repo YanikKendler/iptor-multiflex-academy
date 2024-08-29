@@ -1,11 +1,21 @@
-<h2>History of {{data.videoTitle}}</h2>
+<h2>History of "{{data.videoTitle}}"</h2>
 
 <div class="history">
   @for (historyEntry of contentEditHistory; track historyEntry.timestamp){
-    <p>
-      <span>{{ historyEntry.user.username }}</span>
-      has updated
-      <span>{{ historyEntry.type }}</span>
-      at {{ Utils.toFullDateTimeString(historyEntry.timestamp) }}</p>
+    @if(historyEntry.type === 'created'){
+      <p>
+        <span>{{ historyEntry.user.username }}</span>
+        has <span>created</span> this content
+        at {{ Utils.toFullDateTimeString(historyEntry.timestamp) }}
+      </p>
+    }
+    @else{
+      <p>
+        <span>{{ historyEntry.user.username }}</span>
+        has updated
+        <span>{{ historyEntry.type }}</span>
+        at {{ Utils.toFullDateTimeString(historyEntry.timestamp) }}
+      </p>
+    }
   }
 </div>

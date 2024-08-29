@@ -55,6 +55,13 @@ section.details{
     align-items: center;
     gap: .5rem;
 
+    &.visibility{
+      fa-icon{
+        color: $secondary-350;
+        font-size: 1.2rem;
+      }
+    }
+
     p{
       font-weight: 500;
       white-space: nowrap;

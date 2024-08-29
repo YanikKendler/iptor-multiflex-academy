@@ -35,7 +35,7 @@
       <p class="no-results">No new notifications</p>
     }
     @for(notification of notificationList; track notification.notificationId){
-      <app-notification [notification]="notification"></app-notification>
+      <app-notification [notification]="notification" matRipple></app-notification>
     }
   </div>
 </ng-template>

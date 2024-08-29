@@ -49,7 +49,7 @@
             ></fa-icon>
           </app-icon-button>
         }
-        <app-icon-button (click)="deleteLearningPath(learningpath.contentId)">
+        <app-icon-button (click)="deleteLearningPath(learningpath)">
           <fa-icon [icon]="faTrash" class="small"></fa-icon>
         </app-icon-button>
         <a [routerLink]="['/learningpath/' + learningpath.contentId]" target="_blank" matTooltip="go to learning path" matTooltipShowDelay="500">

@@ -32,6 +32,11 @@
           <app-dropdown [selectedId]="video.visibility.toString()" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
         } @else{
           self
+          <fa-icon
+            [icon]="faInfoCircle"
+            matTooltip="This video is waiting for approval by an Admin. Once its approved you can change the visibility. An admin has been notified already."
+            class="highlighted"
+        ></fa-icon>
         }
       </td>
 
@@ -46,15 +51,15 @@
         @if(!video.approved && userService.currentUser.value.userRole == 'ADMIN'){
           <app-icon-button
             [matTooltip]="Config.generateAproveContentTooltipText('video')"
-            (click)="approveVideo(video.contentId)"
+            (click)="approveVideo(video)"
           >
             <fa-icon
               [icon]="faCheckCircle"
-              class="approve"
+              class="highlighted"
             ></fa-icon>
           </app-icon-button>
         }
-        <app-icon-button (click)="deleteVideo(video.contentId)">
+        <app-icon-button (click)="deleteVideo(video)">
           <fa-icon [icon]="faTrash"></fa-icon>
         </app-icon-button>
         <a [routerLink]="['/video/' + video.contentId]" target="_blank" matTooltip="go to video" matTooltipShowDelay="500">

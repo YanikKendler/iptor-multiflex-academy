@@ -67,22 +67,22 @@ export class Utils{
     }*/
   }
 
-  static toFullDateTimeString(timestamp: Date | string | number){
+  static toFullDateTimeString(timestamp: Date | string | number, options: {dateSeperator: string, timeSeperator: string} = {dateSeperator: '.', timeSeperator: ':'}){
     timestamp = this.anyToDate(timestamp);
 
-    return Utils.padNumber(timestamp.getDate()) + '/' +
-           Utils.padNumber(timestamp.getMonth() + 1) + '/' +
+    return Utils.padNumber(timestamp.getDate()) + options.dateSeperator +
+           Utils.padNumber(timestamp.getMonth() + 1) + options.dateSeperator +
            timestamp.getFullYear().toString().substring(2,4) + ' ' +
 
-           Utils.padNumber(timestamp.getHours()) + ':' +
+           Utils.padNumber(timestamp.getHours()) + options.timeSeperator +
            Utils.padNumber(timestamp.getMinutes())
   }
 
-  static toFullDateString(timestamp: Date | string | number, options: {seperator: string} = {seperator: '/'}) {
+  static toFullDateString(timestamp: Date | string | number, options: {dateSeperator: string} = {dateSeperator: '.'}) {
     timestamp = this.anyToDate(timestamp);
 
-    return Utils.padNumber(timestamp.getDate()) + options.seperator +
-           Utils.padNumber(timestamp.getMonth() + 1) + options.seperator +
+    return Utils.padNumber(timestamp.getDate()) + options.dateSeperator +
+           Utils.padNumber(timestamp.getMonth() + 1) + options.dateSeperator +
            timestamp.getFullYear().toString().substring(2,4)
   }
 

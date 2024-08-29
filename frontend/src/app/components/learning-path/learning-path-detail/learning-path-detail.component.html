@@ -105,8 +105,8 @@
             <tr>
               <td>{{$index+1}}.</td>
               <td class="title">{{video.videoTitle}}</td>
-              <td>{{ Utils.toFullDateString(video.startTime, {seperator: "."}) }}</td>
-              <td>{{ Utils.toFullDateString(video.endTime, {seperator: "."}) }}</td>
+              <td>{{ Utils.toFullDateString(video.startTime ) }}</td>
+              <td>{{ Utils.toFullDateString(video.endTime) }}</td>
               <td>{{video.questionCount}}</td>
               <td>{{(video.progress * 100).toFixed(1)}}%</td>
           }

@@ -74,6 +74,8 @@ public class VideoRepository {
             em.persist(new ContentNotification(admin, newVideo.getUser(), newVideo, ContentNotificationEnum.videoCreateRequest));
         }
 
+        em.persist(new ContentEditHistory(userRepository.getById(userId), newVideo, ContentEditType.created));
+
         return newVideo;
     }
 
@@ -173,7 +175,7 @@ public class VideoRepository {
                 System.out.println(l.getEntries().size());
                 l.setEntries(l.getEntries().stream().filter(e -> !Objects.equals(e.getVideo().getContentId(), id)).toList());
                 System.out.println(l.getEntries().size());
-                learningPathRepository.alertRelevantUsers(l);
+                learningPathRepository.notifyRelevantUsers(l);
             });
         } catch(NoResultException e){}
 

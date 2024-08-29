@@ -8,7 +8,7 @@ import {
   faSortDown,
   faStar,
   faTrash,
-  faCheckCircle
+  faCheckCircle, faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
 import {faPlayCircle} from "@fortawesome/free-regular-svg-icons";
 import {RouterLink} from "@angular/router";
@@ -27,8 +27,8 @@ import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
 import {DropdownComponent, DropdownOption} from "../../basic/dropdown/dropdown.component"
 import {Utils} from "../../../utils"
 import {MatTooltip} from "@angular/material/tooltip"
-import {ExtremeConfirmComponent} from "../../dialogue/extreme-confirm/extreme-confirm.component";
 import {Config} from "../../../config"
+import {MatSnackBar} from "@angular/material/snack-bar"
 
 @Component({
   selector: 'app-videos',
@@ -51,32 +51,34 @@ import {Config} from "../../../config"
   styleUrl: './videos.component.scss'
 })
 export class VideosComponent implements OnInit{
-  protected readonly faPlayCircle = faPlayCircle;
-  protected readonly faEye = faEye;
-  protected readonly faStar = faStar;
-  protected readonly faPen = faPen;
+  protected readonly faPlayCircle = faPlayCircle
+  protected readonly faEye = faEye
+  protected readonly faStar = faStar
+  protected readonly faPen = faPen
 
-  userService = inject(UserService);
-  videoService = inject(VideoService);
+  userService = inject(UserService)
+  videoService = inject(VideoService)
 
-  userContent : MyVideoDTO[] = [];
+  protected snackBar = inject(MatSnackBar)
+
+  userContent : MyVideoDTO[] = []
 
   ngOnInit(): void {
     this.userService.currentUser.subscribe(user => {
       if(user.userId <= 0) return
 
-      this.getUserContent();
+      this.getUserContent()
     })
   }
 
   getUserContent() {
     this.userService.getUserVideos().subscribe((data) => {
-      this.userContent = data;
+      this.userContent = data
       console.log(this.userContent)
-    });
+    })
   }
 
-  readonly dialog = inject(MatDialog);
+  readonly dialog = inject(MatDialog)
 
   openEditPopUp(videoId: number) {
     let dialogRef = this.dialog.open(EditVideoComponent, {
@@ -84,11 +86,11 @@ export class VideosComponent implements OnInit{
       width: "800px",
       disableClose: true,
       data: videoId
-    });
+    })
 
     dialogRef.afterClosed().subscribe(result => {
-      this.getUserContent();
-    });
+      this.getUserContent()
+    })
   }
 
   createVideo(){
@@ -107,50 +109,51 @@ export class VideosComponent implements OnInit{
     //lol was n crazy code
     /*let text = ""
     tags.forEach(tag => {
-      text += tag.name + ", ";
+      text += tag.name + ", "
     })
 
-    return text.substring(0, 24) + (text.length > 24 ? "..." : "");*/
+    return text.substring(0, 24) + (text.length > 24 ? "..." : "")*/
 
-    return tags.map(tag => tag.name).join(", ");
+    return tags.map(tag => tag.name).join(", ")
   }
 
   updateVisibility(videoId: number, selectedOption: DropdownOption) {
-    const visibilityEnumValue = VisibilityEnum[selectedOption.id as keyof typeof VisibilityEnum];
-    this.videoService.updateVideoVisibility(videoId, visibilityEnumValue);
+    const visibilityEnumValue = VisibilityEnum[selectedOption.id as keyof typeof VisibilityEnum]
+    this.videoService.updateVideoVisibility(videoId, visibilityEnumValue)
   }
 
-  deleteVideo(videoId: number){
-    let dialogRef = this.dialog.open(ExtremeConfirmComponent, {
-      maxWidth: "80vw",
-      width: "800px",
-      disableClose: true,
+  deleteVideo(video: MyVideoDTO){
+    let dialogRef = this.dialog.open(ConfirmComponent, {
       data: {
         title: "Delete Video",
-        message: "Are you sure you want to delete this video?"
+        message: `The Video "${video.title}" and all its questions will be lost forever. This action cannot be undone. Are you sure?`,
+        confirmMessage: `Delete Video: "${video.title}"`,
       }
-    });
+    })
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.videoService.deleteVideo(videoId).subscribe(() => {
-          this.userContent = this.userContent.filter(video => video.contentId != videoId);
-        });
+        this.videoService.deleteVideo(video.contentId).subscribe(() => {
+          this.userContent = this.userContent.filter(userContent => userContent.contentId != video.contentId)
+          this.snackBar.open(`Video "${video!.title}" was deleted`, "", {duration: 2000})
+        })
       }
     })
   }
 
-  approveVideo(contentId: number) {
-    this.userService.approveContent(contentId).subscribe(response => {
-      this.userContent.find(video => video.contentId == contentId)!.approved = true;
+  approveVideo(video: MyVideoDTO) {
+    this.userService.approveContent(video.contentId).subscribe(response => {
+      this.userContent.find(userContent => userContent.contentId == video.contentId)!.approved = true
+      this.snackBar.open(`Video "${video!.title}" approved!`, "", {duration: 2000})
     })
   }
 
-  protected readonly faArrowRightToBracket = faArrowRightToBracket;
-  protected readonly faTrash = faTrash;
-  protected readonly faSortDown = faSortDown;
+  protected readonly faArrowRightToBracket = faArrowRightToBracket
+  protected readonly faTrash = faTrash
+  protected readonly faSortDown = faSortDown
   protected readonly Utils = Utils
   protected readonly faShareFromSquare = faShareFromSquare
   protected readonly faCheckCircle = faCheckCircle
   protected readonly Config = Config
+  protected readonly faInfoCircle = faInfoCircle
 }

@@ -79,7 +79,7 @@ export interface UserTreeDTO{
 
 export enum ContentEditType{
   tags="tags", title="title", description="description", color="color",
-  visibility="visibility", entries="entries", questions="questions", videoFile="videoFile"
+  visibility="visibility", entries="entries", questions="questions", videoFile="videoFile", created="created"
 }
 
 export interface ContentEditHistoryDTO{

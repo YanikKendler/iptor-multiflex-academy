@@ -143,6 +143,11 @@ export class UploadVideoComponent {
   }
 
   showUploadError(text: string, severe: boolean = false) {
+    if(text == ""){
+      text = "unkown error"
+      severe = true
+    }
+
     console.error(`file upload ERROR: ${text}`)
     this.snackbar.open(
       `Video upload Failed - please ${severe ? 'contact an administrator' : 'try again'} - ERROR: ${text}`,

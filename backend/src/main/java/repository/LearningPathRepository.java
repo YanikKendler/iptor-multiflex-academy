@@ -113,6 +113,8 @@ public class LearningPathRepository {
     }
 
     public LearningPathDetailDTO update(EditLearningPathDTO data, Long userId) {
+        System.out.println("UPDATE LEARNINGPATH: " + data.toString());
+
         LearningPath pathToUpdate = em.find(LearningPath.class, data.contentId());
 
         if(!Objects.equals(data.title(), pathToUpdate.getTitle())){
@@ -171,12 +173,12 @@ public class LearningPathRepository {
 
         em.merge(pathToUpdate);
 
-        alertRelevantUsers(pathToUpdate);
+        notifyRelevantUsers(pathToUpdate);
 
         return null;
     }
 
-    public void alertRelevantUsers(LearningPath learningPath){
+    public void notifyRelevantUsers(LearningPath learningPath){
         List<User> savedUsers = em.createQuery("select distinct u from User u " +
                         "join u.savedContent us on us.contentId = :contentId", User.class)
                 .setParameter("contentId", learningPath.getContentId())

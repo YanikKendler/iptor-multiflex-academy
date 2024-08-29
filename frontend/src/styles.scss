@@ -163,6 +163,12 @@ body {
     height: 2rem;
     white-space: nowrap;
 
+    &[disabled] {
+      pointer-events: initial;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
     &:not([color="secondary"]):not([color="error"]) {
       --mat-text-button-state-layer-color: #{$primary-500};
 
@@ -211,12 +217,6 @@ body {
         &.cdk-focused {
           background-color: $secondary-800;
         }
-      }
-
-      &[disabled] {
-        pointer-events: initial;
-        cursor: not-allowed;
-        opacity: 0.5;
       }
     }
 

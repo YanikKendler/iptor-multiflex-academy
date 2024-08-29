@@ -1,6 +1,7 @@
 :host{
   display: block;
   padding: 2rem;
+  border-radius: .5rem;
 }
 
 h2, p{
@@ -10,16 +11,15 @@ h2, p{
 h2{
   font-size: 1.25rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid black;
-  margin-bottom: 1rem;
 }
 
 div.history{
   display: flex;
   flex-direction: column;
   gap: .8rem;
-  max-height: 600px;
+  max-height: min(600px, 80vh);
   overflow-y: auto;
+  padding-left: .5rem;
 }
 
 span{

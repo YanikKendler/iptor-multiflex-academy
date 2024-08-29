@@ -35,12 +35,18 @@
 
   <mat-divider [vertical]="true"></mat-divider>
 
-  <div>
+  <div class="visibility">
     <p>visibility:</p>
-    @if(learningPath.approved){
+    @if(learningPath.approved || userService.currentUser.value.userRole == "ADMIN"){
       <app-dropdown [selectedId]="learningPath.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
     } @else{
-      {{learningPath.visibility}}
+      <p>
+        {{learningPath.visibility}}
+      </p>
+      <fa-icon
+        [icon]="faCircleQuestion"
+        matTooltip="Your learningpath needs to be approved by an Admin before you can edit its visibility."
+      ></fa-icon>
     }
   </div>
 

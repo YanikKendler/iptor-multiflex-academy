@@ -1,7 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User, UserService} from "./user.service";
-import {ContentOverviewDTO, VideoOverviewDTO} from "./video.service";
+import {ContentBase, ContentOverviewDTO, VideoOverviewDTO} from "./video.service";
 import {Comment} from "./comment.service";
 import {Config} from "../config";
 
@@ -10,10 +10,11 @@ export interface Notification {
   forUser: User;
   triggeredByUser: User;
   done: boolean;
+  timestamp: string;
 }
 
 export interface ContentNotification extends Notification {
-  content: ContentOverviewDTO;
+  content: ContentBase;
   type: ContentNotificationEnum;
 }
 

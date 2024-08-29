@@ -50,12 +50,13 @@
     }
   }
 
-  a{
+  a.viewResults{
     margin-top: auto;
     color: $gray-300;
     text-decoration: underline;
     cursor: pointer;
     user-select: none;
+    white-space: nowrap;
 
     &:hover{
       color: $gray-250;

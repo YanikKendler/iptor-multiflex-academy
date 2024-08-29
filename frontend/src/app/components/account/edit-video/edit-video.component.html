@@ -38,12 +38,18 @@
 
   <mat-divider [vertical]="true"></mat-divider>
 
-  <div>
+  <div class="visibility">
     <p>visibility:</p>
-    @if(video.approved){
+    @if(video.approved || userService.currentUser.value.userRole == "ADMIN"){
       <app-dropdown [selectedId]="video.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
     } @else{
-      {{video.visibility}}
+      <p>
+        {{video.visibility}}
+      </p>
+      <fa-icon
+        [icon]="faCircleQuestion"
+        matTooltip="Your learningpath needs to be approved by an Admin before you can edit its visibility."
+      ></fa-icon>
     }
   </div>
 
@@ -67,7 +73,7 @@
     @if(video?.questions?.length == 0){
       <p class="no-results">Start by creating a Question</p>
     }
-    <button (click)="addQuestion()">
+    <button (click)="addQuestion()" matTooltip="Create a new question" matTooltipShowDelay="300">
       <fa-icon [icon]="faPlus"></fa-icon>
     </button>
   </div>

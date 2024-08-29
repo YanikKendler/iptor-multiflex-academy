@@ -41,6 +41,16 @@ export interface LearningPathEntryDTO {
   progress: number
 }
 
+export interface EditLearningPathDTO {
+  contentId: number;
+  title: string;
+  description: string;
+  tags: Tag[];
+  visibility: VisibilityEnum;
+  color?: string;
+  entries: LearningPathEntryDTO[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -63,8 +73,18 @@ export class LearningPathService {
   }
 
   updateLearningPath(learningPath: LearningPathDetailDTO){
-    console.log("updating learningpath", learningPath)
-    return this.http.put<LearningPathDetailDTO>(`${Config.API_URL}/learningpath?userId=${this.userService.currentUser.value.userId}`, learningPath)
+    let data: EditLearningPathDTO = {
+      contentId: learningPath.contentId,
+      title: learningPath.title,
+      description: learningPath.description,
+      color: learningPath.color,
+      entries: learningPath.entries,
+      tags: learningPath.tags,
+      visibility: learningPath.visibility
+    }
+
+    console.log(data)
+    return this.http.put<LearningPathDetailDTO>(`${Config.API_URL}/learningpath?userId=${this.userService.currentUser.value.userId}`, data)
   }
 
   createLearningPath(learningPath: LearningPathDetailDTO){

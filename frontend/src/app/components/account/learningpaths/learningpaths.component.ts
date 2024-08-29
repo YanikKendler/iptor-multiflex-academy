@@ -31,7 +31,6 @@ import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning
 import {LearningPathService} from "../../../service/learning-path.service"
 import {EditLearningpathComponent} from "../edit-learningpath/edit-learningpath.component"
 import {MatDivider} from "@angular/material/divider"
-import {ExtremeConfirmComponent} from "../../dialogue/extreme-confirm/extreme-confirm.component";
 import {MatSnackBar} from "@angular/material/snack-bar"
 import {Config} from "../../../config"
 
@@ -119,31 +118,30 @@ export class LearningpathsComponent implements OnInit{
     this.learningpathService.updatePathVisibility(videoId, visibilityEnumValue);
   }
 
-  deleteLearningPath(learningPathId: number) {
-    let dialogRef = this.dialog.open(ExtremeConfirmComponent, {
-      maxWidth: "80vw",
-      width: "800px",
-      disableClose: true,
+  deleteLearningPath(learningPath: MyLearningpathDTO) {
+    let dialogRef = this.dialog.open(ConfirmComponent, {
       data: {
-        title: "Delete Video",
-        message: "Are you sure you want to delete this video?"
+        title: "Delete Learningpath",
+        message: `The Learningpath "${learningPath.title}" will be lost forever. Any associated videos will not be deleted. This action cannot be undone. Are you sure?`,
+        confirmMessage: `Delete Learningpath: "${learningPath.title}"`,
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.learningpathService.deletePath(learningPathId).subscribe(() => {
-          this.userLearningpaths = this.userLearningpaths.filter(learningpath => learningpath.contentId != learningPathId);
+        this.learningpathService.deletePath(learningPath.contentId).subscribe(() => {
+          this.userLearningpaths = this.userLearningpaths.filter(userContent => userContent.contentId != learningPath.contentId)
+          this.snackBar.open(`Learning path "${learningPath!.title}" was deleted`, "", {duration: 2000})
         });
       }
     })
   }
 
-  approvePath(contentId: number) {
-      this.userService.approveContent(contentId).subscribe(response => {
-          let learningPath = this.userLearningpaths.find(learningpath => learningpath.contentId == contentId)
+  approvePath(learningpath: number) {
+      this.userService.approveContent(learningpath).subscribe(response => {
+          let learningPath = this.userLearningpaths.find(userContent => userContent.contentId == learningpath)
           learningPath!.approved = true;
-          this.snackBar.open(`Learning path "${learningPath!.title}" approved`, "", {duration: 2000})
+          this.snackBar.open(`Learning path "${learningPath!.title}" approved!`, "", {duration: 2000})
       })
   }
 

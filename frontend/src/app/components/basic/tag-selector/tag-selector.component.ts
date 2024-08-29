@@ -74,7 +74,7 @@ export class TagSelectorComponent implements OnInit{
       height: "200px",
       width: "400px",
       data: {
-        message: "Do really you want to delete this tag?"
+        message: `Do really you want to delete the tag "${tag.name}"? This tag will be removed from all content.`
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if(confirm) {

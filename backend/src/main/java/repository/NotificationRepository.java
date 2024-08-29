@@ -32,9 +32,10 @@ public class NotificationRepository {
         return em.createQuery(
                 "select n from Notification n " +
                 "where n.forUser.userId = :userId " +
-                "order by n.timestamp asc"
+                "order by n.timestamp desc"
             , Notification.class)
             .setParameter("userId", userId)
+            .setMaxResults(50)
             .getResultList();
     }
 

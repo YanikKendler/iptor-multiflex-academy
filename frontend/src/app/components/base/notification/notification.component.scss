@@ -5,18 +5,26 @@
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  padding: .1rem 1rem;
+  padding: .2rem 1rem;
+  padding-right: .5rem;
   transition: all .2s ease;
   color: $gray-400;
+  gap: .5rem;
+}
+
+:host(.current:not(:last-of-type)){
+  border-bottom: 1px solid $primary-785;
+  border-collapse: collapse;
 }
 
 :host(:hover){
-  background-color: $gray-800;
+  background-color: $gray-900;
 }
 
 :host(.current){
   background-color: $primary-900;
   color: black;
+  font-weight: 500;
 }
 
 :host(.current:hover){
@@ -27,9 +35,20 @@
   color: $primary-500;
 }
 
-.message{
+.left{
   display: flex;
-  font-size: .9rem;
+  flex-direction: column;
+
+  .time{
+    font-size: .8rem;
+    color: $gray-300;
+  }
+
+  .message{
+    display: flex;
+    font-size: .9rem;
+    width: 50ch;
+  }
 }
 
 

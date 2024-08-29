@@ -26,6 +26,7 @@ import {EditVideoComponent} from "../../account/edit-video/edit-video.component"
 import {MatDialog} from "@angular/material/dialog";
 import {RequestVideoComponent} from "../../dialogue/request-video/request-video.component";
 import {MatBadge} from "@angular/material/badge";
+import {MatRipple} from "@angular/material/core"
 
 @Component({
   selector: 'app-navigation',
@@ -45,7 +46,8 @@ import {MatBadge} from "@angular/material/badge";
     NotificationComponent,
     NgForOf,
     MatBadge,
-    NgClass
+    NgClass,
+    MatRipple
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'

@@ -11,6 +11,18 @@ export enum VisibilityEnum {
   self="self",everyone="everyone", customers="customers", internal="internal"
 }
 
+export interface ContentBase{
+  contentId: number;
+  tags: Tag[];
+  user: User;
+  title: string;
+  description: string;
+  color: string;
+  visibility: VisibilityEnum;
+  creationTime: Date;
+  approved: boolean;
+}
+
 export interface StarRating {
   ratingId: number;
   rating: number;

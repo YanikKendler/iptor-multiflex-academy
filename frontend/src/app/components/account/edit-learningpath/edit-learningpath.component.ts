@@ -30,6 +30,8 @@ import {LearningPathDetailDTO, LearningPathEntryDTO, LearningPathService} from "
 import {TagSelectorComponent} from "../../basic/tag-selector/tag-selector.component"
 import {VideoEntryComponent} from "../video-entry/video-entry.component"
 import {ContentEditHistoryComponent} from "../content-edit-history/content-edit-history.component";
+import {UserService} from "../../../service/user.service"
+import {faCircleQuestion} from "@fortawesome/free-regular-svg-icons"
 @Component({
   selector: 'app-edit-learningpath',
   standalone: true,
@@ -58,6 +60,7 @@ import {ContentEditHistoryComponent} from "../content-edit-history/content-edit-
 export class EditLearningpathComponent implements OnInit{
   readonly learningPathService = inject(LearningPathService);
   readonly videoService = inject(VideoService);
+  readonly userService = inject(UserService);
 
   readonly dialogRef = inject(MatDialogRef<EditLearningpathComponent>);
   readonly data = inject<number>(MAT_DIALOG_DATA);
@@ -124,8 +127,10 @@ export class EditLearningpathComponent implements OnInit{
   };
 
   saveChanges() {
+    console.log(this.learningPath)
     if(this.learningPath.contentId > 0) { //saving changes to existing path
       this.learningPathService.updateLearningPath(this.learningPath).subscribe(result => {
+        console.log(result)
         window.removeEventListener("beforeunload", this.beforeUnloadHandler);
         this.dialogRef.close();
       })
@@ -156,7 +161,11 @@ export class EditLearningpathComponent implements OnInit{
       height: "200px",
       width: "400px",
       data: {
-        message: "You have unsaved changes. Are you sure you want to close the editor?"
+        message: "You have unsaved changes. Are you sure you want to close the editor?",
+        buttons: {
+          cancel: "Keep editing",
+          confirm: "Discard changes"
+        }
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if(confirm) {
@@ -216,8 +225,8 @@ export class EditLearningpathComponent implements OnInit{
       durationSeconds: video.durationSeconds,
       questionCount: video.questionCount,
       entryPosition: this.learningPath.entries.length + 1,
-      startTime: "00:00:00",
-      endTime: "00:00:00",
+      startTime: '1970-01-01T00:00:00',
+      endTime: '1970-01-01T00:00:00',
       progress: 0
     })
     this.videoPopupTrigger.close()
@@ -229,4 +238,5 @@ export class EditLearningpathComponent implements OnInit{
   protected readonly faPlus = faPlus
   protected readonly faTrash = faTrash
   protected readonly faClockRotateLeft = faClockRotateLeft;
+  protected readonly faCircleQuestion = faCircleQuestion
 }

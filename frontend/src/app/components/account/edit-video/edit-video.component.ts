@@ -32,6 +32,7 @@ import {UserService} from "../../../service/user.service"
 import {MatSnackBar} from "@angular/material/snack-bar"
 import {ContentEditHistoryComponent} from "../content-edit-history/content-edit-history.component";
 import {DotLoaderComponent} from "../../basic/dot-loader/dot-loader.component"
+import {faCircleQuestion} from "@fortawesome/free-regular-svg-icons"
 @Component({
   selector: 'app-edit-video',
   standalone: true,
@@ -164,7 +165,11 @@ export class EditVideoComponent implements OnInit{
       height: "200px",
       width: "400px",
       data: {
-        message: "You have unsaved changes. Are you sure you want to close the editor?"
+        message: "You have unsaved changes. Are you sure you want to close the editor?",
+        buttons: {
+          cancel: "Keep editing",
+          confirm: "Discard changes"
+        }
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if(confirm) {
@@ -261,4 +266,5 @@ export class EditVideoComponent implements OnInit{
   protected readonly faPlus = faPlus
   protected readonly faTrash = faTrash
   protected readonly faClockRotateLeft = faClockRotateLeft;
+  protected readonly faCircleQuestion = faCircleQuestion
 }

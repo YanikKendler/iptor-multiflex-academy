@@ -55,6 +55,13 @@ section.details{
       font-weight: 500;
       white-space: nowrap;
     }
+
+    &.visibility{
+      fa-icon{
+        color: $secondary-350;
+        font-size: 1.2rem;
+      }
+    }
   }
 
   mat-divider{

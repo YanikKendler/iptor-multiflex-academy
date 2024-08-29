@@ -11,13 +11,16 @@ import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faCalendar, faCalendarCheck, faCircleCheck, faSquare, faSquareCheck} from "@fortawesome/free-regular-svg-icons";
 import {faCircleCheck as faCircleCheck2} from "@fortawesome/free-solid-svg-icons";
 import {Router} from "@angular/router";
+import {MatRipple} from "@angular/material/core"
+import {Utils} from "../../../utils"
 
 @Component({
   selector: 'app-notification',
   standalone: true,
   imports: [
     IconButtonComponent,
-    FaIconComponent
+    FaIconComponent,
+    MatRipple
   ],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss'
@@ -68,22 +71,41 @@ export class NotificationComponent implements OnInit{
       return
     }
 
-    if(this.getType() !== "request" && this.getType() !== "text" && this.getType() !== ""){
-      console.log(this.contentNotification)
-      if(this.getType() === "comment"){
-        this.router.navigate(['video/' + this.commentNotification.content.contentId])
-      } else if(this.contentNotification.content.hasOwnProperty("questions")){
-        this.router.navigate([`video/` + this.contentNotification.content.contentId])
-      } else{
-        this.router.navigate([`learningpath/` + this.contentNotification.content.contentId])
-      }
-    } else if(this.getType() === "request"){
-      this.router.navigate(['account/video-requests'])
+    switch (this.getType()) {
+      case "request":
+        this.router.navigate(['account/video-requests'])
+        break
+      case "approved":
+        let noti = this.notification as ContentNotification
+        console.log(this.contentNotification)
+        if(this.contentNotification.content.hasOwnProperty("questions")){
+          this.router.navigate(['account/videos'])
+        }
+        else {
+          this.router.navigate(['account/learningpaths'])
+        }
+
+        break
+      case "": case "text":
+        //not linking to anything
+        break
+      default:
+        console.log(this.contentNotification)
+        if(this.getType() === "comment"){
+          this.router.navigate(['video/' + this.commentNotification.content.contentId])
+        } else if(this.contentNotification.content.hasOwnProperty("questions")){
+          this.router.navigate([`video/` + this.contentNotification.content.contentId])
+        } else{
+          this.router.navigate([`learningpath/` + this.contentNotification.content.contentId])
+        }
+        break
     }
   }
 
 
-  toggleDoneNotification() {
+  toggleDoneNotification(e: Event) {
+    e.preventDefault()
+
     this.notification.done = !this.notification.done
     this.notificationService.update(this.notification)
   }
@@ -96,4 +118,5 @@ export class NotificationComponent implements OnInit{
   protected readonly faSquare = faSquare
   protected readonly faSquareCheck = faSquareCheck
   protected readonly faRepeat = faRepeat
+  protected readonly Utils = Utils
 }

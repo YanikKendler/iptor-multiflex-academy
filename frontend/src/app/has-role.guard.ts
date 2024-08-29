@@ -9,7 +9,7 @@ export const hasRoleGuard: CanActivateFn = (route, state) => {
 
   inject(UserService).currentUser.subscribe(user => {
     if(user.userId > 0 && !expectedRoles.includes(user.userRole))
-     router.navigate(['unauthorized'])
+     router.navigate(['unauthorized'], {queryParams: {rerouteType: 'has-role.guard reroute'}})
   })
 
   return true

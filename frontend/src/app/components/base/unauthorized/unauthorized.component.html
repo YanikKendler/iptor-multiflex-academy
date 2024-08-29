@@ -4,6 +4,7 @@
   <h1>Unauthorized</h1>
   <p>Sorry, you are not allowed to view this page.</p>
   <p class="details">
-    roleGuard reroute • {{userService.currentUser.value.username}} • {{userService.currentUser.value.userRole}}
+    {{ rerouteType }} • {{userService.currentUser.value.username}} • {{userService.currentUser.value.userRole}}
   </p>
+  <button mat-flat-button routerLink="/">Back to the Dashboard</button>
 </div>
