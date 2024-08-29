@@ -74,11 +74,8 @@ export class LoginComponent implements OnInit{
         userRole: "CUSTOMER"
       }
       this.userService.login(userDTO).subscribe(response => {
-        console.log(response)
         if(response != null){
           this.userService.currentUser.next(response)
-
-          console.log(response)
 
           localStorage.setItem('IMA_USER_ID', response.userId.toString());
           localStorage.setItem('IMA_USER_PASSWORD', userDTO.password);

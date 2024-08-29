@@ -11,7 +11,6 @@ export const canViewGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state
     if(user.userId <= 0) return;
 
     userService.isUserAllowedToSeeContent(contentId).subscribe(isAllowed => {
-      console.log(isAllowed);
       if (!isAllowed) {
         router.navigate(['unauthorized']);
       }

@@ -39,7 +39,6 @@ public class ViewProgressRepository {
             em.persist(viewProgress);
         }
 
-        System.out.println("Updated progress for video " + videoId + " and user " + userId + " to " + durationSeconds);
         return viewProgress;
     }
 

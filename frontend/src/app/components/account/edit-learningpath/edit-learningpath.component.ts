@@ -72,11 +72,9 @@ export class EditLearningpathComponent implements OnInit{
   @ViewChild(CdkMenuTrigger) videoPopupTrigger!: CdkMenuTrigger
 
   ngOnInit(): void {
-    console.log(this.data)
     if(this.data > 0){ //editing existing learningpath
       this.learningPathService.getLearningPathDetails(this.data).subscribe(path => {
         this.learningPath = path;
-        console.log(path)
         this.oldLearningPath= JSON.parse(JSON.stringify(this.learningPath)) //actual nested deep copy
       })
     }
@@ -132,7 +130,6 @@ export class EditLearningpathComponent implements OnInit{
     }
     else { //creating new path
       this.learningPathService.createLearningPath(this.learningPath).subscribe(result => {
-        console.log(result)
         window.removeEventListener("beforeunload", this.beforeUnloadHandler);
         this.dialogRef.close();
       })
@@ -140,7 +137,6 @@ export class EditLearningpathComponent implements OnInit{
   }
 
   close(){
-    console.log(this.learningPath, this.oldLearningPath)
     //compare the actual data currently in the video vs the data when the dialog was opened to see if there are any changes
     if(JSON.stringify(this.learningPath) !== JSON.stringify(this.oldLearningPath)){
       this.confirmClose()

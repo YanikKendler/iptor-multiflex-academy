@@ -34,7 +34,6 @@ export class VideoRequestsComponent implements OnInit{
   ngOnInit(): void {
     this.videoService.getVideoRequests().subscribe((videoRequests) => {
       this.videoRequests = videoRequests
-      console.log(videoRequests)
     })
 
     this.videoService.getAll().subscribe(content => {

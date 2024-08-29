@@ -43,7 +43,6 @@ export class VideoRequestFieldComponent {
       }
     }).afterClosed().subscribe((confirm: boolean) => {
       if(confirm) {
-        console.log("closing")
         this.setStatus(videoRequest, status)
       }
     })

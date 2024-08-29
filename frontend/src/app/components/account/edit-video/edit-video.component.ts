@@ -70,7 +70,6 @@ export class EditVideoComponent implements OnInit{
   selectedQuestion: Question | undefined;
 
   ngOnInit(): void {
-    console.log(this.data)
     if(this.data > 0){ //editing existing video
       this.videoService.getVideoDetails(this.data).subscribe(video => {
         this.video = video;
@@ -136,7 +135,6 @@ export class EditVideoComponent implements OnInit{
     }
     else { //creating new video
       this.videoService.createVideo(this.video).subscribe(result => {
-        console.log(result)
         this.dialogRef.close();
         window.removeEventListener("beforeunload", this.beforeUnloadHandler);
       })
@@ -144,7 +142,6 @@ export class EditVideoComponent implements OnInit{
   }
 
   close(){
-    console.log(this.video, this.oldVideo)
     //compare the actual data currently in the video vs the data when the dialog was opened to see if there are any changes
     if(JSON.stringify(this.video) !== JSON.stringify(this.oldVideo)){
       this.confirmClose()
@@ -209,7 +206,6 @@ export class EditVideoComponent implements OnInit{
   videoFileUpdated(videoFile: VideoFile) {
     if(this.video.contentId > 0)
       this.videoService.linkVideoFile(this.video.contentId, videoFile.videoFileId).subscribe(result => {
-        console.log("linked videos")
       })
     else {
        this.video.videoFile = videoFile

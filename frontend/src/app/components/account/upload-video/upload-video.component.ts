@@ -36,14 +36,11 @@ export class UploadVideoComponent {
 
   //code stolen from mdn
   dragOverHandler(ev: DragEvent) {
-    console.log("File(s) in drop zone");
-
     // Prevent default behavior (Prevent file from being opened)
     ev.preventDefault();
   }
 
   dropHandler(ev: DragEvent) {
-    console.log("File(s) dropped");
     ev.preventDefault();
 
     if (ev.dataTransfer && ev.dataTransfer.items) {

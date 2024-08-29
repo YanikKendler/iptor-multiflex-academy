@@ -37,7 +37,6 @@ export class VideoRatingComponent{
   constructor(private renderer: Renderer2) {
     if(this.videoId && this.userId){
       this.videoService.getStarRating(this.videoId, this.userId).subscribe(response => {
-        console.log(response)
         this.yourRating = response
       })
     }
@@ -60,7 +59,6 @@ export class VideoRatingComponent{
     clearTimeout(this.buttonUpdateTimeout)
 
     this.videoService.setStarRating(this.videoId, this.userId, this.yourRating).subscribe(response => {
-      console.log('Response from server:', response);
       this.updateRating()
       this.buttonText = "updated!"
       this.buttonUpdateTimeout = setTimeout(() => {
@@ -73,7 +71,6 @@ export class VideoRatingComponent{
     let value = this.rating
     if(this.isRatingMode){
       value = this.yourRating
-      console.log("is rating mode")
     }
 
     if(value){

@@ -59,7 +59,6 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
       this.route.params.subscribe(
         (params: Params) => {
           this.service.getVideoDetails(params['id']).subscribe(video => {
-            console.log(video)
             this.video = video
 
             this.userService.isVideoSaved(this.video.contentId).subscribe(isSaved => {
@@ -97,8 +96,6 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   addToBookmarks(event: MouseEvent){
     event.stopPropagation();
     this.bookmark?.toggleMarked()
-    console.log("Added to bookmarks")
-
     this.userService.toggleSavedContent(this.video.contentId)
   }
 

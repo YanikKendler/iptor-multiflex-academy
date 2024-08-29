@@ -22,7 +22,6 @@ public class UserResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createUser(UserDTO user){
-        System.out.println(user);
         Long userId;
         try{
             userId = repository.create(user);

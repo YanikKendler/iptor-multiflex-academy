@@ -71,7 +71,6 @@ export class VideosComponent implements OnInit{
   getUserContent() {
     this.userService.getUserVideos().subscribe((data) => {
       this.userContent = data;
-      console.log(this.userContent)
     });
   }
 

@@ -41,7 +41,9 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
 
   ngOnChanges() {
     this.resetQuiz()
-    this.tryToGetPreviousResult()
+    if(!this.tryToGetSessionStorage()){
+      this.tryToGetPreviousResult()
+    }
   }
 
   resetQuiz() {
@@ -60,7 +62,30 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
       this.selectedQuestion = this.questions[0];
     }
 
-    this.tryToGetPreviousResult()
+    if(!this.tryToGetSessionStorage()){
+      this.tryToGetPreviousResult()
+    }
+  }
+
+  tryToGetSessionStorage() {
+    if(sessionStorage.getItem("itm_checked_questions") && sessionStorage.getItem("itm_selected_question_nr")){
+      this.checkedQuestions = JSON.parse(sessionStorage.getItem("itm_checked_questions") || "[]")
+      if (this.questions) {
+        this.selectedQuestion = this.questions[JSON.parse(sessionStorage.getItem("itm_selected_question_nr") || "null")]
+        this.questionNr = JSON.parse(sessionStorage.getItem("itm_selected_question_nr") || "null")
+      }
+
+
+      let count = 0;
+      this.checkedQuestions.forEach(() => {
+        this.videoQuizAnswersComponent?.checkedQuestions.push(count++);
+      })
+      this.videoQuizAnswersComponent?.tryToGetSessionStorage()
+
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -110,6 +135,15 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
     this.selectedQuestion = null
   }
 
+  clearSessionStorage(){
+    sessionStorage.removeItem("itm_correct_answers")
+    sessionStorage.removeItem("itm_not_selected_but_correct_answers")
+    sessionStorage.removeItem("itm_wrong_answers")
+    sessionStorage.removeItem("itm_missed_answers")
+    sessionStorage.removeItem("itm_checked_questions")
+    sessionStorage.removeItem("itm_selected_question_nr")
+  }
+
   nextQuestion(isRestart: boolean = false) {
     if(this.questions){
       if(isRestart){
@@ -122,6 +156,7 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
 
       if(this.questionNr >= this.questions.length - 1){
         this.isQuizFinished = true
+        this.clearSessionStorage();
         this.viewResults()
 
         this.videoQuizAnswersComponent?.finishQuiz(this.videoId)
@@ -132,6 +167,9 @@ export class VideoQuizComponent implements AfterViewInit, OnChanges{
         this.checkedQuestions.push(this.questions[this.questionNr])
       }
       this.selectedQuestion = this.questions[++this.questionNr]
+
+      sessionStorage.setItem("itm_checked_questions", JSON.stringify(this.checkedQuestions))
+      sessionStorage.setItem("itm_selected_question_nr", this.questionNr.toString())
     }
   }
 }

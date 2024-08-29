@@ -22,9 +22,5 @@ export class TextfieldComponent {
   @Input() rows: number = 1;
   @Input() small: boolean = false;
 
-  logInput() {
-    console.log(this.value, this.maxLength);
-  }
-
   protected readonly max = max;
 }

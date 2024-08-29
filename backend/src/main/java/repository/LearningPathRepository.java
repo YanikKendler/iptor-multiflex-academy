@@ -191,8 +191,6 @@ public class LearningPathRepository {
     }
 
     public LearningPath create(EditLearningPathDTO data, Long userId) {
-        System.out.println(data.toString());
-
         List<LearningPathEntry> entries = new LinkedList<>();
 
         for (LearningPathEntryDTO entryDTO : data.entries()) {

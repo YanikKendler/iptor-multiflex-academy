@@ -157,7 +157,6 @@ export class DashboardComponent implements OnInit {
 
   linkVideo() {
     this.http.put(`http://localhost:8080/api/video/${this.videoIdInput.nativeElement.value}/linkVideoFile/${this.fileIdInput.nativeElement.value}`, {}, {observe: "response"}).subscribe(response => {
-      console.log('video linked:', response);
     }, error => {
       console.error('There was an error:', error);
     });
@@ -167,7 +166,6 @@ export class DashboardComponent implements OnInit {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       this.uploadFile(file).subscribe(response => {
-        console.log('File uploaded successfully:', response);
       }, error => {
         console.error('There was an error uploading the file:', error);
       });

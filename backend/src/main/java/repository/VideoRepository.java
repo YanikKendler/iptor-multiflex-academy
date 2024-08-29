@@ -31,8 +31,6 @@ public class VideoRepository {
     UserRepository userRepository;
 
     public Video create(CreateVideoDTO createVideoDTO, Long userId) {
-        System.out.println(createVideoDTO.toString());
-
         List<Question> questions = new LinkedList<>();
 
         for (Question question : createVideoDTO.questions()) {
@@ -132,7 +130,6 @@ public class VideoRepository {
     }
 
     public void alertRelevantUsers(Video video){
-        System.out.println("alert relevant users");
         List<User> savedUsers = em.createQuery("select distinct u from User u " +
                         "join u.savedContent us on us.contentId = :contentId", User.class)
                 .setParameter("contentId", video.getContentId())
@@ -169,10 +166,7 @@ public class VideoRepository {
                     .setParameter("videoId", id).getResultList();
 
             lp.forEach(l -> {
-                System.out.println("remove from learning path");
-                System.out.println(l.getEntries().size());
                 l.setEntries(l.getEntries().stream().filter(e -> !Objects.equals(e.getVideo().getContentId(), id)).toList());
-                System.out.println(l.getEntries().size());
                 learningPathRepository.alertRelevantUsers(l);
             });
         } catch(NoResultException e){}
@@ -214,7 +208,6 @@ public class VideoRepository {
     }
 
     public Video getById(Long id){
-        System.out.println("getById " + id);
         return em.find(Video.class, id);
     }
 
@@ -244,8 +237,6 @@ public class VideoRepository {
     }
 
     public VideoDetailDTO getVideoDetailsForUser(Long videoId, Long userId) {
-        System.out.println("getVideoDetails user: " + userId + " video: " + videoId);
-
         Video video = em.find(Video.class, videoId);
 
         if(video == null) {
@@ -312,7 +303,6 @@ public class VideoRepository {
                     .getSingleResult();
 
             if(quizResult.getScore() < score){
-                System.out.println("better score");
                 quizResult.setScore(score);
                 quizResult.setQuestionResults(questionResults);
                 quizResult.setTimestamp(LocalDateTime.now());

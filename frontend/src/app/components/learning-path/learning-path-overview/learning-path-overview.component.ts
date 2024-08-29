@@ -100,8 +100,6 @@ export class LearningPathOverviewComponent implements OnInit{
     }
 
     this.bookmark?.toggleMarked()
-    console.log("Added to bookmarks")
-
     this.userService.toggleSavedContent(this.learningPath.contentId)
   }
 
@@ -109,7 +107,6 @@ export class LearningPathOverviewComponent implements OnInit{
     event.stopPropagation();
 
     this.viewProgressService.ignoreViewProgress(this.learningPath.contentId)
-    console.log("Removed suggestion")
     this.updateDashboard.emit({learningPath: this.learningPath, action: "remove"})
   }
 

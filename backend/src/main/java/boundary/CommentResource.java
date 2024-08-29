@@ -29,7 +29,6 @@ public class CommentResource {
     public Response getAll(@PathParam("videoId") Long vid, @QueryParam("userId") Long uid){
         List<Comment> comments;
         try{
-            System.out.println(uid);
             comments = repository.getAll(vid, uid);
         }catch (Exception ex){
             ex.printStackTrace();

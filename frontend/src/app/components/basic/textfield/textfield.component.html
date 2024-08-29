@@ -8,7 +8,6 @@
     placeholder="{{placeholder}}"
     (input)="valueChange.emit(input.value)"
     #input
-    (keydown)="logInput()"
     [(ngModel)]="value"
     [maxLength]="maxLength"
   >
@@ -20,7 +19,6 @@
     placeholder="{{placeholder}}"
     (input)="valueChange.emit(input.value)"
     #input
-    (keydown)="logInput()"
     [maxLength]="maxLength"
   >{{value}}</textarea>
 }

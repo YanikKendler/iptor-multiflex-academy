@@ -150,7 +150,6 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
     setTimeout(() => {
     })
 
-    console.log(this.canvasRef)
     if(!this.canvasRef) return
 
     this.W = window.innerWidth;
@@ -231,8 +230,6 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   ];
 
   getConfetti() {
-    console.log(this.canvas)
-    console.log("getConfetti")
     if(!this.canvas) return
 
     for (let i = 0; i < this.maxConfettis; i++) {

@@ -71,8 +71,6 @@ export class FilterSidebarComponent implements OnInit {
   }
 
   updateFilter(tag: Tag, doNotEmit: boolean = false) {
-    console.log("update " + tag.name)
-
     if (this.selectedTags.some(t => t.tagId === tag.tagId)) {
       this.selectedTags = this.selectedTags.filter(t => t.tagId !== tag.tagId);
     } else {

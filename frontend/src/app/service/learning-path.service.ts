@@ -63,7 +63,6 @@ export class LearningPathService {
   }
 
   updateLearningPath(learningPath: LearningPathDetailDTO){
-    console.log("updating learningpath", learningPath)
     return this.http.put<LearningPathDetailDTO>(`${Config.API_URL}/learningpath?userId=${this.userService.currentUser.value.userId}`, learningPath)
   }
 

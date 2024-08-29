@@ -72,7 +72,7 @@
         </div>
       }
 
-      @if (assignedContent?.length == 0) {
+      @if (!assignedContent || assignedContent.length == 0) {
         <div>
           <p class="no-results">No content yet</p>
         </div>

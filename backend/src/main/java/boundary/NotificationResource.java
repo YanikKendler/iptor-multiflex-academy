@@ -64,7 +64,6 @@ public class NotificationResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateNotification(Notification notification){
         try{
-            System.out.println(notification.getNotificationId());
             notificationRepository.update(notification);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();

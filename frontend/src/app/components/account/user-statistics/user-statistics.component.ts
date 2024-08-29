@@ -13,11 +13,9 @@ export class UserStatisticsComponent implements OnInit {
   userService = inject(UserService)
 
   ngOnInit(): void {
-    console.log("test")
     this.userService.currentUser.subscribe(user => {
       if(user.userId > 0){
         this.userService.getUserStatistics(this.userService.currentUser.value.userId).subscribe(userStatistics => {
-          console.log(userStatistics)
           this.userStatistics = userStatistics
         })
       }

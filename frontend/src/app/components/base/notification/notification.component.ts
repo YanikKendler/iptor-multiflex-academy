@@ -69,7 +69,6 @@ export class NotificationComponent implements OnInit{
     }
 
     if(this.getType() !== "request" && this.getType() !== "text" && this.getType() !== ""){
-      console.log(this.contentNotification)
       if(this.getType() === "comment"){
         this.router.navigate(['video/' + this.commentNotification.content.contentId])
       } else if(this.contentNotification.content.hasOwnProperty("questions")){
