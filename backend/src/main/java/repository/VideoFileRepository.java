@@ -134,6 +134,9 @@ public class VideoFileRepository {
         catch (IOException e) {
             throw new IOException("could not process video file " + videoFile.getVideoFileId() + " - " + e.getMessage(), e);
         }
+        catch (Exception e) {
+            throw new IOException("File upload failed - " + e.getMessage(), e);
+        }
     }
 
     /**
