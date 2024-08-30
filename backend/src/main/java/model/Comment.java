@@ -1,8 +1,10 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Comment {
@@ -14,6 +16,10 @@ public class Comment {
     @Column(length = 2000)
     private String text;
     private LocalDateTime timestamp;
+
+    @OneToMany
+    @JsonIgnore
+    private List<Video> videos;
 
     public Comment(User user, String text) {
         this();
@@ -51,5 +57,13 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Video> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<Video> videos) {
+        this.videos = videos;
     }
 }

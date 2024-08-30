@@ -21,7 +21,7 @@ import {MatDivider} from "@angular/material/divider"
 import {User, UserRoleEnum, UserService} from "../../../service/user.service"
 import {Notification, NotificationService} from "../../../service/notification.service";
 import {NotificationComponent} from "../notification/notification.component";
-import {NgClass, NgForOf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {EditVideoComponent} from "../../account/edit-video/edit-video.component";
 import {MatDialog} from "@angular/material/dialog";
 import {RequestVideoComponent} from "../../dialogue/request-video/request-video.component";
@@ -47,7 +47,8 @@ import {MatRipple} from "@angular/material/core"
     NgForOf,
     MatBadge,
     NgClass,
-    MatRipple
+    MatRipple,
+    NgIf
   ],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss'
@@ -88,6 +89,7 @@ export class NavigationComponent implements OnInit{
   ngOnInit(): void {
     this.userService.currentUser.subscribe(user => {
       if(user.userId <= 0) return
+
       this.notificationService.getNotifications().subscribe(notifications => {
         this.fullNotificationList = notifications
         this.notificationList = this.fullNotificationList
@@ -129,7 +131,7 @@ export class NavigationComponent implements OnInit{
   logout() {
     localStorage.removeItem("IMA_USER_ID")
     localStorage.removeItem("IMA_USER_PASSWORD")
-    this.userService.currentUser.next({userId: -1} as User)
+    this.userService.updateCurrentUser({userId: -1} as User)
   }
 
   protected readonly Config = Config

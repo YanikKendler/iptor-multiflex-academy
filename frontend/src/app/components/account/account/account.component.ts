@@ -1,16 +1,19 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnInit, ViewChild} from '@angular/core';
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {NavigationComponent} from "../../base/navigation/navigation.component";
 import {faChartSimple, faCirclePlay, faFileVideo, faGear, faUsersGear} from "@fortawesome/free-solid-svg-icons";
 import {SettingsComponent} from "../settings/settings.component";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterOutlet} from "@angular/router";
 import {ManageUsersComponent} from "../manage-users/manage-users.component";
-import {NgClass} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {LearningPathIconComponent} from "../../icons/learning-path-icon/learning-path-icon.component"
 import {VideoRequestsComponent} from "../video-requests/video-requests.component";
 import {LearningpathsComponent} from "../learningpaths/learningpaths.component"
 import {VideosComponent} from "../videos/videos.component"
 import {UserStatisticsComponent} from "../user-statistics/user-statistics.component";
+import {UserRoleEnum, UserService} from "../../../service/user.service"
+
+export type AccountPage = "videos" | "learningpaths" | "manage-users" | "video-requests" | "user-statistics"
 
 @Component({
   selector: 'app-account',
@@ -25,7 +28,9 @@ import {UserStatisticsComponent} from "../user-statistics/user-statistics.compon
     VideoRequestsComponent,
     LearningpathsComponent,
     VideosComponent,
-    UserStatisticsComponent
+    UserStatisticsComponent,
+    RouterOutlet,
+    NgIf
   ],
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss'
@@ -36,18 +41,39 @@ export class AccountComponent implements OnInit{
   protected readonly faGear = faGear;
   protected readonly faUsersGear = faUsersGear;
 
-  currentPage = 'settings'
+  protected userService = inject(UserService)
 
-  constructor(private route: ActivatedRoute, private router: Router) {  }
+  currentPage: AccountPage
 
-  ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-        this.currentPage = params['page'] || 'settings'
-    })
+  constructor(private route: ActivatedRoute, private router: Router) {
+    this.currentPage = route.snapshot.firstChild?.routeConfig?.path as AccountPage || "videos"
   }
 
-  switchPage(page: "videos" | "learningpaths" | "manage-users" | "video-requests" | "user-statistics"){
+  ngOnInit(): void {
+  }
+
+  switchPage(page: AccountPage){
+    this.currentPage = page
     this.router.navigate(['/account/' + page])
+  }
+
+  userCanSeePage(page: AccountPage){
+    //pages can only be viewed by employees and admins
+    if(["videos", "learningpaths", "video-requests"].includes(page)){
+      if([UserRoleEnum.EMPLOYEE, UserRoleEnum.ADMIN].includes(this.userService.userRole)){
+        return true
+      }
+      return false
+    }
+    //pages can be viewed by employees, admins and managers
+    else if(page === "manage-users") {
+      if ([UserRoleEnum.ADMIN, UserRoleEnum.MANAGER, UserRoleEnum.EMPLOYEE].includes(this.userService.userRole)) {
+        return true
+      }
+      return false
+    }
+    //pages can be viewed by anyone
+    return true
   }
 
   protected readonly faFileVideo = faFileVideo;

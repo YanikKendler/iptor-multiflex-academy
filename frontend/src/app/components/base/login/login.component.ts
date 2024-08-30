@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit{
       if(isRegister) {
         this.userService.createUser(userDTO).subscribe(response => {
           if(response != null){
-            this.userService.currentUser.next(response)
+            this.userService.updateCurrentUser(response)
             localStorage.setItem('IMA_USER_ID', response.userId.toString());
             localStorage.setItem('IMA_USER_PASSWORD', userDTO.password);
             this.router.navigate([''])
@@ -91,7 +91,7 @@ export class LoginComponent implements OnInit{
 
       this.userService.login(userDTO).subscribe(response => {
         if(response != null){
-          this.userService.currentUser.next(response)
+          this.userService.updateCurrentUser(response)
 
           localStorage.setItem('IMA_USER_ID', response.userId.toString());
           localStorage.setItem('IMA_USER_PASSWORD', userDTO.password);

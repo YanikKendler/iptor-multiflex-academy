@@ -32,6 +32,7 @@ import {VideoEntryComponent} from "../video-entry/video-entry.component"
 import {ContentEditHistoryComponent} from "../content-edit-history/content-edit-history.component";
 import {UserService} from "../../../service/user.service"
 import {faCircleQuestion} from "@fortawesome/free-regular-svg-icons"
+import {MatSnackBar} from "@angular/material/snack-bar"
 
 @Component({
   selector: 'app-edit-learningpath',
@@ -66,6 +67,7 @@ export class EditLearningpathComponent implements OnInit{
   readonly dialogRef = inject(MatDialogRef<EditLearningpathComponent>);
   readonly data = inject<number>(MAT_DIALOG_DATA);
   readonly dialog = inject(MatDialog);
+  readonly snackBar = inject(MatSnackBar)
 
   learningPath: LearningPathDetailDTO = {} as LearningPathDetailDTO;
   oldLearningPath: LearningPathDetailDTO = {} as LearningPathDetailDTO; //used for checking for changes
@@ -130,11 +132,15 @@ export class EditLearningpathComponent implements OnInit{
       this.learningPathService.updateLearningPath(this.learningPath).subscribe(result => {
         window.removeEventListener("beforeunload", this.beforeUnloadHandler);
         this.dialogRef.close();
+        this.snackBar.open(`Changes to video "${this.learningPath.title}" were saved`, "", {duration: 2000})
+      }, () => {
+        this.snackBar.open("Sorry, your changes could not be saved. Please copy them to another place and try again later.", "", {duration: 5000})
       })
     }
     else { //creating new path
       this.learningPathService.createLearningPath(this.learningPath).subscribe(result => {
         window.removeEventListener("beforeunload", this.beforeUnloadHandler);
+        this.snackBar.open(`Learninpath "${this.learningPath.title}" was created :D`, "", {duration: 2000})
         this.dialogRef.close();
       })
     }

@@ -16,7 +16,7 @@ export interface User {
 }
 
 export enum UserRoleEnum{
-  ADMIN="ADMIN", EMPLOYEE="EMPLOYEE", CUSTOMER="CUSTOMER"
+  ADMIN="ADMIN", EMPLOYEE="EMPLOYEE", CUSTOMER="CUSTOMER", MANAGER="MANAGER"
 }
 
 export interface ContentForUser {
@@ -73,6 +73,8 @@ export interface UserAssignedContentDTO {
 export interface UserTreeDTO{
   userId: number
   username: string
+  email: string
+  role: UserRoleEnum
   level: number
   subordinates: UserTreeDTO[]
 }
@@ -110,6 +112,23 @@ export class UserService {
   //i have no idea if this is a sin in angular development
   //also its probably bad to give out the password has just like that :shrug:
   currentUser = new BehaviorSubject<User>({userId: -1} as User)
+
+  userRole: UserRoleEnum = UserRoleEnum.CUSTOMER
+
+  updateCurrentUser(user: User){
+    let userRole = UserRoleEnum.CUSTOMER
+    if(user.userRole){
+      if(user.userRole == UserRoleEnum.ADMIN) userRole = UserRoleEnum.ADMIN
+      else if(user.userRole == UserRoleEnum.EMPLOYEE) userRole = UserRoleEnum.EMPLOYEE
+      else if(user.userRole == UserRoleEnum.CUSTOMER && user.supervisor == null && user.deputySupervisor == null || user.userRole == UserRoleEnum.MANAGER) userRole = UserRoleEnum.MANAGER
+      else userRole = UserRoleEnum.CUSTOMER
+    }
+
+    user.userRole = userRole
+    this.userRole = userRole
+
+    this.currentUser.next(user)
+  }
 
   getById(userId: number){
     return this.http.get<User>(`${Config.API_URL}/user/${userId}`)
@@ -185,5 +204,13 @@ export class UserService {
 
   getUserStatistics(userId: number){
     return this.http.get<UserStatisticsDTO>(`${Config.API_URL}/user/${userId}/statistics`)
+  }
+
+  deleteUser(userId: number) {
+    return this.http.delete(`${Config.API_URL}/user/${userId}?adminId=${this.currentUser.value.userId}`)
+  }
+
+  updateRole(userId: number, role: UserRoleEnum) {
+    return this.http.put(`${Config.API_URL}/user/${userId}/role?adminId=${this.currentUser.value.userId}`, role)
   }
 }

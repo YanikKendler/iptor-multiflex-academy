@@ -2,22 +2,22 @@
 
 <main>
   <div class="sidebar">
-    <div [ngClass]="{'active': currentPage === 'videos'}" (click)="switchPage('videos')">
+    <div [ngClass]="{'active': currentPage === 'videos'}" (click)="switchPage('videos')" *ngIf="userCanSeePage('videos')">
       <fa-icon [icon]="faCirclePlay"></fa-icon>
       <p>Videos</p>
     </div>
 
-    <div [ngClass]="{'active': currentPage === 'learningpaths'}" (click)="switchPage('learningpaths')">
+    <div [ngClass]="{'active': currentPage === 'learningpaths'}" (click)="switchPage('learningpaths')" *ngIf="userCanSeePage('learningpaths')">
       <app-learning-path-icon class="icon"></app-learning-path-icon>
       <p>Learningpaths</p>
     </div>
 
-    <div [ngClass]="{'active': currentPage === 'manage-users'}" (click)="switchPage('manage-users')">
+    <div [ngClass]="{'active': currentPage === 'manage-users'}" (click)="switchPage('manage-users')" *ngIf="userCanSeePage('manage-users')">
       <fa-icon [icon]="faUsersGear"></fa-icon>
       <p>Manage Users</p>
     </div>
 
-    <div [ngClass]="{'active': currentPage === 'video-requests'}" (click)="switchPage('video-requests')">
+    <div [ngClass]="{'active': currentPage === 'video-requests'}" (click)="switchPage('video-requests')" *ngIf="userCanSeePage('video-requests')">
       <fa-icon [icon]="faFileVideo"></fa-icon>
       <p>Video Requests</p>
     </div>
@@ -25,23 +25,7 @@
     <p (click)="switchPage('user-statistics')" class="show-statistics">Show User Statistics</p>
   </div>
 
-  @switch (currentPage){
-    @case('videos'){
-      <app-videos></app-videos>
-    }
-    @case('learningpaths'){
-      <app-learningpaths></app-learningpaths>
-    }
-    @case('manage-users'){
-      <app-manage-users></app-manage-users>
-    }
-    @case ('video-requests'){
-      <app-video-requests></app-video-requests>
-    }
-    @case ('user-statistics'){
-      <app-user-statistics></app-user-statistics>
-    }
-  }
+  <router-outlet></router-outlet>
 
 </main>
 

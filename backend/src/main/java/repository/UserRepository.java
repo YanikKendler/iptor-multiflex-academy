@@ -7,6 +7,7 @@ import enums.ContentNotificationEnum;
 import enums.UserRoleEnum;
 import enums.VisibilityEnum;
 import io.quarkus.datasource.runtime.DataSourcesBuildTimeConfig;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -38,8 +39,78 @@ public class UserRepository {
         return em.find(User.class, id);
     }
 
-    public void delete(Long id) {
-        em.remove(getById(id));
+    public void delete(Long userId, Long adminId) {
+        em.createQuery("delete from ContentAssignment ca where ca.assignedTo.userId = :userId")
+                .setParameter("userId", userId)
+                .executeUpdate();
+
+        em.createQuery("update ContentAssignment ca set ca.assignedBy.userId = :adminId where ca.assignedBy.userId = :userId")
+                .setParameter("adminId", adminId)
+                .setParameter("userId", userId)
+                .executeUpdate();
+
+        em.createQuery("update Content c set c.user.userId = :adminId where c.user.userId = :userId")
+                .setParameter("adminId", adminId)
+                .setParameter("userId", userId)
+                .executeUpdate();
+
+        em.createQuery("delete from Notification n where n.forUser.userId = :userId or n.triggeredByUser.userId = :userId")
+                .setParameter("userId", userId)
+                .executeUpdate();
+
+        List<Comment> userComments = em.createQuery("select c from Comment c where c.user.userId = :userId", Comment.class)
+                    .setParameter("userId", userId)
+                    .getResultList();
+        for (Comment userComment : userComments) {
+            List<Video> commentVideos = em.createQuery("select v from Video v join v.comments c where c = :userComment", Video.class)
+                    .setParameter("userComment", userComment)
+                    .getResultList();
+            for(Video video : commentVideos){
+                video.getComments(null).remove(userComment);
+            }
+
+        }
+        em.createQuery("delete from Comment c where c.user.userId = :userId")
+                .setParameter("userId", userId)
+                .executeUpdate();
+
+        em.createQuery("delete from StarRating sr where sr.user.userId = :userId")
+                .setParameter("userId", userId)
+                .executeUpdate();
+
+        em.createQuery("delete from ViewProgress vp where vp.user.userId = :userId")
+                .setParameter("userId", userId)
+                .executeUpdate();
+
+        em.createQuery("delete from QuizResult qr where qr.user.userId = :userId")
+                .setParameter("userId", userId)
+                .executeUpdate();
+
+        clearSupervisor(userId, adminId);
+
+        em.remove(getById(userId));
+    }
+
+    public void updateRole(Long userId, Long adminId, UserRoleEnum newRole) {
+        clearSupervisor(userId, adminId);
+
+        User user = getById(userId);
+        user.setUserRole(newRole);
+        user.setSupervisor(null);
+        user.setDeputySupervisor(null);
+        em.merge(user);
+    }
+
+    public void clearSupervisor(Long userId, Long adminId) {
+        em.createQuery("update User u set u.supervisor.userId = :adminId where u.supervisor.userId = :userId")
+                .setParameter("adminId", adminId)
+                .setParameter("userId", userId)
+                .executeUpdate();
+
+        em.createQuery("update User u set u.deputySupervisor.userId = :adminId where u.deputySupervisor.userId = :userId")
+                .setParameter("adminId", adminId)
+                .setParameter("userId", userId)
+                .executeUpdate();
     }
 
     public List<User> getAll() {
@@ -70,12 +141,12 @@ public class UserRepository {
                         .getResultList();
 
                 subordinateDTOs = subordinates.stream()
-                        .map(user -> new UserTreeDTO(user.getUserId(), user.getUsername(), 2, null))
+                        .map(user -> new UserTreeDTO(user.getUserId(), user.getUsername(), user.getEmail(), user.getUserRole(), 2, null))
                         .toList();
 
             }catch (Exception ignored){ ignored.printStackTrace(); }
 
-            result.add(new UserTreeDTO(manager.getUserId(), manager.getUsername(), 1, subordinateDTOs));
+            result.add(new UserTreeDTO(manager.getUserId(), manager.getUsername(), manager.getEmail(), manager.getUserRole(), 1, subordinateDTOs));
         }
 
         return result;
@@ -529,24 +600,33 @@ public class UserRepository {
         // building up the tree starting from the root user
         UserTreeDTO dto = buildUserTreeDTO(rootUser, 0);
 
-        // getting all subordinates of the root user
-        List<Long> userIds = getSubordinates(dto);
+        // getting all subordinates of the root user (can contain duplicates)
+        List<Long> subordinateUserIds = getSubordinates(dto);
 
-        // getting all direct subordinates of the root user that are not in the subordinates already
+        // getting all direct subordinates of the root user that are not in the subordinates already (could be: because of deputy supervisor)
         List<User> directSubordinates = em.createQuery("select u from User u " +
                         "where u.deputySupervisor.userId = :userId and u.userId not in (:userIds) and u.supervisor.id != :userId", User.class)
                 .setParameter("userId", userId)
-                .setParameter("userIds", userIds)
+                .setParameter("userIds", subordinateUserIds)
                 .getResultList();
 
         // convert the direct subordinates to DTOs
         List<UserTreeDTO> subordinateDtos = new ArrayList<>();
         for (User subordinate : directSubordinates) {
-            subordinateDtos.add(new UserTreeDTO(subordinate.getUserId(), subordinate.getUsername(), 0, null));
+            dto.subordinates().add(new UserTreeDTO(subordinate.getUserId(), subordinate.getUsername(), subordinate.getEmail(), subordinate.getUserRole(), 0, null));
         }
 
-        // adding the direct subordinates to the root user
-        dto.subordinates().addAll(subordinateDtos);
+        List<User> userWithoutSupervisor = em.createQuery(
+                "select u from User u " +
+                "where u.supervisor is null " +
+                "and u.userRole = :rootUserRole"
+            , User.class)
+                .setParameter("rootUserRole", rootUser.getUserRole() == UserRoleEnum.ADMIN ? UserRoleEnum.EMPLOYEE : rootUser.getUserRole())
+                .getResultList();
+        for (User noSup : userWithoutSupervisor) {
+            dto.subordinates().add(new UserTreeDTO(noSup.getUserId(), noSup.getUsername(), noSup.getEmail(), noSup.getUserRole(), 0, null));
+        }
+
         return dto;
     }
 
@@ -579,7 +659,7 @@ public class UserRepository {
             subordinateDtos.add(buildUserTreeDTO(subordinate, level + 1));
         }
 
-        return new UserTreeDTO(user.getUserId(), user.getUsername(), level, subordinateDtos);
+        return new UserTreeDTO(user.getUserId(), user.getUsername(), user.getEmail(), user.getUserRole(), level, subordinateDtos);
     }
 
     public List<UserAssignedContentDTO> getUserAssignedContent(Long userId) {
@@ -663,7 +743,7 @@ public class UserRepository {
         em.persist(notification);
         notificationRepository.sendConfirmationEmail(notification);
 
-        return convertContentToAssignDTO(content, userId);
+        return convertContentToAssignDTO(content, assignToUserId);
     }
 
     public void unassignContent(Long userId, Long contentId) {

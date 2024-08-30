@@ -16,8 +16,12 @@
 @if(selectedTab == 'employees'){
   <div class="content employees">
     @if (rootEmployee) {
-    <app-manage-user-field [userTree]="rootEmployee" [subordinates]="rootEmployee.subordinates"
-                           [root]="true"></app-manage-user-field>
+    <app-manage-user-field
+      [userTree]="rootEmployee"
+      [subordinates]="rootEmployee.subordinates"
+      [root]="true"
+      (updateUsers)="fetchData()"
+    ></app-manage-user-field>
   } @else {
     <p class="no-results">Cannot display subordinates</p>
   }</div>
@@ -25,7 +29,7 @@
 @else if (selectedTab == 'customers'){
   <div class="content">
     @for(customer of customers; track customer.userId){
-      <app-manage-user-field [userTree]="customer" [subordinates]="customer.subordinates" [root]="false"></app-manage-user-field>
+      <app-manage-user-field [userTree]="customer" [subordinates]="customer.subordinates" [root]="false" (updateUsers)="fetchData()"></app-manage-user-field>
     }
   </div>
 }

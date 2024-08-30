@@ -10,27 +10,62 @@ import {UnauthorizedComponent} from "./components/base/unauthorized/unauthorized
 import {hasRoleGuard} from "./has-role.guard"
 import {UserRoleEnum} from "./service/user.service"
 import {canViewGuard} from "./can-view.guard";
+import {VideosComponent} from "./components/account/videos/videos.component"
+import {LearningpathsComponent} from "./components/account/learningpaths/learningpaths.component"
+import {ManageUsersComponent} from "./components/account/manage-users/manage-users.component"
+import {VideoRequestsComponent} from "./components/account/video-requests/video-requests.component"
+import {UserStatisticsComponent} from "./components/account/user-statistics/user-statistics.component"
 
 export const routes: Routes = [
   {
     path: "video/:id",
     component: VideoDetailComponent,
     canActivate: [canViewGuard],
-    data: {}
   },
   {
     path: "learningpath/:id",
     component: LearningPathDetailComponent,
     canActivate: [canViewGuard],
-    data: {}
   },
   {
-    path: "account/:page",
+    path: "account",
     component: AccountComponent,
-    canActivate: [hasRoleGuard],
-    data: {
-      roles: [ UserRoleEnum.ADMIN, UserRoleEnum.EMPLOYEE ]
-    }},
+    children: [
+      {
+        path: '',
+        redirectTo: 'videos',
+        pathMatch: 'full'
+      },
+      {
+        path: 'videos',
+        component: VideosComponent,
+        canActivate: [hasRoleGuard],
+        data: {roles: [UserRoleEnum.ADMIN, UserRoleEnum.EMPLOYEE]}
+      },
+      {
+        path: 'learningpaths',
+        component: LearningpathsComponent,
+        canActivate: [hasRoleGuard],
+        data: {roles: [UserRoleEnum.ADMIN, UserRoleEnum.EMPLOYEE]}
+      },
+      {
+        path: 'manage-users',
+        component: ManageUsersComponent,
+        canActivate: [hasRoleGuard],
+        data: {roles: [UserRoleEnum.ADMIN, UserRoleEnum.EMPLOYEE, 'MANAGER']}
+      },
+      {
+        path: 'video-requests',
+        component: VideoRequestsComponent,
+        canActivate: [hasRoleGuard],
+        data: {roles: [UserRoleEnum.ADMIN, UserRoleEnum.EMPLOYEE]}
+      },
+      {
+        path: 'user-statistics',
+        component: UserStatisticsComponent,
+      },
+    ]
+  },
   {path: "login", component: LoginComponent},
   {path: "unauthorized", component: UnauthorizedComponent},
   {path: "**", component: DashboardComponent},

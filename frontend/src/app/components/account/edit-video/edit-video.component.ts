@@ -128,7 +128,7 @@ export class EditVideoComponent implements OnInit{
       this.videoService.updateVideo(this.video).subscribe(result => {
         this.dialogRef.close();
         window.removeEventListener("beforeunload", this.beforeUnloadHandler);
-        this.snackBar.open("Changes to video were saved", "", {duration: 2000})
+        this.snackBar.open(`Changes to video "${this.video.title}" were saved`, "", {duration: 2000})
         //code for saving and keeping the popup open and same question selected
         /*let selectedQuestionPos = this.video.questions.indexOf(this.selectedQuestion)
         this.video = result;
@@ -141,6 +141,7 @@ export class EditVideoComponent implements OnInit{
     else { //creating new video
       this.videoService.createVideo(this.video).subscribe(result => {
         this.dialogRef.close();
+        this.snackBar.open(`Video "${this.video.title}" was created :D`, "", {duration: 2000})
         window.removeEventListener("beforeunload", this.beforeUnloadHandler);
       })
     }

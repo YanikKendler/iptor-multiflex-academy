@@ -1,13 +1,39 @@
 <div class="user" *ngIf="!root">
   <div class="top" (click)="toggle($event)">
-    <p class="username">{{ userTree.username }}</p>
+    <p class="username">{{ userTree.username }} • <span>{{ userTree.email }}</span></p>
 
-    <div>
-      <app-icon-button class="statistics" [cdkMenuTriggerFor]="statistics" (click)="$event.stopPropagation()">
-        <fa-icon [icon]="faChartSimple"></fa-icon>
+    <div class="right">
+      <app-icon-button [cdkMenuTriggerFor]="actions">
+        <fa-icon [icon]="faEllipsisH"></fa-icon>
       </app-icon-button>
       <fa-icon [icon]="faAngleDown" [ngClass]="isExpanded ? 'rotate' : ''"></fa-icon>
     </div>
+
+    <ng-template #actions>
+      <div class="actions" cdkMenu>
+        @if(userTree.role == UserRoleEnum.EMPLOYEE){
+          <button mat-button (click)="updateRole(userTree, UserRoleEnum.CUSTOMER)">
+            <fa-icon [icon]="faUserMinus"></fa-icon>
+            demote to customer
+          </button>
+        }
+        @else if(userTree.role == UserRoleEnum.CUSTOMER){
+          <button mat-button (click)="updateRole(userTree, UserRoleEnum.EMPLOYEE)">
+            <fa-icon [icon]="faUserTie"></fa-icon>
+            make employee
+          </button>
+        }
+        <!--I tried to prevent the menu from opening on hover in favor of click but the API offers no solution and stopping event propagation doesnt work-->
+        <button mat-button [cdkMenuTriggerFor]="statistics">
+          <fa-icon [icon]="faChartSimple"></fa-icon>
+          user statistics
+        </button>
+        <button mat-button color="error" (click)="deleteUser(userTree)">
+          <fa-icon [icon]="faTrash"></fa-icon>
+          delete user "{{ userTree.username }}"
+        </button>
+      </div>
+    </ng-template>
 
     <ng-template #statistics>
       <div class="stats" cdkMenu>
@@ -86,9 +112,9 @@
 
           <app-icon-button (click)="unassignContent(content.contentId)" class="remove">
             @if(content.isFinished){
-              <fa-icon [icon]="faXmark"></fa-icon>
-            }@else {
               <fa-icon [icon]="faTrash"></fa-icon>
+            }@else {
+              <fa-icon [icon]="faXmark"></fa-icon>
             }
           </app-icon-button>
         </div>
@@ -125,5 +151,5 @@
 </div>
 
 @for(subordinate of subordinates; track subordinate.userId){
-  <app-manage-user-field [userTree]="subordinate" [subordinates]="subordinate.subordinates" [level]="subordinate.level"></app-manage-user-field>
+  <app-manage-user-field [userTree]="subordinate" [subordinates]="subordinate.subordinates" [level]="subordinate.level" (updateUsers)="updateUsers.emit()"></app-manage-user-field>
 }

@@ -1,7 +1,7 @@
 package model;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +15,7 @@ public class ContentAssignment {
     private User assignedTo;
 
     @ManyToOne
+    @Nullable
     private User assignedBy;
 
     @ManyToOne

@@ -12,6 +12,12 @@ main{
   padding-block: 2.5rem;
   height: 100%;
   overflow: hidden;
+
+  @media screen and (max-width: 900px){
+    flex-direction: column;
+    padding: .5rem;
+    gap: 1rem;
+  }
 }
 
 .sidebar{
@@ -40,7 +46,7 @@ main{
   gap: .3rem;
   cursor: pointer;
   border-radius: 0.3125rem;
-  width: 15vw;
+  min-width: 15vw;
   margin-right: 1rem;
 
   fa-icon, .icon{

@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
         this.router.navigate(['login'])
       }
       else {
-        this.userService.currentUser.next(response)
+        this.userService.updateCurrentUser(response)
       }
     })
   }

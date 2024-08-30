@@ -1,6 +1,7 @@
 package model;
 
 import enums.ContentEditType;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ public class ContentEditHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int videoEditHistoryId;
 
+    @Nullable
     @ManyToOne
     private User user;
 

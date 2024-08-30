@@ -1,6 +1,7 @@
 package boundary;
 
 import dtos.*;
+import enums.UserRoleEnum;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -88,6 +89,33 @@ public class UserResource {
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().entity(user).build();
+    }
+
+    @DELETE
+    @Path("{userId: [0-9]+}")
+    public Response deleteUser(@PathParam("userId") Long userId, @QueryParam("adminId") Long adminId){
+        try{
+            repository.delete(userId, adminId);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("{userId: [0-9]+}/role")
+    public Response updateRole(@PathParam("userId") Long userId, @QueryParam("adminId") Long adminId, UserRoleEnum newRole){
+        if(newRole == UserRoleEnum.ADMIN)
+            Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
+
+        try{
+            repository.updateRole(userId, adminId, newRole);
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().build();
     }
 
     @PUT

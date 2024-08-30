@@ -19,6 +19,5 @@ export const canViewGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state
     });
   })
 
-
   return true;
 };

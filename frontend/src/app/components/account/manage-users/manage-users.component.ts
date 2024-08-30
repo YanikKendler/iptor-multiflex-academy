@@ -21,20 +21,28 @@ export class ManageUsersComponent {
   rootEmployee : UserTreeDTO = {} as UserTreeDTO;
   customers: UserTreeDTO[] = []
 
+  protected userService= inject(UserService)
+
   selectedTab: "employees" | "customers" = "employees"
 
-  constructor(protected userService: UserService) {
-    userService.currentUser.subscribe(user => {
-      this.userService.getManageableUsers().subscribe(user => {
-        this.rootEmployee = user
-      });
-
-      if(userService.currentUser.value.userRole == UserRoleEnum.ADMIN)
-        this.userService.getCustomerTree().subscribe(customers => {
-          this.customers = customers
-          console.log(customers)
-        });
+  constructor() {
+    this.userService.currentUser.subscribe(user => {
+      this.fetchData()
     })
+  }
+
+  fetchData(){
+    console.log("fetching data")
+
+    this.userService.getManageableUsers().subscribe(user => {
+      this.rootEmployee = user
+    });
+
+    if(this.userService.currentUser.value.userRole == UserRoleEnum.ADMIN)
+      this.userService.getCustomerTree().subscribe(customers => {
+        this.customers = customers
+        console.log(customers)
+      });
   }
 
   protected readonly UserRoleEnum = UserRoleEnum

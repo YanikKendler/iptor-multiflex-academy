@@ -2,6 +2,7 @@ package model;
 
 import enums.UserRoleEnum;
 import enums.VisibilityEnum;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

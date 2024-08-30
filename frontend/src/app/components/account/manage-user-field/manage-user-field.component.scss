@@ -35,10 +35,21 @@ app-manage-user-field{
       background-color: $gray-600;
     }
 
-    div{
+    .username{
+      font-size: .95rem;
+      font-weight: 500;
+
+      span{
+        font-weight: 400;
+        color: $gray-400;
+      }
+    }
+
+    div.right{
       display: flex;
       align-items: center;
-      gap: .5rem;
+      gap: 1rem;
+
       fa-icon{
         transition: rotate $transition-time-short;
 
@@ -46,15 +57,16 @@ app-manage-user-field{
           rotate: 180deg;
         }
       }
-    }
 
-    app-icon-button.statistics{
-      margin: -.5rem;
+      app-icon-button{
+        margin: -.5rem;
+      }
     }
   }
 
   input{
     margin: .2rem;
+    font-size: .9rem;
   }
 }
 
@@ -64,6 +76,7 @@ app-manage-user-field{
   padding: .2rem;
 
   .no-results{
+    font-size: .9rem;
     margin: .5rem;
     color: $gray-400;
   }
@@ -167,17 +180,34 @@ app-manage-user-field{
   }
 }
 
+.actions{
+  @include floating-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .5rem;
+  padding: .5rem;
+
+  button{
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
 .stats{
   @include floating-box;
   font-size: .9rem;
-  padding: .5rem;
+  padding: .8rem;
   display: flex;
   flex-direction: column;
   gap: .5rem;
+  margin-right: .5rem;
+  margin-top: -.5rem;
 
   h2{
     font-size: 1rem;
     font-weight: 500;
+    margin-bottom: .2rem;
   }
 
   p{
@@ -189,5 +219,10 @@ app-manage-user-field{
   span.stat{
     margin-left: auto;
     font-weight: 500;
-  };
+  }
+
+  mat-divider{
+    border-color: $gray-600;
+    margin: .2rem;
+  }
 }

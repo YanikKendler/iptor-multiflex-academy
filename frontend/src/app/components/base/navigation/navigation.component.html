@@ -42,40 +42,43 @@
 
 <ng-template #menu>
   <div class="menu" cdkMenu>
-    @if(userService.currentUser.value.userRole == UserRoleEnum.ADMIN || userService.currentUser.value.userRole == UserRoleEnum.EMPLOYEE){
-
     <div class="top" [ngClass]="Config.SMALL_SCREEN ? 'disabled' : ''">
-      <div routerLink="/account/videos" (click)="closeMenu()" class="menuItem">
-        <div class="icon-container">
-          <fa-icon [icon]="faCirclePlay"></fa-icon>
+      @if(userService.userRole == UserRoleEnum.ADMIN || userService.userRole == UserRoleEnum.EMPLOYEE){
+        <div routerLink="/account/videos" (click)="closeMenu()" class="menuItem">
+          <div class="icon-container">
+            <fa-icon [icon]="faCirclePlay"></fa-icon>
+          </div>
+          <p>Videos</p>
         </div>
-        <p>Videos</p>
-      </div>
 
-      <div routerLink="/account/learningpaths" (click)="closeMenu()" class="menuItem">
-        <div class="icon-container">
-          <app-learning-path-icon class="icon"></app-learning-path-icon>
+        <div routerLink="/account/learningpaths" (click)="closeMenu()" class="menuItem">
+          <div class="icon-container">
+            <app-learning-path-icon class="icon"></app-learning-path-icon>
+          </div>
+          <p>Learningpaths</p>
         </div>
-        <p>Learningpaths</p>
-      </div>
+      }
 
-      <div routerLink="/account/manage-users" (click)="closeMenu()" class="menuItem">
-        <div class="icon-container">
-          <fa-icon [icon]="faUsersGear"></fa-icon>
+      @if(userService.userRole != UserRoleEnum.CUSTOMER){
+        <div routerLink="/account/manage-users" (click)="closeMenu()" class="menuItem">
+          <div class="icon-container">
+            <fa-icon [icon]="faUsersGear"></fa-icon>
+          </div>
+          <p>Manage Users</p>
         </div>
-        <p>Manage Users</p>
-      </div>
+      }
 
-      <div routerLink="/account/video-requests" (click)="closeMenu()" class="menuItem">
-        <div class="icon-container">
-          <fa-icon [icon]="faFileVideo" class="fileIcon"></fa-icon>
+      @if(userService.userRole == UserRoleEnum.EMPLOYEE || userService.userRole == UserRoleEnum.ADMIN){
+        <div routerLink="/account/video-requests" (click)="closeMenu()" class="menuItem">
+          <div class="icon-container">
+            <fa-icon [icon]="faFileVideo" class="fileIcon"></fa-icon>
+          </div>
+          <p>Video Requests</p>
         </div>
-        <p>Video Requests</p>
-      </div>
+      }
     </div>
 
-    <mat-divider></mat-divider>
-  }
+    <mat-divider *ngIf="userService.userRole != UserRoleEnum.CUSTOMER"></mat-divider>
 
     <div (click)="requestVideo(); closeMenu()" class="menuItem">
       <div class="icon-container">
