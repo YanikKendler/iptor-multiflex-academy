@@ -18,7 +18,6 @@
     @if (rootEmployee) {
     <app-manage-user-field
       [userTree]="rootEmployee"
-      [subordinates]="rootEmployee.subordinates"
       [root]="true"
       (updateUsers)="fetchData()"
     ></app-manage-user-field>
@@ -29,7 +28,7 @@
 @else if (selectedTab == 'customers'){
   <div class="content">
     @for(customer of customers; track customer.userId){
-      <app-manage-user-field [userTree]="customer" [subordinates]="customer.subordinates" [root]="false" (updateUsers)="fetchData()"></app-manage-user-field>
+      <app-manage-user-field [userTree]="customer" [root]="false" (updateUsers)="fetchData()"></app-manage-user-field>
     }
   </div>
 }

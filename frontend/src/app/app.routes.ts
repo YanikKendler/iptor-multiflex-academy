@@ -68,5 +68,6 @@ export const routes: Routes = [
   },
   {path: "login", component: LoginComponent},
   {path: "unauthorized", component: UnauthorizedComponent},
+  {path: "error/404", component: PageNotFoundComponent},
   {path: "**", component: DashboardComponent},
 ];

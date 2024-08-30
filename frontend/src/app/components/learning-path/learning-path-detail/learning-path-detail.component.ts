@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, inject, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {LearningPathDetailDTO, LearningPathEntryDTO, LearningPathService} from "../../../service/learning-path.service";
-import {ActivatedRoute, Params, RouterLink} from "@angular/router";
+import {ActivatedRoute, Params, Router, RouterLink} from "@angular/router";
 import {MediaPlayerComponent} from "../../basic/media-player/media-player.component";
 import {VideoDetailDTO, VideoService} from "../../../service/video.service";
 import {BookmarkIconComponent} from "../../icons/bookmark/bookmark.icon.component";
@@ -78,7 +78,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   //sidebar should only be closable on small screens: if screen is small(true) sidebar is closed(open = false)
   sidebarOpen: boolean = !Config.SMALL_SCREEN
 
-  constructor(private route: ActivatedRoute) {  }
+  constructor(private route: ActivatedRoute, private router: Router) {  }
 
   ngOnInit() {
     this.userService.currentUser.subscribe(user => {
@@ -87,6 +87,11 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
       this.route.params.subscribe(
         (params: Params) => {
           this.service.getLearningPathDetails(params['id']).subscribe(learningPath => {
+            if(learningPath == null){
+              this.router.navigate(['error/404'])
+              return
+            }
+
             this.learningPath = learningPath
 
             if(this.learningPath.viewProgress){

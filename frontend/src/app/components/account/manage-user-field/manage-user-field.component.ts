@@ -66,7 +66,6 @@ import {MatSnackBar} from "@angular/material/snack-bar"
 })
 export class ManageUserFieldComponent implements OnInit {
   @Input() userTree: UserTreeDTO = {} as UserTreeDTO
-  @Input() subordinates: UserTreeDTO[] = [] //TODO @michi review why this is needed and not just userTree.subordinates
   @Input() level: number = 0
   @Input() root: boolean = false
 

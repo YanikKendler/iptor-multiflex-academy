@@ -150,6 +150,6 @@
   }
 </div>
 
-@for(subordinate of subordinates; track subordinate.userId){
-  <app-manage-user-field [userTree]="subordinate" [subordinates]="subordinate.subordinates" [level]="subordinate.level" (updateUsers)="updateUsers.emit()"></app-manage-user-field>
+@for(subordinate of userTree.subordinates; track subordinate.userId){
+  <app-manage-user-field [userTree]="subordinate" [level]="subordinate.level" (updateUsers)="updateUsers.emit()"></app-manage-user-field>
 }

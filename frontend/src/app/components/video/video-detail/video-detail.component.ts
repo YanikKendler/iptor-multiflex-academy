@@ -51,7 +51,7 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   @ViewChild('tabSelector') tabSelector: ElementRef | undefined;
   currentTab : "comments" | "quiz" = "comments"
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.userService.currentUser.subscribe(user => {
@@ -60,6 +60,10 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
       this.route.params.subscribe(
         (params: Params) => {
           this.service.getVideoDetails(params['id']).subscribe(video => {
+            if(video == null){
+              this.router.navigate(['error/404'])
+              return
+            }
             this.video = video
 
             this.userService.isVideoSaved(this.video.contentId).subscribe(isSaved => {
