@@ -16,6 +16,7 @@ Enter the postgres dp to execute commands inside it `docker exec -it postgres-co
 `create user multiflex_academy with password 'R0LvkvdE5gu41s8&@x07JZ@6O29@@^';`
 
 `alter user multiflex_academy with superuser;`
+(i am aware that granting superuser is bad practice and not fit for production)
 
 ## File uploads
 
