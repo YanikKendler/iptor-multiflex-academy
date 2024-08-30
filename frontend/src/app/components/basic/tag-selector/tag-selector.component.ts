@@ -71,7 +71,6 @@ export class TagSelectorComponent implements OnInit{
 
   deleteTag(tag: Tag) {
     this.dialog.open(ConfirmComponent, {
-      height: "200px",
       width: "400px",
       data: {
         message: `Do really you want to delete the tag "${tag.name}"? This tag will be removed from all content.`

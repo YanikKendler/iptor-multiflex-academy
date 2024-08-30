@@ -159,7 +159,6 @@ export class EditVideoComponent implements OnInit{
 
   confirmClose() {
     this.dialog.open(ConfirmComponent, {
-      height: "200px",
       width: "400px",
       data: {
         message: "You have unsaved changes. Are you sure you want to close the editor?",

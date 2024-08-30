@@ -3,16 +3,18 @@
 <div class="content">
   <p>{{data.message}}</p>
 
-  <div class="confirm">
-    <p>{{data.confirmMessage}}</p>
-    <app-icon-button (click)="isChecked = !isChecked">
-      @if(isChecked){
-        <fa-icon [icon]="faSquareCheck"></fa-icon>
-      } @else{
-        <fa-icon [icon]="faSquare"></fa-icon>
-      }
-    </app-icon-button>
-  </div>
+  @if(data.confirmMessage && data.confirmMessage != "") {
+    <div class="confirm">
+      <p>{{ data.confirmMessage }}</p>
+      <app-icon-button (click)="isChecked = !isChecked">
+        @if (isChecked) {
+          <fa-icon [icon]="faSquareCheck"></fa-icon>
+        } @else {
+          <fa-icon [icon]="faSquare"></fa-icon>
+        }
+      </app-icon-button>
+    </div>
+  }
 </div>
 
 <div class="buttons">

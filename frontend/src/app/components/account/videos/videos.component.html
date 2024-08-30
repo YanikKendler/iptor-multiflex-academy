@@ -30,9 +30,10 @@
       <td>
         @if(video.approved){
           <app-dropdown [selectedId]="video.visibility.toString()" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
-        } @else{
+        } @else {
           self
           <fa-icon
+            *ngIf="userService.currentUser.value.userRole != 'ADMIN'"
             [icon]="faInfoCircle"
             matTooltip="This video is waiting for approval by an Admin. Once its approved you can change the visibility. An admin has been notified already."
             class="highlighted"

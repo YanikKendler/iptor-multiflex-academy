@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog"
 import {faSquare, faSquareCheck} from "@fortawesome/free-regular-svg-icons"
 import {FaIconComponent} from "@fortawesome/angular-fontawesome"
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component"
+import {DotLoaderComponent} from "../../basic/dot-loader/dot-loader.component"
 
 export interface ConfirmDialogueData {
   title: string
@@ -21,7 +22,8 @@ export interface ConfirmDialogueData {
   imports: [
     MatButton,
     FaIconComponent,
-    IconButtonComponent
+    IconButtonComponent,
+    DotLoaderComponent
   ],
   templateUrl: './confirm.component.html',
   styleUrl: './confirm.component.scss'

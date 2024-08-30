@@ -166,7 +166,6 @@ export class UploadVideoComponent {
     if(this.videoFile.videoFileId < 0) return
 
     let dialogRef = this.dialog.open(ConfirmComponent, {
-      height: "200px",
       width: "400px",
       data: {
         message: "The old video will be deleted and replaced, this action cannot be undone. Are you sure you want to continue?"

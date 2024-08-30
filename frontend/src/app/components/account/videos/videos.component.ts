@@ -16,7 +16,7 @@ import {MatDialog, matDialogAnimations, MatDialogModule, MatDialogRef} from '@an
 import {EditVideoComponent} from "../edit-video/edit-video.component"
 import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {FormsModule} from "@angular/forms";
-import {NgClass, NgForOf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {VideoAndLearningPathOverviewCollection, VideoService, VisibilityEnum} from "../../../service/video.service";
 import {MyLearningpathDTO, MyVideoDTO, UserService} from "../../../service/user.service";
 import {Tag} from "../../../service/tag.service";
@@ -45,7 +45,8 @@ import {MatSnackBar} from "@angular/material/snack-bar"
     PlayIconComponent,
     DropdownComponent,
     MatTooltip,
-    NgClass
+    NgClass,
+    NgIf
   ],
   templateUrl: './videos.component.html',
   styleUrl: './videos.component.scss'
