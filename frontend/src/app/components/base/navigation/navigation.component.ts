@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, EventEmitter, inject, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {RouterLink} from "@angular/router"
+import {ActivatedRoute, RouterLink} from "@angular/router"
 import {
   faBell,
   faCirclePlay,
@@ -82,12 +82,22 @@ export class NavigationComponent implements OnInit{
   notificationList : Notification [] = []
   fullNotificationList : Notification [] = []
 
+  constructor(private route: ActivatedRoute) {
+  }
+
   ngOnInit(): void {
     this.userService.currentUser.subscribe(user => {
       if(user.userId <= 0) return
       this.notificationService.getNotifications().subscribe(notifications => {
         this.fullNotificationList = notifications
         this.notificationList = this.fullNotificationList
+      })
+
+      this.route.queryParams.subscribe(params => {
+        console.log(params)
+        if(params["notification"]){
+          this.trigger.open()
+        }
       })
     })
   }

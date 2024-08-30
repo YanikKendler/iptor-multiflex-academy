@@ -5,7 +5,7 @@ INSERT INTO app_user (username, email, userRole, password, deputysupervisor_user
 INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('alice_jones', 'alice@test', 'EMPLOYEE', '$2a$10$cOW/k4lOFwx5zrYRlfTDDO60EO8ubn6ptLdLF86qooFtPEQcSSRfi', 1, 1);
 INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('bob_brown', 'bob@test', 'EMPLOYEE', '$2a$10$PrLNDgdld/EIqi4hmMVoIuhIvcAGsMggJ5MJuK2nNE.PbrUxHB2vO', 1, 1);
 INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('leon steinhuber', 'leon.steinhuber@test', 'EMPLOYEE', '$2a$10$j6/dJGVxar/nl370BLSmLOpYtSgFEyAVkaUlLYxrDjQOaNEfeEucW', 2, 2);
-INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('michael leisch', 'michael.leisch@test', 'EMPLOYEE', '$2a$10$ufluH.7UeSqY9xKIIx8OTObNcIE8pv8GR6EVWhMF1NofRm4uLzLUi', 2, 2);
+INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('michael leisch', 'michael.leisch@gmx.at', 'EMPLOYEE', '$2a$10$ufluH.7UeSqY9xKIIx8OTObNcIE8pv8GR6EVWhMF1NofRm4uLzLUi', 2, 2);
 INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('yanik kendler', 'yanik.kendler@test', 'EMPLOYEE', '$2a$10$F9R.Ol/vTxLmwIAivLum5.JcIxa81YAUtcqSnLaTPhXTaT3/OxZyS', 7, 7);
 
 -- Insert demo data for Customers

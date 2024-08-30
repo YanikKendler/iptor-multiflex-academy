@@ -29,12 +29,10 @@ public class UserRepository {
     EntityManager em;
 
     @Inject
-    VideoRepository videoRepository;
+    StarRatingRepository starRatingRepository;
 
     @Inject
-    StarRatingRepository starRatingRepository;
-    @Inject
-    DataSourcesBuildTimeConfig dataSourcesBuildTimeConfig;
+    NotificationRepository notificationRepository;
 
     public User getById(Long id) {
         return em.find(User.class, id);
@@ -93,6 +91,8 @@ public class UserRepository {
 
     public VideoAndLearningPathOverviewCollection getCurrentContent(Long userId, List<Tag> tags) {
         // Fetch unfinished videos
+        // get all videos that are started but less than 90% done and not ignored
+        // and that are equal to the filter tags
         List<Video> unfinishedVideos = em.createQuery(
                         "select distinct v from ViewProgress vp " +
                                 "join Video v on v.contentId = vp.content.contentId " +
@@ -109,6 +109,7 @@ public class UserRepository {
                 .getResultList();
 
         // Fetch saved content
+        // get saved content that are equal to the filter tags
         List<Content> savedContent = em.createQuery(
                         "select distinct sv from User u " +
                                 "join u.savedContent sv " +
@@ -136,6 +137,7 @@ public class UserRepository {
         Set<Video> combinedVideos = new HashSet<>(unfinishedVideos);
         combinedVideos.addAll(savedVideos);
 
+        // Filter out videos that are not visible for the user
         List<Video> visibleVideos = new ArrayList<>();
         combinedVideos.forEach(video -> {
             if(video.isVisibleForUser(getById(userId))){
@@ -148,6 +150,8 @@ public class UserRepository {
                 .map(video -> convertVideoToOverviewDTO(video, userId)).toList();
 
         // Fetch unfinished learning paths
+        // get all learning paths that are started but not done yet and not ignored
+        // and that are equal to the filter tags
         List<LearningPath> unfinishedLearningPaths = em.createQuery(
                         "select distinct lp from ViewProgress vp " +
                                 "join LearningPath lp on lp.contentId = vp.content.contentId " +
@@ -167,6 +171,7 @@ public class UserRepository {
         Set<LearningPath> combinedLearningPaths = new HashSet<>(unfinishedLearningPaths);
         combinedLearningPaths.addAll(savedLearningPaths);
 
+        // Filter out learning paths that are not visible for the user
         List<LearningPath> visiblePaths = new ArrayList<>();
         combinedLearningPaths.forEach(learningPath -> {
             if(learningPath.isVisibleForUser(getById(userId))){
@@ -242,12 +247,15 @@ public class UserRepository {
                         "where vp.user.userId = :userId ", Tag.class)
                 .setParameter("userId", userId).getResultList();
 
+        // get the saved content ids
         List<Long> savedContent = em.createQuery("select c.contentId from User u " +
                         "join u.savedContent c " +
                         "join c.tags t " +
                         "where u.userId = :userId ", Long.class)
                 .setParameter("userId", userId).getResultList();
 
+        // getting all videos and learning paths that are not saved by the user,
+        // not ignored and equal to the filter tags
         List<Video> videos;
         List<LearningPath> learningPaths;
         if (savedContent.isEmpty()) {
@@ -312,6 +320,7 @@ public class UserRepository {
                     .getResultList();
         }
 
+        // calculate the score for each video and learning path
         HashMap<Video, Integer> videoScores = new HashMap<>();
         HashMap<LearningPath, Integer> learningPathScores = new HashMap<>();
 
@@ -319,6 +328,8 @@ public class UserRepository {
         videos.forEach(video -> {
             if(video.isVisibleForUser(user)){
                 double avgStarRating = starRatingRepository.getAverage(video.getContentId());
+
+                // every tag that is in the video tags and the user tags gets a score of 1
                 double tagScore = video.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
 
                 videoScores.put(video, (int) (avgStarRating + tagScore*2.5));
@@ -328,10 +339,10 @@ public class UserRepository {
         learningPaths.forEach(learningPath -> {
             if(learningPath.isVisibleForUser(user)){
 
-                double avgStarRating = starRatingRepository.getAverage(learningPath.getContentId());
+                // every tag that is in the learning path tags and the user tags gets a score of 1
                 double tagScore = learningPath.getTags().stream().mapToDouble(tag -> tags.contains(tag) ? 1 : 0).sum();
 
-                learningPathScores.put(learningPath, (int) (avgStarRating + tagScore*2.5));
+                learningPathScores.put(learningPath, (int) (tagScore));
             }
         });
 
@@ -421,6 +432,7 @@ public class UserRepository {
             return null;
         }
 
+        // getting all videos that are editable by the user
         List<Video> videos = em.createQuery("select v from Video v" +
                         " where (v.visibility = 'self' and v.user.userId = :userId) or :isAdmin = true or v.visibility != 'self'" +
                         " order by v.contentId", Video.class)
@@ -428,6 +440,7 @@ public class UserRepository {
                 .setParameter("isAdmin", getById(userId).getUserRole() == UserRoleEnum.ADMIN)
                 .getResultList();
 
+        // returning the videos as DTOs
         return videos.stream().map(video -> {
             long views = em.createQuery("select count(vp) from ViewProgress vp where vp.content.contentId = :contentId", Long.class)
                     .setParameter("contentId", video.getContentId())
@@ -441,16 +454,20 @@ public class UserRepository {
             return null;
         }
 
-        TypedQuery<LearningPath> query = em.createQuery(
-                "SELECT l FROM LearningPath l ORDER BY l.contentId",
-                LearningPath.class);
-        List<LearningPath> learningPaths = query.getResultList();
+        // getting all learning paths that are editable by the user
+        List<LearningPath> learningPaths = em.createQuery("select lp from LearningPath lp" +
+                        " where (lp.visibility = 'self' and lp.user.userId = :userId) or :isAdmin = true or lp.visibility != 'self'" +
+                        " order by lp.contentId", LearningPath.class)
+                .setParameter("userId", userId)
+                .setParameter("isAdmin", getById(userId).getUserRole() == UserRoleEnum.ADMIN)
+                .getResultList();
 
         return learningPaths.stream()
                 .map(lp -> {
                     long views = em.createQuery("select count(vp) from ViewProgress vp where vp.content.contentId = :contentId", Long.class)
                             .setParameter("contentId", lp.getContentId())
                             .getSingleResult();
+
                     return new MyLearningpathDTO(
                             lp.getContentId(),
                             lp.getTitle(),
@@ -503,45 +520,62 @@ public class UserRepository {
 
     //TODO @michi read this code and comment it, its currently a black box
     public UserTreeDTO getFullUserTree(Long userId) {
+        // getting root user
         User rootUser = em.find(User.class, userId);
         if (rootUser == null) {
             return null;
         }
+
+        // building up the tree starting from the root user
         UserTreeDTO dto = buildUserTreeDTO(rootUser, 0);
 
+        // getting all subordinates of the root user
         List<Long> userIds = getSubordinates(dto);
+
+        // getting all direct subordinates of the root user that are not in the subordinates already
         List<User> directSubordinates = em.createQuery("select u from User u " +
                         "where u.deputySupervisor.userId = :userId and u.userId not in (:userIds) and u.supervisor.id != :userId", User.class)
                 .setParameter("userId", userId)
                 .setParameter("userIds", userIds)
                 .getResultList();
 
+        // convert the direct subordinates to DTOs
         List<UserTreeDTO> subordinateDtos = new ArrayList<>();
         for (User subordinate : directSubordinates) {
             subordinateDtos.add(new UserTreeDTO(subordinate.getUserId(), subordinate.getUsername(), 0, null));
         }
 
+        // adding the direct subordinates to the root user
         dto.subordinates().addAll(subordinateDtos);
         return dto;
     }
 
     public List<Long> getSubordinates(UserTreeDTO user){
         List<Long> subordinates = new ArrayList<>();
+
+        // adding current user
         subordinates.add(user.userId());
+
+        // looping over his subordinates
         for(UserTreeDTO u : user.subordinates()){
+
+            // adding the subordinates of the current user recosively
             subordinates.addAll(getSubordinates(u));
         }
         return subordinates;
     }
 
     public UserTreeDTO buildUserTreeDTO(User user, int level) {
+        // getting direct subordinates of the current user
         List<User> directSubordinates = em.createQuery("select u from User u " +
                         "where u.supervisor.userId = :userId", User.class)
                 .setParameter("userId", user.getUserId())
                 .getResultList();
 
+        // loop over the direct subordinates
         List<UserTreeDTO> subordinateDtos = new ArrayList<>();
         for (User subordinate : directSubordinates) {
+            // recursively build the tree for each direct subordinate
             subordinateDtos.add(buildUserTreeDTO(subordinate, level + 1));
         }
 
@@ -625,7 +659,9 @@ public class UserRepository {
         ContentAssignment contentAssignment = new ContentAssignment(user, assignToUser, content);
         em.persist(contentAssignment);
 
-        em.persist(new ContentNotification(assignToUser, user, content, ContentNotificationEnum.assignment));
+        ContentNotification notification = new ContentNotification(assignToUser, user, content, ContentNotificationEnum.assignment);
+        em.persist(notification);
+        notificationRepository.sendConfirmationEmail(notification);
 
         return convertContentToAssignDTO(content, userId);
     }

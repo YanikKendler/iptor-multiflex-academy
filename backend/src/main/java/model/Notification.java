@@ -1,10 +1,15 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.quarkus.qute.i18n.Message;
+import io.vertx.ext.web.Session;
 import jakarta.persistence.*;
 
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Properties;
 
 @Entity
 public abstract class Notification {
@@ -33,6 +38,11 @@ public abstract class Notification {
         this.forUser = forUser;
         this.triggeredByUser = triggeredByUser;
         this.done = false;
+    }
+
+    @Override
+    public String toString() {
+        return triggeredByUser.getUsername();
     }
 
     //<editor-fold desc="Getter und Setter">
@@ -67,5 +77,7 @@ public abstract class Notification {
     public void setDone(boolean done) {
         this.done = done;
     }
+
+
     //</editor-fold>
 }

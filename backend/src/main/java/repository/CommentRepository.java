@@ -20,6 +20,9 @@ public class CommentRepository {
     @Inject
     VideoRepository videoRepository;
 
+    @Inject
+    NotificationRepository notificationRepository;
+
     @Transactional
     public void create(Long userId, Long videoId, Comment comment) {
         comment.setUser(em.find(User.class, userId));
@@ -28,7 +31,9 @@ public class CommentRepository {
         em.persist(comment);
 
         if(!comment.getUser().getUserId().equals(video.getUser().getUserId())){
-            em.persist(new CommentNotification(video.getUser(), comment.getUser(), comment, video));
+            CommentNotification notification = new CommentNotification(video.getUser(), comment.getUser(), comment, video);
+            em.persist(notification);
+            notificationRepository.sendConfirmationEmail(notification);
         }
     }
 

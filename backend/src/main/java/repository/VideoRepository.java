@@ -29,6 +29,8 @@ public class VideoRepository {
     LearningPathRepository learningPathRepository;
     @Inject
     UserRepository userRepository;
+    @Inject
+    NotificationRepository notificationRepository;
 
     public Video create(CreateVideoDTO createVideoDTO, Long userId) {
         List<Question> questions = new LinkedList<>();
@@ -69,7 +71,10 @@ public class VideoRepository {
 
         if(!isUserAdmin){
             User admin = em.createQuery("select u from User u where u.userRole = 'ADMIN'", User.class).getSingleResult();
-            em.persist(new ContentNotification(admin, newVideo.getUser(), newVideo, ContentNotificationEnum.videoCreateRequest));
+
+            ContentNotification notification = new ContentNotification(admin, userRepository.getById(userId), newVideo, ContentNotificationEnum.videoCreateRequest);
+            em.persist(notification);
+            notificationRepository.sendConfirmationEmail(notification);
         }
 
         em.persist(new ContentEditHistory(userRepository.getById(userId), newVideo, ContentEditType.created));
@@ -149,7 +154,10 @@ public class VideoRepository {
             if(Objects.equals(video.getUser().getUserId(), user.getUserId())){
                 return;
             }
-            em.persist(new ContentNotification(user, video.getUser(), video, ContentNotificationEnum.update));
+
+            ContentNotification notification = new ContentNotification(user, video.getUser(), video, ContentNotificationEnum.update);
+            em.persist(notification);
+            notificationRepository.sendConfirmationEmail(notification);
         });
     }
 
