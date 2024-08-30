@@ -37,22 +37,27 @@ export class VideoQuizAnswersComponent implements OnChanges {
   @Output() nextVideo: EventEmitter<any> = new EventEmitter()
   @Output() giveSelectedAnswers: EventEmitter<AnswerOption[]> = new EventEmitter<AnswerOption[]>()
 
-  constructor(private cdr: ChangeDetectorRef) {
-  }
+  videoService = inject(VideoService)
 
+  /** if the answer is already submitted, the user isn't able to change it and sees the result */
   answerIsSubmitted : boolean = false
 
   checkedQuestions: number[] = []
   selectedAnswers: AnswerOption[] = [];
 
+  /** answer was not selected and was not correct, so the user did the right thing */
   notSelectedButCorrectAnswers : AnswerOption[] = []
+
+  /** answer was selected and was correct */
   correctAnswers : AnswerOption[] = []
+
+  /** answer was selected and was not correct */
   wrongAnswers : AnswerOption[] = []
+
+  /** answer was not selected and was correct, so the user did the wrong thing */
   missedAnswers : AnswerOption[] = []
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(this)
-
     // check if the question is already checked, that way i can highlight the correct answers
     if(this.checkedQuestions.includes(this.questionNumber)) {
       this.answerIsSubmitted = true
@@ -61,6 +66,7 @@ export class VideoQuizAnswersComponent implements OnChanges {
     }
   }
 
+  /** toggle selection of an answer */
   toggleAnswer(answer: AnswerOption) {
     if(this.answerIsSubmitted) return // if the answer is already checked in, the user shouldn't be able to change it
 
@@ -86,18 +92,21 @@ export class VideoQuizAnswersComponent implements OnChanges {
       return
     }
 
-    // if answer isn't submitted yet, it should check every field and push the correct answers into the array
-    // the correct answers get highlighted green and the others red
+    // if answer isn't submitted yet, it should check every field and push the correct answers into the arrays
+    // the answers then get highlighted in the html
     this.answerIsSubmitted = true
     this.checkedQuestions.push(this.questionNumber)
     this.answers?.forEach(answer => {
       if(this.selectedAnswers.includes(answer) && answer.isCorrect){
         this.correctAnswers.push(answer)
-      } else if(!this.selectedAnswers.includes(answer) && !answer.isCorrect){
+      }
+      else if(!this.selectedAnswers.includes(answer) && !answer.isCorrect){
         this.notSelectedButCorrectAnswers.push(answer)
-      } else if (this.selectedAnswers.includes(answer) && !answer.isCorrect){
+      }
+      else if (this.selectedAnswers.includes(answer) && !answer.isCorrect){
         this.wrongAnswers.push(answer)
-      } else if (!this.selectedAnswers.includes(answer) && answer.isCorrect){
+      }
+      else if (!this.selectedAnswers.includes(answer) && answer.isCorrect){
         this.missedAnswers.push(answer)
       }
     })
@@ -111,14 +120,14 @@ export class VideoQuizAnswersComponent implements OnChanges {
     sessionStorage.setItem("itm_checked_questions", JSON.stringify(this.checkedQuestions))
   }
 
-  videoService = inject(VideoService)
   finishQuiz(videoId: number) {
+    // finish the quiz and send the results to the backend
     this.videoService.finishQuiz(videoId, this.correctAnswers.length + this.notSelectedButCorrectAnswers.length, this.selectedAnswers)
   }
 
   restartQuiz() {
     this.resetQuiz()
-    this.nextQuestion.emit(true)
+    this.nextQuestion.emit(true) // sends the restart signal to the parent component
   }
 
   resetQuiz() {
@@ -128,32 +137,25 @@ export class VideoQuizAnswersComponent implements OnChanges {
     this.answerIsSubmitted = false
     this.selectedAnswers = []
 
-    /**
-     * answer was not selected and was not correct, so the user did the right thing
-     */
+
     this.notSelectedButCorrectAnswers = []
-    /**
-     * answer was selected and was correct
-     */
     this.correctAnswers = []
-    /**
-     * answer was selected and was not correct
-     */
     this.wrongAnswers = []
-    /**
-     * answer was not selected and was correct, so the user did the wrong thing
-     */
     this.missedAnswers = []
   }
 
   calculateScoreInDecimal() {
+    // if no answer was given, return -1
+    // that's for the case that the quiz has no questions
     if(this.notSelectedButCorrectAnswers.length + this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length === 0) return -1
+
     let totalQuestionCount = (this.correctAnswers.length + this.wrongAnswers.length + this.missedAnswers.length + this.notSelectedButCorrectAnswers.length)
     return (this.correctAnswers.length + this.notSelectedButCorrectAnswers.length) / totalQuestionCount
   }
 
   tryToGetSessionStorage() {
     if(sessionStorage.getItem("itm_correct_answers")) {
+      // set the answers from the session storage
       this.correctAnswers = JSON.parse(sessionStorage.getItem("itm_correct_answers") || "[]")
       this.notSelectedButCorrectAnswers = JSON.parse(sessionStorage.getItem("itm_not_selected_but_correct_answers") || "[]")
       this.wrongAnswers = JSON.parse(sessionStorage.getItem("itm_wrong_answers") || "[]")

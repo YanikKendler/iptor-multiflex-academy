@@ -60,7 +60,7 @@ public class NotificationRepository {
     @Transactional
     public MailMessage generateConfirmationMailMessage(Notification notification) {
         //TODO do this with env variables
-        String FRONTEND_URL = "http://localhost:4200";
+        String FRONTEND_URL = "http://localhost:4200?notification=true";
 
         MailMessage message = new MailMessage();
         message.setFrom("iptor.multiflex.academy@gmail.com");
