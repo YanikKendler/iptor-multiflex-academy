@@ -23,6 +23,10 @@
             make employee
           </button>
         }
+        <button mat-button (click)="editSupervisor()">
+          <fa-icon [icon]="faUserFriends"></fa-icon>
+          edit supervisor
+        </button>
         <!--I tried to prevent the menu from opening on hover in favor of click but the API offers no solution and stopping event propagation doesnt work-->
         <button mat-button [cdkMenuTriggerFor]="statistics">
           <fa-icon [icon]="faChartSimple"></fa-icon>

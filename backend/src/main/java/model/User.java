@@ -72,6 +72,18 @@ public class User {
         }
     }
 
+    public boolean isUserAbleToSupervise(User user){
+        if(userRole == UserRoleEnum.ADMIN){
+            return true;
+        }
+
+        if(userRole == user.userRole){
+            return true;
+        }
+
+        return false;
+    }
+
     //<editor-fold desc="Getter und Setter">
     public Long getUserId() {
         return userId;

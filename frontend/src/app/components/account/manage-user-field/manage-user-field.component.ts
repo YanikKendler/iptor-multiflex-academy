@@ -26,7 +26,7 @@ import {
   faChartSimple,
   faCirclePlay,
   faClose, faEllipsisH, faEllipsisV,
-  faTrash, faUserMinus, faUserTie,
+  faTrash, faUserFriends, faUserMinus, faUserTie,
   faX,
   faXmark
 } from "@fortawesome/free-solid-svg-icons";
@@ -43,6 +43,7 @@ import {MatButton} from "@angular/material/button"
 import {ConfirmComponent} from "../../dialogue/confirm/confirm.component"
 import {MatDialog} from "@angular/material/dialog"
 import {MatSnackBar} from "@angular/material/snack-bar"
+import {ManageUserSupervisorsComponent} from "../manage-user-supervisors/manage-user-supervisors.component";
 
 @Component({
   selector: 'app-manage-user-field',
@@ -184,6 +185,19 @@ export class ManageUserFieldComponent implements OnInit {
     })
   }
 
+  editSupervisor() {
+    let dialogRef = this.dialog.open(ManageUserSupervisorsComponent, {
+      data: {
+        userTree: this.userTree
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("closed")
+      this.updateUsers.emit()
+    })
+  }
+
   protected readonly Config = Config;
   protected readonly inject = inject
   protected readonly faTrash = faTrash
@@ -196,4 +210,5 @@ export class ManageUserFieldComponent implements OnInit {
   protected readonly faUserTie = faUserTie
   protected readonly UserRoleEnum = UserRoleEnum
   protected readonly faUserMinus = faUserMinus
+  protected readonly faUserFriends = faUserFriends;
 }

@@ -51,11 +51,17 @@ public class ContentRepository {
     }
 
     public List<ContentOverviewDTO> getFullContent(Long userId) {
-        List<Content> c =  em.createQuery("SELECT c FROM Content c where c.visibility != 'self' or c.user.userId = :userId or c.user.userRole = 'admin'", Content.class)
-                .setParameter("userId", userId)
+        List<Content> c =  em.createQuery("SELECT c FROM Content c", Content.class)
                 .getResultList();
 
-        return c.stream().map(content -> {
+        List<Content> update = new LinkedList<>();
+        c.forEach(content -> {
+            if(content.isVisibleForUser(userRepository.getById(userId))) {
+                update.add(content);
+            }
+        });
+
+        return update.stream().map(content -> {
             if(content instanceof Video) {
                 return new ContentOverviewDTO(content.getContentId(), content.getTitle(), "Video");
             } else {

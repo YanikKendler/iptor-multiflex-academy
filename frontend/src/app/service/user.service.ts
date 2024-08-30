@@ -213,4 +213,20 @@ export class UserService {
   updateRole(userId: number, role: UserRoleEnum) {
     return this.http.put(`${Config.API_URL}/user/${userId}/role?adminId=${this.currentUser.value.userId}`, role)
   }
+
+  searchUsers(userId: number, value: string) {
+    if(value != ""){
+      return this.http.get<User[]>(`${Config.API_URL}/user/${userId}/search?search=${value}`)
+    } else{
+      return this.http.get<User[]>(`${Config.API_URL}/user/${userId}/search`)
+    }
+  }
+
+  getSupervisors(userId: number) {
+    return this.http.get<User[]>(`${Config.API_URL}/user/${userId}/supervisors`)
+  }
+
+  setSupervisor(userId: number, supervisor: User, isSupervisor: boolean) {
+    this.http.put(`${Config.API_URL}/user/${userId}/supervisor/${supervisor.userId}?isSupervisor=${isSupervisor}`, {}).subscribe()
+  }
 }

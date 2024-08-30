@@ -865,4 +865,41 @@ public class UserRepository {
         return new UserStatisticsDTO(user, (int) totalComments, (int) totalRatings, avgRating, (int) totalQuizzes, (int) totalVideosWatched,
                 (int) totalLearningPathsCompleted, (int) totalContentSaved, (int) totalVideosUploaded, (int) totalLearningPathsUploaded);
     }
+
+    public List<User> search(Long userId, String searchTerm) {
+        List<User> users = new ArrayList<>();
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            users = em.createQuery("select u from User u where u.userId != :userId", User.class).setParameter("userId", userId).getResultList();
+        } else{
+            users = em.createQuery("select u from User u where u.username like :searchTerm or u.email like :searchTerm and u.userId != :userId", User.class)
+                    .setParameter("searchTerm", "%" + searchTerm + "%")
+                    .setParameter("userId", userId)
+                    .getResultList();
+        }
+
+        System.out.println(users.size());
+        return users.stream()
+                .filter(user -> user.isUserAbleToSupervise(getById(userId)))
+                .toList();
+    }
+
+    public void setSupervisor(Long userId, Long supervisorId, Boolean isSupervisor) {
+        User user = getById(userId);
+        User supervisor = getById(supervisorId);
+
+        if (isSupervisor) {
+            user.setSupervisor(supervisor);
+        } else {
+            user.setDeputySupervisor(supervisor);
+        }
+
+        em.merge(user);
+    }
+
+    public List<User> getSupervisors(Long userId) {
+        List<User> supervisors = new ArrayList<>();
+        supervisors.add(getById(userId).getSupervisor());
+        supervisors.add(getById(userId).getDeputySupervisor());
+        return supervisors;
+    }
 }

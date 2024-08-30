@@ -259,4 +259,41 @@ public class UserResource {
             return Response.status(400).entity(ex).build();
         }
     }
+
+    @GET
+    @Path("{userId}/search")
+    public Response search(@PathParam("userId") Long userId, @QueryParam("search") String search) {
+        try {
+            System.out.println(search);
+            return Response.ok(repository.search(userId, search)).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+    }
+
+    @GET
+    @Path("{userId}/supervisors")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSupervisors(@PathParam("userId") Long userId) {
+        try {
+            return Response.ok(repository.getSupervisors(userId)).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+    }
+
+
+    @PUT
+    @Path("{userId}/supervisor/{supervisorId}")
+    public Response setSupervisor(@PathParam("userId") Long userId, @PathParam("supervisorId") Long supervisorId, @QueryParam("isSupervisor") Boolean isSupervisor) {
+        try {
+            repository.setSupervisor(userId, supervisorId, isSupervisor);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+    }
 }

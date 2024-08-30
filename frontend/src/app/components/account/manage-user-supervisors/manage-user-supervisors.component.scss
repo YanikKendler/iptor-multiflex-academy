@@ -1,0 +1,69 @@
+@import "../../../variables";
+
+:host{
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  box-sizing: border-box;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+h1{
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: .8rem;
+}
+
+.content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+
+  p{
+    line-height: 130%;
+  }
+}
+
+.confirm{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  p{
+    font-weight: 500;
+  }
+
+  fa-icon{
+    font-size: 1.5rem;
+  }
+}
+
+.buttons{
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+  gap: 1rem;
+}
+
+.userOptions{
+  @include floating-box;
+  padding: .2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .option{
+    padding: .3rem;
+    border-radius: .3rem;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover{
+      background-color: $gray-800;
+    }
+  }
+}
