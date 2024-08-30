@@ -23,6 +23,9 @@ public class ContentRepository {
     @Inject
     UserRepository userRepository;
 
+    @Inject
+    NotificationRepository notificationRepository;
+
     public ContentForUserDTO searchContent(String search, Long userId, List<Tag> tags) {
         try {
             List<Content> content = em.createQuery("SELECT distinct c FROM Content c " +
@@ -65,7 +68,9 @@ public class ContentRepository {
         Content c = em.find(Content.class, contentId);
         c.setApproved(true);
 
-        em.persist(new ContentNotification(c.getUser(), userRepository.getById(userId), c, ContentNotificationEnum.approved));
+        ContentNotification notification = new ContentNotification(c.getUser(), userRepository.getById(userId), c, ContentNotificationEnum.approved);
+        em.persist(notification);
+        notificationRepository.sendConfirmationEmail(notification);
     }
 
     public List<ContentEditHistoryDTO> getContentEditHistory(Long contentId) {

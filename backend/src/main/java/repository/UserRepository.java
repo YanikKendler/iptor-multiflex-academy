@@ -35,6 +35,8 @@ public class UserRepository {
     StarRatingRepository starRatingRepository;
     @Inject
     DataSourcesBuildTimeConfig dataSourcesBuildTimeConfig;
+    @Inject
+    NotificationRepository notificationRepository;
 
     public User getById(Long id) {
         return em.find(User.class, id);
@@ -468,45 +470,62 @@ public class UserRepository {
 
     @Transactional
     public UserTreeDTO getFullUserTree(Long userId) {
+        // getting root user
         User rootUser = em.find(User.class, userId);
         if (rootUser == null) {
             return null;
         }
+
+        // building up the tree starting from the root user
         UserTreeDTO dto = buildUserTreeDTO(rootUser, 0);
 
+        // getting all subordinates of the root user
         List<Long> userIds = getSubordinates(dto);
+
+        // getting all direct subordinates of the root user that are not in the subordinates already
         List<User> directSubordinates = em.createQuery("select u from User u " +
                         "where u.deputySupervisor.userId = :userId and u.userId not in (:userIds) and u.supervisor.id != :userId", User.class)
                 .setParameter("userId", userId)
                 .setParameter("userIds", userIds)
                 .getResultList();
 
+        // convert the direct subordinates to DTOs
         List<UserTreeDTO> subordinateDtos = new ArrayList<>();
         for (User subordinate : directSubordinates) {
             subordinateDtos.add(new UserTreeDTO(subordinate.getUserId(), subordinate.getUsername(), 0, null));
         }
 
+        // adding the direct subordinates to the root user
         dto.subordinates().addAll(subordinateDtos);
         return dto;
     }
 
     public List<Long> getSubordinates(UserTreeDTO user){
         List<Long> subordinates = new ArrayList<>();
+
+        // adding current user
         subordinates.add(user.userId());
+
+        // looping over his subordinates
         for(UserTreeDTO u : user.subordinates()){
+
+            // adding the subordinates of the current user recosively
             subordinates.addAll(getSubordinates(u));
         }
         return subordinates;
     }
 
     public UserTreeDTO buildUserTreeDTO(User user, int level) {
+        // getting direct subordinates of the current user
         List<User> directSubordinates = em.createQuery("select u from User u " +
                         "where u.supervisor.userId = :userId", User.class)
                 .setParameter("userId", user.getUserId())
                 .getResultList();
 
+        // loop over the direct subordinates
         List<UserTreeDTO> subordinateDtos = new ArrayList<>();
         for (User subordinate : directSubordinates) {
+            // recursively build the tree for each direct subordinate
             subordinateDtos.add(buildUserTreeDTO(subordinate, level + 1));
         }
 
@@ -590,7 +609,9 @@ public class UserRepository {
         ContentAssignment contentAssignment = new ContentAssignment(user, assignToUser, content);
         em.persist(contentAssignment);
 
-        em.persist(new ContentNotification(assignToUser, user, content, ContentNotificationEnum.assignment));
+        ContentNotification notification = new ContentNotification(assignToUser, user, content, ContentNotificationEnum.assignment);
+        em.persist(notification);
+        notificationRepository.sendConfirmationEmail(notification);
 
         return convertContentToAssignDTO(content, userId);
     }

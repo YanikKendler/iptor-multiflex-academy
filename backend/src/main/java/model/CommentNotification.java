@@ -24,6 +24,11 @@ public class CommentNotification extends Notification{
         this.content = content;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + " has posted a comment in " + content.getTitle() + " • " + comment.getText();
+    }
+
     public Comment getComment() {
         return comment;
     }

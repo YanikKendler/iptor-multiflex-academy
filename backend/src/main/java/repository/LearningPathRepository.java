@@ -26,6 +26,8 @@ public class LearningPathRepository {
     EntityManager em;
     @Inject
     UserRepository userRepository;
+    @Inject
+    NotificationRepository notificationRepository;
 
     public LearningPathDetailDTO getDetailDTO(Long pathId, Long userId){
         LearningPath learningPath = em.find(LearningPath.class, pathId);
@@ -188,7 +190,10 @@ public class LearningPathRepository {
             if(Objects.equals(learningPath.getUser().getUserId(), user.getUserId())){
                 return;
             }
-            em.persist(new ContentNotification(user, learningPath.getUser(), learningPath, ContentNotificationEnum.update));
+
+            ContentNotification notification = new ContentNotification(user, learningPath.getUser(), learningPath, ContentNotificationEnum.update);
+            em.persist(notification);
+            notificationRepository.sendConfirmationEmail(notification);
         });
     }
 
@@ -224,7 +229,10 @@ public class LearningPathRepository {
 
         if(!isUserAdmin){
             User admin = em.createQuery("select u from User u where u.userRole = 'ADMIN'", User.class).getSingleResult();
-            em.persist(new ContentNotification(admin, newLearningPath.getUser(), newLearningPath, ContentNotificationEnum.videoCreateRequest));
+
+            ContentNotification notification = new ContentNotification(admin, newLearningPath.getUser(), newLearningPath, ContentNotificationEnum.videoCreateRequest);
+            em.persist(notification);
+            notificationRepository.sendConfirmationEmail(notification);
         }
 
         return newLearningPath;

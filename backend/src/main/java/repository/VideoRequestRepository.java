@@ -21,6 +21,8 @@ public class VideoRequestRepository {
     @Inject
     UserRepository userRepository;
 
+    @Inject
+    NotificationRepository notificationRepository;
 
     public List<VideoRequestDetailDTO> getAll() {
         List<VideoRequest> requests = em.createQuery("select vr from VideoRequest vr where vr.status = 'open'", VideoRequest.class).getResultList();
@@ -38,7 +40,9 @@ public class VideoRequestRepository {
 
         List<User> employees = em.createQuery("select u from User u where u.userRole != 'customer'", User.class).getResultList();
         employees.forEach(curr -> {
-            em.persist(new VideoRequestNotification(curr, user, videoRequest.getTitle()));
+            VideoRequestNotification notification = new VideoRequestNotification(curr, user, videoRequest.getTitle());
+            em.persist(notification);
+            notificationRepository.sendConfirmationEmail(notification);
         });
     }
 
@@ -51,10 +55,14 @@ public class VideoRequestRepository {
 
         switch (status) {
             case finished:
-                em.persist(new ContentNotification(videoRequest.getUser(), userRepository.getById(userId), videoRequest.getVideo(), ContentNotificationEnum.finishedRequest));
+                ContentNotification notification = new ContentNotification(videoRequest.getUser(), userRepository.getById(userId), videoRequest.getVideo(), ContentNotificationEnum.finishedRequest);
+                em.persist(notification);
+                notificationRepository.sendConfirmationEmail(notification);
                 break;
             case declined:
-                em.persist(new TextNotification(videoRequest.getUser(), userRepository.getById(userId), "has declined your video request", videoRequest.getTitle()));
+                TextNotification textNotification = new TextNotification(videoRequest.getUser(), userRepository.getById(userId), "has declined your video request", videoRequest.getTitle());
+                em.persist(textNotification);
+                notificationRepository.sendConfirmationEmail(textNotification);
                 break;
         }
     }

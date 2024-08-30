@@ -19,6 +19,11 @@ public class TextNotification extends Notification{
         this.headerText = headerText;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + " " + headerText;
+    }
+
     public String getText() {
         return text;
     }
