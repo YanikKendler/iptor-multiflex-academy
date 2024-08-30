@@ -66,6 +66,19 @@ public class UserResource {
     }
 
     @GET
+    @Path("customers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCustomers(){
+        List<UserTreeDTO> users;
+        try{
+            users = repository.getCustomers();
+        }catch (Exception ex){
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().entity(users).build();
+    }
+
+    @GET
     @Path("{userId: [0-9]+}")
     public Response getUser(@PathParam("userId") Long userId){
         User user;

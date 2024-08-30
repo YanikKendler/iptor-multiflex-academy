@@ -45,7 +45,42 @@ public class UserRepository {
     }
 
     public List<User> getAll() {
-        return em.createQuery("select u from User u", User.class).getResultList();
+        return em.createQuery("select u from User u order by u.username", User.class).getResultList();
+    }
+
+    public List<UserTreeDTO> getCustomers() {
+        List<User> managers = em.createQuery(
+                "select u from User u " +
+                "where u.userRole = 'CUSTOMER' " +
+                "and u.supervisor = null " +
+                "order by u.username"
+            , User.class)
+            .getResultList();
+
+        System.out.println(managers.toString());
+
+        List<UserTreeDTO> result = new LinkedList<>();
+
+        for (User manager : managers) {
+            List<UserTreeDTO> subordinateDTOs = null;
+            try{
+                List<User> subordinates = em.createQuery(
+                                "select u from User u " +
+                                        "where u.supervisor.userId = :userId " +
+                                        "order by u.username", User.class)
+                        .setParameter("userId", manager.getUserId())
+                        .getResultList();
+
+                subordinateDTOs = subordinates.stream()
+                        .map(user -> new UserTreeDTO(user.getUserId(), user.getUsername(), 2, null))
+                        .toList();
+
+            }catch (Exception ignored){ ignored.printStackTrace(); }
+
+            result.add(new UserTreeDTO(manager.getUserId(), manager.getUsername(), 1, subordinateDTOs));
+        }
+
+        return result;
     }
 
     public ContentForUserDTO getContentForUser(Long userId, List<Tag> tags) {
@@ -466,7 +501,7 @@ public class UserRepository {
         return null;
     }
 
-    @Transactional
+    //TODO @michi read this code and comment it, its currently a black box
     public UserTreeDTO getFullUserTree(Long userId) {
         User rootUser = em.find(User.class, userId);
         if (rootUser == null) {

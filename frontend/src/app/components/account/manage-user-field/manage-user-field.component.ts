@@ -43,26 +43,26 @@ import {MatDivider} from "@angular/material/divider"
   styleUrl: './manage-user-field.component.scss'
 })
 export class ManageUserFieldComponent implements OnInit {
-  @Input() userTree: UserTreeDTO = {} as UserTreeDTO;
-  @Input() subordinates : UserTreeDTO[] = [];
-  @Input() level : number = 0;
-  @Input() root : boolean = false;
+  @Input() userTree: UserTreeDTO = {} as UserTreeDTO
+  @Input() subordinates : UserTreeDTO[] = [] //TODO @michi review why this is needed and not just userTree.subordinates
+  @Input() level : number = 0
+  @Input() root : boolean = false
   userService = inject(UserService)
   videoService = inject(VideoService)
 
-  assignedContent : UserAssignedContentDTO[] = [];
+  assignedContent : UserAssignedContentDTO[] = []
 
   fullContent: ContentOverviewDTO[] = []
   contentOptions: ContentOverviewDTO[] = []
 
-  isExpanded: boolean = false;
+  isExpanded: boolean = false
 
-  firstExpand: boolean = true;
+  firstExpand: boolean = true
 
-  userStatistics : UserStatisticsDTO = {} as UserStatisticsDTO;
+  userStatistics : UserStatisticsDTO = {} as UserStatisticsDTO
 
   // i tried so hard and got so far
-  @ViewChildren(CdkMenuTrigger) videoPopupTrigger!: CdkMenuTrigger[];
+  @ViewChildren(CdkMenuTrigger) videoPopupTrigger!: CdkMenuTrigger[]
 
   ngOnInit(): void {
     this.userService.currentUser.subscribe(user => {

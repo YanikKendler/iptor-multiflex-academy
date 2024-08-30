@@ -151,6 +151,10 @@ export class UserService {
     return this.http.get<UserTreeDTO>(`${Config.API_URL}/user/${this.currentUser.value.userId}/getusers`)
   }
 
+  getCustomerTree() {
+    return this.http.get<UserTreeDTO[]>(`${Config.API_URL}/user/customers`)
+  }
+
   getAssignedUserContent(userId: number){
     return this.http.get<UserAssignedContentDTO[]>(`${Config.API_URL}/user/${userId}/assignedcontent`)
   }

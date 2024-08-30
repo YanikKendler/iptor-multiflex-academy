@@ -25,25 +25,24 @@
     <p (click)="switchPage('user-statistics')" class="show-statistics">Show User Statistics</p>
   </div>
 
-  <section>
-    @switch (currentPage){
-      @case('videos'){
-        <app-videos></app-videos>
-      }
-      @case('learningpaths'){
-        <app-learningpaths></app-learningpaths>
-      }
-      @case('manage-users'){
-        <app-manage-users></app-manage-users>
-      }
-      @case ('video-requests'){
-        <app-video-requests></app-video-requests>
-      }
-      @case ('user-statistics'){
-        <app-user-statistics></app-user-statistics>
-      }
+  @switch (currentPage){
+    @case('videos'){
+      <app-videos></app-videos>
     }
-  </section>
+    @case('learningpaths'){
+      <app-learningpaths></app-learningpaths>
+    }
+    @case('manage-users'){
+      <app-manage-users></app-manage-users>
+    }
+    @case ('video-requests'){
+      <app-video-requests></app-video-requests>
+    }
+    @case ('user-statistics'){
+      <app-user-statistics></app-user-statistics>
+    }
+  }
+
 </main>
 
 

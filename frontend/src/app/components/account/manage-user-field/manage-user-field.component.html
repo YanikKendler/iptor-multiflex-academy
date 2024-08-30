@@ -1,8 +1,6 @@
 <div class="user" *ngIf="!root">
   <div class="top" (click)="toggle($event)">
-    @if (userTree.userId != this.userService.currentUser.value.userId) {
-      <p class="username">{{ userTree.username }}</p>
-    }
+    <p class="username">{{ userTree.username }}</p>
 
     <div>
       <app-icon-button class="statistics" [cdkMenuTriggerFor]="statistics" (click)="$event.stopPropagation()">
@@ -51,9 +49,10 @@
 
   @if (isExpanded) {
     <div class="content">
+      <!--DISPLAY ASSIGNED CONTENT-->
       @for (content of assignedContent; track content.contentId) {
         <div class="content-entry" [style.--color]="content.color" [ngClass]="content.isFinished ? 'finished' : ''">
-          @if (content.type == "Video") {
+          @if (content.type == "Video") { <!--Video-->
             @if(content.isFinished){
               <fa-icon class="list-icon" [icon]='faCircleCheck'></fa-icon>
             } @else {
@@ -67,11 +66,12 @@
             }
             <p class="type">video</p>
             <p class="questions">{{content.questionOrVideoCount}} questions</p>
-          } @else {
+          }
+          @else { <!--Learning path-->
             @if(content.isFinished){
               <fa-icon class="list-icon" [icon]='faSquareCheck'></fa-icon>
             } @else {
-              <app-learning-path-icon></app-learning-path-icon>
+              <app-learning-path-icon class="list-icon"></app-learning-path-icon>
             }
             <p class="title">{{ content.title }}</p>
             @if(content.isFinished){
@@ -86,7 +86,7 @@
 
           <app-icon-button (click)="unassignContent(content.contentId)" class="remove">
             @if(content.isFinished){
-              <fa-icon [icon]="faX"></fa-icon>
+              <fa-icon [icon]="faXmark"></fa-icon>
             }@else {
               <fa-icon [icon]="faTrash"></fa-icon>
             }
@@ -96,7 +96,7 @@
 
       @if (!assignedContent || assignedContent.length == 0) {
         <div>
-          <p class="no-results">No content yet</p>
+          <p class="no-results">No assigned content yet</p>
         </div>
       }
 

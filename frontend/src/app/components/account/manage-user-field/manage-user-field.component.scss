@@ -90,6 +90,10 @@ app-manage-user-field{
     color: var(--color);
   }
 
+  .list-icon{
+    width: 1.5rem;
+  }
+
   app-learning-path-icon{
     height: 1.5rem;
     color: var(--color);
@@ -108,7 +112,9 @@ app-manage-user-field{
     font-weight: 500;
     width: 15ch;
     color: var(--color);
+    /*
     text-shadow: 0 .15rem .2rem rgba(0, 0, 0, 0.1), 0 -.15rem .2rem rgba(0, 0, 0, 0.1);
+    */
   }
 
   .type{
