@@ -15,6 +15,7 @@ import {LearningpathsComponent} from "./components/account/learningpaths/learnin
 import {ManageUsersComponent} from "./components/account/manage-users/manage-users.component"
 import {VideoRequestsComponent} from "./components/account/video-requests/video-requests.component"
 import {UserStatisticsComponent} from "./components/account/user-statistics/user-statistics.component"
+import {PageNotFoundComponent} from "./components/base/page-not-found/page-not-found.component"
 
 export const routes: Routes = [
   {
