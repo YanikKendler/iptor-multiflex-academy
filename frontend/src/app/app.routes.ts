@@ -10,6 +10,7 @@ import {UnauthorizedComponent} from "./components/base/unauthorized/unauthorized
 import {hasRoleGuard} from "./has-role.guard"
 import {UserRoleEnum} from "./service/user.service"
 import {canViewGuard} from "./can-view.guard";
+import {PageNotFoundComponent} from "./components/base/page-not-found/page-not-found.component";
 
 export const routes: Routes = [
   {
@@ -33,5 +34,6 @@ export const routes: Routes = [
     }},
   {path: "login", component: LoginComponent},
   {path: "unauthorized", component: UnauthorizedComponent},
+  {path: "error/404", component: PageNotFoundComponent},
   {path: "**", component: DashboardComponent},
 ];

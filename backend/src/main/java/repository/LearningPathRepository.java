@@ -32,6 +32,10 @@ public class LearningPathRepository {
     public LearningPathDetailDTO getDetailDTO(Long pathId, Long userId){
         LearningPath learningPath = em.find(LearningPath.class, pathId);
 
+        if(learningPath == null){
+            return null;
+        }
+
         ViewProgress viewProgress;
 
         try{

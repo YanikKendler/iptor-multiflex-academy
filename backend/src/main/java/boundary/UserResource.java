@@ -211,6 +211,7 @@ public class UserResource {
 
     @GET
     @Path("{userId}/isallowed/{contentId}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response isAllowed(@PathParam("userId") Long userId, @PathParam("contentId") Long contentId) {
         try {
             return Response.ok(repository.isAllowed(userId, contentId)).build();

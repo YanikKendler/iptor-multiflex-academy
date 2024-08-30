@@ -518,7 +518,6 @@ public class UserRepository {
         return null;
     }
 
-    //TODO @michi read this code and comment it, its currently a black box
     public UserTreeDTO getFullUserTree(Long userId) {
         // getting root user
         User rootUser = em.find(User.class, userId);
@@ -691,14 +690,14 @@ public class UserRepository {
         } catch(NoResultException e){}
     }
 
-    public boolean isAllowed(Long userId, Long contentId) {
+    public Boolean isAllowed(Long userId, Long contentId) {
         try{
             Content content = em.createQuery("select c from Content c where c.contentId = :contentId", Content.class)
                     .setParameter("contentId", contentId).getSingleResult();
 
             return content.isVisibleForUser(getById(userId));
         } catch(NoResultException e){
-            return false;
+            return null;
         }
     }
 
