@@ -783,8 +783,11 @@ public class UserRepository {
 
     public Boolean isAllowed(Long userId, Long contentId) {
         try{
-            Content content = em.createQuery("select c from Content c where c.contentId = :contentId", Content.class)
-                    .setParameter("contentId", contentId).getSingleResult();
+            Content content = em.find(Content.class, contentId);
+
+            if(em.find(User.class, userId).getUserRole() == UserRoleEnum.ADMIN){
+                return true;
+            }
 
             return content.isVisibleForUser(getById(userId));
         } catch(NoResultException e){

@@ -9,7 +9,7 @@
 </div>
 
 <div class="post-bar">
-  <app-textfield [maxLength]="2000" [label]="''" placeholder="Your comment ..." (keydown)="keyDownFunction($event)" [(value)]="commentInputText"></app-textfield>
+  <app-textfield [maxLength]="2000" [label]="''" placeholder="Your comment ..." (keydown)="keyDownFunction($event)" [(value)]="commentInputText" #commentInput></app-textfield>
   <!--<input (keydown)="keyDownFunction($event)" type="text" placeholder="Your comment ..." [(ngModel)]="commentInputText">-->
-  <button (click)="postComment()">Post</button>
+  <button (click)="postComment()" mat-flat-button color="secondary" [disabled]="commentInput.value == ''">Post</button>
 </div>
