@@ -34,7 +34,9 @@ export class VideoCommentComponent implements AfterViewInit {
 
   @Output() update = new EventEmitter<void>();
 
-  userId = inject(UserService).currentUser.value.userId;
+  userService = inject(UserService);
+
+  userId = this.userService.currentUser.value.userId;
   editMode: boolean = false;
 
   commentService = inject(CommentService);
