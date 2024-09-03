@@ -39,9 +39,11 @@ public class ContentRepository {
                     .setParameter("areTagsEmpty", tags.isEmpty())
                     .getResultList();
 
-            List<VideoOverviewDTO> videos = content.stream()
+            List<Content> allowedContent = content.stream().filter(c -> c.isVisibleForUser(userRepository.getById(userId))).toList();
+
+            List<VideoOverviewDTO> videos = allowedContent.stream()
                     .filter(c -> c instanceof Video).map(c -> userRepository.convertVideoToOverviewDTO((Video) c, userId)).toList();
-            List<LearningPathOverviewDTO> learningPaths = content.stream()
+            List<LearningPathOverviewDTO> learningPaths = allowedContent.stream()
                     .filter(c -> c instanceof LearningPath).map(c -> userRepository.convertLearningPathToOverviewDTO(c, userId)).toList();
 
             return new ContentForUserDTO(new VideoAndLearningPathOverviewCollection(videos, learningPaths), null, null);
