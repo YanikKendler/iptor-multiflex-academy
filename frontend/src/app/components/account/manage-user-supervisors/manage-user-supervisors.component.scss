@@ -8,45 +8,21 @@
   box-sizing: border-box;
   justify-content: flex-end;
   height: 100%;
+  background-color: white;
 }
 
-h1{
+h2{
   font-size: 1.3rem;
   font-weight: 500;
   text-align: center;
   margin-bottom: .8rem;
 }
 
-.content{
+.user{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .5rem;
-
-  p{
-    line-height: 130%;
-  }
-}
-
-.confirm{
-  display: flex;
+  justify-content: space-between;
   gap: 1rem;
   align-items: center;
-
-  p{
-    font-weight: 500;
-  }
-
-  fa-icon{
-    font-size: 1.5rem;
-  }
-}
-
-.buttons{
-  display: flex;
-  justify-content: center;
-  margin-top: 1.5rem;
-  gap: 1rem;
 }
 
 .userOptions{
@@ -66,4 +42,10 @@ h1{
       background-color: $gray-800;
     }
   }
+}
+
+
+button{
+  margin-top: 1rem;
+  margin-inline: auto;
 }

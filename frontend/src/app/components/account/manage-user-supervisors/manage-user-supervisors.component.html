@@ -4,7 +4,7 @@
   <label>Select a supervisor</label>
   <input
     type="text"
-    placeholder="assign content"
+    placeholder="max mustermann"
     [cdkMenuTriggerFor]="userPopup"
     [value]="supervisor != undefined ? supervisor.username || ' • ' || supervisor.userRole || ' • ' || supervisor.userId : ''"
     (input)="generateUserOptions(userInput.value)"
@@ -31,7 +31,7 @@
   <label>Select a deputy supervisor</label>
   <input
     type="text"
-    placeholder="assign content"
+    placeholder="john cena"
     [cdkMenuTriggerFor]="userPopup2"
     [value]="deputySupervisor != undefined ? deputySupervisor.username || ' • ' || deputySupervisor.userRole || ' • ' || deputySupervisor.userId : ''"
     (input)="generateUserOptions(userInput2.value)"
@@ -48,17 +48,10 @@
       @if (userOptions.length == 0) {
         <p class="no-results">No content found</p>
       } @else{
-        <p (click)="assignUser(undefined, false)" class="option">clear supervisor</p>
+        <p (click)="assignUser(undefined, false)" class="option">clear deputy supervisor</p>
       }
     </div>
   </ng-template>
 </div>
 
-<div class="buttons">
-  <button
-    mat-flat-button
-    (click)="dialogRef.close()"
-  >
-    close
-  </button>
-</div>
+<button mat-flat-button (click)="dialogRef.close()">close</button>
