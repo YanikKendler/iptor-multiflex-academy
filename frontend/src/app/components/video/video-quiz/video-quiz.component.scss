@@ -13,6 +13,10 @@
   border-right: 1px solid $gray-600;
   gap: .25rem;
 
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
+
   .question{
     display: flex;
     flex-direction: row;
@@ -46,12 +50,13 @@
     }
   }
 
-  a{
+  a.viewResults{
     margin-top: auto;
     color: $gray-300;
     text-decoration: underline;
     cursor: pointer;
     user-select: none;
+    white-space: nowrap;
 
     &:hover{
       color: $gray-250;

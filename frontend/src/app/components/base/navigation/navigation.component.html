@@ -1,0 +1,101 @@
+<img src="../../../assets/Iptor_multiflex_ACADEMY_logo_white_orange_cmyk.svg" alt="iptor multiflex academy">
+
+@if(simple){
+  <a routerLink="/">Back to the Dashboard</a>
+} @else {
+  <div class="search">
+    <input placeholder="Search for a Video" (input)="search.emit(searchInput.value)" #searchInput>
+    @if(searchInput.value != ''){
+      <app-icon-button (click)="searchInput.value = ''; search.emit('')">
+        <fa-icon [icon]="faXmark"></fa-icon>
+      </app-icon-button>
+    }
+    @else{
+      <fa-icon class="search" [icon]="faMagnifyingGlass"></fa-icon>
+    }
+  </div>
+}
+
+<div class="right">
+  <app-icon-button [cdkMenuTriggerFor]="notifications"
+                   matBadge="{{getLengthOfNewNotifications() == 0 ? '' : getLengthOfNewNotifications()}}"
+                   matBadgeSize="large"
+                   matBadgeDescription="dislays how many notifications the user got">
+    <fa-icon [icon]="faBell"></fa-icon>
+  </app-icon-button>
+
+  <app-icon-button [cdkMenuTriggerFor]="menu">
+    <fa-icon [icon]="faCircleUser" class="userIcon"></fa-icon>
+  </app-icon-button>
+</div>
+
+<ng-template #notifications>
+  <div class="notifications" cdkMenu>
+    @if(notificationList.length === 0){
+      <p class="no-results">No new notifications</p>
+    }
+    @for(notification of notificationList; track notification.notificationId){
+      <app-notification [notification]="notification" matRipple></app-notification>
+    }
+  </div>
+</ng-template>
+
+<ng-template #menu>
+  <div class="menu" cdkMenu>
+    <div class="top" [ngClass]="Config.SMALL_SCREEN ? 'disabled' : ''">
+      @if(userService.userRole == UserRoleEnum.ADMIN || userService.userRole == UserRoleEnum.EMPLOYEE){
+        <div routerLink="/account/videos" (click)="closeMenu()" class="menuItem">
+          <div class="icon-container">
+            <fa-icon [icon]="faCirclePlay"></fa-icon>
+          </div>
+          <p>Videos</p>
+        </div>
+
+        <div routerLink="/account/learningpaths" (click)="closeMenu()" class="menuItem">
+          <div class="icon-container">
+            <app-learning-path-icon class="icon"></app-learning-path-icon>
+          </div>
+          <p>Learningpaths</p>
+        </div>
+      }
+
+      @if(userService.userRole != UserRoleEnum.CUSTOMER){
+        <div routerLink="/account/manage-users" (click)="closeMenu()" class="menuItem">
+          <div class="icon-container">
+            <fa-icon [icon]="faUsersGear"></fa-icon>
+          </div>
+          <p>Manage Users</p>
+        </div>
+      }
+
+      @if(userService.userRole == UserRoleEnum.EMPLOYEE || userService.userRole == UserRoleEnum.ADMIN){
+        <div routerLink="/account/video-requests" (click)="closeMenu()" class="menuItem">
+          <div class="icon-container">
+            <fa-icon [icon]="faFileVideo" class="fileIcon"></fa-icon>
+          </div>
+          <p>Video Requests</p>
+        </div>
+      }
+    </div>
+
+    <mat-divider *ngIf="userService.userRole != UserRoleEnum.CUSTOMER"></mat-divider>
+
+    <div (click)="requestVideo(); closeMenu()" class="menuItem">
+      <div class="icon-container">
+        <fa-icon [icon]="faUserPlus"></fa-icon>
+      </div>
+      <p>Request a Video</p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div routerLink="/login" (click)="closeMenu(); logout()" class="menuItem">
+      <div class="icon-container">
+        <fa-icon [icon]="faRightFromBracket"></fa-icon>
+      </div>
+      <p>Logout</p>
+    </div>
+
+    <p class="info">{{userService.currentUser.value.username}} • {{userService.currentUser.value.userRole}} • {{userService.currentUser.value.userId}}</p>
+  </div>
+</ng-template>

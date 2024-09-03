@@ -4,11 +4,12 @@
   }
 
   @for (comment of comments; track comment.commentId){
-    <app-video-comment [comment]="comment" [videoId]="videoId" (update)="updateComments()" ></app-video-comment>
+    <app-video-comment [comment]="comment" [videoId]="videoId" (update)="updateComments()" [videoOwnerId]="videoOwnerId"></app-video-comment>
   }
 </div>
 
 <div class="post-bar">
-  <input (keydown)="keyDownFunction($event)" type="text" placeholder="Your comment ..." [(ngModel)]="commentInputText">
-  <button (click)="postComment()">Post</button>
+  <app-textfield [maxLength]="2000" [label]="''" placeholder="Your comment ..." (keydown)="keyDownFunction($event)" [(value)]="commentInputText" #commentInput></app-textfield>
+  <!--<input (keydown)="keyDownFunction($event)" type="text" placeholder="Your comment ..." [(ngModel)]="commentInputText">-->
+  <button (click)="postComment()" mat-flat-button color="secondary" [disabled]="commentInput.value == ''">Post</button>
 </div>

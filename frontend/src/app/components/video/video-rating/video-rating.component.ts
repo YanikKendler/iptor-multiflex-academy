@@ -37,13 +37,14 @@ export class VideoRatingComponent{
   constructor(private renderer: Renderer2) {
     if(this.videoId && this.userId){
       this.videoService.getStarRating(this.videoId, this.userId).subscribe(response => {
-        console.log(response)
         this.yourRating = response
       })
     }
   }
 
   setRating(rating: number) {
+    if(window.matchMedia("(pointer: coarse)").matches) return
+
     this.yourRating = rating;
     this.isRatingMode = true;
   }
@@ -58,7 +59,6 @@ export class VideoRatingComponent{
     clearTimeout(this.buttonUpdateTimeout)
 
     this.videoService.setStarRating(this.videoId, this.userId, this.yourRating).subscribe(response => {
-      console.log('Response from server:', response);
       this.updateRating()
       this.buttonText = "updated!"
       this.buttonUpdateTimeout = setTimeout(() => {
@@ -108,6 +108,10 @@ export class VideoRatingComponent{
   }
 
   enableRatingMode(){
+    if(this.isRatingMode) return
+
+    if(window.matchMedia("(pointer: coarse)").matches) return
+
     clearTimeout(this.hideTimeout)
     this.isRatingMode = true;
     this.overflow = 'visible';

@@ -1,0 +1,39 @@
+@import "../../../variables";
+
+.dropDown{
+  display: flex;
+  cursor: pointer;
+  gap: .3rem;
+  padding: .3rem;
+  margin: -.3rem;
+  border-radius: .3rem;
+  transition: background-color $transition-time-short;
+
+  fa-icon{
+    translate: 0 -.1rem;
+  }
+
+  &:hover{
+    background-color: rgba(132, 140, 141, 0.1);
+  }
+}
+
+.actionMenu{
+  background-color: white;
+  @include floating-box;
+  translate: -.4rem .2rem;
+  padding: .2rem;
+
+  p{
+    padding-block: .25rem;
+    padding-inline: .4rem;
+    cursor: pointer;
+    transition: all .2s ease;
+    border-radius: .2rem;
+
+    &:hover{
+      background-color: $gray-800;
+    }
+  }
+}
+

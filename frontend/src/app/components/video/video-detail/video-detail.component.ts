@@ -1,5 +1,5 @@
 import {AfterViewChecked, AfterViewInit, Component, ElementRef, inject, Input, OnInit, ViewChild} from '@angular/core';
-import {NavigationComponent} from "../../navigation/navigation.component"
+import {NavigationComponent} from "../../base/navigation/navigation.component"
 import {StarIconComponent} from "../../icons/star/star.icon.component"
 import {BookmarkIconComponent} from "../../icons/bookmark/bookmark.icon.component"
 import {ActivatedRoute, Params, Router} from "@angular/router";
@@ -11,10 +11,12 @@ import {IconButtonComponent} from "../../basic/icon-button/icon-button.component
 import {UserService} from "../../../service/user.service";
 import {VideoCommentContainerComponent} from "../video-comment-container/video-comment-container.component"
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faShare} from "@fortawesome/free-solid-svg-icons";
+import {faCheckCircle, faPen, faShare} from "@fortawesome/free-solid-svg-icons";
 import {Config} from "../../../config";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {MatSnackBar} from "@angular/material/snack-bar"
+import {MatTooltip} from "@angular/material/tooltip"
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-video-detail',
@@ -29,7 +31,10 @@ import {MatSnackBar} from "@angular/material/snack-bar"
     IconButtonComponent,
     VideoCommentContainerComponent,
     FaIconComponent,
-    NgIf
+    NgIf,
+    MatTooltip,
+    MatButton,
+    NgClass
   ],
   templateUrl: './video-detail.component.html',
   styleUrl: './video-detail.component.scss'
@@ -46,23 +51,34 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   @ViewChild('tabSelector') tabSelector: ElementRef | undefined;
   currentTab : "comments" | "quiz" = "comments"
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.route.params.subscribe(
-      (params: Params) => {
-        this.service.getVideoDetails(params['id']).subscribe(video => {
-          console.log(video)
-          this.video = video
+    this.userService.currentUser.subscribe(user => {
+      if (user.userId <= 0) return
 
-          this.userService.isVideoSaved(this.video.contentId).subscribe(isSaved => {
-            if(isSaved){
-              this.bookmark?.toggleMarked()
+      this.route.params.subscribe(
+        (params: Params) => {
+          this.service.getVideoDetails(params['id']).subscribe(video => {
+            if(video == null){
+              this.router.navigate(['error/404'])
+              return
             }
+            this.video = video
+
+            this.userService.isVideoSaved(this.video.contentId).subscribe(isSaved => {
+              if (isSaved) {
+                this.bookmark?.toggleMarked()
+              }
+            })
           })
-        })
-      }
-    )
+        }
+      )
+    })
+  }
+
+  ngAfterViewInit(): void {
+    this.selectTab("comments")
   }
 
   selectTab(tab: "comments" | "quiz"){
@@ -82,16 +98,9 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
     this.markerPos = {width: tabElement.clientWidth, left: tabElement.offsetLeft}
   }
 
-  ngAfterViewInit(): void {
-    this.selectTab("comments")
-  }
-
   addToBookmarks(event: MouseEvent){
     event.stopPropagation();
     this.bookmark?.toggleMarked()
-    console.log("Added to bookmarks")
-
-    // todo user not hard coded
     this.userService.toggleSavedContent(this.video.contentId)
   }
 
@@ -108,4 +117,18 @@ export class VideoDetailComponent implements AfterViewInit, OnInit{
   }
 
   protected readonly faShare = faShare;
+
+  finishVideo() {
+    this.userService.finishAssignedContent(this.video.contentId).subscribe()
+  }
+
+  approveVideo() {
+    this.userService.approveContent(this.video.contentId).subscribe(response => {
+      this.video.approved = true
+    })
+  }
+
+  protected readonly faCheckCircle = faCheckCircle;
+  protected readonly Config = Config
+  protected readonly faPen = faPen
 }

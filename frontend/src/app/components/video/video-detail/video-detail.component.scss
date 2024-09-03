@@ -7,12 +7,15 @@
 }
 
 main{
-  width: 80%;
-  margin-inline: auto;
+  padding-inline: 10%;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   height: 100%;
+
+  &.notApproved{
+    box-shadow: 0 0 .5rem .5rem $secondary-800 inset;
+  }
 }
 
 .top{
@@ -40,6 +43,7 @@ main{
   .description{
     font-size: .9rem;
     line-height: 120%;
+    line-break: anywhere;
   }
 
   .actions{
@@ -48,6 +52,11 @@ main{
 
     .bookmark{
       margin-left: 1rem;
+    }
+
+    .approve{
+      font-size: 1.5rem;
+      color: $secondary-500;
     }
   }
 }
@@ -99,5 +108,45 @@ main{
       transition: left .2s, width .2s;
       translate: 0 .2rem;
     }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  main{
+    width: 90%;
+    gap: .5rem;
+  }
+
+  .top{
+    flex-direction: column;
+    margin-top: 1rem;
+
+    app-media-player{
+      width: 100%;
+      height: initial;
+      aspect-ratio: 16/9;
+    }
+
+    .right{
+      gap: .2rem;
+
+      .actions{
+        padding-left: .5rem;
+      }
+    }
+  }
+
+  .bottom{
+    app-video-comment-container{
+      height: 100%;
+      padding-bottom: 1rem;
+    }
+  }
+}
+
+app-icon-button.approveVideo{
+  fa-icon{
+    font-size: 1.3rem;
+    color: $secondary-500;
   }
 }

@@ -1,0 +1,159 @@
+<div class="user" *ngIf="!root">
+  <div class="top" (click)="toggle($event)">
+    <p class="username">{{ userTree.username }} • <span>{{ userTree.email }}</span></p>
+
+    <div class="right">
+      <app-icon-button [cdkMenuTriggerFor]="actions">
+        <fa-icon [icon]="faEllipsisH"></fa-icon>
+      </app-icon-button>
+      <fa-icon [icon]="faAngleDown" [ngClass]="isExpanded ? 'rotate' : ''"></fa-icon>
+    </div>
+
+    <ng-template #actions>
+      <div class="actions" cdkMenu>
+        @if(userTree.role == UserRoleEnum.EMPLOYEE){
+          <button mat-button (click)="updateRole(userTree, UserRoleEnum.CUSTOMER)">
+            <fa-icon [icon]="faUserMinus"></fa-icon>
+            demote to customer
+          </button>
+        }
+        @else if(userTree.role == UserRoleEnum.CUSTOMER){
+          <button mat-button (click)="updateRole(userTree, UserRoleEnum.EMPLOYEE)">
+            <fa-icon [icon]="faUserTie"></fa-icon>
+            make employee
+          </button>
+        }
+        <button mat-button (click)="editSupervisor()">
+          <fa-icon [icon]="faUserFriends"></fa-icon>
+          edit supervisor
+        </button>
+        <!--I tried to prevent the menu from opening on hover in favor of click but the API offers no solution and stopping event propagation doesnt work-->
+        <button mat-button [cdkMenuTriggerFor]="statistics">
+          <fa-icon [icon]="faChartSimple"></fa-icon>
+          user statistics
+        </button>
+        <button mat-button color="error" (click)="deleteUser(userTree)">
+          <fa-icon [icon]="faTrash"></fa-icon>
+          delete user "{{ userTree.username }}"
+        </button>
+      </div>
+    </ng-template>
+
+    <ng-template #statistics>
+      <div class="stats" cdkMenu>
+        <h2>{{userTree.username}}</h2>
+
+        <p>
+          <span class="title">Videos watched</span> <span class="stat">{{ userStatistics.totalVideosWatched }}</span>
+        </p>
+        <p>
+          <span class="title">Learning Paths completed</span> <span class="stat">{{ userStatistics.totalLearningPathsCompleted }}</span>
+        </p>
+        <p>
+          <span class="title">Quizzes completed</span> <span class="stat">{{ userStatistics.quizzesCompleted }}</span>
+        </p>
+        <p>
+          <span class="title">Content saved</span> <span class="stat">{{ userStatistics.totalContentSaved }}</span>
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <p>
+          <span class="title">Videos uploaded</span> <span class="stat">{{ userStatistics.totalVideosUploaded }}</span>
+        </p>
+        <p>
+          <span class="title">Learning Paths uploaded</span> <span class="stat">{{ userStatistics.totalLearningPathsUploaded }}</span>
+        </p>
+
+        <mat-divider></mat-divider>
+
+        <p>
+          <span class="title">Total Comments left</span> <span class="stat">{{ userStatistics.totalCommentsLeft }}</span>
+        </p>
+        <p>
+          <span class="title">Average Star Rating given</span> <span class="stat">{{ userStatistics.averageStarRatingGiven < 0 ? 'none' : userStatistics.averageStarRatingGiven.toFixed(1) }}</span>
+        </p>
+      </div>
+    </ng-template>
+  </div>
+
+  @if (isExpanded) {
+    <div class="content">
+      <!--DISPLAY ASSIGNED CONTENT-->
+      @for (content of assignedContent; track content.contentId) {
+        <div class="content-entry" [style.--color]="content.color" [ngClass]="content.isFinished ? 'finished' : ''">
+          @if (content.type == "Video") { <!--Video-->
+            @if(content.isFinished){
+              <fa-icon class="list-icon" [icon]='faCircleCheck'></fa-icon>
+            } @else {
+              <fa-icon class="list-icon" [icon]='faCirclePlay'></fa-icon>
+            }
+            <p class="title">{{ content.title }}</p>
+            @if(content.isFinished){
+              <p class="progress">completed</p>
+            } @else{
+              <p class="progress" matTooltip="{{Utils.roundNumber(content.progress*100, 1)}}%" matTooltipShowDelay="500">{{ Utils.roundNumber(content.progress*100, 1) }}% watched</p>
+            }
+            <p class="type">video</p>
+            <p class="questions">{{content.questionOrVideoCount}} questions</p>
+          }
+          @else { <!--Learning path-->
+            @if(content.isFinished){
+              <fa-icon class="list-icon" [icon]='faSquareCheck'></fa-icon>
+            } @else {
+              <app-learning-path-icon class="list-icon"></app-learning-path-icon>
+            }
+            <p class="title">{{ content.title }}</p>
+            @if(content.isFinished){
+              <p class="progress">completed</p>
+            } @else{
+              <p class="progress" matTooltip="{{ content.progress }}/{{content.questionOrVideoCount}}" matTooltipShowDelay="500">{{ content.progress }}/{{content.questionOrVideoCount}} completed</p>
+            }
+            <p class="type">learning path</p>
+            <p class="questions">{{content.questionOrVideoCount}} videos</p>
+          }
+
+
+          <app-icon-button (click)="unassignContent(content.contentId)" class="remove">
+            @if(content.isFinished){
+              <fa-icon [icon]="faTrash"></fa-icon>
+            }@else {
+              <fa-icon [icon]="faXmark"></fa-icon>
+            }
+          </app-icon-button>
+        </div>
+      }
+
+      @if (!assignedContent || assignedContent.length == 0) {
+        <div>
+          <p class="no-results">No assigned content yet</p>
+        </div>
+      }
+
+      <input
+        type="text"
+        placeholder="assign content"
+        [cdkMenuTriggerFor]="videoPopup"
+        (input)="generateContentOptions(videoInput.value)"
+        (focus)="generateContentOptions('')"
+        #videoInput
+      >
+      <ng-template #videoPopup>
+        <div class="videoOptions" cdkMenu>
+          @for (content of contentOptions; track content.contentId) {
+            <p (click)="assignContent(content);" class="option">
+              {{ content.title }} • {{ content.type }}
+            </p>
+          }
+          @if (contentOptions.length == 0) {
+            <p class="no-results">No content found</p>
+          }
+        </div>
+      </ng-template>
+    </div>
+  }
+</div>
+
+@for(subordinate of userTree.subordinates; track subordinate.userId){
+  <app-manage-user-field [userTree]="subordinate" [level]="subordinate.level" (updateUsers)="updateUsers.emit()"></app-manage-user-field>
+}

@@ -1,6 +1,8 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import enums.UserRoleEnum;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.json.JsonObject;
 import jakarta.persistence.*;
 
@@ -8,9 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "app_user")
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "user_type")
-public abstract class User {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -18,16 +18,30 @@ public abstract class User {
     @Column(nullable = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @ManyToOne
+    private User supervisor;
+
+    @ManyToOne
+    private User deputySupervisor;
+
+    @Enumerated(EnumType.STRING)
+    private UserRoleEnum userRole;
 
     @OneToMany
     @JsonIgnore
     private List<Content> savedContent;
 
-    public User(String username, String email) {
+    public User(String username, String email, String password, UserRoleEnum userRole) {
         this.username = username;
         this.email = email;
+        setPassword(password);
+        this.userRole = userRole;
     }
 
     public User() { }
@@ -46,12 +60,28 @@ public abstract class User {
         return null;
     }
 
+    public boolean verifyPassword(String password) {
+        return BcryptUtil.matches(password, this.password);
+    }
+
     public void toggleSavedContent(Content content) {
         if (savedContent.contains(content)) {
             savedContent.remove(content);
         } else {
             savedContent.add(content);
         }
+    }
+
+    public boolean isUserAbleToSupervise(User user){
+        if(userRole == UserRoleEnum.ADMIN){
+            return true;
+        }
+
+        if(userRole == user.userRole){
+            return true;
+        }
+
+        return false;
     }
 
     //<editor-fold desc="Getter und Setter">
@@ -61,6 +91,14 @@ public abstract class User {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public void setPassword(String password) {
+        this.password = BcryptUtil.bcryptHash(password);
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getUsername() {
@@ -86,5 +124,34 @@ public abstract class User {
     public void setSavedVideos(List<Content> saved) {
         this.savedContent = saved;
     }
+
+    public User getSupervisor() {
+        return supervisor;
+    }
+
+    public void setSupervisor(User supervisor) {
+        this.supervisor = supervisor;
+    }
+
+    public User getDeputySupervisor() {
+        return deputySupervisor;
+    }
+
+    public void setDeputySupervisor(User deputySupervisor) {
+        this.deputySupervisor = deputySupervisor;
+    }
+
+    public UserRoleEnum getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(UserRoleEnum userType) {
+        this.userRole = userType;
+    }
+
+    public void setSavedContent(List<Content> savedContent) {
+        this.savedContent = savedContent;
+    }
+
     //</editor-fold>
 }

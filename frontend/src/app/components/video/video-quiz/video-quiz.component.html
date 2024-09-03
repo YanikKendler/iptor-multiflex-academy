@@ -9,15 +9,22 @@
     <p class="text">{{ question.text }}</p>
   </div>
 
-  @if(isQuizFinished){
-    <a (click)="viewResults()">Ergebnisse ansehen</a>
+  @if(isQuizFinished && questions && questions.length > 0){
+    <a (click)="viewResults()" class="viewResults">See results</a>
   }
 </div>
 
-<app-video-quiz-answers
-  [questionNumber]="this.questionNr"
-  [questionText]="selectedQuestion?.text"
-  [answers]="selectedQuestion?.answerOptions"
-  [isQuizFinished]="isQuizFinished"
-  (nextQuestion)="nextQuestion($event)">
-</app-video-quiz-answers>
+@if(questions){
+  <app-video-quiz-answers
+    [questionNumber]="this.questionNr"
+    [questionText]="selectedQuestion?.text"
+    [answers]="selectedQuestion?.answerOptions"
+    [isQuizFinished]="isQuizFinished"
+    [inLearningPath]="inLearningPath"
+    [isLastVideo]="isLastVideo"
+    (nextQuestion)="nextQuestion($event)"
+    (nextVideo)="this.nextVideo.emit()"
+  >
+  </app-video-quiz-answers>
+}
+

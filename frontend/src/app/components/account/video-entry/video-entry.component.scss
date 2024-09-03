@@ -1,0 +1,43 @@
+@import "../../../variables";
+
+:host{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .25rem;
+  border-radius: .3rem;
+  transition: background-color $transition-time-short;
+}
+
+:host(:hover){
+  background-color: $gray-900;
+}
+
+p{
+  height: fit-content;
+}
+
+.title{
+  width: 18ch;
+  overflow: hidden;
+  white-space: nowrap;
+  overflow-clip: elipsis;
+  font-weight: 500;
+}
+
+.right{
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+
+  .moveButtons{
+    display: flex;
+    opacity: 0;
+    transition: opacity $transition-time-short;
+    margin-right: .8rem;
+  }
+}
+
+:host(:hover .moveButtons){
+  opacity: 1;
+}

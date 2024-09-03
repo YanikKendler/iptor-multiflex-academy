@@ -1,1 +1,34 @@
-<p>manage-users works!</p>
+@if(userService.currentUser.value.userRole == UserRoleEnum.ADMIN){
+  <div class="top">
+    <button
+      mat-button
+      [ngClass]="{selected: selectedTab == 'employees'}"
+      (click)="selectedTab = 'employees'"
+    >Employees</button>
+    <button
+      mat-button
+      [ngClass]="{selected: selectedTab == 'customers'}"
+      (click)="selectedTab = 'customers'"
+    >Customers</button>
+  </div>
+}
+
+@if(selectedTab == 'employees'){
+  <div class="content employees">
+    @if (rootEmployee) {
+    <app-manage-user-field
+      [userTree]="rootEmployee"
+      [root]="true"
+      (updateUsers)="fetchData()"
+    ></app-manage-user-field>
+  } @else {
+    <p class="no-results">Cannot display subordinates</p>
+  }</div>
+}
+@else if (selectedTab == 'customers'){
+  <div class="content">
+    @for(customer of customers; track customer.userId){
+      <app-manage-user-field [userTree]="customer" [root]="false" (updateUsers)="fetchData()"></app-manage-user-field>
+    }
+  </div>
+}

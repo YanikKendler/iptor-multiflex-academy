@@ -3,11 +3,13 @@ package boundary;
 import dtos.CreateVideoDTO;
 import dtos.EditVideoDTO;
 import dtos.VideoDetailDTO;
+import dtos.VideoOverviewDTO;
 import enums.VisibilityEnum;
 import jakarta.inject.Inject;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import model.AnswerOption;
 import model.Video;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import repository.VideoFileRepository;
 import repository.VideoRepository;
 
 import java.io.File;
+import java.util.List;
 
 @Path("video")
 public class VideoResource {
@@ -28,11 +31,11 @@ public class VideoResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createVideo(CreateVideoDTO v){
+    public Response createVideo(@QueryParam("userId") Long userId, CreateVideoDTO createVideoDTO){
         try {
-            Video video = videoRepository.create(v);
+            Video video = videoRepository.create(createVideoDTO, userId);
 
-            return Response.ok().build();
+            return Response.ok(video).build();
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -52,6 +55,18 @@ public class VideoResource {
     }
 
     @GET
+    public Response getAllAsOverviewDTO(){
+        List<VideoOverviewDTO> videoOverviewDTOs;
+        try{
+            videoOverviewDTOs = videoRepository.getAllAsOverviewDTO();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().entity(videoOverviewDTOs).build();
+    }
+
+/*    @GET
     @Path("{id: [0-9]+}")
     public Response getVideo(@PathParam("id") Long id){
         Video video;
@@ -62,7 +77,7 @@ public class VideoResource {
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().entity(video).build();
-    }
+    }*/
 
     @GET
     @Produces(MediaType.MULTIPART_FORM_DATA)
@@ -91,6 +106,7 @@ public class VideoResource {
         try{
             videoRepository.delete(id);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().build();
@@ -99,11 +115,9 @@ public class VideoResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateVideo(EditVideoDTO video){
+    public Response updateVideo(EditVideoDTO video, @QueryParam("userId") Long userId){
         try{
-            System.out.println(video.toString());
-
-            VideoDetailDTO videoDetailDTO = videoRepository.update(video);
+            VideoDetailDTO videoDetailDTO = videoRepository.update(video, userId);
 
             return Response.ok(videoDetailDTO).build();
         } catch (Exception ex) {
@@ -115,10 +129,9 @@ public class VideoResource {
     @PUT
     @Path("{videoId: [0-9]+}/visibility")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateVisibility(@PathParam("videoId") Long videoId, JsonObject v){
+    public Response updateVisibility(@PathParam("videoId") Long videoId, @QueryParam("userId") Long userId, JsonObject v){
         try{
-            System.out.println(v);
-            videoRepository.updateVideoVisibility(videoId, VisibilityEnum.valueOf(v.getString("visibility")));
+            videoRepository.updateVideoVisibility(videoId, userId, VisibilityEnum.valueOf(v.getString("visibility")));
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -135,5 +148,29 @@ public class VideoResource {
             return Response.status(400).entity(ex).build();
         }
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("{videoId: [0-9]+}/finishquiz/{score: [0-9]+}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response finishQuiz(@PathParam("videoId") Long videoId, @QueryParam("userId") Long userId, @PathParam("score") int quiz, List<AnswerOption> selectedAnswers){
+        try{
+            videoRepository.finishQuiz(videoId, userId, quiz, selectedAnswers);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return Response.status(400).entity(ex).build();
+        }
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("{videoId: [0-9]+}/quizresults")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getQuizResults(@PathParam("videoId") Long videoId, @QueryParam("userId") Long userId){
+        try{
+            return Response.ok(videoRepository.getQuizResults(videoId, userId)).build();
+        } catch (Exception ex) {
+            return Response.status(400).entity(ex).build();
+        }
     }
 }

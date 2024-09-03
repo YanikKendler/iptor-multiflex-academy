@@ -2,12 +2,21 @@
 
 :host{
   padding: 1rem;
+  width: 100%;
+
+  @media screen and (max-width: 900px) {
+    padding: 0;
+  }
 }
 
 main{
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-auto-flow: column;
   gap: .5rem;
+  width: 100%;
+  max-width: 35rem;
 }
 
 h2{
@@ -20,49 +29,133 @@ h2{
 }
 
 .answer{
-  display: flex;
-  width: 14rem;
+  display: grid;
+  place-items: center;
+  width: 100%;
   aspect-ratio: 5/2;
   padding: 0.625rem;
-  justify-content: center;
-  align-items: center;
   background: $gray-800;
   border-radius: .5rem;
   user-select: none;
-  border: .15rem solid transparent;
+  border: 2px solid transparent;
   transition: all $transition-time-short;
+  position: relative;
+  overflow: visible;
 
   &:hover{
     cursor: pointer;
   }
 
-  &.checked{
-    border-color: $secondary-500;
-    background-color: $secondary-800;
-    box-shadow: .05rem .15rem .4rem .05rem rgba(0, 0, 0, 0.4);
+  &.selected{
+    background-color: $gray-600;
+    box-shadow: .05rem .15rem .4rem .05rem rgba(0, 0, 0, 0.4), 0 0 .3rem .2rem inset $gray-850;
+    border-color: $gray-500;
+    font-weight: 500;
+  }
+
+  .ripple{
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
   }
 }
 
-main.checked .answer{
-  background-color: lightcoral;
-  border: none;
+main.checked .answer.correct, main.checked .answer.missing, main.checked .answer.wrong{
+  ::before{
+    content: '';
+    font-size: .9rem;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    translate: -50% 50%;
+    z-index: 10;
+    letter-spacing: .05rem;
+  }
+
+  ::after{
+    content: 'testing';
+    color: transparent;
+    position: absolute;
+    bottom: -.1rem;
+    left: 50%;
+    translate: -50% 50%;
+    height: .3rem;
+    background-color: $gray-800;
+    letter-spacing: .05rem;
+    padding-inline: .2rem;
+  }
+
+  &.selected{
+    ::after{
+      background-color: $gray-600;
+    }
+  }
 
   &.correct{
-    background-color: lightgreen;
+    border-color: #24a924;
+
+    ::before{
+      content: 'correct';
+      color: #24a924;
+    }
+
+    ::after{
+      content: 'correct';
+    }
   }
 
   &.missing{
-    background-color: lightblue;
+    border-color: orange;
+
+    ::before{
+      content: 'missing';
+      color: orange;
+    }
+
+    ::after{
+      content: 'missing';
+    }
+  }
+
+  &.wrong{
+    border-color: lightcoral;
+
+    ::before{
+      content: 'wrong';
+      color: lightcoral;
+    }
+
+    ::after{
+      content: 'wrong';
+    }
   }
 }
 
-button{
-  background: $primary-500;
-  color: white;
-  padding: 0.25rem 2rem;
-  border: none;
-  border-radius: 0.5rem;
+.buttons{
+  display: flex;
   margin-top: 1rem;
-  cursor: pointer;
-  user-select: none;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.finished{
+  display: grid;
+  place-items: center;
+  margin-left: 3rem;
+  margin-top: 1rem;
+
+  @media screen and (max-width: 900px) {
+    margin-left: 0;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+}
+
+.failed{
+  margin-top: .5rem;
+  color: darkred;
 }

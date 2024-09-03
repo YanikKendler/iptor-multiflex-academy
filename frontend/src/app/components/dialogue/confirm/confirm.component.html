@@ -1,8 +1,35 @@
 <h1>{{data.title}}</h1>
 
-<p>{{data.message}}</p>
+<div class="content">
+  <p>{{data.message}}</p>
+
+  @if(data.confirmMessage && data.confirmMessage != "") {
+    <div class="confirm">
+      <p>{{ data.confirmMessage }}</p>
+      <app-icon-button (click)="isChecked = !isChecked">
+        @if (isChecked) {
+          <fa-icon [icon]="faSquareCheck"></fa-icon>
+        } @else {
+          <fa-icon [icon]="faSquare"></fa-icon>
+        }
+      </app-icon-button>
+    </div>
+  }
+</div>
 
 <div class="buttons">
-  <button mat-button (click)="dialogRef.close(true)">confirm</button>
-  <button mat-flat-button (click)="dialogRef.close(false)">cancel</button>
+  <button
+    mat-button
+    [disabled]="!isChecked"
+    (click)="dialogRef.close(true)"
+    [color]="data.confirmMessage && data.confirmMessage != '' ? 'primary' : 'error'"
+  >
+    {{ data.buttons.confirm }}
+  </button>
+  <button
+    mat-flat-button
+    (click)="dialogRef.close(false)"
+  >
+    {{ data.buttons.cancel }}
+  </button>
 </div>

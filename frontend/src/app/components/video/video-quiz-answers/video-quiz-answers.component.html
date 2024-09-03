@@ -1,27 +1,55 @@
 @if(!this.answers){
-  <h2>Finished quiz</h2>
-  <p>Score {{correctAnswers.length}} / {{correctAnswers.length + wrongAnswers.length + missedAnswers.length}}</p>
-  <button (click)="restartQuiz()">Quiz neustarten</button>
-  <p></p>
+  <div class="finished">
+    @if(inLearningPath && isQuizFinished && calculateScoreInDecimal() < 0.8){
+      <h2>Your score is not high enough</h2>
+    } @else{
+      <h2>Finished quiz</h2>
+    }
+    <p>Score {{ correctAnswers.length + notSelectedButCorrectAnswers.length }}/{{ notSelectedButCorrectAnswers.length + correctAnswers.length + wrongAnswers.length + missedAnswers.length }} •
+      {{ Utils.roundNumber(calculateScoreInDecimal() < 0 ? 0 : calculateScoreInDecimal() *100, 1) }}%</p>
+
+    @if(inLearningPath && isQuizFinished && calculateScoreInDecimal() < 0.8 && calculateScoreInDecimal() > 0){
+      <p class="failed">You need at least 80%</p>
+    }
+
+    <div class="buttons">
+      @if (inLearningPath && isQuizFinished && (calculateScoreInDecimal() > 0.8 || calculateScoreInDecimal() < 0)) {
+        <button mat-stroked-button (click)="restartQuiz()" color="secondary">Restart Quiz</button>
+
+        <button mat-flat-button color="secondary"
+                (click)="this.nextVideo.emit()">{{ isLastVideo ? 'Finish Quiz' : 'Next Video' }}
+        </button>
+      } @else {
+        <button mat-flat-button (click)="restartQuiz()" color="secondary">Restart Quiz</button>
+      }
+    </div>
+  </div>
 }
 @else{
   <h2>Frage {{ getFormattedQuestionNumber() }}</h2>
   <p class="text">{{this.questionText}}</p>
 
-  <main [ngClass]="{'checked' : isAnswerCheckedIn}">
-    @for (answer of this.answers; track answer.questionOptionId) {
+  <main [ngClass]="{'checked' : answerIsSubmitted}">
+    @for (answer of this.answers; track answer.answerOptionId) {
       <div class="answer"
            (click)="toggleAnswer(answer)"
-           [ngClass]="{'checked' : this.selectedAnswers.includes(answer),
-           'correct' : this.correctAnswers.includes(answer),
-           'wrong' : this.wrongAnswers.includes(answer),
-           'missing' : this.missedAnswers.includes(answer)}"
-           matRipple
+           [ngClass]="getClassForAnswer(answer)"
       >
+        <div class="ripple" matRipple></div>
         <p>{{answer.text}}</p>
       </div>
     }
   </main>
 
-  <button (click)="checkAnswer()">{{ isQuizFinished ? 'Quiz neustarten' : isAnswerCheckedIn ? 'Nächste Frage' : 'Abgeben' }}</button>
+  <div class="buttons" [style.justify-content]="isQuizFinished ? 'center' : 'flex-start'">
+    @if(inLearningPath && isQuizFinished && calculateScoreInDecimal() > 0.8){
+      <button mat-stroked-button color="secondary" (click)="checkAnswer()">
+        {{ isQuizFinished ? 'Restart Quiz' : answerIsSubmitted ? 'Next Question' : 'Submit' }}</button>
+
+      <button mat-flat-button color="secondary" (click)="this.nextVideo.emit()">{{ isLastVideo ? 'Finish Quiz' : 'Next Video'}}</button>
+    } @else {
+      <button mat-flat-button color="secondary" (click)="checkAnswer()">
+        {{ isQuizFinished ? 'Restart Quiz' : answerIsSubmitted ? 'Next Question' : 'Submit' }}</button>
+    }
+  </div>
 }

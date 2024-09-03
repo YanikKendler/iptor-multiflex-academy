@@ -1,0 +1,77 @@
+<table>
+  <tr>
+    <th class="mid"></th>
+    <th class="smallColumn">Views</th>
+    <th class="smallColumn">Rating</th>
+    <th>Visibility</th>
+    <th>Questions</th>
+    <th class="mid">Tags</th>
+    <th>
+      <button mat-flat-button color="secondary" (click)="createVideo()">Create Video</button>
+    </th>
+  </tr>
+  @for (video of userContent; track video.contentId){
+    <tr [ngClass]="{toApprove: !video.approved}">
+      <td class="mid">
+        <app-play-icon [style.color]="video.color" [style.font-size]="'2rem'"></app-play-icon>
+        <div class="title">
+          <p>Video</p>
+          <h2>{{ video.title }}</h2>
+        </div>
+      </td>
+      <td class="smallColumn">
+        <fa-icon [icon]="faEye" class="grey"></fa-icon>
+        {{ video.views }}
+      </td>
+      <td class="smallColumn">
+        <fa-icon [icon]="faStar" class="grey starIcon"></fa-icon>
+        {{ video.rating.toFixed(1) }}
+      </td>
+      <td>
+        @if(video.approved){
+          <app-dropdown [selectedId]="video.visibility.toString()" (optionSelected)="updateVisibility(video.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+        } @else {
+          self
+          <fa-icon
+            *ngIf="userService.currentUser.value.userRole != 'ADMIN'"
+            [icon]="faInfoCircle"
+            matTooltip="This video is waiting for approval by an Admin. Once its approved you can change the visibility. An admin has been notified already."
+            class="highlighted"
+        ></fa-icon>
+        }
+      </td>
+
+      <td>{{ getQuestionCountToString(video.questionCount) }}</td>
+      <td class="mid">
+        <p class="tags" matTooltip="{{ getTags(video.tags) }}" matTooltipShowDelay="500">
+          {{ getTags(video.tags) }}
+        </p>
+      </td>
+
+      <td class="actions">
+        @if(!video.approved && userService.currentUser.value.userRole == 'ADMIN'){
+          <app-icon-button
+            [matTooltip]="Config.generateAproveContentTooltipText('video')"
+            (click)="approveVideo(video)"
+          >
+            <fa-icon
+              [icon]="faCheckCircle"
+              class="highlighted"
+            ></fa-icon>
+          </app-icon-button>
+        }
+        <app-icon-button (click)="deleteVideo(video)">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </app-icon-button>
+        <a [routerLink]="['/video/' + video.contentId]" target="_blank" matTooltip="go to video" matTooltipShowDelay="500">
+          <app-icon-button>
+            <fa-icon [icon]="faShareFromSquare"></fa-icon>
+          </app-icon-button>
+        </a>
+        <app-icon-button (click)="openEditPopUp(video.contentId)">
+          <fa-icon [icon]="faPen" class="small"></fa-icon>
+        </app-icon-button>
+      </td>
+    </tr>
+  }
+</table>

@@ -1,15 +1,17 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
 public class AnswerOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long questionOptionId;
+    private Long answerOptionId;
 
     private String text;
 
+    @JsonProperty("isCorrect")
     private boolean isCorrect;
 
     public AnswerOption(String text, boolean isCorrect) {
@@ -20,8 +22,8 @@ public class AnswerOption {
     public AnswerOption() {
     }
 
-    public Long getQuestionOptionId() {
-        return questionOptionId;
+    public Long getAnswerOptionId() {
+        return answerOptionId;
     }
 
     public String getText() {
@@ -32,15 +34,15 @@ public class AnswerOption {
         this.text = text;
     }
 
-    public void setQuestionOptionId(Long questionOptionId) {
-        this.questionOptionId = questionOptionId;
+    public void setAnswerOptionId(Long questionOptionId) {
+        this.answerOptionId = questionOptionId;
     }
 
     public boolean isCorrect() {
         return isCorrect;
     }
 
-    public void setCorrect(boolean correct) {
-        isCorrect = correct;
+    public void setIsCorrect(boolean isCorrect) {
+        this.isCorrect = isCorrect;
     }
 }

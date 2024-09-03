@@ -1,23 +1,32 @@
 package model;
 
 import dtos.VideoDetailDTO;
+import dtos.VideoOverviewDTO;
 import enums.VisibilityEnum;
 import jakarta.annotation.Nullable;
+import jakarta.inject.Inject;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+import repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Video extends Content {
     @OneToMany(fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Comment> comments = new LinkedList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Question> questions = new LinkedList<>();
 
     @OneToMany(fetch = FetchType.EAGER)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<StarRating> starRatings = new LinkedList<>();
 
     @OneToOne
@@ -28,6 +37,15 @@ public class Video extends Content {
         super(title, description, visibility);
     }
 
+    public Video(String title, String description, VisibilityEnum visibility, String color, Set<Tag> tags, List<Question> questions, @Nullable VideoFile videoFile, User creator) {
+        super(title, description, visibility);
+        this.setTags(tags);
+        this.setUser(creator);
+        this.setColor(color);
+        this.questions = questions;
+        this.videoFile = videoFile;
+    }
+
     public Video() { super(); }
 
     public VideoDetailDTO toVideoDetailDTO(){
@@ -35,13 +53,16 @@ public class Video extends Content {
                 this.getContentId(),
                 this.getTitle(),
                 this.getDescription(),
+                this.getColor(),
                 this.getTags(),
                 this.getComments(null),
                 this.getQuestions(),
                 this.calculateStarRating(),
                 this.getVideoFile(),
                 0,
-                this.getVisibility()
+                this.getVisibility(),
+                this.getUser().getUserId(),
+                this.isApproved()
         );
     }
 
@@ -86,7 +107,12 @@ public class Video extends Content {
         return comments;
     }
 
+    public List<Comment> getAllComments(){
+        return comments;
+    }
+
     public List<Question> getQuestions() {
+        questions.sort(Question::compareTo);
         return questions;
     }
 

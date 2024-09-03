@@ -36,11 +36,20 @@ public class VideoFileRepository {
         VideoFile videoFile = new VideoFile(filename);
         em.persist(videoFile);
 
+        File tempDirectory = new File("processed" + File.separator + "video-" + videoFile.getVideoFileId());
+        if(tempDirectory.exists())
+            throw new IOException("Directory already exists for video file " + videoFile.getVideoFileId());
+
         //temporarily stores the uploaded video in the "uploads" folder so that the ffmpeg tool can process it
         tempSaveVideo(file, videoFile);
 
-        //transform the stored video into smaller chunks that can be streamed one by one
-        processVideo(videoFile);
+        try{
+            //transform the stored video into smaller chunks that can be streamed one by one
+            processVideo(videoFile);
+        }catch (IOException e){
+            removeTempSavedVideo(videoFile);
+            throw e;
+        }
 
         //remove the now unneeded temporary video file
         removeTempSavedVideo(videoFile);
@@ -64,7 +73,7 @@ public class VideoFileRepository {
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new IOException("Could not tempsave video file " + videoFile.getVideoFileId() + " - " + e.getMessage(), e);
         }
     }
 
@@ -86,7 +95,7 @@ public class VideoFileRepository {
      *
      * @param videoFile contains id and file extension of the uploaded video
      */
-    public void processVideo(VideoFile videoFile) {
+    public void processVideo(VideoFile videoFile) throws IOException {
 
         String filePath = "uploads" + File.separator + "upload-" + videoFile.getVideoFileId() + "." + videoFile.getOriginalFileExtension();
 
@@ -94,7 +103,6 @@ public class VideoFileRepository {
             FFmpeg ffmpeg = new FFmpeg("tools" + File.separator + "ffmpeg.exe");
             FFprobe ffprobe = new FFprobe("tools" + File.separator + "ffprobe.exe");
 
-            //TODO really fancy bug.. when uploading a mkv and possibly other formats the duration is not read correctly
             //read metadata from videofile and store them in the db
             FFmpegProbeResult probeResult = ffprobe.probe(filePath);
             FFmpegStream stream = probeResult.getStreams().get(0);
@@ -105,12 +113,13 @@ public class VideoFileRepository {
             //creates a directory for the video chunks to be stored in
             new File("processed" + File.separator + "video-" + videoFile.getVideoFileId()).mkdirs();
 
+            //TODO update file path in case of linux deployment
             //transform the temporary stored videos into a DASH manifest and chunks
             FFmpegBuilder builder = new FFmpegBuilder()
                     .setInput(filePath)
                     .overrideOutputFiles(false)
 
-                    .addOutput("processed/" + "video-" + videoFile.getVideoFileId() +"/manifest.mpd")
+                    .addOutput("processed/" + "video-" + videoFile.getVideoFileId() + "/manifest.mpd")
                     .setFormat("dash")
 
                     .setAudioCodec("copy")
@@ -126,8 +135,12 @@ public class VideoFileRepository {
 
             FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
             executor.createJob(builder).run();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch (IOException e) {
+            throw new IOException("could not process video file " + videoFile.getVideoFileId() + " - " + e.getMessage(), e);
+        }
+        catch (Exception e) {
+            throw new IOException("File upload failed - " + e.getMessage(), e);
         }
     }
 

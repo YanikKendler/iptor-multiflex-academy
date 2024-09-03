@@ -1,0 +1,24 @@
+<mat-checkbox
+  aria-label="isCorrectAnswer"
+  (change)="updateIsCorrect($event)"
+  [checked]="answer.isCorrect"
+  matTooltip="mark as correct"
+  matTooltipShowDelay="500"
+></mat-checkbox>
+
+<app-textfield
+  [(value)]="answer.text"
+  label="Answer {{letter}}"
+  placeholder=""
+  (valueChange)="updatedAnswerText($event)"
+  [rows]="1"
+  [small]="true"
+></app-textfield>
+
+<app-icon-button
+  (click)="removeAnswer()"
+  matTooltip="remove answer"
+  matTooltipShowDelay="500"
+>
+  <fa-icon [icon]="faXmark"></fa-icon>
+</app-icon-button>

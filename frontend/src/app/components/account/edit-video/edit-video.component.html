@@ -1,10 +1,20 @@
-<h2>Description</h2>
+<div class="header">
+  <h2>Description</h2>
+
+  @if(data > 0){
+    <app-icon-button (click)="openHistory()">
+      <fa-icon [icon]="faClockRotateLeft"></fa-icon>
+    </app-icon-button>
+  }
+</div>
+
 <section class="basics">
   <div class="left">
     <app-textfield
       [(value)]="video.title"
       label="Title"
       placeholder="My amazing tutorial"
+      [maxLength]="100"
     ></app-textfield>
 
     <app-textfield
@@ -16,33 +26,84 @@
   </div>
   <app-upload-video
     [videoFile]="video.videoFile ? video.videoFile : {videoFileId: -1}"
-    (uploadFinished)="videoFileUpdated($event)"
+    (uploadStatus)="videoFileUpdated($event)"
   ></app-upload-video>
 </section>
 
-<h2>Details</h2>
+<h2 class="details">Details</h2>
 <section class="details">
   <div>
     <p>video-color:</p>
-    <input type="color">
+    <input type="color" [value]="video.color" (input)="colorUpdated(color.value)" #color>
   </div>
 
-  <div>
+  <mat-divider [vertical]="true"></mat-divider>
+
+  <div class="visibility">
     <p>visibility:</p>
-    <select name="" id="visibilitySelect">
-      <option *ngFor="let visibility of visibilityOptions" [value]="visibility">{{ visibility }}</option>
-    </select>
+    @if(video.approved || userService.currentUser.value.userRole == 'ADMIN'){
+      <app-dropdown [selectedId]="video.visibility" (optionSelected)="visibilityUpdated($event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+    } @else{
+      <p>
+        {{video.visibility}}
+      </p>
+      <fa-icon
+        [icon]="faCircleQuestion"
+        matTooltip="Your learningpath needs to be approved by an Admin before you can edit its visibility."
+      ></fa-icon>
+    }
   </div>
 
-  <div>
-    <p>tags:</p>
-    <input type="text">
-  </div>
+  <mat-divider [vertical]="true"></mat-divider>
+
+  <app-tag-selector [(selectedTags)]="video.tags"></app-tag-selector>
 </section>
 
 <h2>Questions</h2>
 <section class="questions">
-
+  <div class="left">
+    @for (question of video.questions; track question.questionId){
+      <p
+        [class]="question.questionId == selectedQuestion?.questionId ? 'selected' : ''"
+        (click)="selectedQuestion = question"
+      >
+        <span class="number">{{ $index + 1 }}.</span>
+        <span>{{ question.text }}</span>
+      </p>
+    }
+    @if(!video || !video.questions || video.questions.length == 0){
+      <p class="no-results">Start by creating a Question</p>
+    }
+    <button (click)="addQuestion()" matTooltip="Create a new question" matTooltipShowDelay="300">
+      <fa-icon [icon]="faPlus"></fa-icon>
+    </button>
+  </div>
+  <mat-divider [vertical]="true"></mat-divider>
+  <div class="right">
+    @if(selectedQuestion != undefined){
+      <div class="questionTitle">
+        <input type="text" class="question" placeholder="Question" [value]="selectedQuestion.text" (input)="questionTitleUpdated(questionTitle.value)" #questionTitle [maxLength]="100">
+        <app-icon-button (click)="removeQuestion()" matTooltip="delete question" matTooltipShowDelay="500">
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </app-icon-button>
+      </div>
+      <div class="scrollable">
+        @for (answer of selectedQuestion.answerOptions; track answer.answerOptionId) {
+          <app-answer-option
+            [answer]="answer"
+            (answerChange)="answerUpdated(answerComponent.answer, $index)"
+            [letter]="Utils.numberToLetter($index)"
+            (remove)="removeAnswer($index)"
+            #answerComponent
+          ></app-answer-option>
+        }
+        <button (click)="addAnswerOption()">add answer</button>
+      </div>
+    }
+    @else {
+      <p class="no-results">No Question selected</p>
+    }
+  </div>
 </section>
 
 <div class="bottom">

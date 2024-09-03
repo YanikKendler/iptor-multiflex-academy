@@ -1,21 +1,44 @@
 <app-navigation [simple]="true"></app-navigation>
 
-<main>
+<main [ngClass]="{notApproved: userService.currentUser.value.userRole == 'ADMIN' && video.approved == false}">
   <div class="top">
-    <app-media-player [video]="video"></app-media-player>
+    <app-media-player [video]="video" (isFinished)="finishVideo()"></app-media-player>
     <div class="right">
       <h1>{{video.title}}</h1>
       <p class="description" [innerHTML]="generateDescriptionWithLinebreaks()"></p>
+
       <div class="actions">
         <app-video-rating [videoId]="video.contentId" [rating]="video.rating"></app-video-rating>
 
-        <app-icon-button (click)="addToBookmarks($event)" class="bookmark">
+        <app-icon-button
+          (click)="addToBookmarks($event)"
+          class="bookmark"
+          matTooltip="Keep in 'continue watching'"
+          matTooltipShowDelay="500"
+        >
           <app-bookmark-icon #bookmark></app-bookmark-icon>
         </app-icon-button>
 
-        <app-icon-button (click)="shareVideo()">
+        <app-icon-button
+          (click)="shareVideo()"
+          matTooltip="Copy video link to clipboard"
+          matTooltipShowDelay="500"
+        >
           <fa-icon [icon]="faShare"></fa-icon>
         </app-icon-button>
+
+        @if(userService.currentUser.value.userRole == "ADMIN" && video.approved == false){
+          <app-icon-button
+            [matTooltip]="Config.generateAproveContentTooltipText('video')"
+            (click)="approveVideo()"
+            class="approveVideo"
+          >
+            <fa-icon
+              [icon]="faCheckCircle"
+              class="approve"
+            ></fa-icon>
+          </app-icon-button>
+        }
       </div>
     </div>
   </div>
@@ -29,10 +52,10 @@
 
     @switch(this.currentTab){
       @case('comments'){
-        <app-video-comment-container [comments]="video.comments" [videoId]="this.video.contentId"></app-video-comment-container>
+        <app-video-comment-container [comments]="video.comments" [videoId]="video.contentId" [videoOwnerId]="video.userId"></app-video-comment-container>
       }
       @case('quiz'){
-        <app-video-quiz [questions]="video.questions"></app-video-quiz>
+        <app-video-quiz [questions]="video.questions" [videoId]="video.contentId"></app-video-quiz>
       }
     }
   </div>

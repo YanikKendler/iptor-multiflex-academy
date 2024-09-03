@@ -10,6 +10,7 @@ import {NgIf} from "@angular/common";
 import {IconButtonComponent} from "../../basic/icon-button/icon-button.component"
 import {MatButton} from "@angular/material/button"
 import {VideoCommentComponent} from "../video-comment/video-comment.component"
+import {TextfieldComponent} from "../../basic/textfield/textfield.component";
 
 
 @Component({
@@ -23,13 +24,15 @@ import {VideoCommentComponent} from "../video-comment/video-comment.component"
     IconButtonComponent,
     MatButton,
     VideoCommentComponent,
+    TextfieldComponent,
   ],
   templateUrl: './video-comment-container.component.html',
   styleUrl: './video-comment-container.component.scss'
 })
 export class VideoCommentContainerComponent implements OnInit {
   @Input() videoId: number = 0;
-  @Input() comments: Comment[] = [];
+  @Input() videoOwnerId: number = 0;
+  @Input() comments: Comment[] | undefined = [];
   protected readonly Utils = Utils
   protected readonly faEllipsis = faEllipsis;
 
@@ -58,7 +61,6 @@ export class VideoCommentContainerComponent implements OnInit {
   updateComments(){
     if(this.videoId){
       this.commentService.getCommentList(this.videoId).subscribe(commentList => {
-        console.log(commentList)
         this.comments = commentList
       })
     }

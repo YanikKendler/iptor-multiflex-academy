@@ -23,10 +23,11 @@ import {UserService} from "../../../service/user.service";
 import {ViewProgressService} from "../../../service/view-progress.service"
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {PlayIconComponent} from "../../icons/playicon/play.icon.component";
+import {faCircleCheck} from "@fortawesome/free-regular-svg-icons";
 
 export interface UpdateVideoDashboardEvent {
   video: VideoOverviewDTO;
-  action: "add" | "remove";
+  action: "add" | "remove" | "finish";
 }
 
 @Component({
@@ -49,6 +50,7 @@ export interface UpdateVideoDashboardEvent {
 export class VideoOverviewComponent implements OnInit{
   @Input() video: VideoOverviewDTO = {} as VideoOverviewDTO
   @Input() removable: boolean = false
+  @Input() checkable: boolean = false
   @Output() updateDashboard: EventEmitter<UpdateVideoDashboardEvent> = new EventEmitter<UpdateVideoDashboardEvent>();
 
   userService = inject(UserService)
@@ -62,7 +64,6 @@ export class VideoOverviewComponent implements OnInit{
 
   ngOnInit(): void {
     this.tagToolTipString = this.video.tags?.map(tag => tag.name).join(", ")
-    console.log(this.video)
   }
 
   @HostListener('click', ['$event'])
@@ -80,8 +81,6 @@ export class VideoOverviewComponent implements OnInit{
     }
 
     this.bookmark?.toggleMarked()
-    console.log("Added to bookmarks")
-
     this.userService.toggleSavedContent(this.video.contentId)
   }
 
@@ -89,9 +88,17 @@ export class VideoOverviewComponent implements OnInit{
     event.stopPropagation();
 
     this.viewProgressService.ignoreViewProgress(this.video.contentId)
-    console.log("Removed suggestion")
     this.updateDashboard.emit({video: this.video, action: "remove"})
   }
 
   protected readonly Utils = Utils
+  protected readonly faCircleCheck = faCircleCheck;
+
+  finishVideo(event: MouseEvent) {
+    event.stopPropagation();
+
+    this.userService.finishAssignedContent(this.video.contentId).subscribe(() => {
+      this.updateDashboard.emit({video: this.video, action: "finish"})
+    })
+  }
 }

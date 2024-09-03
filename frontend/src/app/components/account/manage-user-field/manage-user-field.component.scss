@@ -1,0 +1,228 @@
+@import "../../../variables";
+
+:host{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+app-manage-user-field{
+  width: calc(100% - 2rem);
+  margin-left: 2rem;
+}
+
+.user{
+  border-radius: .5rem;
+  border: 2px solid $gray-800;
+  overflow: hidden;
+  transition: border $transition-time-short;
+
+  &:has(.top:hover){
+    border-color: $gray-600;
+  }
+
+  .top{
+    background-color: $gray-800;
+    padding: .5rem;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color $transition-time-short;
+
+    &:hover{
+      background-color: $gray-600;
+    }
+
+    .username{
+      font-size: .95rem;
+      font-weight: 500;
+
+      span{
+        font-weight: 400;
+        color: $gray-400;
+      }
+    }
+
+    div.right{
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      fa-icon{
+        transition: rotate $transition-time-short;
+
+        &.rotate{
+          rotate: 180deg;
+        }
+      }
+
+      app-icon-button{
+        margin: -.5rem;
+      }
+    }
+  }
+
+  input{
+    margin: .2rem;
+    font-size: .9rem;
+  }
+}
+
+.content{
+  display: flex;
+  flex-direction: column;
+  padding: .2rem;
+
+  .no-results{
+    font-size: .9rem;
+    margin: .5rem;
+    color: $gray-400;
+  }
+}
+
+.content-entry{
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  transition: background-color $transition-time-short;
+  padding-inline: .3rem;
+  border-radius: .3rem;
+
+  &:hover{
+    background-color: $gray-900;
+
+    .remove{
+      opacity: 1;
+    }
+  }
+
+  fa-icon.list-icon{
+    font-size: 1.5rem;
+    color: var(--color);
+  }
+
+  .list-icon{
+    width: 1.5rem;
+  }
+
+  app-learning-path-icon{
+    height: 1.5rem;
+    color: var(--color);
+  }
+
+  .title{
+    font-weight: 500;
+    width: 25ch;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .progress{
+    font-weight: 500;
+    width: 15ch;
+    color: var(--color);
+    /*
+    text-shadow: 0 .15rem .2rem rgba(0, 0, 0, 0.1), 0 -.15rem .2rem rgba(0, 0, 0, 0.1);
+    */
+  }
+
+  .type{
+    width: 15ch;
+  }
+
+  .remove{
+    cursor: pointer;
+    margin-left: auto;
+    opacity: 0;
+    /*
+    transition: opacity $transition-time-short;
+    */
+
+    fa-icon{
+      color: $gray-400;
+    }
+  }
+
+  &.finished{
+    fa-icon{
+      color: $gray-400;
+    }
+    p{
+      color: $gray-250;
+    }
+    .title, .progress{
+      color: $gray-300;
+      font-weight: 500;
+    }
+  }
+}
+
+.videoOptions{
+  @include floating-box;
+  padding: .2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .option{
+    padding: .3rem;
+    border-radius: .3rem;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover{
+      background-color: $gray-800;
+    }
+  }
+}
+
+.actions{
+  @include floating-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .5rem;
+  padding: .5rem;
+
+  button{
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+.stats{
+  @include floating-box;
+  font-size: .9rem;
+  padding: .8rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-right: .5rem;
+  margin-top: -.5rem;
+
+  h2{
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: .2rem;
+  }
+
+  p{
+    width: 100%;
+    display: flex;
+    gap: .5rem;
+  }
+
+  span.stat{
+    margin-left: auto;
+    font-weight: 500;
+  }
+
+  mat-divider{
+    border-color: $gray-600;
+    margin: .2rem;
+  }
+}

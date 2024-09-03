@@ -2,10 +2,10 @@ import {
   AfterViewChecked,
   AfterViewInit,
   Component,
-  ElementRef,
+  ElementRef, EventEmitter,
   inject,
   Input,
-  OnChanges,
+  OnChanges, Output,
   SimpleChanges, viewChild,
   ViewChild
 } from '@angular/core';
@@ -31,6 +31,7 @@ import {Config} from "../../../config"
 })
 export class MediaPlayerComponent implements OnChanges {
   @Input() video: VideoDetailDTO | undefined;
+  @Output() isFinished: EventEmitter<null> = new EventEmitter<null>()
 
   @ViewChild('video') videoTag!: ElementRef<HTMLVideoElement>
   @ViewChild('spinner') spinner!: ElementRef<HTMLElement>
@@ -44,10 +45,6 @@ export class MediaPlayerComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if(!this.video){
       this.loadingState = "loading"
-
-     /* setTimeout(() => {
-        Utils.spinAnimation(this.spinner!.nativeElement)
-      },0)*/
     }
     else if(!this.video.videoFile){
       this.loadingState = "error"
@@ -74,7 +71,11 @@ export class MediaPlayerComponent implements OnChanges {
     if(time == this.lastProgress) return
     this.lastProgress = time
 
-    this.viewProgressService.updateViewProgress(this.video!.contentId, time)
+    this.viewProgressService.updateViewProgress(this.video!.contentId, time).subscribe()
+
+    if(time >= this.video?.videoFile?.durationSeconds! * 0.90){
+      this.isFinished.emit()
+    }
   }
 
   protected readonly faFrownOpen = faFrownOpen

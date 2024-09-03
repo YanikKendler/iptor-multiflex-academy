@@ -1,0 +1,57 @@
+<h2>Update {{data.userTree.username}}'s supervisor</h2>
+
+<div class="user">
+  <label>Select a supervisor</label>
+  <input
+    type="text"
+    placeholder="max mustermann"
+    [cdkMenuTriggerFor]="userPopup"
+    [value]="supervisor != undefined ? supervisor.username || ' • ' || supervisor.userRole || ' • ' || supervisor.userId : ''"
+    (input)="generateUserOptions(userInput.value)"
+    (focus)="generateUserOptions('')"
+    #userInput
+  >
+  <ng-template #userPopup>
+    <div class="userOptions" cdkMenu>
+      @for (user of userOptions; track user.userId) {
+        <p (click)="assignUser(user, true);" class="option">
+          {{ user.username }} • {{ user.userRole }} • {{ user.userId }}
+        </p>
+      }
+      @if (userOptions.length == 0) {
+        <p class="no-results">No content found</p>
+      } @else{
+        <p (click)="assignUser(undefined, true)" class="option">clear supervisor</p>
+      }
+    </div>
+  </ng-template>
+</div>
+
+<div class="user">
+  <label>Select a deputy supervisor</label>
+  <input
+    type="text"
+    placeholder="john cena"
+    [cdkMenuTriggerFor]="userPopup2"
+    [value]="deputySupervisor != undefined ? deputySupervisor.username || ' • ' || deputySupervisor.userRole || ' • ' || deputySupervisor.userId : ''"
+    (input)="generateUserOptions(userInput2.value)"
+    (focus)="generateUserOptions('')"
+    #userInput2
+  >
+  <ng-template #userPopup2>
+    <div class="userOptions" cdkMenu>
+      @for (user of userOptions; track user.userId) {
+        <p (click)="assignUser(user, false);" class="option">
+          {{ user.username }} • {{ user.userRole }} • {{ user.userId }}
+        </p>
+      }
+      @if (userOptions.length == 0) {
+        <p class="no-results">No content found</p>
+      } @else{
+        <p (click)="assignUser(undefined, false)" class="option">clear deputy supervisor</p>
+      }
+    </div>
+  </ng-template>
+</div>
+
+<button mat-flat-button (click)="dialogRef.close()">close</button>

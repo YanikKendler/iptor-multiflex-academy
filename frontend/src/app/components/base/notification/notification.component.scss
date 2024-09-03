@@ -1,0 +1,59 @@
+@import "../../../variables";
+
+:host{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: .2rem 1rem;
+  padding-right: .5rem;
+  transition: all .2s ease;
+  color: $gray-400;
+  gap: .5rem;
+}
+
+:host(.current:not(:last-of-type)){
+  border-bottom: 1px solid $primary-785;
+  border-collapse: collapse;
+}
+
+:host(:hover){
+  background-color: $gray-900;
+}
+
+:host(.current){
+  background-color: $primary-900;
+  color: black;
+  font-weight: 500;
+}
+
+:host(.current:hover){
+  background-color: $primary-800;
+}
+
+:host(.current) fa-icon{
+  color: $primary-500;
+}
+
+.left{
+  display: flex;
+  flex-direction: column;
+
+  .time{
+    font-size: .8rem;
+    color: $gray-300;
+  }
+
+  .message{
+    font-size: .9rem;
+    width: 50ch;
+  }
+}
+
+fa-icon{
+  color: $gray-400;
+
+  &.checked{
+    font-size: 1.5rem;
+  }
+}

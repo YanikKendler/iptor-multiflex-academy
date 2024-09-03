@@ -1,11 +1,12 @@
 package repository;
 
+import enums.ContentNotificationEnum;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import model.Comment;
-import model.Tag;
+import model.CommentNotification;
 import model.User;
 import model.Video;
 
@@ -19,21 +20,37 @@ public class CommentRepository {
     @Inject
     VideoRepository videoRepository;
 
+    @Inject
+    NotificationRepository notificationRepository;
+
     @Transactional
-    public void create(Long videoId, Comment comment) {
-        //todo when users are implemented, get the user from the session
-        comment.setUser(em.find(User.class, 1L));
-        videoRepository.getById(videoId).addComment(comment);
+    public void create(Long userId, Long videoId, Comment comment) {
+        comment.setUser(em.find(User.class, userId));
+        Video video = videoRepository.getById(videoId);
+        video.addComment(comment);
         em.persist(comment);
+
+        if(!comment.getUser().getUserId().equals(video.getUser().getUserId())){
+            CommentNotification notification = new CommentNotification(video.getUser(), comment.getUser(), comment, video);
+            em.persist(notification);
+            notificationRepository.sendConfirmationEmail(notification);
+        }
     }
 
     @Transactional
-    public void update(Comment comment) {}
+    public void update(Comment comment) {
+        comment.updateTimestamp();
+        em.merge(comment);
+    }
 
     @Transactional
     public void delete(Long id, Long videoId, Long userId) {
         Comment comment = getById(id);
         if (comment != null) {
+            em.createQuery("delete from CommentNotification n where n.comment.commentId = :commentId")
+                    .setParameter("commentId", id)
+                    .executeUpdate();
+
             Video video = videoRepository.getById(videoId);
             if (video != null) {
                 video.getComments(userId).remove(comment);

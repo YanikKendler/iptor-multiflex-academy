@@ -1,1 +1,15 @@
-<p><ng-content></ng-content></p>
+<p>
+  <ng-content></ng-content>
+</p>
+
+@if(removable){
+  <app-icon-button size="2rem" (click)="remove($event)">
+    <fa-icon [icon]="faXmark"></fa-icon>
+  </app-icon-button>
+}
+
+@if(deletable){
+  <app-icon-button size="1.8rem" (click)="delete($event)" class="delete">
+    <fa-icon [icon]="faTrash"></fa-icon>
+  </app-icon-button>
+}

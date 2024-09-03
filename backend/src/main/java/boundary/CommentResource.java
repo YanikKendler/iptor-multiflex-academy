@@ -15,9 +15,9 @@ public class CommentResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createComment(@PathParam("videoId") Long vid, Comment c){
+    public Response createComment(@QueryParam("userId") Long uid, @PathParam("videoId") Long vid, Comment c){
         try {
-            repository.create(vid, c);
+            repository.create(uid, vid, c);
         } catch (Exception ex) {
             return Response.status(400).entity(ex).build();
         }
@@ -29,7 +29,6 @@ public class CommentResource {
     public Response getAll(@PathParam("videoId") Long vid, @QueryParam("userId") Long uid){
         List<Comment> comments;
         try{
-            System.out.println(uid);
             comments = repository.getAll(vid, uid);
         }catch (Exception ex){
             ex.printStackTrace();

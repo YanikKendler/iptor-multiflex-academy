@@ -1,0 +1,115 @@
+@import "../../../variables.scss";
+
+:host{
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid $gray-500;
+  width: 3rem;
+  transition: width $transition-time-default, background-color $transition-time-default, border $transition-time-default;
+  background-color: transparent;
+}
+
+:host(.open){
+  width: min(20vw, 300px);
+  background-color: white;
+}
+
+:host(.open div.top .flip-button fa-icon){
+  transform: scaleX(1);
+}
+
+/*hide everything except for the flip button*/
+:host(:not(.open)) *:not(.flip-button *):not(.top):not(.flip-button) {
+  display: none;
+}
+
+@media screen and (max-width: 900px) {
+  :host{
+    border-right: 1px solid transparent;
+  }
+
+  :host(.open){
+    width: 80vw;
+    border-right: 1px solid $gray-500;
+  }
+}
+
+div.top{
+  display: flex;
+  gap: .5rem;
+  padding: .5rem;
+  justify-content: flex-end;
+
+  input{
+    height: 2rem;
+    width: 100%;
+    min-width: 0;
+    border: 1px solid $gray-300;
+
+    &::placeholder{
+      color: $gray-250;
+      font-size: .9rem;
+    }
+  }
+
+  .flip-button{
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid $gray-300;
+    border-radius: .3rem;
+    flex-shrink: 0;
+    background-color: white;
+    transition: background-color $transition-time-default;
+
+    &:hover{
+      cursor: pointer;
+      background-color: $gray-900;
+    }
+
+    fa-icon{
+      display: block;
+      transform: scaleX(-1);
+      transition: transform $transition-time-short;
+    }
+  }
+}
+
+div.tags{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: .5rem;
+}
+
+app-chip{
+  cursor: pointer;
+
+  &.selected{
+    background-color: $secondary-500;
+    color: white;
+  }
+}
+
+.no-results{
+  color: $gray-400;
+  font-size: .9rem;
+}
+
+.edit{
+  font-size: .85rem;
+  color: $gray-400;
+  text-decoration: underline;
+  margin:{
+    top: auto;
+    left: auto;
+  };
+  cursor: pointer;
+
+  &:hover{
+    color: black;
+  }
+}

@@ -1,0 +1,1 @@
+INSERT INTO app_user (username, email, userRole, password, deputysupervisor_userid, supervisor_userid) VALUES ('admin', 'admin@admin', 'ADMIN', '$2a$10$862S1SeLTlFdf7kYFKpNyescyiNuAHGbiFeZ4z02VHdESGcw5ULfu', NULL, NULL);

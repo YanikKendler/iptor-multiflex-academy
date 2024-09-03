@@ -1,0 +1,49 @@
+@import "../../../variables";
+
+:host{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+label{
+  font-weight: 500;
+}
+
+.tagList{
+  width: 100%;
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  align-items: center;
+
+  border-radius: .4rem;
+  border: 2px solid $gray-500;
+  padding: .2rem .3rem;
+}
+
+input{
+  border: none;
+  flex-grow: 1;
+  font-size: .9rem;
+  min-width: 0;
+  width: 8ch;
+  height: 28px;
+}
+
+.tagOptions{
+  @include floating-box;
+  padding: .4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .5rem;
+
+  .no-results{
+    font-size: .9rem;
+  }
+
+  app-chip{
+    cursor: pointer;
+  }
+}

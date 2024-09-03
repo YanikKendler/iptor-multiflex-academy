@@ -1,35 +1,68 @@
 @import "../../../variables";
 
+:host{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 main{
   display: flex;
-  margin-left: 10rem;
-  margin-block: 2.5rem;
+  padding-left: 10rem;
+  padding-block: 2.5rem;
+  height: 100%;
+  overflow: hidden;
+
+  @media screen and (max-width: 900px){
+    flex-direction: column;
+    padding: .5rem;
+    gap: 1rem;
+  }
+}
+
+.sidebar{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+
+  p.show-statistics{
+    margin-top: auto;
+    text-decoration: underline;
+    color: $gray-400;
+    cursor: pointer;
+
+    &:hover{
+      color: black;
+    }
+  }
 }
 
 .sidebar div{
-  display: flex;
-  justify-content: left;
+  display: grid;
+  grid-template-columns: 2rem auto;
   padding: .25rem;
   align-items: center;
-  gap: .4rem;
+  align-content: center;
+  gap: .3rem;
   cursor: pointer;
   border-radius: 0.3125rem;
-  width: 15vw;
+  min-width: 15vw;
   margin-right: 1rem;
 
-  fa-icon{
+  fa-icon, .icon{
     font-size: 1.5rem;
+    justify-self: center;
+  }
+
+  .icon{
+    height: 1.5rem;
   }
 
   &.active{
     background: $gray-800;
 
-    fa-icon{
+    fa-icon, .icon{
       color: $secondary-500;
     }
   }
-}
-
-section{
-  width: 100%;
 }

@@ -24,7 +24,7 @@
 @if(video.viewProgress){
   <div class="progress-bar">
     <span
-      [style.width.%]="video.viewProgress.durationSeconds / this.video.durationSeconds * 100"
+      [style.width.%]="video.viewProgress.progress / this.video.durationSeconds * 100"
       [style.background-color]="video.color"
     ></span>
   </div>
@@ -38,15 +38,15 @@
          matTooltip="{{ tagToolTipString }}"
          matTooltipShowDelay="500"
     >
-      @for (tag of video.tags; track tag) {
+      @for (tag of video.tags; track tag.tagId) {
         <app-chip>{{ tag.name }}</app-chip>
       }
     </div>
     <p>
       @if(video.viewProgress){
-        {{Utils.toTimeDurationString(video.viewProgress.durationSeconds * 1000)}} of
+        {{Utils.toTimeDurationString(video.viewProgress.progress)}} of
       }
-      {{Utils.toTimeDurationString(video.durationSeconds * 1000)}}
+      {{Utils.toTimeDurationString(video.durationSeconds)}}
     </p>
   </div>
 </div>

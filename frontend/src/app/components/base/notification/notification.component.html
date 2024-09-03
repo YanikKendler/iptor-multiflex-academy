@@ -1,0 +1,31 @@
+<div class="left">
+  <p class="time">{{ Utils.toFullDateTimeString(notification.timestamp) }}</p>
+
+  <div class="message">
+    @if (getType() === "update") {
+      {{ notification.triggeredByUser.username }} has updated a relevant video/learningpath • {{ contentNotification.content.title }}
+    } @else if (getType() === "assignment") {
+      New content assignment from {{ notification.triggeredByUser.username }} • {{ contentNotification.content.title }}
+    } @else if (getType() === "finishedRequest") {
+      {{ notification.triggeredByUser.username }} has marked your video request as Completed • {{ contentNotification.content.title }}
+    } @else if (getType() === "approved") {
+      {{ notification.triggeredByUser.username }} has approved your video/learningpath • {{ contentNotification.content.title }}
+    } @else if (getType() === "videoCreateRequest") {
+      {{ notification.triggeredByUser.username }} has create a new video/learningpath waiting for approval • {{ contentNotification.content.title }}
+    } @else if (getType() === "request") {
+      {{ notification.triggeredByUser.username }} has requested a video
+    } @else if (getType() === "text") {
+      {{ notification.triggeredByUser.username }} {{ textNotification.headerText }}
+    } @else if (getType() === "comment") {
+      {{ notification.triggeredByUser.username }} has posted a comment in {{ commentNotification.content.title }} • "{{ Utils.truncateText(commentNotification.comment.text) }}"
+    }
+  </div>
+</div>
+
+<app-icon-button (click)="toggleDoneNotification($event)" size="3rem">
+  @if(this.notification.done){
+    <fa-icon [icon]="faRepeat"></fa-icon>
+  } @else{
+    <fa-icon [icon]="faCheck"></fa-icon>
+  }
+</app-icon-button>

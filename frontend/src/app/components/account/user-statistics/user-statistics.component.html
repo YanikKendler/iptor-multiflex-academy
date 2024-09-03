@@ -1,0 +1,44 @@
+
+@if(userStatistics.user) {
+  <h2>user statistics of "{{ userStatistics.user.username }}"</h2>
+
+  <div class="stats">
+    <p>
+      <span class="title">Videos watched</span> <span class="stat">{{ userStatistics.totalVideosWatched }}</span>
+    </p>
+    <p>
+      <span class="title">Learning Paths completed</span> <span
+      class="stat">{{ userStatistics.totalLearningPathsCompleted }}</span>
+    </p>
+    <p>
+      <span class="title">Quizzes completed</span> <span class="stat">{{ userStatistics.quizzesCompleted }}</span>
+    </p>
+    <p>
+      <span class="title">Content saved</span> <span class="stat">{{ userStatistics.totalContentSaved }}</span>
+    </p>
+
+    <mat-divider></mat-divider>
+
+    <p>
+      <span class="title">Videos uploaded</span> <span class="stat">{{ userStatistics.totalVideosUploaded }}</span>
+    </p>
+    <p>
+      <span class="title">Learning Paths uploaded</span> <span
+      class="stat">{{ userStatistics.totalLearningPathsUploaded }}</span>
+    </p>
+
+    <mat-divider></mat-divider>
+
+    <p>
+      <span class="title">Total Comments left</span> <span class="stat">{{ userStatistics.totalCommentsLeft }}</span>
+    </p>
+    <p>
+      <span class="title">Average Star Rating given</span> <span
+      class="stat">{{ userStatistics.averageStarRatingGiven < 0 ? 'none' : userStatistics.averageStarRatingGiven.toFixed(1) }}</span>
+    </p>
+
+  </div>
+}
+@else{
+  <p class="loading">loading statistics..</p>
+}

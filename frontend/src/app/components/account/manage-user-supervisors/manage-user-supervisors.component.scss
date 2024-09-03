@@ -1,0 +1,51 @@
+@import "../../../variables";
+
+:host{
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  box-sizing: border-box;
+  justify-content: flex-end;
+  height: 100%;
+  background-color: white;
+}
+
+h2{
+  font-size: 1.3rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: .8rem;
+}
+
+.user{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.userOptions{
+  @include floating-box;
+  padding: .2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .option{
+    padding: .3rem;
+    border-radius: .3rem;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover{
+      background-color: $gray-800;
+    }
+  }
+}
+
+
+button{
+  margin-top: 1rem;
+  margin-inline: auto;
+}

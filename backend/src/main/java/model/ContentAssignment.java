@@ -1,5 +1,6 @@
 package model;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,7 @@ public class ContentAssignment {
     private User assignedTo;
 
     @ManyToOne
+    @Nullable
     private User assignedBy;
 
     @ManyToOne
@@ -22,8 +24,11 @@ public class ContentAssignment {
     @Column
     private final LocalDateTime timestamp;
 
-    public ContentAssignment(User assignedTo, User assignedBy, Video content) {
+    private boolean isFinished;
+
+    public ContentAssignment(User assignedBy, User assignedTo, Content content) {
         this();
+        this.isFinished = false;
         this.assignedTo = assignedTo;
         this.assignedBy = assignedBy;
         this.content = content;
@@ -34,6 +39,12 @@ public class ContentAssignment {
     }
 
     //<editor-fold desc="Getter und Setter">
+    public boolean isFinished() {
+        return isFinished;
+    }
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
     public Long getAssignmentId() {
         return assignmentId;
     }

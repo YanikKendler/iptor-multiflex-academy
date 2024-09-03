@@ -63,13 +63,115 @@ a{
   --mdc-text-button-container-shape: .5rem;
 
   --mdc-filled-button-container-shape: .5rem;
+
+  --mat-badge-background-color: #{$secondary-400};
+
+  --mdc-linear-progress-active-indicator-color: #{$secondary-500};
+
+ /* --mdc-checkbox-selected-icon-color: #{$secondary-500};
+
+  --mat-minimal-pseudo-checkbox-selected-checkmark-color: #{$secondary-500};
+  --mat-full-pseudo-checkbox-selected-icon-color: #{$secondary-500};*/
 }
 
+input, textarea{
+  padding: 0.5rem;
+  border: 2px solid $gray-500;
+  border-radius: 0.3rem;
+  outline: none;
+
+  &:focus-visible{
+    border-color: $gray-250;
+  }
+}
+
+//region color input
+input[type="color"] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  height: 1.5rem;
+  width: 1.5rem;
+  padding: 0;
+  overflow: hidden;
+
+}
+
+::-webkit-color-swatch{
+  border: 1px solid $gray-500;
+  border-radius: .3rem;
+}
+
+::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+::-moz-color-swatch,
+::-moz-focus-inner{
+  border-radius: .3rem;
+  border: 1px solid $gray-500;
+}
+
+::-moz-focus-inner{
+  padding: 0;
+}
+//endregion
+
 body {
+  .mdc-snackbar{
+    &.error{
+      --mdc-snackbar-container-color: indianred;
+    }
+  }
+
+  .mat-badge-content{
+    outline: 2px solid var(--badge-border-color, white);
+  }
+
+  .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background, .mdc-checkbox__ripple {
+    background-color: $secondary-500 !important;
+    border-color: $secondary-500 !important;
+  }
+
+  .mdc-checkbox{
+    height: 29px !important;
+    width: 29px !important;
+    flex: initial;
+  }
+
+  .mat-mdc-checkbox{
+    height: 4rem !important;
+    width: 4rem !important;
+
+    .mdc-checkbox__background {
+      height: 29px !important;
+      width: 29px !important;
+      border-color: $gray-500;
+      border-radius: .3rem;
+    }
+
+    .mdc-checkbox__native-control{
+      height: 4rem !important;
+      width: 4rem !important;
+    }
+  }
+
   .mdc-button {
     height: 2rem;
+    white-space: nowrap;
+
+    &[disabled] {
+      pointer-events: initial;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
 
     &:not([color="secondary"]):not([color="error"]) {
+      --mat-text-button-state-layer-color: #{$primary-500};
+
       &[mat-button] {
         color: $primary-500;
       }
@@ -77,7 +179,7 @@ body {
       &[mat-flat-button] {
         background-color: $primary-500;
 
-        &.cdk-focused {
+        &:focus-visible.cdk-focused {
           background-color: $primary-600;
         }
       }
@@ -90,19 +192,39 @@ body {
     }
 
     &[color="secondary"] {
-      background-color: $secondary-500;
+      --mat-text-button-state-layer-color: #{$secondary-500};
+      --mat-outlined-button-state-layer-color: #{$secondary-500};
+      --mat-filled-button-state-layer-color: #{$secondary-500};
+
+      &[mat-button] {
+        color: $secondary-400;
+      }
+
+      &[mat-flat-button] {
+        color: white;
+        background-color: $secondary-500;
+
+        &:focus-visible.cdk-focused {
+          background-color: $secondary-700;
+        }
+      }
 
       &[mat-stroked-button] {
         color: $secondary-100;
         background-color: hsla(31, 100%, 47%, 0.2);
         border-color: $secondary-500;
+
+        &:focus-visible.cdk-focused {
+          background-color: $secondary-800;
+        }
       }
     }
 
     &[color="error"] {
+      --mat-text-button-state-layer-color: red;
       color: white;
 
-      &.cdk-focused{
+      &:focus-visible.cdk-focused{
         .mat-mdc-button-persistent-ripple{
           background-color: rgba(255, 0, 0, 0.1);
         }

@@ -1,0 +1,121 @@
+<app-navigation [simple]="true"></app-navigation>
+
+<main>
+  @if(Config.SMALL_SCREEN){
+    <app-icon-button (click)="sidebarOpen = !sidebarOpen" class="sidebar-toggle">
+      <fa-icon [icon]="faBars"></fa-icon>
+    </app-icon-button>
+  }
+  <div class="sidebar" [ngClass]="{closed: !sidebarOpen, drawer: Config.SMALL_SCREEN}">
+    @if(Config.SMALL_SCREEN){
+      <app-icon-button (click)="sidebarOpen = !sidebarOpen" class="sidebar-toggle">
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+      </app-icon-button>
+    }
+    <h1>{{ this.learningPath.title }}</h1>
+    <p class="description" [style.--show-lines]="fullDescription ? 50 : 5">{{ this.learningPath.description }}</p>
+    <span (click)="fullDescription = !fullDescription" class="toggleDescription">{{ fullDescription ? 'minimize description' : 'show full description' }}</span>
+
+    @if(userService.currentUser.value.userRole == "ADMIN" && !learningPath.approved){
+      <!--<button mat-stroked-button (click)="rejectVideo()">reject</button>-->
+      <button mat-flat-button (click)="approvePath()">approve</button>
+    }
+
+    <div class="progress-bar">
+      <p>{{progressPercent.toFixed(0)}}%</p>
+      <div class="bar">
+        @for (video of videoProgress; track video) {
+          <span [style.background-color]="getProgressBarColor(video)"></span>
+        }
+      </div>
+    </div>
+
+    <div class="steps">
+      @for(video of learningPath.entries; track video){
+        <div class="entry" [ngClass]="getClassAvailability(video)" (click)="getClassAvailability(video) != 'unavailable' ? selectVideo(video) : ''">
+          @if(getClassAvailability(video) == "available"){
+            <fa-icon [icon]="faCircleCheck" [style.color]="learningPath.color"></fa-icon>
+          }
+          @else if (getClassAvailability(video) == "unavailable"){
+            <app-play-icon></app-play-icon>
+          }
+          @else{
+            <app-play-icon [style.color]="learningPath.color"></app-play-icon>
+          }
+          <p>{{video.videoTitle}}</p>
+        </div>
+      }
+      @if(isFinished){
+        <div class="entry finished" [ngClass]="getClassAvailability(undefined)" (click)="selectVideo(undefined)">
+          <fa-icon [icon]="faFaceLaughBeam" [style.color]="learningPath.color" class="finished"></fa-icon>
+          <p>Finished</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if(this.learningPath && this.learningPath.entries && this.currentVideoPosition < this.learningPath.entries.length){
+    <div class="videoSection">
+      <div class="top">
+        <app-media-player [video]="currentVideo"></app-media-player>
+        <div class="right">
+          @if(currentVideo.questions){
+            <app-video-quiz [questions]="currentVideo.questions" [videoId]="currentVideo.contentId"
+                            [inLearningPath]="true" (nextVideo)="nextVideo()" [isLastVideo]="isLastVideo"></app-video-quiz>
+          }
+        </div>
+      </div>
+
+      <div class="bottom">
+        <div class="tab-selector" #tabSelector>
+          <p class="description" (click)="selectTab('description')">Description</p>
+          <p class="comments" (click)="selectTab('comments')">Comments</p>
+          <span class="marker"></span>
+        </div>
+
+        @switch(this.currentTab){
+          @case('description'){
+            <div class="descriptionContainer">
+              <h2>{{currentVideo.title}}</h2>
+              <p class="description" [innerHTML]="generateDescriptionWithLinebreaks()"></p>
+            </div>
+          }
+          @case('comments'){
+            <app-video-comment-container [comments]="currentVideo.comments" [videoId]="this.currentVideo.contentId" [videoOwnerId]="currentVideo.userId"></app-video-comment-container>
+          }
+        }
+      </div>
+    </div>
+  } @else{
+    <div class="finished-page">
+      <div class="content">
+        <h1 [style.color]="learningPath.color">Congratulations!</h1>
+        <p>You finished the learningpath “{{ learningPath.title }}”</p>
+
+        <table>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>first watched</th>
+            <th>completed</th>
+            <th>questions</th>
+            <th>correct</th>
+          </tr>
+          @for(video of learningPath.entries; track video.pathEntryId){
+            <tr>
+              <td>{{$index+1}}.</td>
+              <td class="title">{{video.videoTitle}}</td>
+              <td>{{ Utils.toFullDateString(video.startTime ) }}</td>
+              <td>{{ Utils.toFullDateString(video.endTime) }}</td>
+              <td>{{video.questionCount}}</td>
+              <td>{{(video.progress * 100).toFixed(1)}}%</td>
+          }
+        </table>
+
+        <a routerLink="/" [style.background-color]="learningPath.color" matTooltip="back to the dashboard"><span [style.color]="Utils.calculateContrastColor(learningPath.color)">back to the dashboard</span></a>
+      </div>
+
+      <canvas #canvas></canvas>
+    </div>
+  }
+</main>

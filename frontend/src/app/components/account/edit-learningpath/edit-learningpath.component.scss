@@ -1,0 +1,110 @@
+@import "../../../variables";
+
+:host{
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  border-radius: 0.5rem;
+  background-color: white;
+  height: 100%;
+  gap: .5rem;
+}
+
+.header{
+  display: flex;
+  justify-content: space-between;
+}
+
+h2{
+  font-weight: 500;
+  margin-block: .5rem;
+  font-size: 1.1rem;
+
+  &.details {
+    margin-bottom: -.5rem;
+  }
+}
+
+section{
+  padding-left: .5rem;
+}
+
+section.basics{
+  display: flex;
+  gap: 1.5rem;
+
+  .left{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    width: 100%;
+  }
+}
+
+section.details{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  > div{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    p{
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    &.visibility{
+      fa-icon{
+        color: $secondary-350;
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  mat-divider{
+    height: 2rem;
+  }
+
+  app-tag-selector{
+    flex-grow: 1;
+  }
+}
+
+section.videos{
+  margin-bottom: 2rem;
+
+  input{
+    width: 100%;
+  }
+
+  .no-results{
+    color: $gray-400;
+    margin: .5rem;
+  }
+}
+
+.videoOptions{
+  @include floating-box;
+  padding: .2rem;
+
+  p{
+    padding: .3rem;
+    border-radius: .3rem;
+    transition: background-color $transition-time-short;
+    cursor: pointer;
+
+    &:hover{
+      background-color: $gray-900;
+    }
+  }
+}
+
+.bottom{
+  margin-top: auto;
+  display: flex;
+  gap: 2rem;
+  justify-content: flex-end;
+}

@@ -2,14 +2,25 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError, map, Observable, of} from "rxjs";
 import {Tag} from "./tag.service";
-import {Question} from "./question.service";
 import {Comment} from "./comment.service";
-import {User} from "./user.service";
+import {ContentForUser, User, UserService} from "./user.service";
 import {Config} from "../config"
 import {LearningPathOverviewDTO} from "./learning-path.service";
 
 export enum VisibilityEnum {
   self="self",everyone="everyone", customers="customers", internal="internal"
+}
+
+export interface ContentBase{
+  contentId: number;
+  tags: Tag[];
+  user: User;
+  title: string;
+  description: string;
+  color: string;
+  visibility: VisibilityEnum;
+  creationTime: Date;
+  approved: boolean;
 }
 
 export interface StarRating {
@@ -19,7 +30,7 @@ export interface StarRating {
 
 export interface ViewProgress {
   progressId: number;
-  durationSeconds: number;
+  progress: number;
   user: User;
 }
 
@@ -36,24 +47,28 @@ export interface VideoDetailDTO {
   contentId: number
   title: string
   description: string
+  color?: string
   tags: Tag[]
-  comments: Comment[]
-  questions: Question[]
+  comments?: Comment[]
+  questions?: Question[]
   rating: number
   videoFile?: VideoFile
-  viewProgress: number
+  viewProgress?: number
   visibility: VisibilityEnum
+  userId: number
+  approved: boolean
 }
 
 export interface VideoOverviewDTO {
-  contentId: number;
-  title: string;
-  description: string;
-  tags: Tag[];
-  saved: boolean;
-  color: string;
-  durationSeconds: number;
-  viewProgress: ViewProgress;
+  contentId: number
+  title: string
+  description: string
+  tags: Tag[]
+  saved: boolean
+  color: string
+  durationSeconds: number
+  questionCount: number
+  viewProgress: ViewProgress
 }
 
 export interface VideoAndLearningPathOverviewCollection {
@@ -61,18 +76,66 @@ export interface VideoAndLearningPathOverviewCollection {
   learningPaths: LearningPathOverviewDTO[];
 }
 
+export interface QuizResultDTO{
+  quizResultId: number;
+  selectedAnswers: AnswerOption[];
+  score: number;
+}
+
+export interface AnswerOption {
+  answerOptionId: number;
+  text: string;
+  isCorrect: boolean;
+}
+
+export interface Question {
+  questionId: number;
+  answerOptions?: AnswerOption[];
+  text: string;
+}
+
+export interface ContentOverviewDTO{
+  contentId: number;
+  title: string;
+  type: string;
+}
+
+export enum VideoRequestEnum {
+  open="open", declined="declined", finished="finished"
+}
+
+export interface VideoRequestDetailDTO {
+  requestId: number;
+  title: string;
+  text: string;
+  videoId: number
+  user: User;
+  status: VideoRequestEnum;
+}
+
+export interface VideoRequestDTO {
+  title: string;
+  text: string;
+  userId: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class VideoService {
   http = inject(HttpClient)
+  userService = inject(UserService)
 
-  getVideoList(): Observable<VideoOverviewDTO[]>{
+  getAll(): Observable<VideoOverviewDTO[]>{
     return this.http.get<VideoOverviewDTO[]>(`${Config.API_URL}/video/`)
   }
 
   getVideoDetails(videoId: number): Observable<VideoDetailDTO>{
-    return this.http.get<VideoDetailDTO>(`${Config.API_URL}/video/${videoId}?userId=${Config.USER_ID}`)
+    return this.http.get<VideoDetailDTO>(`${Config.API_URL}/video/${videoId}?userId=${this.userService.currentUser.value.userId}`)
+  }
+
+  deleteVideo(videoId: number){
+    return this.http.delete(`${Config.API_URL}/video/${videoId}`)
   }
 
   setStarRating(videoId: number, userId: number, rating: number) {
@@ -88,18 +151,15 @@ export class VideoService {
   }
 
   createVideo(video: VideoDetailDTO){
-    return this.http.post<VideoDetailDTO>(`${Config.API_URL}/video/`, video)
+    return this.http.post<VideoDetailDTO>(`${Config.API_URL}/video/?userId=${this.userService.currentUser.value.userId}`, video)
   }
 
   updateVideo(video: VideoDetailDTO){
-    console.log("updating video", video)
-    return this.http.put<VideoDetailDTO>(`${Config.API_URL}/video/`, video)
+    return this.http.put<VideoDetailDTO>(`${Config.API_URL}/video?userId=${this.userService.currentUser.value.userId}`, video)
   }
 
-  uploadVideoFile(file: File) {
+  uploadVideoFile(file: File, formData: FormData){
     const fileName = file.name;
-    const formData = new FormData();
-    formData.append('file', file);
     return this.http.post<VideoFile>(`${Config.API_URL}/video/videofile?filename=${fileName}`, formData);
   }
 
@@ -112,7 +172,38 @@ export class VideoService {
   }
 
   updateVideoVisibility(contentId: number, visibility: VisibilityEnum){
-    console.log(visibility)
-    this.http.put(`${Config.API_URL}/api/video/${contentId}/visibility`, {visibility: visibility}).subscribe()
+    this.http.put(`${Config.API_URL}/video/${contentId}/visibility?userId=${this.userService.currentUser.value.userId}`, {visibility: visibility}).subscribe()
+  }
+
+  finishQuiz(videoId: number, score: number, selectedAnswers: AnswerOption[]){
+    this.http.post(`${Config.API_URL}/video/${videoId}/finishquiz/${score}?userId=${this.userService.currentUser.value.userId}`, selectedAnswers).subscribe();
+  }
+
+  getQuizResults(videoId: number){
+    return this.http.get<QuizResultDTO>(`${Config.API_URL}/video/${videoId}/quizresults?userId=${this.userService.currentUser.value.userId}`)
+  }
+
+  searchContent(elem: string, filterTags: Tag[]) {
+    return this.http.post<ContentForUser>(`${Config.API_URL}/content/search?search=${elem}&userId=${this.userService.currentUser.value.userId}`, {tags: filterTags})
+  }
+
+  getFullContent() {
+    return this.http.get<ContentOverviewDTO[]>(`${Config.API_URL}/content?userId=${this.userService.currentUser.value.userId}`)
+  }
+
+  createVideoRequest(videoRequest: VideoRequestDTO){
+    return this.http.post<VideoRequestDTO>(`${Config.API_URL}/video/request`, videoRequest)
+  }
+
+  getVideoRequests(){
+    return this.http.get<VideoRequestDetailDTO[]>(`${Config.API_URL}/video/request`)
+  }
+
+  setVideoRequestStatus(requestId: number, status: VideoRequestEnum, videoId: number){
+    if(videoId){
+      this.http.put(`${Config.API_URL}/video/request/${requestId}/status/${status}?userId=${this.userService.currentUser.value.userId}&videoId=${videoId}`, {}).subscribe()
+    } else{
+      this.http.put(`${Config.API_URL}/video/request/${requestId}/status/${status}?userId=${this.userService.currentUser.value.userId}&videoId=0`, {}).subscribe()
+    }
   }
 }

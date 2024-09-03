@@ -1,0 +1,66 @@
+<table>
+  <tr>
+    <th class="mid"></th>
+    <th class="smallColumn">Views</th>
+    <th>Visibility</th>
+    <th>Videos</th>
+    <th class="mid">Tags</th>
+    <th>
+      <button mat-flat-button color="secondary" (click)="createVideo()">Create Learningpath</button>
+    </th>
+  </tr>
+  @for (learningpath of userLearningpaths; track learningpath.contentId){
+    <tr [ngClass]="{toApprove: !learningpath.approved}">
+      <td class="mid">
+        <app-learning-path-icon [style.color]="learningpath.color" [style.font-size]="'2rem'"></app-learning-path-icon>
+        <div class="title">
+          <p>Learning path</p>
+          <h2>{{ learningpath.title }}</h2>
+        </div>
+      </td>
+      <td class="smallColumn">
+        <fa-icon [icon]="faEye" class="grey"></fa-icon>
+        {{ learningpath.views }}
+      </td>
+      <td>
+        @if(learningpath.approved){
+          <app-dropdown [selectedId]="learningpath.visibility.toString()" (optionSelected)="updateVisibility(learningpath.contentId, $event)" [options]="Utils.visibilityEnumAsDropdownOption()"></app-dropdown>
+        } @else{
+          self
+        }
+      </td>
+
+      <td>{{ videoCountToString(learningpath.videoCount) }}</td>
+      <td class="mid">
+        <p class="tags" matTooltip="{{ getTags(learningpath.tags) }}" matTooltipShowDelay="500">
+          {{ getTags(learningpath.tags) }}
+        </p>
+      </td>
+
+      <td class="actions">
+        @if(!learningpath.approved && userService.currentUser.value.userRole == 'ADMIN'){
+          <app-icon-button
+            [matTooltip]="Config.generateAproveContentTooltipText('learningpath')"
+            (click)="approvePath(learningpath.contentId)"
+          >
+            <fa-icon
+              [icon]="faCheckCircle"
+              class="approve"
+            ></fa-icon>
+          </app-icon-button>
+        }
+        <app-icon-button (click)="deleteLearningPath(learningpath)">
+          <fa-icon [icon]="faTrash" class="small"></fa-icon>
+        </app-icon-button>
+        <a [routerLink]="['/learningpath/' + learningpath.contentId]" target="_blank" matTooltip="go to learning path" matTooltipShowDelay="500">
+          <app-icon-button>
+            <fa-icon [icon]="faShareFromSquare"></fa-icon>
+          </app-icon-button>
+        </a>
+        <app-icon-button (click)="openEditPopUp(learningpath.contentId)">
+          <fa-icon [icon]="faPen" class="small"></fa-icon>
+        </app-icon-button>
+      </td>
+    </tr>
+  }
+</table>

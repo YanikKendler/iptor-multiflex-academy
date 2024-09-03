@@ -1,11 +1,13 @@
 package model;
 
+import enums.UserRoleEnum;
 import enums.VisibilityEnum;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public abstract class Content {
@@ -13,18 +15,21 @@ public abstract class Content {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contentId;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Tag> tags;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private Set<Tag> tags;
 
     @ManyToOne
     private User user;
 
+    @Column(length = 100)
     private String title;
+    @Column(length = 2000)
     private String description;
     private String color;
     @Enumerated(EnumType.STRING)
     private VisibilityEnum visibility;
     private final LocalDateTime creationTime;
+    private boolean approved;
 
     public Content(String title, String description, VisibilityEnum visibility) {
         this();
@@ -34,8 +39,17 @@ public abstract class Content {
     }
 
     public Content() {
+        this.approved = false;
         this.creationTime = LocalDateTime.now();
-        this.tags = new LinkedList<>();
+        this.tags = new HashSet<>();
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 
     public User getUser() {
@@ -50,11 +64,11 @@ public abstract class Content {
         return contentId;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
@@ -95,10 +109,27 @@ public abstract class Content {
     }
 
     public void setVisibility(VisibilityEnum visibility) {
-        this.visibility = visibility;
+        if(isApproved()){
+            this.visibility = visibility;
+        }
     }
 
     public LocalDateTime getCreationTime() {
         return creationTime;
+    }
+
+    public boolean isVisibleForUser(User user) {
+        if (visibility == VisibilityEnum.self) {
+            return false;
+        } else if(UserRoleEnum.ADMIN == user.getUserRole()) {
+            return true;
+        } else if (visibility == VisibilityEnum.everyone) {
+            return true;
+        } else if (visibility == VisibilityEnum.customers) {
+            return user.getUserRole() == UserRoleEnum.CUSTOMER;
+        } else if (visibility == VisibilityEnum.internal) {
+            return user.getUserRole() == UserRoleEnum.EMPLOYEE;
+        }
+        return false;
     }
 }

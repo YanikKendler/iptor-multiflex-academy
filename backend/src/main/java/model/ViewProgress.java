@@ -12,23 +12,27 @@ public class ViewProgress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long progressId;
 
+    @JsonIgnore
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Content content;
 
     @JsonIgnore
     @ManyToOne
     @Unique
+    @JoinColumn(nullable = false)
     private User user;
 
-    private int durationSeconds;
+    /** Duration of the video in seconds or progress for learning paths */
+    private int progress;
     private boolean ignored;
     private LocalDateTime timestamp;
 
 
-    public ViewProgress(Video content, User user, int durationSeconds) {
+    public ViewProgress(Content content, User user, int progress) {
         this.content = content;
         this.user = user;
-        this.durationSeconds = durationSeconds;
+        this.progress = progress;
         this.timestamp = LocalDateTime.now();
     }
 
@@ -59,16 +63,16 @@ public class ViewProgress {
         return content;
     }
 
-    public void setContent(Video video) {
-        this.content = video;
+    public void setContent(Content content) {
+        this.content = content;
     }
 
-    public int getDurationSeconds() {
-        return durationSeconds;
+    public int getProgress() {
+        return progress;
     }
 
-    public void setDurationSeconds(int durationSeconds) {
-        this.durationSeconds = durationSeconds;
+    public void setProgress(int durationSeconds) {
+        this.progress = durationSeconds;
     }
 
     public boolean isIgnored() {

@@ -4,22 +4,26 @@
   height: 1.5rem;
   overflow: hidden;
   margin: -.5rem;
+  z-index: 50;
 }
 
-:host(:hover){
-  button{
-    opacity: 1;
-  }
+@media screen and (not (pointer: coarse)) {
+  :host(:hover){
+    button{
+      opacity: 1;
+    }
 
-  main{
-    box-shadow: 1px 3px 4px 0px rgba(0, 0, 0, 0.25);
-    border-color: $gray-500;
-  }
+    main{
+      @include floating-box;
+    }
 
-  app-star-icon{
-    color: $secondary-500;
+    app-star-icon{
+      color: $secondary-500;
+    }
   }
 }
+
+
 
 main{
   border-radius: 0.4rem;
@@ -29,7 +33,7 @@ main{
   flex-direction: column;
   gap: .75rem;
   border: 1px solid transparent;
-  transition: box-shadow $transition-time-default, border-color $transition-time-default;
+  transition: box-shadow $transition-time-default, border-color $transition-time-default, background-color $transition-time-short;
 }
 
 app-star-icon{

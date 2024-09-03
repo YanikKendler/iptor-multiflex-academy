@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavigationComponent} from "../../navigation/navigation.component";
+import {NavigationComponent} from "../../base/navigation/navigation.component";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {faCirclePlay, faGear, faUsersGear} from '@fortawesome/free-solid-svg-icons';
 import {NgStyle} from "@angular/common";
