@@ -226,7 +226,7 @@ export class UserService {
     return this.http.get<User[]>(`${Config.API_URL}/user/${userId}/supervisors`)
   }
 
-  setSupervisor(userId: number, supervisor: User, isSupervisor: boolean) {
-    this.http.put(`${Config.API_URL}/user/${userId}/supervisor/${supervisor.userId}?isSupervisor=${isSupervisor}`, {}).subscribe()
+  setSupervisor(userId: number, supervisor: User | undefined, isSupervisor: boolean) {
+    this.http.put(`${Config.API_URL}/user/${userId}/supervisor/${supervisor ? supervisor.userId : -1}?isSupervisor=${isSupervisor}`, {}).subscribe()
   }
 }

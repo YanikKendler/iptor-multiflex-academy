@@ -42,7 +42,7 @@ export class ManageUserSupervisorsComponent implements OnInit {
     });
   }
 
-  assignUser(user: User, isSupervisor: boolean) {
+  assignUser(user: User | undefined, isSupervisor: boolean) {
     if (isSupervisor) {
       this.supervisor = user;
     } else {

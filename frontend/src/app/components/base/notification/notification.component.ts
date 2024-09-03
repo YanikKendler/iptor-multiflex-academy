@@ -71,11 +71,12 @@ export class NotificationComponent implements OnInit{
       return
     }
 
+    console.log(this.getType())
     switch (this.getType()) {
       case "request":
         this.router.navigate(['account/video-requests'])
         break
-      case "approved":
+      case "videoCreateRequest":
         let noti = this.notification as ContentNotification
         console.log(this.contentNotification)
         if(this.contentNotification.content.hasOwnProperty("questions")){

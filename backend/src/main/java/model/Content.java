@@ -21,6 +21,7 @@ public abstract class Content {
     @ManyToOne
     private User user;
 
+    @Column(length = 100)
     private String title;
     @Column(length = 2000)
     private String description;

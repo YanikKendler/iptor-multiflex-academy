@@ -126,7 +126,6 @@ public class UserRepository {
             , User.class)
             .getResultList();
 
-        System.out.println(managers.toString());
 
         List<UserTreeDTO> result = new LinkedList<>();
 
@@ -271,11 +270,9 @@ public class UserRepository {
                 .setParameter("areTagsEmpty", tags.isEmpty())
                 .getResultList();
 
-        System.out.println("Assigned videos:" + assignedVideos.size());
 
         List<Video> visibleVideos = new ArrayList<>();
         assignedVideos.forEach(video -> {
-            System.out.println(video);
             if (video.isVisibleForUser(getById(userId))) {
                 visibleVideos.add(video);
             }
@@ -589,6 +586,19 @@ public class UserRepository {
         return null;
     }
 
+    public void printUserTree(UserTreeDTO user){
+        for (int i = 0; i < user.level(); i++) {
+            System.out.print("\t");
+        }
+        System.out.println(user.username());
+
+        if(user.subordinates() != null){
+            for(UserTreeDTO u : user.subordinates()){
+                printUserTree(u);
+            }
+        }
+    }
+
     public UserTreeDTO getFullUserTree(Long userId) {
         // getting root user
         User rootUser = em.find(User.class, userId);
@@ -599,22 +609,6 @@ public class UserRepository {
         // building up the tree starting from the root user
         UserTreeDTO dto = buildUserTreeDTO(rootUser, 0);
 
-        // getting all subordinates of the root user (can contain duplicates)
-        List<Long> subordinateUserIds = getSubordinates(dto);
-
-        // getting all direct subordinates of the root user that are not in the subordinates already (could be: because of deputy supervisor)
-        List<User> directSubordinates = em.createQuery("select u from User u " +
-                        "where u.deputySupervisor.userId = :userId and u.userId not in (:userIds) and u.supervisor.id != :userId", User.class)
-                .setParameter("userId", userId)
-                .setParameter("userIds", subordinateUserIds)
-                .getResultList();
-
-        // convert the direct subordinates to DTOs
-        List<UserTreeDTO> subordinateDtos = new ArrayList<>();
-        for (User subordinate : directSubordinates) {
-            dto.subordinates().add(new UserTreeDTO(subordinate.getUserId(), subordinate.getUsername(), subordinate.getEmail(), subordinate.getUserRole(), 0, null));
-        }
-
         List<User> userWithoutSupervisor = em.createQuery(
                 "select u from User u " +
                 "where u.supervisor is null " +
@@ -623,7 +617,22 @@ public class UserRepository {
                 .setParameter("rootUserRole", rootUser.getUserRole() == UserRoleEnum.ADMIN ? UserRoleEnum.EMPLOYEE : rootUser.getUserRole())
                 .getResultList();
         for (User noSup : userWithoutSupervisor) {
-            dto.subordinates().add(new UserTreeDTO(noSup.getUserId(), noSup.getUsername(), noSup.getEmail(), noSup.getUserRole(), 0, null));
+            dto.subordinates().add(buildUserTreeDTO(noSup, 1));
+        }
+
+        // getting all subordinates of the root user (can contain duplicates)
+        List<Long> subordinateUserIds = getSubordinates(dto);
+
+        // getting all direct subordinates of the root user that are not in the subordinates already (could be because of deputy supervisor)
+        List<User> directSubordinates = em.createQuery("select u from User u " +
+                        "where u.deputySupervisor.userId = :userId and u.userId not in (:userIds) and u.supervisor.id != :userId", User.class)
+                .setParameter("userId", userId)
+                .setParameter("userIds", subordinateUserIds)
+                .getResultList();
+
+        // convert the direct subordinates to DTOs
+        for (User subordinate : directSubordinates) {
+            dto.subordinates().add(new UserTreeDTO(subordinate.getUserId(), subordinate.getUsername(), subordinate.getEmail(), subordinate.getUserRole(), 0, null));
         }
 
         return dto;
@@ -638,8 +647,10 @@ public class UserRepository {
         // looping over his subordinates
         for(UserTreeDTO u : user.subordinates()){
 
-            // adding the subordinates of the current user recosively
-            subordinates.addAll(getSubordinates(u));
+            // adding the subordinates of the current user recursively
+            if(u.subordinates() != null){
+                subordinates.addAll(getSubordinates(u));
+            }
         }
         return subordinates;
     }
@@ -877,7 +888,6 @@ public class UserRepository {
                     .getResultList();
         }
 
-        System.out.println(users.size());
         return users.stream()
                 .filter(user -> user.isUserAbleToSupervise(getById(userId)))
                 .toList();
@@ -885,7 +895,11 @@ public class UserRepository {
 
     public void setSupervisor(Long userId, Long supervisorId, Boolean isSupervisor) {
         User user = getById(userId);
-        User supervisor = getById(supervisorId);
+        User supervisor = null;
+
+        if(supervisorId != null){
+            supervisor = getById(supervisorId);
+        }
 
         if (isSupervisor) {
             user.setSupervisor(supervisor);

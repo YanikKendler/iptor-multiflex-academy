@@ -264,7 +264,6 @@ public class UserResource {
     @Path("{userId}/search")
     public Response search(@PathParam("userId") Long userId, @QueryParam("search") String search) {
         try {
-            System.out.println(search);
             return Response.ok(repository.search(userId, search)).build();
         } catch (Exception ex) {
             ex.printStackTrace();

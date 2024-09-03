@@ -36,6 +36,7 @@ export class ManageUsersComponent {
 
     this.userService.getManageableUsers().subscribe(user => {
       this.rootEmployee = user
+      console.log(this.rootEmployee)
     });
 
     if(this.userService.currentUser.value.userRole == UserRoleEnum.ADMIN)

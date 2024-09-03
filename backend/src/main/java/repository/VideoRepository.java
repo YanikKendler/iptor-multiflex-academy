@@ -110,19 +110,20 @@ public class VideoRepository {
         Set<Long> questionOne = video.questions().stream().map(Question::getQuestionId).collect(Collectors.toSet());
         Set<Long> questionTwo = videoToUpdate.getQuestions().stream().map(Question::getQuestionId).collect(Collectors.toSet());
         if(!questionOne.equals(questionTwo)){
-            em.createQuery("delete from QuizResult q where q.video.contentId = :videoId")
-                    .setParameter("videoId", video.contentId())
-                    .executeUpdate();
-            videoToUpdate.setQuestions(video.questions());
-
-            for (Question question : video.questions()) {
-                try{
-                    em.merge(question);
-                }catch (Exception e) {
-                    em.persist(new Question(question.getText()));
-                }
-            }
             em.persist(new ContentEditHistory(userRepository.getById(userId), videoToUpdate, ContentEditType.questions));
+        }
+
+        em.createQuery("delete from QuizResult q where q.video.contentId = :videoId")
+                .setParameter("videoId", video.contentId())
+                .executeUpdate();
+        videoToUpdate.setQuestions(video.questions());
+
+        for (Question question : video.questions()) {
+            try{
+                em.merge(question);
+            }catch (Exception e) {
+                em.persist(new Question(question.getText()));
+            }
         }
 
         if(video.visibility() != videoToUpdate.getVisibility()){

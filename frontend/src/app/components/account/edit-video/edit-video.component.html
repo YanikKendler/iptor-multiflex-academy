@@ -14,6 +14,7 @@
       [(value)]="video.title"
       label="Title"
       placeholder="My amazing tutorial"
+      [maxLength]="100"
     ></app-textfield>
 
     <app-textfield
@@ -81,7 +82,7 @@
   <div class="right">
     @if(selectedQuestion != undefined){
       <div class="questionTitle">
-        <input type="text" class="question" placeholder="Question" [value]="selectedQuestion.text" (input)="questionTitleUpdated(questionTitle.value)" #questionTitle>
+        <input type="text" class="question" placeholder="Question" [value]="selectedQuestion.text" (input)="questionTitleUpdated(questionTitle.value)" #questionTitle [maxLength]="100">
         <app-icon-button (click)="removeQuestion()" matTooltip="delete question" matTooltipShowDelay="500">
           <fa-icon [icon]="faTrash"></fa-icon>
         </app-icon-button>

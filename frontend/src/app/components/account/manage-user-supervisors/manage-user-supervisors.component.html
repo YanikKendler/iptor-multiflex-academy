@@ -20,6 +20,8 @@
       }
       @if (userOptions.length == 0) {
         <p class="no-results">No content found</p>
+      } @else{
+        <p (click)="assignUser(undefined, true)" class="option">clear supervisor</p>
       }
     </div>
   </ng-template>
@@ -45,6 +47,8 @@
       }
       @if (userOptions.length == 0) {
         <p class="no-results">No content found</p>
+      } @else{
+        <p (click)="assignUser(undefined, false)" class="option">clear supervisor</p>
       }
     </div>
   </ng-template>
