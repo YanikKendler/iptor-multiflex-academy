@@ -179,7 +179,7 @@ body {
       &[mat-flat-button] {
         background-color: $primary-500;
 
-        &.cdk-focused {
+        &:focus-visible.cdk-focused {
           background-color: $primary-600;
         }
       }
@@ -204,7 +204,7 @@ body {
         color: white;
         background-color: $secondary-500;
 
-        &.cdk-focused {
+        &:focus-visible.cdk-focused {
           background-color: $secondary-700;
         }
       }
@@ -214,7 +214,7 @@ body {
         background-color: hsla(31, 100%, 47%, 0.2);
         border-color: $secondary-500;
 
-        &.cdk-focused {
+        &:focus-visible.cdk-focused {
           background-color: $secondary-800;
         }
       }
@@ -224,7 +224,7 @@ body {
       --mat-text-button-state-layer-color: red;
       color: white;
 
-      &.cdk-focused{
+      &:focus-visible.cdk-focused{
         .mat-mdc-button-persistent-ripple{
           background-color: rgba(255, 0, 0, 0.1);
         }

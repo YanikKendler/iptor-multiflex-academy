@@ -112,10 +112,10 @@
           }
         </table>
 
-        <a routerLink="/">back to the dashboard</a>
+        <a routerLink="/" [style.background-color]="learningPath.color" matTooltip="back to the dashboard"><span [style.color]="Utils.calculateContrastColor(learningPath.color)">back to the dashboard</span></a>
       </div>
 
-      <!--<canvas #canvas></canvas>-->
+      <canvas #canvas></canvas>
     </div>
   }
 </main>

@@ -19,6 +19,7 @@ import {ViewProgressService} from "../../../service/view-progress.service";
 import {MatButton} from "@angular/material/button";
 import {Config} from "../../../config"
 import {faArrowLeft, faBars} from "@fortawesome/free-solid-svg-icons"
+import {MatTooltip} from "@angular/material/tooltip"
 
 @Component({
   selector: 'app-learning-path-detail',
@@ -36,7 +37,8 @@ import {faArrowLeft, faBars} from "@fortawesome/free-solid-svg-icons"
     NgStyle,
     PlayIconComponent,
     RouterLink,
-    MatButton
+    MatButton,
+    MatTooltip
   ],
   templateUrl: './learning-path-detail.component.html',
   styleUrl: './learning-path-detail.component.scss'
@@ -93,6 +95,8 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
             }
 
             this.learningPath = learningPath
+
+            this.generateConfetti()
 
             if(this.learningPath.viewProgress){
               this.progressPercent = this.learningPath.viewProgress.progress / this.learningPath.entries.length * 100
@@ -163,8 +167,6 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
     this.context = this.canvas.getContext("2d")!;
     this.canvas.width = this.W;
     this.canvas.height = this.H;
-
-    this.getConfetti();
   }
 
   generateDescriptionWithLinebreaks(){
@@ -210,7 +212,7 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
       } else {
         this.currentVideoPosition++
         this.isFinished = true
-        this.getConfetti();
+        this.generateConfetti();
         this.userService.finishAssignedContent(this.learningPath.contentId).subscribe()
       }
 
@@ -228,69 +230,76 @@ export class LearningPathDetailComponent implements OnInit, AfterViewInit{
   H!: number;
   canvas!: HTMLCanvasElement;
   context!: CanvasRenderingContext2D;
-  maxConfettis = 150;
+  maxConfettis = 100;
   particles: any[] = [];
   possibleColors = [
-    "DodgerBlue", "OliveDrab", "Gold", "Pink", "SlateBlue", "LightBlue", "Gold", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"
+    "hsl(31, 100%, 47%)"
   ];
 
-  getConfetti() {
+  generateConfetti() {
     if(!this.canvas) return
 
-    for (let i = 0; i < this.maxConfettis; i++) {
-      this.particles.push(this.confettiParticle());
+    if(this.learningPath.color != undefined) {
+      this.possibleColors = [
+        this.learningPath.color,
+        Utils.shiftHexColorLightness(this.learningPath.color, 10),
+        Utils.shiftHexColorLightness(this.learningPath.color, 30),
+        Utils.shiftHexColorLightness(this.learningPath.color, 60),
+        Utils.shiftHexColorLightness(this.learningPath.color, -10),
+        Utils.shiftHexColorLightness(this.learningPath.color, -30),
+        Utils.shiftHexColorLightness(this.learningPath.color, -60),
+      ]
     }
-    this.Draw()
+
+    for (let i = 0; i < this.maxConfettis; i++) {
+      this.particles.push(this.generateConfettiParticle());
+    }
+
+    console.log(this.particles)
+
+    this.drawConfetti()
   }
 
   randomFromTo(from: number, to: number): number {
     return Math.floor(Math.random() * (to - from + 1) + from);
   }
 
-  confettiParticle() {
-    const x = Math.random() * this.W;
-    const y = Math.random() * this.H - this.H;
-    const r = this.randomFromTo(11, 33);
-    const d = Math.random() * this.maxConfettis + 11;
-    const color = this.possibleColors[Math.floor(Math.random() * this.possibleColors.length)];
-    const tilt = Math.floor(Math.random() * 33) - 11;
-    const tiltAngleIncremental = Math.random() * 0.07 + 0.05;
-    const tiltAngle = 0;
-
+  generateConfettiParticle() {
     return {
-      x,y,r,d,
-      color,
-      tilt,
-      tiltAngleIncremental,
-      tiltAngle,
-      draw: () => {
-        this.context.beginPath();
-        this.context.lineWidth = r / 2;
-        this.context.strokeStyle = color;
-        this.context.moveTo(x + tilt + r / 3, y);
-        this.context.lineTo(x + tilt, y + tilt + r / 5);
-        return this.context.stroke();
-      }
-    };
+      x: Math.random() * this.W,
+      y: Math.random() * this.H - this.H,
+      r: this.randomFromTo(11, 33),
+      d: Math.random() * this.maxConfettis + 11,
+      color: this.possibleColors[Math.floor(Math.random() * this.possibleColors.length)],
+      tilt: Math.floor(Math.random() * 33) - 11,
+      tiltAngleIncremental: Math.random() * 0.07 + 0.05,
+      tiltAngle: 0,
+    }
   }
 
-  Draw() {
+  drawConfetti() {
     if (!this.context) {
       console.error('Canvas context is not initialized.');
       return;
     }
 
-    requestAnimationFrame(() => this.Draw());
+    requestAnimationFrame(() => this.drawConfetti());
     this.context.clearRect(0, 0, this.W, window.innerHeight);
 
     let particle: any;
     let remainingFlakes = 0;
     for (let i = 0; i < this.maxConfettis; i++) {
       particle = this.particles[i];
-      particle.draw()
       particle.tiltAngle += particle.tiltAngleIncremental;
       particle.y += (Math.cos(particle.d) + 3 + particle.r / 2) / 2;
       particle.tilt = Math.sin(particle.tiltAngle - i / 3) * 15;
+
+      this.context.beginPath();
+      this.context.lineWidth = particle.r / 2;
+      this.context.strokeStyle = particle.color;
+      this.context.moveTo(particle.x + particle.tilt + particle.r / 3, particle.y);
+      this.context.lineTo(particle.x + particle.tilt, particle.y + particle.tilt + particle.r / 5);
+      this.context.stroke();
 
       if (particle.y <= this.H) remainingFlakes++;
 
