@@ -103,7 +103,6 @@ public class VideoFileRepository {
             FFmpeg ffmpeg = new FFmpeg("tools" + File.separator + "ffmpeg.exe");
             FFprobe ffprobe = new FFprobe("tools" + File.separator + "ffprobe.exe");
 
-            //TODO really fancy bug.. when uploading a mkv and possibly other formats the duration is not read correctly
             //read metadata from videofile and store them in the db
             FFmpegProbeResult probeResult = ffprobe.probe(filePath);
             FFmpegStream stream = probeResult.getStreams().get(0);
@@ -114,6 +113,7 @@ public class VideoFileRepository {
             //creates a directory for the video chunks to be stored in
             new File("processed" + File.separator + "video-" + videoFile.getVideoFileId()).mkdirs();
 
+            //TODO update file path in case of linux deployment
             //transform the temporary stored videos into a DASH manifest and chunks
             FFmpegBuilder builder = new FFmpegBuilder()
                     .setInput(filePath)
