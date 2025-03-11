@@ -215,6 +215,10 @@ public class VideoRepository {
 
         userRepository.getById(getById(id).getUser().getUserId()).getSavedContent().remove(getById(id));
 
+        em.createQuery("delete from VideoRequest v where v.video.contentId = :contentId")
+                .setParameter("contentId", id)
+                .executeUpdate();
+
         em.remove(getById(id));
 
         if(file != null){

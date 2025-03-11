@@ -3,11 +3,13 @@
 :host{
   border-radius: .5rem;
   overflow: hidden;
-  display: block;
   border: .1rem $gray-600 solid;
   width: 20vw;
   transition: border $transition-time-default;
   cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
 }
 
 @media screen and (max-width: 900px) {
@@ -78,6 +80,8 @@ app-play-icon{
   display: flex;
   flex-direction: column;
   gap: .8rem;
+  justify-content: space-between;
+  height: 100%;
 
   p{
     font-size: .9rem;

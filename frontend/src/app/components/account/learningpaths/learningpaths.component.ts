@@ -97,7 +97,7 @@ export class LearningpathsComponent implements OnInit{
     });
   }
 
-  createVideo(){
+  createLearningpath(){
     this.openEditPopUp(-1)
   }
 

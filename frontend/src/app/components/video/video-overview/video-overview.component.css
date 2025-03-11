@@ -1,0 +1,118 @@
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px) scaleY(1.1);
+  }
+  70% {
+    transform: translateY(0) scaleY(0.95);
+  }
+}
+:host {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 0.1rem hsl(0, 0%, 85%) solid;
+  width: 20vw;
+  transition: border 0.3s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 900px) {
+  :host {
+    width: 100%;
+  }
+}
+:host(:hover) {
+  border-color: hsl(0, 0%, 28%);
+}
+:host(:hover) .header .actions app-icon-button {
+  opacity: 1;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: hsl(0, 0%, 95%);
+  padding: 0.5rem;
+  border-bottom: 0.1rem hsl(0, 0%, 85%) solid;
+}
+.header h2 {
+  font-size: 1rem;
+}
+.header .actions {
+  display: flex;
+  margin-left: auto;
+  transition: opacity 0.15s;
+}
+@media screen and (max-width: 900px) {
+  .header .actions {
+    display: none;
+  }
+}
+.header .actions app-icon-button * {
+  color: hsl(0, 0%, 28%);
+  font-size: 1.2rem;
+  height: 1.3rem;
+}
+.header .actions app-icon-button:not(:has(app-bookmark-icon.marked)) {
+  opacity: 0;
+}
+
+.progress-bar {
+  height: 0.3rem;
+  background-color: hsl(0, 0%, 69%);
+  width: 100%;
+}
+.progress-bar span {
+  display: block;
+  height: 100%;
+}
+
+app-play-icon {
+  height: 2rem;
+}
+
+.main {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  justify-content: space-between;
+  height: 100%;
+}
+.main p {
+  font-size: 0.9rem;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.bottom p {
+  white-space: nowrap;
+}
+
+.tags {
+  display: flex;
+  gap: 0.5rem;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+.tags::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 1rem;
+  background-image: linear-gradient(90deg, hsla(0, 0%, 100%, 0) 0%, hsl(0, 0%, 100%) 100%);
+  right: 0;
+}
+
+/*# sourceMappingURL=video-overview.component.css.map */

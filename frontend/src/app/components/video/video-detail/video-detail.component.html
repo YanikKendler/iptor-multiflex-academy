@@ -1,6 +1,6 @@
 <app-navigation [simple]="true"></app-navigation>
 
-<main [ngClass]="{notApproved: userService.currentUser.value.userRole == 'ADMIN' && video.approved == false}">
+<main [ngClass]="{notApproved: userService.currentUser.value.userRole == 'ADMIN' && !video.approved}">
   <div class="top">
     <app-media-player [video]="video" (isFinished)="finishVideo()"></app-media-player>
     <div class="right">

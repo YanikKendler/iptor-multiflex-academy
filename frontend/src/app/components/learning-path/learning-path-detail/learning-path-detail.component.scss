@@ -10,6 +10,7 @@ main{
   display: grid;
   grid-template-columns: min-content auto;
   height: 100%;
+  overflow: hidden;
 
   @media screen and (max-width: 900px) {
     display: flex;
@@ -29,9 +30,11 @@ main{
   display: flex;
   flex-direction: column;
   width: max-content;
-  margin-top: 3rem;
+  padding-top: 3rem;
   padding-left: 2rem;
   z-index: 300;
+  overflow-y: auto;
+  height: 100%;
 
   h1{
     width: max-content;
@@ -144,6 +147,13 @@ main{
     transition: all .2s ease;
     align-items: center;
 
+    p{
+      max-width: 30ch;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-wrap: nowrap;
+    }
+
     app-play-icon{
       height: 1.5rem;
     }
@@ -212,7 +222,7 @@ main{
   margin-top: 3rem;
 
   app-media-player {
-    height: 40vh;
+    height: 30vh;
   }
 
   @media screen and (max-width: 900px) {

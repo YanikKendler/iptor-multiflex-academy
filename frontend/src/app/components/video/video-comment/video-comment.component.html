@@ -20,7 +20,7 @@
   }
 </div>
 
-@if(userService.currentUser.value.userRole == "ADMIN" || videoOwnerId === userId && !editMode){
+@if(userService.currentUser.value.userRole == "ADMIN" || comment.user.userId == userId || videoOwnerId === userId && !editMode){
   <div class="right">
     <app-icon-button [cdkMenuTriggerFor]="menu">
       <fa-icon [icon]="faEllipsis"></fa-icon>

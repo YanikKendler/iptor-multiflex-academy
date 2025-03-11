@@ -71,11 +71,15 @@ export class FilterSidebarComponent implements OnInit {
   }
 
   updateFilter(tag: Tag, doNotEmit: boolean = false) {
+    console.log(this.selectedTags)
+
     if (this.selectedTags.some(t => t.tagId === tag.tagId)) {
       this.selectedTags = this.selectedTags.filter(t => t.tagId !== tag.tagId);
     } else {
       this.selectedTags.push(tag);
     }
+
+    console.log(this.selectedTags)
 
     this.setLocalStorageTags();
 

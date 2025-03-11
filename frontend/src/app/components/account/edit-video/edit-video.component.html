@@ -22,6 +22,7 @@
       label="Description"
       placeholder="In this tutorial you will learn..."
       [rows]="5"
+      [maxLength]="2000"
     ></app-textfield>
   </div>
   <app-upload-video
@@ -49,7 +50,7 @@
       </p>
       <fa-icon
         [icon]="faCircleQuestion"
-        matTooltip="Your learningpath needs to be approved by an Admin before you can edit its visibility."
+        matTooltip="Your video needs to be approved by an Admin before you can edit its visibility."
       ></fa-icon>
     }
   </div>

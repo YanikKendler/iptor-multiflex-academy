@@ -34,8 +34,6 @@
     <input type="color" [value]="learningPath.color" (input)="colorUpdated(color.value)" #color>
   </div>
 
-  <mat-divider [vertical]="true"></mat-divider>
-
   <div class="visibility">
     <p>visibility:</p>
     @if(learningPath.approved || userService.currentUser.value.userRole == 'ADMIN'){

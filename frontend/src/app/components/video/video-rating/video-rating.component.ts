@@ -3,6 +3,7 @@ import {StarIconComponent} from "../../icons/star/star.icon.component";
 import {NgForOf} from "@angular/common";
 import {StarRating, VideoService} from "../../../service/video.service";
 import {MatButton} from "@angular/material/button"
+import {UserService} from "../../../service/user.service"
 
 @Component({
   selector: 'app-video-rating',
@@ -21,7 +22,8 @@ import {MatButton} from "@angular/material/button"
 export class VideoRatingComponent{
   @Input() rating: number | undefined = 3.5
   @Input() videoId: number | undefined = 1
-  @Input() userId: number | undefined = 1
+
+  userService = inject(UserService)
 
   videoService = inject(VideoService)
 
@@ -35,11 +37,13 @@ export class VideoRatingComponent{
   overflow = 'hidden';
 
   constructor(private renderer: Renderer2) {
-    if(this.videoId && this.userId){
-      this.videoService.getStarRating(this.videoId, this.userId).subscribe(response => {
-        this.yourRating = response
-      })
-    }
+    this.userService.currentUser.subscribe(user => {
+      if(this.videoId){
+        this.videoService.getStarRating(this.videoId, this.userService.currentUser.value.userId).subscribe(response => {
+          this.yourRating = response
+        })
+      }
+    })
   }
 
   setRating(rating: number) {
@@ -51,14 +55,14 @@ export class VideoRatingComponent{
 
   buttonUpdateTimeout: any
   sendRating(){
-    if(!this.videoId || !this.userId) return
+    if(!this.videoId) return
 
     if(this.lastRating == this.yourRating) return
     this.lastRating = this.yourRating
 
     clearTimeout(this.buttonUpdateTimeout)
 
-    this.videoService.setStarRating(this.videoId, this.userId, this.yourRating).subscribe(response => {
+    this.videoService.setStarRating(this.videoId, this.userService.currentUser.value.userId, this.yourRating).subscribe(response => {
       this.updateRating()
       this.buttonText = "updated!"
       this.buttonUpdateTimeout = setTimeout(() => {
